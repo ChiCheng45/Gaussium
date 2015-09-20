@@ -9,8 +9,8 @@ from src.OverlapIntegral import OverlapIntegral
 def main():
     print("\nWhat I cannot create I cannot understand - Richard Feynman\n")
 
-    file_reader_nuclei = FileInputNuclei(os.path.abspath('../QChem/molFiles/HYDROGEN.mol'))
-    file_reader_basis = FileInputBasis(os.path.abspath('../QChem/basisSetFiles/STO-3G.gbs'))
+    file_reader_nuclei = FileInputNuclei('HeH+.mol')
+    file_reader_basis = FileInputBasis('STO-3G-edited.gbs')
 
     nuclei_array = file_reader_nuclei.create_nuclei_array()
     nuclei_name_array = []

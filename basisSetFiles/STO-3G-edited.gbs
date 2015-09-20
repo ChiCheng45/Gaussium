@@ -10,21 +10,21 @@
 # Ga - Kr: J. Am. Chem. Soc. 19, 2225 (1980).
 # Sc - Zn: W.J. Pietro and W.J. Hehre, J. Comp. Chem. 4, 241 (1983) + Gaussian.
 #  Y - Cd: W.J. Pietro and W.J. Hehre, J. Comp. Chem. 4, 241 (1983). + Gaussian
-#   
 
+# He has been changed to agree with Szabo and Ostlunds figures where zeta = 2.0925.
 
 
 # HYDROGEN
 S   H
-      0.15432897             3.42525091       
-      0.53532814             0.62391373       
-      0.44463454             0.16885540       
+      0.15432897             3.42525091
+      0.53532814             0.62391373
+      0.44463454             0.16885540
 
 # HELIUM
 S   He
-      0.15432897             6.36242139       
-      0.53532814             1.15892300       
-      0.44463454             0.31364979       
+      0.15432897             9.75393461
+      0.53532814             1.77669115
+      0.44463454             0.48084429
 
 # LITHIUM
 S   Li

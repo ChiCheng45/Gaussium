@@ -31,6 +31,7 @@ class OverlapIntegral:
                         coefficients and normalization constants. s_ij is the sum of all the overlap integrals between
                         all primitive gaussian functions on nuclei i and j."""
                         s_ij += c_1 * c_2 * n_1 * n_2 * ((np.pi / (a_1 + a_2))**(3/2)) * np.exp(-(a_1 * a_2 * r_ab) / (a_1 + a_2))
+                        print(s_ij)
                     else:
                         s_ij += 0
             return s_ij

@@ -1,7 +1,10 @@
+import os
+
+
 class FileInputBasis:
 
     def __init__(self, file_input_basis):
-        self.file_input_basis = file_input_basis
+        self.file_input_basis = os.path.abspath('./basisSetFiles/' + file_input_basis)
 
     def create_basis_set_array(self, nuclei_name):
         i = j = 0
