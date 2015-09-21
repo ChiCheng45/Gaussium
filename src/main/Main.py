@@ -1,14 +1,11 @@
-import os
-from src.CoulombsLaw import Coulomb
-from src.FileInputNuclei import FileInputNuclei
-from src.FileInputBasis import FileInputBasis
-from src.CreateMatrix import Matrix
-from src.OverlapIntegral import OverlapIntegral
+import time
+from src.main import Coulomb, FileInputNuclei, FileInputBasis, Matrix, OverlapIntegral, KineticEnergyIntegral, Nuclei
 
 
 def main():
     print("\nWhat I cannot create I cannot understand - Richard Feynman\n")
 
+    start = time.clock()
     file_reader_nuclei = FileInputNuclei('HeH+.mol')
     file_reader_basis = FileInputBasis('STO-3G-edited.gbs')
 
@@ -23,6 +20,12 @@ def main():
     matrix = Matrix(nuclei_array, file_reader_basis)
     s_matrix = matrix.create_matrix(OverlapIntegral())
     print(nuclei_name_array)
+    print('\nOrbital Overlap Matrix')
     print(s_matrix)
+
+    t_matrix = matrix.create_matrix(KineticEnergyIntegral())
+    print('\nKinetic Energy Matrix')
+    print(t_matrix)
+    print('\nTime Taken: ' + str(time.clock() - start) + 's')
 
 main()

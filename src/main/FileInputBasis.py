@@ -1,15 +1,17 @@
 import os
+import sys
 
 
 class FileInputBasis:
 
     def __init__(self, file_input_basis):
-        self.file_input_basis = os.path.abspath('./basisSetFiles/' + file_input_basis)
+        self.file_input_mol = os.path.join(sys.path[1], 'basisSetFiles\\' + file_input_basis)
 
     def create_basis_set_array(self, nuclei_name):
+        function_type = []
         i = j = 0
         basis_array = [nuclei_name]
-        with open(self.file_input_basis, 'r') as file:
+        with open(self.file_input_mol, 'r') as file:
             lines = file.readlines()
             for a in range(0, len(lines)):
                 line = lines[a]

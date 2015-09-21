@@ -14,6 +14,9 @@ class Nuclei:
     def get_charge(self):
         return self.charge
 
+    def get_mass(self):
+        return self.mass
+
     def get_x(self):
         return self.x
 
