@@ -6,9 +6,9 @@ def main():
     print("\nWhat I cannot create I cannot understand - Richard Feynman\n")
 
     start = time.clock()
+
     file_reader_nuclei = FileInputNuclei('HeH+.mol')
     file_reader_basis = FileInputBasis('STO-3G-edited.gbs')
-
     nuclei_array = file_reader_nuclei.create_nuclei_array()
     nuclei_name_array = []
     for a in range(0, len(nuclei_array)):
@@ -26,7 +26,8 @@ def main():
     s_matrix = matrix.create_matrix(OverlapIntegral())
     print('\nOrbital Overlap Matrix')
     print(s_matrix)
-
+    print('test')
+    print('test')
     t_matrix = matrix.create_matrix(KineticEnergyIntegral())
     print('\nKinetic Energy Matrix')
     print(t_matrix)
