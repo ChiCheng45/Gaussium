@@ -28,5 +28,4 @@ class KineticEnergyIntegral:
                     t_ij += s_ij * k_ij
                 else:
                     t_ij += 0
-                    print('test')
         return t_ij
