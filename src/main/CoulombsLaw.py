@@ -1,24 +1,36 @@
-from src.main.Nuclei import Nuclei
-import math
+import numpy as np
+
+class CoulombTotal:
+
+    def __init__(self, coulomb, nuclei_array):
+        self.nuclei_array = nuclei_array
+        self.coulomb = coulomb
+
+    def calculate_total_electric_potential_energy(self):
+        num = len(self.nuclei_array)
+        energy_matrix = []
+        for i in range(0, num):
+            energy_matrix_row = []
+            for j in range(0, num):
+                if i == j:
+                    energy_matrix_row.append(0)
+                else:
+                    energy = self.coulomb(self.nuclei_array[i], self.nuclei_array[j]).calc_electric_potential_energy()
+                    energy_matrix_row.append(energy)
+            energy_matrix.append(energy_matrix_row)
+        return np.matrix(energy_matrix)
 
 
 class Coulomb:
-    def __init__(self, nuclei_array):
-        self.nuclei_array = nuclei_array
 
-    def calculate_total_electric_potential_energy(self):
-        total_energy = 0
-        num_nuclei = len(self.nuclei_array)
-        for i in range(0, num_nuclei):
-            for j in range(1, num_nuclei):
-                if i < j:
-                    energy = self.calculate_electric_potential_energy(self.nuclei_array[i], self.nuclei_array[j])
-                    print(self.nuclei_array[i].get_name() + ' ' + self.nuclei_array[j].get_name() + ' ' + str(energy))
-                    total_energy += energy
-        return total_energy
+    def __init__(self, nuc1, nuc2):
+        self.nuc1 = nuc1
+        self.nuc2 = nuc2
 
-    def calculate_electric_potential_energy(self, nuc_1: Nuclei, nuc_2: Nuclei):
-        distance = math.sqrt((nuc_1.get_x() - nuc_2.get_x()) ** 2 + (nuc_1.get_y() - nuc_2.get_y()) ** 2 + (
-            nuc_1.get_z() - nuc_2.get_z()) ** 2)
-        electric_potential_energy = (nuc_1.get_charge() * nuc_2.get_charge()) / distance
+    def calc_electric_potential_energy(self):
+        n1 = self.nuc1
+        n2 = self.nuc2
+        distance = np.sqrt((n1.get_x() - n2.get_x()) ** 2 + (n1.get_y() - n2.get_y()) ** 2 + (
+            n1.get_z() - n2.get_z()) ** 2)
+        electric_potential_energy = (n1.get_charge() * n2.get_charge()) / distance
         return electric_potential_energy

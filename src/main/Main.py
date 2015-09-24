@@ -1,5 +1,5 @@
 import time
-from src.main import Coulomb, FileInputNuclei, FileInputBasis, Matrix, OverlapIntegral, KineticEnergyIntegral, Nuclei
+from src.main import Coulomb, CoulombTotal, FileInputNuclei, FileInputBasis, Matrix, OverlapIntegral, KineticEnergyIntegral
 
 
 def main():
@@ -14,12 +14,16 @@ def main():
     for a in range(0, len(nuclei_array)):
         nuclei_name_array.append(nuclei_array[a].get_name())
 
-    coulomb = Coulomb(nuclei_array)
-    print('Nuclear-Nuclear Potential Energy: ' + str(coulomb.calculate_total_electric_potential_energy()) + ' E_h \n')
+    print(nuclei_name_array)
+
+    coulomb_total = CoulombTotal(Coulomb, nuclei_array)
+    coulomb_law_matrix = coulomb_total.calculate_total_electric_potential_energy()
+    print('\nCoulombs Law Matrix')
+    print(coulomb_law_matrix)
+    print('Total Nuclear Potential Energy: ' + str(coulomb_law_matrix.sum() / 2) + ' E_h')
 
     matrix = Matrix(nuclei_array, file_reader_basis)
     s_matrix = matrix.create_matrix(OverlapIntegral())
-    print(nuclei_name_array)
     print('\nOrbital Overlap Matrix')
     print(s_matrix)
 
