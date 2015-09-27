@@ -10,19 +10,19 @@ class Matrix:
     def create_matrix(self, integrate):
         i = 0
         number_of_nuclei = len(self.nuclei_array)
-        A = []
+        matrix = []
         while i < number_of_nuclei:
             j = 0
             row = []
             while j < number_of_nuclei:
                 if j <= i:
-                    A_ij = integrate.calculate_integral(self.nuclei_array, self.file_reader_basis, i, j)
-                    row.append(A_ij)
+                    matrix_ij = integrate.calculate_integral(self.nuclei_array, self.file_reader_basis, i, j)
+                    row.append(matrix_ij)
                 else:
                     row.append(0)
                 j += 1
-            A.append(row)
+            matrix.append(row)
             i += 1
-        A = numpy.matrix(A)
-        A = A + A.T - numpy.diag(numpy.diag(A))
-        return A
+        matrix = numpy.matrix(matrix)
+        matrix = matrix + matrix.T - numpy.diag(numpy.diag(matrix))
+        return matrix

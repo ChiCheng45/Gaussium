@@ -1,5 +1,6 @@
 import numpy as np
 
+
 class CoulombTotal:
 
     def __init__(self, coulomb, nuclei_array):

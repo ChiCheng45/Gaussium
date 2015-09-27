@@ -6,12 +6,7 @@ from random import random
 class TestNuclei(TestCase):
 
     def setUp(self):
-        self.a = random()
-        self.b = random()
-        self.c = random()
-        self.d = random()
-        self.e = random()
-        self.nuclei = Nuclei(['HYDROGEN', self.a, self.b, self.c, self.d, self.e])
+        self.nuclei = Nuclei(['HYDROGEN', 1, 3, 5, 7, 11])
 
     def test_get_name(self):
         name = self.nuclei.get_name()
@@ -19,20 +14,20 @@ class TestNuclei(TestCase):
 
     def test_get_charge(self):
         charge = self.nuclei.get_charge()
-        self.assertEquals(charge, self.a)
+        self.assertEquals(charge, 1)
 
     def test_get_mass(self):
         mass = self.nuclei.get_mass()
-        self.assertEquals(mass, self.b)
+        self.assertEquals(mass, 3)
 
     def test_get_x(self):
         x = self.nuclei.get_x()
-        self.assertEquals(x, self.c)
+        self.assertEquals(x, 5)
 
     def test_get_y(self):
         y = self.nuclei.get_y()
-        self.assertEquals(y, self.d)
+        self.assertEquals(y, 7)
 
     def test_get_z(self):
         z = self.nuclei.get_z()
-        self.assertEquals(z, self.e)
+        self.assertEquals(z, 11)

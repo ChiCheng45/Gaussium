@@ -1,11 +1,9 @@
 from unittest import TestCase
 from unittest.mock import MagicMock
-from random import randint
 from src.main import CoulombTotal
 from src.main import Coulomb
 from src.main import Nuclei
 from numpy import testing
-import numpy
 
 
 class TestCoulombTotal(TestCase):
