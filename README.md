@@ -54,7 +54,7 @@ and the output from my program,
     [[-1.63279763  0.        ]
      [ 0.         -0.17248459]]
     
-    Orbital Coefficients
+    ORBITAL COEFFICIENTS
     [[-0.87660574  0.79774813]
      [-0.20247895 -1.16783645]]
     
