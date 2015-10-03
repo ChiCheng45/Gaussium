@@ -7,7 +7,7 @@ I'm basing this work on Attlia Szabo and Neil S. Ostlunds "Modern Quantum Chemis
 
 I must apologies for the bad/ugly code, I'm going to try refactor the code sometime in future and begin developing properly when I get more comfortable with writing and unit testing in python.
 
-
+##Calculation of HeH+
 Completed my first calculation of HeH+ with a bond-length of 1.4632 a_0 using the STO-3G basis set. Below is the output from Spartan Student Edition v5,
 
     SPARTAN STUDENT Quantum Mechanics Program:  (PC/x86)   Release  5.0.0v4
