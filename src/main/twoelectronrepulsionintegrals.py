@@ -5,12 +5,16 @@ import scipy.special as sp
 
 class TwoElectronRepulsion:
 
-    def calculate_integral(self, nuclei_array, file_reader_basis, i, j):
-        basis_array_1 = file_reader_basis.create_basis_set_array(nuclei_array[i].get_name())
-        basis_array_2 = file_reader_basis.create_basis_set_array(nuclei_array[j].get_name())
+    def __init__(self, nuclei_array, file_reader_basis):
+        self.nuclei_array = nuclei_array
+        self.file_reader_basis = file_reader_basis
+
+    def calculate(self, i, j):
+        basis_array_1 = self.file_reader_basis.create_basis_set_array(self.nuclei_array[i].get_name())
+        basis_array_2 = self.file_reader_basis.create_basis_set_array(self.nuclei_array[j].get_name())
 
         array = [basis_array_2, basis_array_1]
-        nuclei_array_2 = [nuclei_array[j], nuclei_array[i]]
+        nuclei_array_2 = [self.nuclei_array[j], self.nuclei_array[i]]
         matrix = []
         for a in range(0, 2):
             for b in range(0, 2):
@@ -72,7 +76,6 @@ class TwoElectronRepulsion:
                                                     f_0000 = 1
 
                                                 f_mn += 2 * (((a_1 + a_2) * (a_3 + a_4)) / (np.pi * (a_1 + a_2 + a_3 + a_4)))**(1/2) * s_ab * s_cd * f_0000
-
                                 row.append(f_mn)
                     matrix.append(row)
         return np.matrix(matrix)

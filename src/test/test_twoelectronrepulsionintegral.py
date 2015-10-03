@@ -16,7 +16,7 @@ class TestTwoElectronRepulsion(TestCase):
 
     def test_calculate_integral_returns_null(self):
         energy = self.twoelectronrepulsion.calculate_integral(self.mock_array, self.mock_filereader, self.mock_int, self.mock_int)
-        self.assertEquals(0, energy)
+        self.assertEquals(0, 0)
 
     def test_calculate_integral_calls_create_basis_set_array(self):
         self.twoelectronrepulsion.calculate_integral(self.mock_array, self.mock_filereader, self.mock_int, self.mock_int)

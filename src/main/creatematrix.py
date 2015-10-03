@@ -3,11 +3,10 @@ import numpy
 
 class Matrix:
 
-    def __init__(self, nuclei_array, file_reader_basis):
+    def __init__(self, nuclei_array):
         self.nuclei_array = nuclei_array
-        self.file_reader_basis = file_reader_basis
 
-    def create_matrix(self, integrate):
+    def create_matrix(self, calc_element):
         i = 0
         number_of_nuclei = len(self.nuclei_array)
         matrix = []
@@ -16,7 +15,7 @@ class Matrix:
             row = []
             while j < number_of_nuclei:
                 if j <= i:
-                    matrix_ij = integrate.calculate_integral(self.nuclei_array, self.file_reader_basis, i, j)
+                    matrix_ij = calc_element.calculate(i, j)
                     row.append(matrix_ij)
                 else:
                     row.append(0)
