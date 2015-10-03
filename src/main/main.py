@@ -5,7 +5,8 @@ import time
 
 if __name__ == '__main__':
     start = time.clock()
-    print('\nA Basic Quantum Chemical Program in Python\n\n')
+    print('*********************************************************************************************************')
+    print('\nA BASIC QUANTUM CHEMICAL PROGRAM IN PYTHON\n\n')
 
     file_reader_nuclei = FileInputNuclei('HeH+.mol')
     file_reader_basis = FileInputBasis('STO-3G.gbs')
@@ -37,39 +38,53 @@ if __name__ == '__main__':
     print('------------[11, 12, 22]------------')
     print(tei_matrix.item(1, 0))
 
-    print('\n---------------------------------------------------------------------------------------------------------')
+    print('\n*********************************************************************************************************')
+    print('\nH_CORE AND TRANSFORMATION MATRIX\n')
 
     h_core_matrix = t_matrix + v_matrix
+    print('\nH_CORE')
+    print(h_core_matrix)
+
     s_matrix_eigenvalues = np.linalg.eig(s_matrix)[0]
     s_matrix_unitary = np.linalg.eig(s_matrix)[1]
-    x_canonical = s_matrix_unitary * np.diag(s_matrix_eigenvalues ** (-1 / 2))
-    orthonormal_f_matrix = x_canonical.T * h_core_matrix * x_canonical
+    x_canonical = s_matrix_unitary * np.diag(s_matrix_eigenvalues ** (-1/2))
+    print('\nTRANSFORMATION MATRIX')
+    print(x_canonical)
 
-    orbital_energy_matrix = np.diag(np.linalg.eig(orthonormal_f_matrix)[0])
-    print('\nOrbital Energy Eigenvalues')
+    print('\n*********************************************************************************************************')
+    print('\nDENSITY MATRIX INITIAL GUESS\n')
+
+    """Create a initial guess for the density matrix by turning off all two-electron interaction and solving for the
+    orbital coefficients. The two-electron parts are then turned back on during the SCF procedure.
+    """
+
+    orthonormal_h_matrix = x_canonical.T * h_core_matrix * x_canonical
+    orbital_energy_matrix = np.diag(np.linalg.eig(orthonormal_h_matrix)[0])
+    print('\nORBITAL ENERGY EIGENVALUES')
     print(orbital_energy_matrix)
 
     """The negative signs that numpy give for the orbital coefficients seems strange but it is because the sign of the
-    orbitals and its wave-function can either have positive or negative values, the square of the wavefunction, the
+    orbitals and its wave-function can either have positive or negative values, the square of the wave-function, the
     electron density, will always end up being positive valued. The elements in the density matrix will made by
     multiplying two of the orbital coefficients together anyway
     """
-    orbital_coefficients_orthonormal = np.linalg.eig(orthonormal_f_matrix)[1]
+
+    orbital_coefficients_orthonormal = np.linalg.eig(orthonormal_h_matrix)[1]
     orbital_coefficients = x_canonical * orbital_coefficients_orthonormal
-    print('\nOrbital Coefficients')
+    print('\nORBITAL COEFFICIENTS')
     print(orbital_coefficients)
 
     density_matrix = DensityMatrix(orbital_coefficients)
     p_matrix = matrix.create_matrix(density_matrix)
-    print('\nDensity Matrix')
+    print('\nDENSITY MATRIX')
     print(p_matrix)
 
-    total_energy = TotalEnergy()
-
-    print('\n---------------------------------------------------------------------------------------------------------')
+    print('\n*********************************************************************************************************')
     print('\nBEGIN SCF PROCEDURE')
+    total_energy = TotalEnergy()
     scf_procedure = SCFProcedure(tei_matrix, h_core_matrix, x_canonical, matrix, total_energy, nuclear_repulsion_energy)
     scf_procedure.begin_scf(p_matrix)
 
-    print('\n\nTime Taken: ' + str(time.clock() - start) + 's')
+    print('\n*********************************************************************************************************')
+    print('\nTime Taken: ' + str(time.clock() - start) + 's')
     print("\nWhat I cannot create I cannot understand - Richard Feynman\n")

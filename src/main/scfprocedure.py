@@ -40,7 +40,7 @@ class SCFProcedure:
 
         orbital_coefficients_orthonormal = np.linalg.eig(orthonormal_fock_matrix)[1]
         orbital_coefficients = self.transformation_matrix * orbital_coefficients_orthonormal
-        print('\nOrbital Coefficients')
+        print('\nORBITAL COEFFICIENTS')
         print(orbital_coefficients)
 
         e_total = self.total_energy.calculate_total_energy(density_matrix, self.core_hamiltonian_matrix, fock_matrix)
