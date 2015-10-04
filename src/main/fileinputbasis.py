@@ -1,7 +1,7 @@
 import os
 import sys
 from src.main.basis import Basis
-from src.main.nuclei import Nuclei
+
 
 class FileInputBasis:
 

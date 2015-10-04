@@ -6,15 +6,16 @@ import numpy as np
 class SCFProcedure:
 
     """To begin the scf procedure we will need the initial guess for the density matrix, the two electron repulsion
-    integrals, the kinetic and nuclear potential energy matrix to form the H_core and the transformation matrix.
+    integrals, the kinetic and nuclear potential energy matrix to form the H_core, the transformation matrix and the
+    basis_set_array.
     """
-    def __init__(self, two_electron_repulsions, core_hamiltonian_matrix, transformation_matrix, matrix, total_energy, nuclear_repulsion):
-        self.two_electron_repulsions = two_electron_repulsions
+    def __init__(self, core_hamiltonian_matrix, transformation_matrix, matrix, total_energy, nuclear_repulsion, basis_set_array):
         self.core_hamiltonian_matrix = core_hamiltonian_matrix
         self.transformation_matrix = transformation_matrix
         self.matrix = matrix
         self.total_energy = total_energy
         self.nuclear_repulsion = nuclear_repulsion
+        self.basis_set_array = basis_set_array
         self.previous_total_energy = 0
         self.delta_energy = 0
         self.iteration_counter = 0
@@ -27,7 +28,7 @@ class SCFProcedure:
         print('\nDENSITY MATRIX')
         print(density_matrix)
 
-        g_matrix_elements = TwoElectronPartOfTheFockMatrixElements(density_matrix, self.two_electron_repulsions)
+        g_matrix_elements = TwoElectronPartOfTheFockMatrixElements(density_matrix, self.basis_set_array)
         g_matrix = self.matrix.create_matrix(g_matrix_elements)
         fock_matrix = self.core_hamiltonian_matrix + g_matrix
         print('\nFOCK MATRIX')
@@ -57,7 +58,7 @@ class SCFProcedure:
         densitymatrix = DensityMatrix(orbital_coefficients)
         density_matrix = self.matrix.create_matrix(densitymatrix)
 
-        if abs(self.delta_energy) > 0.0000001:
+        if abs(self.delta_energy) > 0.00000000001:
             return self.begin_scf(density_matrix)
         else:
             return e_total
