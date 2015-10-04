@@ -3,16 +3,14 @@ import numpy
 
 class Matrix:
 
-    def __init__(self, nuclei_array):
-        self.nuclei_array = nuclei_array
+    def __init__(self, matrix_size):
+        self.matrix_size = matrix_size
 
     def create_matrix(self, element):
-        number_of_nuclei = len(self.nuclei_array)
         matrix = []
-        for i in range(0, number_of_nuclei):
-            j = 0
+        for j in range(0, self.matrix_size):
             row = []
-            for j in range(0, number_of_nuclei):
+            for i in range(0, self.matrix_size):
                 if j <= i:
                     matrix_ij = element.calculate(i, j)
                     row.append(matrix_ij)

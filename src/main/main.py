@@ -9,33 +9,32 @@ if __name__ == '__main__':
     print('\nA BASIC QUANTUM CHEMICAL PROGRAM IN PYTHON\n\n')
 
     file_reader_nuclei = FileInputNuclei('HeH+.mol')
-    file_reader_basis = FileInputBasis('STO-3G.gbs')
+    file_reader_basis = FileInputBasis('3-21G.gbs')
     nuclei_array = file_reader_nuclei.create_nuclei_array()
+    basis_set_array = file_reader_basis.create_basis_set_array(nuclei_array)
+
     nuclei_name_array = []
     for a in range(0, len(nuclei_array)):
         nuclei_name_array.append(nuclei_array[a].get_name())
     print(nuclei_name_array)
 
-    file_reader_basis.create_basis_set_array_2()
-    file_reader_basis.create_basis_set_array_2(nuclei_array)
+    coulomb_total = CoulombTotal(Coulomb, nuclei_array)
+    coulomb_law_matrix = coulomb_total.calculate_total_electric_potential_energy()
+    nuclear_repulsion_energy = coulomb_law_matrix.sum() / 2
+    print('\nCOULOMBS LAW ARRAY')
+    print(coulomb_law_matrix)
+    print('Total Nuclear-Nuclear Potential Energy: ' + str(nuclear_repulsion_energy) + ' a.u.')
 
-    # coulomb_total = CoulombTotal(Coulomb, nuclei_array)
-    # coulomb_law_matrix = coulomb_total.calculate_total_electric_potential_energy()
-    # nuclear_repulsion_energy = coulomb_law_matrix.sum() / 2
-    # print('\nCoulombs Law Matrix')
-    # print(coulomb_law_matrix)
-    # print('Total Nuclear-Nuclear Potential Energy: ' + str(nuclear_repulsion_energy) + ' a.u.')
-    #
-    # matrix = Matrix(nuclei_array)
-    # s_matrix = matrix.create_matrix(OverlapIntegral(nuclei_array, file_reader_basis))
-    # print('\nOrbital Overlap Matrix')
-    # print(s_matrix)
-    # t_matrix = matrix.create_matrix(KineticEnergyIntegral(nuclei_array, file_reader_basis))
-    # print('\nKinetic Energy Matrix')
-    # print(t_matrix)
-    # v_matrix = matrix.create_matrix(NuclearAttractionIntegral(nuclei_array, file_reader_basis))
-    # print('\nNuclear Potential Energy Matrix')
-    # print(v_matrix)
+    matrix = Matrix(len(basis_set_array))
+    s_matrix = matrix.create_matrix(OverlapIntegral(basis_set_array))
+    print('\nOrbital Overlap Matrix')
+    print(s_matrix)
+    t_matrix = matrix.create_matrix(KineticEnergyIntegral(basis_set_array))
+    print('\nKinetic Energy Matrix')
+    print(t_matrix)
+    v_matrix = matrix.create_matrix(NuclearAttractionIntegral(nuclei_array, basis_set_array))
+    print('\nNuclear Potential Energy Matrix')
+    print(v_matrix)
     # tei_matrix = matrix.create_matrix(TwoElectronRepulsion(nuclei_array, file_reader_basis))
     # print('\nTwo Electron Repulsion Energy Matrix')
     # print('------------[11, 12, 22]------------')
@@ -87,7 +86,7 @@ if __name__ == '__main__':
     # total_energy = TotalEnergy()
     # scf_procedure = SCFProcedure(tei_matrix, h_core_matrix, x_canonical, matrix, total_energy, nuclear_repulsion_energy)
     # scf_procedure.begin_scf(p_matrix)
-    #
-    # print('\n*********************************************************************************************************')
-    # print('\nTime Taken: ' + str(time.clock() - start) + 's')
-    # print("\nWhat I cannot create I cannot understand - Richard Feynman\n")
+
+    print('\n*********************************************************************************************************')
+    print('\nTime Taken: ' + str(time.clock() - start) + 's')
+    print("\nWhat I cannot create I cannot understand - Richard Feynman\n")

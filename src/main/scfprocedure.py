@@ -44,17 +44,19 @@ class SCFProcedure:
         print(orbital_coefficients)
 
         e_total = self.total_energy.calculate_total_energy(density_matrix, self.core_hamiltonian_matrix, fock_matrix)
-        print('\nTOTAL ENERGY: ' + str(e_total + self.nuclear_repulsion) + ' a.u.')
+        print('\nELECTRON ENERGY: ' + str(e_total) + ' a.u.')
+        print('TOTAL ENERGY: ' + str(e_total + self.nuclear_repulsion) + ' a.u.')
 
         self.delta_energy = self.previous_total_energy - e_total
         self.previous_total_energy = e_total
 
-        """Form the density matrix for the next iteration."""
+        """Form the density matrix for the next iteration and solve the for the total_energy recursively this is easier
+        to implement but it might cause a stack overflow when we get into bigger basis set and bigger molecules. This is
+        also probably inefficient.
+        """
         densitymatrix = DensityMatrix(orbital_coefficients)
         density_matrix = self.matrix.create_matrix(densitymatrix)
 
-        """Solve the for the total_energy recursively this is easier to implement but it might cause a stack overflow
-        when we get into bigger basis set and bigger molecules. This is also probably inefficient."""
         if abs(self.delta_energy) > 0.0000001:
             return self.begin_scf(density_matrix)
         else:
