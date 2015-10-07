@@ -4,6 +4,8 @@ import numpy as np
 import time
 
 if __name__ == '__main__':
+    np.set_printoptions(linewidth=10000)
+
     start = time.clock()
     print('*********************************************************************************************************')
     print('\nA BASIC QUANTUM CHEMICAL PROGRAM IN PYTHON\n\n')
@@ -57,20 +59,25 @@ if __name__ == '__main__':
     """
 
     orthonormal_h_matrix = x_canonical.T * h_core_matrix * x_canonical
-    orbital_energy_matrix = np.diag(np.linalg.eig(orthonormal_h_matrix)[0])
+
+    eigenvalues,eigenvectors = np.linalg.eig(orthonormal_h_matrix)
+    sort = eigenvalues.argsort()[::1]
+    eigenvalues = eigenvalues[sort]
+    eigenvectors = eigenvectors[:, sort]
+
+    orbital_energy_matrix = np.diag(eigenvalues)
     print('\nORBITAL ENERGY EIGENVALUES')
     print(orbital_energy_matrix)
+
+    orbital_coefficients = x_canonical * eigenvectors
+    print('\nORBITAL COEFFICIENTS')
+    print(orbital_coefficients)
 
     """The negative signs that numpy give for the orbital coefficients seems strange but it is because the sign of the
     orbitals and its wave-function can either have positive or negative values, the square of the wave-function, the
     electron density, will always end up being positive valued. The elements in the density matrix will made by
     multiplying two of the orbital coefficients together anyway
     """
-
-    orbital_coefficients_orthonormal = np.linalg.eig(orthonormal_h_matrix)[1]
-    orbital_coefficients = x_canonical * orbital_coefficients_orthonormal
-    print('\nORBITAL COEFFICIENTS')
-    print(orbital_coefficients)
 
     density_matrix = DensityMatrix(orbital_coefficients)
     p_matrix = matrix.create_matrix(density_matrix)

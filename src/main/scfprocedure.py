@@ -35,12 +35,16 @@ class SCFProcedure:
         print(fock_matrix)
 
         orthonormal_fock_matrix = self.transformation_matrix.T * fock_matrix * self.transformation_matrix
-        orbital_energy_matrix = np.diag(np.linalg.eig(orthonormal_fock_matrix)[0])
+        eigenvalues,eigenvectors = np.linalg.eig(orthonormal_fock_matrix)
+        sort = eigenvalues.argsort()[::1]
+        eigenvalues = eigenvalues[sort]
+        eigenvectors = eigenvectors[:, sort]
+
+        orbital_energy_matrix = np.diag(eigenvalues)
         print('\nORBITAL ENERGY EIGENVALUES')
         print(orbital_energy_matrix)
 
-        orbital_coefficients_orthonormal = np.linalg.eig(orthonormal_fock_matrix)[1]
-        orbital_coefficients = self.transformation_matrix * orbital_coefficients_orthonormal
+        orbital_coefficients = self.transformation_matrix * eigenvectors
         print('\nORBITAL COEFFICIENTS')
         print(orbital_coefficients)
 
