@@ -15,15 +15,13 @@ if __name__ == '__main__':
     nuclei_array = file_reader_nuclei.create_nuclei_array()
     basis_set_array = file_reader_basis.create_basis_set_array(nuclei_array)
 
-    nuclei_name_array = []
-    for a in range(0, len(nuclei_array)):
-        nuclei_name_array.append(nuclei_array[a].get_name())
-    print(nuclei_name_array)
+    nuclei_name_list = list(map(lambda x: x.get_name(), nuclei_array))
+    print(nuclei_name_list)
 
     coulomb_total = CoulombTotal(Coulomb, nuclei_array)
     coulomb_law_matrix = coulomb_total.calculate_total_electric_potential_energy()
     nuclear_repulsion_energy = coulomb_law_matrix.sum() / 2
-    print('\nCOULOMBS LAW ARRAY')
+    print('\nNUCLEAR REPULSION ARRAY')
     print(coulomb_law_matrix)
     print('Total Nuclear-Nuclear Potential Energy: ' + str(nuclear_repulsion_energy) + ' a.u.')
 
