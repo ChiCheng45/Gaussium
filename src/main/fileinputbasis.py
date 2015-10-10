@@ -5,14 +5,15 @@ from src.main.basis import Basis
 
 class FileInputBasis:
 
-    def __init__(self, file_input_basis):
+    def __init__(self, file_input_basis, nuclei_array):
         self.file_input_mol = os.path.join(sys.path[1], 'basisSetFiles\\' + file_input_basis)
+        self.nuclei_array = nuclei_array
 
-    def create_basis_set_array(self, nuclei_array):
+    def create_basis_set_array(self):
         basis_array = []
-        for a in range(0, len(nuclei_array)):
+        for a in range(0, len(self.nuclei_array)):
             i = j = 0
-            nuclei = nuclei_array[a]
+            nuclei = self.nuclei_array[a]
             coefficients_array = []
             with open(self.file_input_mol, 'r') as file:
                 lines = file.readlines()
@@ -35,7 +36,8 @@ class FileInputBasis:
                                     function_type = line.split()[0]
                             else:
                                 j = 1
-                                coefficients_array.append(line.split())
+                                float_array = [float(x) for x in line.split()]
+                                coefficients_array.append(float_array)
                                 if b + 1 == len(lines):
                                     basis = Basis(nuclei.get_name(), nuclei.get_y(), nuclei.get_x(), nuclei.get_z(), function_type, coefficients_array)
                                     basis_array.append(basis)

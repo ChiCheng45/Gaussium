@@ -8,11 +8,10 @@ class CoulombTotal:
         self.coulomb = coulomb
 
     def calculate_total_electric_potential_energy(self):
-        num = len(self.nuclei_array)
         energy_matrix = []
-        for i in range(0, num):
+        for i in range(0, len(self.nuclei_array)):
             energy_matrix_row = []
-            for j in range(0, num):
+            for j in range(0, len(self.nuclei_array)):
                 if i == j:
                     energy_matrix_row.append(0)
                 else:

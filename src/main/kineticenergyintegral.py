@@ -19,10 +19,10 @@ class KineticEnergyIntegral:
         for a in range(0, len(basis_coefficients_i)):
             for b in range(0, len(basis_coefficients_j)):
                 if self.basis_set_array[i].get_orbital_type() == 'S' and self.basis_set_array[j].get_orbital_type() == 'S':
-                    a_1 = float(basis_coefficients_i[a][1])
-                    a_2 = float(basis_coefficients_j[b][1])
-                    c_1 = float(basis_coefficients_i[a][0])
-                    c_2 = float(basis_coefficients_j[b][0])
+                    a_1 = basis_coefficients_i[a][1]
+                    a_2 = basis_coefficients_j[b][1]
+                    c_1 = basis_coefficients_i[a][0]
+                    c_2 = basis_coefficients_j[b][0]
                     n_1 = ((2 * a_1) / np.pi)**(3/4)
                     n_2 = ((2 * a_2) / np.pi)**(3/4)
                     r_ab = ((x_i - x_j)**2) + ((y_i - y_j)**2) + ((z_i - z_j)**2)
