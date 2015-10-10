@@ -6,16 +6,16 @@ from src.main import FileInputNuclei
 class TestFileInputBasis(TestCase):
 
     def setUp(self):
-        self.file_reader_nuclei = FileInputNuclei('HeH+.mol')
-        self.nuclei_array = self.file_reader_nuclei.create_nuclei_array()
+        file_reader_nuclei = FileInputNuclei('HeH+.mol')
+        self.nuclei_array = file_reader_nuclei.create_nuclei_array()
 
-    def test_create_basis_set_array_returns_basis_array_with_correct_names_for_sto3g(self):
+    def test_create_basis_set_array_returns_basis_array_with_names_for_sto3g(self):
         file_reader_basis = FileInputBasis('STO-3G.gbs', self.nuclei_array)
         basis_array = file_reader_basis.create_basis_set_array()
         self.assertEquals(basis_array[0].get_name(),'HELIUM')
         self.assertEquals(basis_array[1].get_name(),'HYDROGEN')
 
-    def test_create_basis_set_array_returns_basis_array_with_correct_coordinates_for_sto3g(self):
+    def test_create_basis_set_array_returns_basis_array_with_coordinates_for_sto3g(self):
         file_reader_basis = FileInputBasis('STO-3G.gbs', self.nuclei_array)
         basis_array = file_reader_basis.create_basis_set_array()
         self.assertEquals(basis_array[0].get_x(), 0)
@@ -44,7 +44,6 @@ class TestFileInputBasis(TestCase):
         self.assertEquals(basis_array[1].get_name(),'HELIUM')
         self.assertEquals(basis_array[2].get_name(),'HYDROGEN')
         self.assertEquals(basis_array[3].get_name(),'HYDROGEN')
-
 
     def test_create_basis_set_array_returns_basis_array_with_correct_coordinates_for_321g(self):
         file_reader_basis = FileInputBasis('3-21G.gbs', self.nuclei_array)
