@@ -7,7 +7,7 @@ from src.main.objects import Nuclei
 class FileInputNuclei:
 
     def __init__(self, file_input_mol):
-        self.file_input_mol = os.path.join(sys.path[1], 'molfiles\\' + file_input_mol)
+        self.file_input_mol = os.path.join(sys.path[1], 'm\\' + file_input_mol)
 
     def create_nuclei_array(self):
         nuclei_array = []
