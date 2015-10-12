@@ -1,6 +1,7 @@
 import os
 import sys
-from src.main.basis import Basis
+
+from src.main.objects import Basis
 
 
 class FileInputBasis:

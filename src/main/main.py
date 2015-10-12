@@ -1,7 +1,11 @@
-from src.main import Coulomb, CoulombTotal, FileInputNuclei, FileInputBasis, Matrix, OverlapIntegral, \
-    KineticEnergyIntegral, NuclearAttractionIntegral, TwoElectronRepulsion, DensityMatrix, SCFProcedure, TotalEnergy
+from src.main.common import CoulombsLaw, CoulombsLawArray, Matrix
+from src.main.fileinput import FileInputBasis, FileInputNuclei
+from src.main.matrixelements import DensityMatrixElement, KineticEnergyIntegral, NuclearAttractionIntegral, OverlapIntegral
+from src.main.self_consistent_field import TotalEnergy, SCFProcedure
+
 import numpy as np
 import time
+
 
 if __name__ == '__main__':
     np.set_printoptions(linewidth=10000)
@@ -10,15 +14,15 @@ if __name__ == '__main__':
     print('*********************************************************************************************************')
     print('\nA BASIC QUANTUM CHEMICAL PROGRAM IN PYTHON\n\n')
 
-    file_reader_nuclei = FileInputNuclei('HeH+.mol')
+    file_reader_nuclei = FileInputNuclei('HYDROGEN.mol')
     nuclei_array = file_reader_nuclei.create_nuclei_array()
-    file_reader_basis = FileInputBasis('3-21G.gbs', nuclei_array)
+    file_reader_basis = FileInputBasis('STO-3G.gbs', nuclei_array)
     basis_set_array = file_reader_basis.create_basis_set_array()
 
     nuclei_name_list = [x.get_name() for x in nuclei_array]
     print(nuclei_name_list)
 
-    coulomb_total = CoulombTotal(Coulomb, nuclei_array)
+    coulomb_total = CoulombsLawArray(CoulombsLaw, nuclei_array)
     coulomb_law_array = coulomb_total.calculate_total_electric_potential_energy()
     nuclear_repulsion_energy = coulomb_law_array.sum() / 2
     print('\nNUCLEAR REPULSION ARRAY')
@@ -52,9 +56,10 @@ if __name__ == '__main__':
     print('\n*********************************************************************************************************')
     print('\nDENSITY MATRIX INITIAL GUESS\n')
 
-    '''Create a initial guess for the density matrix by turning off all two-electron interaction and solving for the
+    """
+    Create a initial guess for the density matrix by turning off all two-electron interaction and solving for the
     orbital coefficients. The two-electron parts are then turned back on during the SCF procedure.
-    '''
+    """
 
     orthonormal_h_matrix = x_canonical.T * h_core_matrix * x_canonical
 
@@ -71,13 +76,14 @@ if __name__ == '__main__':
     print('\nORBITAL COEFFICIENTS')
     print(orbital_coefficients)
 
-    '''The negative signs that numpy give for the orbital coefficients seems strange but it is because the sign of the
+    """
+    The negative signs that numpy give for the orbital coefficients seems strange but it is because the sign of the
     orbitals and its wave-function can either have positive or negative values, the square of the wave-function, the
     electron density, will always end up being positive valued. The elements in the density matrix will made by
     multiplying two of the orbital coefficients together anyway
-    '''
+    """
 
-    density_matrix = DensityMatrix(orbital_coefficients)
+    density_matrix = DensityMatrixElement(orbital_coefficients)
     p_matrix = matrix.create_matrix(density_matrix)
     print('\nDENSITY MATRIX')
     print(p_matrix)

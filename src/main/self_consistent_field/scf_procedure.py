@@ -1,12 +1,14 @@
-from src.main.gmatrixelements import TwoElectronPartOfTheFockMatrixElements
-from src.main.densitymatrix import DensityMatrix
 import numpy as np
+
+from src.main.matrixelements.g_matrix import GMatrixElements
+from src.main.matrixelements.density_matrix import DensityMatrixElement
 
 
 class SCFProcedure:
 
-    """To begin the scf procedure we will need the initial guess for the density matrix, the two electron repulsion
-    integrals, the kinetic and nuclear potential energy matrix to form the H_core, the transformation matrix and the
+    """
+    To begin the scf procedure we will need the initial guess for the density matrix, the two electron repulsion
+    matrixelements, the kinetic and nuclear potential energy matrix to form the H_core, the transformation matrix and the
     basis_set_array.
     """
     def __init__(self, core_hamiltonian_matrix, transformation_matrix, matrix, total_energy, nuclear_repulsion, basis_set_array):
@@ -28,7 +30,7 @@ class SCFProcedure:
         print('\nDENSITY MATRIX')
         print(density_matrix)
 
-        g_matrix_elements = TwoElectronPartOfTheFockMatrixElements(density_matrix, self.basis_set_array)
+        g_matrix_elements = GMatrixElements(density_matrix, self.basis_set_array)
         g_matrix = self.matrix.create_matrix(g_matrix_elements)
         fock_matrix = self.core_hamiltonian_matrix + g_matrix
         print('\nFOCK MATRIX')
@@ -55,11 +57,12 @@ class SCFProcedure:
         self.delta_energy = self.previous_total_energy - e_total
         self.previous_total_energy = e_total
 
-        """Form the density matrix for the next iteration and solve the for the total_energy recursively this is easier
+        """
+        Form the density matrix for the next iteration and solve the for the total_energy recursively this is easier
         to implement but it might cause a stack overflow when we get into bigger basis set and bigger molecules. This is
         also probably inefficient.
         """
-        densitymatrix = DensityMatrix(orbital_coefficients)
+        densitymatrix = DensityMatrixElement(orbital_coefficients)
         density_matrix = self.matrix.create_matrix(densitymatrix)
 
         if abs(self.delta_energy) > 0.00000000001:

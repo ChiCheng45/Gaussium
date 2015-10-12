@@ -1,4 +1,4 @@
-class DensityMatrix:
+class DensityMatrixElement:
 
     def __init__(self, orbital_coefficient_matrix):
         self.orbital_coefficient_matrix = orbital_coefficient_matrix

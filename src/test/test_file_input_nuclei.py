@@ -1,5 +1,5 @@
 from unittest import TestCase
-from src.main import FileInputNuclei
+from src.main.fileinput import FileInputNuclei
 
 
 class TestFileInputBasis(TestCase):

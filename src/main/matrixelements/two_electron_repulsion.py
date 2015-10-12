@@ -3,7 +3,8 @@ import scipy.special as sp
 
 # some really bad code below, sorry
 
-class TwoElectronRepulsion:
+
+class TwoElectronRepulsionIntegral:
 
     def __init__(self, basis_set_array):
         self.basis_set_array = basis_set_array
@@ -46,6 +47,7 @@ class TwoElectronRepulsion:
                         x_d = self.basis_set_array[l].get_x()
                         y_d = self.basis_set_array[l].get_y()
                         z_d = self.basis_set_array[l].get_z()
+
                         x_p = (a_1 * x_a + a_2 * x_b) / (a_1 + a_2)
                         y_p = (a_1 * y_a + a_2 * y_b) / (a_1 + a_2)
                         z_p = (a_1 * z_a + a_2 * z_b) / (a_1 + a_2)

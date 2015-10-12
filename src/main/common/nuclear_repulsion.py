@@ -1,7 +1,7 @@
 import numpy as np
 
 
-class CoulombTotal:
+class CoulombsLawArray:
 
     def __init__(self, coulomb, nuclei_array):
         self.nuclei_array = nuclei_array
@@ -21,7 +21,7 @@ class CoulombTotal:
         return np.matrix(energy_matrix)
 
 
-class Coulomb:
+class CoulombsLaw:
 
     def __init__(self, nuc1, nuc2):
         self.nuc1 = nuc1

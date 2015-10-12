@@ -1,9 +1,10 @@
 from unittest import TestCase
-from src.main import KineticEnergyIntegral, FileInputNuclei, FileInputBasis
+from src.main.matrixelements import KineticEnergyIntegral
+from src.main.fileinput import FileInputNuclei, FileInputBasis
 from numpy import testing
 
 
-class TestKineticEnergyIntegral1(TestCase):
+class TestKineticEnergyIntegralHehCation(TestCase):
 
     def setUp(self):
         file_reader_nuclei = FileInputNuclei('HeH+.mol')
@@ -25,7 +26,7 @@ class TestKineticEnergyIntegral1(TestCase):
         testing.assert_approx_equal(kinetic_energy, 0.7600, 4)
 
 
-class TestKineticEnergyIntegral2(TestCase):
+class TestKineticEnergyIntegralHydrogen(TestCase):
 
     def setUp(self):
         file_reader_nuclei = FileInputNuclei('HYDROGEN.mol')
