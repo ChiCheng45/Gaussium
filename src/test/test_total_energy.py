@@ -1,7 +1,7 @@
 from unittest import TestCase
 import numpy as np
 from numpy import testing
-from src.main.self_consistent_field import TotalEnergy
+from src.main.selfconsistentfield import TotalEnergy
 
 
 class TestTotalEnergyHeH(TestCase):

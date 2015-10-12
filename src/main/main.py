@@ -1,7 +1,7 @@
 from src.main.common import CoulombsLaw, CoulombsLawArray, Matrix
 from src.main.fileinput import FileInputBasis, FileInputNuclei
 from src.main.matrixelements import DensityMatrixElement, KineticEnergyIntegral, NuclearAttractionIntegral, OverlapIntegral
-from src.main.self_consistent_field import TotalEnergy, SCFProcedure
+from src.main.selfconsistentfield import TotalEnergy, SCFProcedure
 
 import numpy as np
 import time
