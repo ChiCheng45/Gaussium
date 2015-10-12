@@ -7,7 +7,7 @@ from src.main.objects import Basis
 class FileInputBasis:
 
     def __init__(self, file_input_basis, nuclei_array):
-        self.file_input_mol = os.path.join(sys.path[1], 'basisSetFiles\\' + file_input_basis)
+        self.file_input_mol = os.path.join(sys.path[1], 'basissetfiles\\' + file_input_basis)
         self.nuclei_array = nuclei_array
 
     def create_basis_set_array(self):
