@@ -1,6 +1,6 @@
 from src.main.common import Matrix
 from src.main.fileinput import FileInputBasis, FileInputNuclei
-from src.main.matrixelements import DensityMatrixElement, KineticEnergyIntegral, NuclearAttractionIntegral, OverlapIntegral
+from src.main.matrixelements import KineticEnergyIntegral, NuclearAttractionIntegral, OverlapIntegral
 from src.main.selfconsistentfield import TotalEnergy, SCFProcedure, CoulombsLaw, CoulombsLawArray
 
 import numpy as np
@@ -22,29 +22,29 @@ if __name__ == '__main__':
     print(nuclei_name_list)
 
     coulomb_law_array = CoulombsLawArray(CoulombsLaw, nuclei_array).calculate_total_electric_potential_energy()
-    nuclear_repulsion_energy = coulomb_law_array.sum() / 2
+    nuclear_repulsion = coulomb_law_array.sum() / 2
     print('\nNUCLEAR REPULSION ARRAY')
     print(coulomb_law_array)
-    print('Total Nuclear-Nuclear Potential Energy: ' + str(nuclear_repulsion_energy) + ' a.u.')
 
     print('\n*********************************************************************************************************')
+    print('\nMATRICES\n')
 
     matrix = Matrix(len(basis_set_array))
+
     s_matrix = matrix.create_matrix(OverlapIntegral(basis_set_array))
-    print('\nOrbital Overlap Matrix')
+    print('\nORBITAL OVERLAP MATRIX')
     print(s_matrix)
+
     t_matrix = matrix.create_matrix(KineticEnergyIntegral(basis_set_array))
-    print('\nKinetic Energy Matrix')
+    print('\nKINETIC ENERGY MATRIX')
     print(t_matrix)
+
     v_matrix = matrix.create_matrix(NuclearAttractionIntegral(nuclei_array, basis_set_array))
-    print('\nNuclear Potential Energy Matrix')
+    print('\nNUCLEAR POTENTIAL ENERGY MATRIX')
     print(v_matrix)
 
-    print('\n*********************************************************************************************************')
-    print('\nH_CORE AND TRANSFORMATION MATRIX\n')
-
     h_core_matrix = t_matrix + v_matrix
-    print('\nH_CORE')
+    print('\nCORE HAMILTONIAN MATRIX')
     print(h_core_matrix)
 
     s_matrix_eigenvalues, s_matrix_unitary = np.linalg.eig(s_matrix)
@@ -53,16 +53,15 @@ if __name__ == '__main__':
     print(x_canonical)
 
     print('\n*********************************************************************************************************')
-    print('\nDENSITY MATRIX INITIAL GUESS\n')
+    print('\nINITIAL GUESS\n')
 
     """
-    Create a initial guess for the density matrix by turning off all two-electron interaction and solving for the
-    orbital coefficients. The two-electron parts are then turned back on during the SCF procedure.
+    Create a initial guess for the density matrix from the solutions of the orbital coefficients with all two-electron
+    interactions turned off. The two-electron parts are then turned back on during the SCF procedure.
     """
 
     orthonormal_h_matrix = x_canonical.T * h_core_matrix * x_canonical
-
-    eigenvalues,eigenvectors = np.linalg.eig(orthonormal_h_matrix)
+    eigenvalues, eigenvectors = np.linalg.eig(orthonormal_h_matrix)
     sort = eigenvalues.argsort()[::1]
     eigenvalues = eigenvalues[sort]
     eigenvectors = eigenvectors[:, sort]
@@ -82,16 +81,14 @@ if __name__ == '__main__':
     multiplying two of the orbital coefficients together anyway
     """
 
-    density_matrix = DensityMatrixElement(orbital_coefficients, electrons)
-    p_matrix = matrix.create_matrix(density_matrix)
-    print('\nDENSITY MATRIX')
-    print(p_matrix)
-
     print('\n*********************************************************************************************************')
     print('\nBEGIN SCF PROCEDURE')
     total_energy = TotalEnergy()
-    scf_procedure = SCFProcedure(h_core_matrix, x_canonical, matrix, total_energy, nuclear_repulsion_energy, basis_set_array, electrons)
-    scf_procedure.begin_scf(p_matrix)
+    scf_procedure = SCFProcedure(h_core_matrix, x_canonical, matrix, total_energy, basis_set_array, electrons, orbital_coefficients)
+    electron_energy = scf_procedure.begin_scf()
+
+    print('TOTAL NUCLEAR REPULSION ENERGY: ' + str(nuclear_repulsion) + ' a.u.')
+    print('TOTAL ENERGY: ' + str(electron_energy + nuclear_repulsion) + ' a.u.')
 
     print('\n*********************************************************************************************************')
     print('\nTime Taken: ' + str(time.clock() - start) + 's')
