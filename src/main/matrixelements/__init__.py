@@ -1,4 +1,4 @@
-from src.main.matrixelements.two_electron_repulsion import TwoElectronRepulsionIntegral
+from src.main.matrixelements.two_electron_interaction import TwoElectronInteractionIntegral
 from src.main.matrixelements.density_matrix import DensityMatrixElement
 from src.main.matrixelements.g_matrix import GMatrixElements
 from src.main.matrixelements.kinetic_energy import KineticEnergyIntegral
