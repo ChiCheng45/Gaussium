@@ -11,13 +11,14 @@ class SCFProcedure:
     matrixelements, the kinetic and nuclear potential energy matrix to form the H_core, the transformation matrix and the
     basis_set_array.
     """
-    def __init__(self, core_hamiltonian_matrix, transformation_matrix, matrix, total_energy, nuclear_repulsion, basis_set_array):
+    def __init__(self, core_hamiltonian_matrix, transformation_matrix, matrix, total_energy, nuclear_repulsion, basis_set_array, electrons):
         self.core_hamiltonian_matrix = core_hamiltonian_matrix
         self.transformation_matrix = transformation_matrix
         self.matrix = matrix
         self.total_energy = total_energy
         self.nuclear_repulsion = nuclear_repulsion
         self.basis_set_array = basis_set_array
+        self.electrons = electrons
         self.previous_total_energy = 0
         self.delta_energy = 0
         self.iteration_counter = 0
@@ -62,7 +63,7 @@ class SCFProcedure:
         to implement but it might cause a stack overflow when we get into bigger basis set and bigger molecules. This is
         also probably inefficient.
         """
-        densitymatrix = DensityMatrixElement(orbital_coefficients)
+        densitymatrix = DensityMatrixElement(orbital_coefficients, self.electrons)
         density_matrix = self.matrix.create_matrix(densitymatrix)
 
         if abs(self.delta_energy) > 0.00000000001:

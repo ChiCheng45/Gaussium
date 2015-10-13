@@ -1,7 +1,7 @@
-from src.main.common import CoulombsLaw, CoulombsLawArray, Matrix
+from src.main.common import Matrix
 from src.main.fileinput import FileInputBasis, FileInputNuclei
 from src.main.matrixelements import DensityMatrixElement, KineticEnergyIntegral, NuclearAttractionIntegral, OverlapIntegral
-from src.main.selfconsistentfield import TotalEnergy, SCFProcedure
+from src.main.selfconsistentfield import TotalEnergy, SCFProcedure, CoulombsLaw, CoulombsLawArray
 
 import numpy as np
 import time
@@ -14,20 +14,20 @@ if __name__ == '__main__':
     print('*********************************************************************************************************')
     print('\nA BASIC QUANTUM CHEMICAL PROGRAM IN PYTHON\n\n')
 
-    file_reader_nuclei = FileInputNuclei('HYDROGEN.mol')
-    nuclei_array = file_reader_nuclei.create_nuclei_array()
-    file_reader_basis = FileInputBasis('STO-3G.gbs', nuclei_array)
-    basis_set_array = file_reader_basis.create_basis_set_array()
+    nuclei_array = FileInputNuclei('HeH+.mol').create_nuclei_array()
+    electrons = FileInputNuclei('HeH+.mol').electron_count()
+    basis_set_array = FileInputBasis('STO-3G-edited.gbs', nuclei_array).create_basis_set_array()
 
     nuclei_name_list = [x.get_name() for x in nuclei_array]
     print(nuclei_name_list)
 
-    coulomb_total = CoulombsLawArray(CoulombsLaw, nuclei_array)
-    coulomb_law_array = coulomb_total.calculate_total_electric_potential_energy()
+    coulomb_law_array = CoulombsLawArray(CoulombsLaw, nuclei_array).calculate_total_electric_potential_energy()
     nuclear_repulsion_energy = coulomb_law_array.sum() / 2
     print('\nNUCLEAR REPULSION ARRAY')
     print(coulomb_law_array)
     print('Total Nuclear-Nuclear Potential Energy: ' + str(nuclear_repulsion_energy) + ' a.u.')
+
+    print('\n*********************************************************************************************************')
 
     matrix = Matrix(len(basis_set_array))
     s_matrix = matrix.create_matrix(OverlapIntegral(basis_set_array))
@@ -47,8 +47,7 @@ if __name__ == '__main__':
     print('\nH_CORE')
     print(h_core_matrix)
 
-    s_matrix_eigenvalues = np.linalg.eig(s_matrix)[0]
-    s_matrix_unitary = np.linalg.eig(s_matrix)[1]
+    s_matrix_eigenvalues, s_matrix_unitary = np.linalg.eig(s_matrix)
     x_canonical = s_matrix_unitary * np.diag(s_matrix_eigenvalues ** (-1/2))
     print('\nTRANSFORMATION MATRIX')
     print(x_canonical)
@@ -83,7 +82,7 @@ if __name__ == '__main__':
     multiplying two of the orbital coefficients together anyway
     """
 
-    density_matrix = DensityMatrixElement(orbital_coefficients)
+    density_matrix = DensityMatrixElement(orbital_coefficients, electrons)
     p_matrix = matrix.create_matrix(density_matrix)
     print('\nDENSITY MATRIX')
     print(p_matrix)
@@ -91,7 +90,7 @@ if __name__ == '__main__':
     print('\n*********************************************************************************************************')
     print('\nBEGIN SCF PROCEDURE')
     total_energy = TotalEnergy()
-    scf_procedure = SCFProcedure(h_core_matrix, x_canonical, matrix, total_energy, nuclear_repulsion_energy, basis_set_array)
+    scf_procedure = SCFProcedure(h_core_matrix, x_canonical, matrix, total_energy, nuclear_repulsion_energy, basis_set_array, electrons)
     scf_procedure.begin_scf(p_matrix)
 
     print('\n*********************************************************************************************************')

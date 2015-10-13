@@ -1,13 +1,24 @@
 from unittest import TestCase
 from src.main.fileinput import FileInputBasis
-from src.main.fileinput import FileInputNuclei
+from unittest.mock import MagicMock
 
 
 class TestFileInputBasis(TestCase):
 
     def setUp(self):
-        file_reader_nuclei = FileInputNuclei('HeH+.mol')
-        self.nuclei_array = file_reader_nuclei.create_nuclei_array()
+        helium = MagicMock()
+        hydrogen = MagicMock()
+        self.nuclei_array = [helium, hydrogen]
+
+        hydrogen.get_name.return_value = 'HYDROGEN'
+        hydrogen.get_x.return_value = float(0)
+        hydrogen.get_y.return_value = float(0)
+        hydrogen.get_z.return_value = float(-0.7313240)
+
+        helium.get_name.return_value = 'HELIUM'
+        helium.get_x.return_value = float(0)
+        helium.get_y.return_value = float(0)
+        helium.get_z.return_value = float(0.7313240)
 
     def test_create_basis_set_array_returns_basis_array_with_names_for_sto3g(self):
         file_reader_basis = FileInputBasis('STO-3G.gbs', self.nuclei_array)
@@ -72,7 +83,7 @@ class TestFileInputBasis(TestCase):
         self.assertEquals(basis_array[2].get_orbital_type(), 'S')
         self.assertEquals(basis_array[3].get_orbital_type(), 'S')
 
-    def test_create_basis_set_array_returns_basis_array_with_array_of_coefficients_for_sto3g(self):
+    def test_create_basis_set_array_returns_basis_array_with_array_of_coefficients_for_321g(self):
         file_reader_basis = FileInputBasis('3-21G.gbs', self.nuclei_array)
         basis_array = file_reader_basis.create_basis_set_array()
         self.assertEquals(basis_array[0].get_array_of_coefficients(), [[0.1752300, 13.6267000], [0.8934830, 1.9993500]])

@@ -7,7 +7,7 @@ from src.main.objects import Basis
 class FileInputBasis:
 
     def __init__(self, file_input_basis, nuclei_array):
-        self.file_input_mol = os.path.join(sys.path[1], 'basissets\\' + file_input_basis)
+        self.file_input_basis = os.path.join(sys.path[1], 'basissets\\' + file_input_basis)
         self.nuclei_array = nuclei_array
 
     def create_basis_set_array(self):
@@ -16,7 +16,7 @@ class FileInputBasis:
             i = j = 0
             nuclei = self.nuclei_array[a]
             coefficients_array = []
-            with open(self.file_input_mol, 'r') as file:
+            with open(self.file_input_basis, 'r') as file:
                 lines = file.readlines()
                 for b in range(0, len(lines)):
                     line = lines[b]

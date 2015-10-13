@@ -1,5 +1,5 @@
 from unittest import TestCase
-from src.main.common import CoulombsLaw
+from src.main.selfconsistentfield import CoulombsLaw
 from src.main.objects import Nuclei
 from numpy import testing
 
