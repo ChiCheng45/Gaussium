@@ -30,7 +30,6 @@ class CoulombsLaw:
     def calc_electric_potential_energy(self):
         n1 = self.nuc1
         n2 = self.nuc2
-        distance = np.sqrt((n1.get_x() - n2.get_x()) ** 2 + (n1.get_y() - n2.get_y()) ** 2 + (
-            n1.get_z() - n2.get_z()) ** 2)
+        distance = np.linalg.norm(n1.get_coordinates() - n2.get_coordinates())
         electric_potential_energy = (n1.get_charge() * n2.get_charge()) / distance
         return electric_potential_energy

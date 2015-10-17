@@ -1,6 +1,5 @@
 from unittest import TestCase
 from src.main.matrixelements import KineticEnergyIntegral
-from src.main.fileinput import FileInputNuclei, FileInputBasis
 from numpy import testing
 from unittest.mock import MagicMock
 

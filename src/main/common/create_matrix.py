@@ -1,4 +1,4 @@
-import numpy
+import numpy as np
 
 
 class Matrix:
@@ -17,6 +17,6 @@ class Matrix:
                 else:
                     row.append(0)
             matrix.append(row)
-        matrix = numpy.matrix(matrix)
-        matrix = matrix + matrix.T - numpy.diag(numpy.diag(matrix))
+        matrix = np.matrix(matrix)
+        matrix = matrix + matrix.T - np.diag(np.diag(matrix))
         return matrix

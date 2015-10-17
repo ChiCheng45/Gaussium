@@ -1,6 +1,7 @@
 from unittest import TestCase
 from src.main.fileinput import FileInputBasis
 from unittest.mock import MagicMock
+import numpy as np
 
 
 class TestFileInputBasis(TestCase):
@@ -11,30 +12,25 @@ class TestFileInputBasis(TestCase):
         self.nuclei_array = [helium, hydrogen]
 
         hydrogen.get_name.return_value = 'HYDROGEN'
-        hydrogen.get_x.return_value = float(0)
-        hydrogen.get_y.return_value = float(0)
-        hydrogen.get_z.return_value = float(-0.7313240)
-
+        hydrogen.get_coordinates.return_value = np.matrix([[0], [0], [-0.7316]])
         helium.get_name.return_value = 'HELIUM'
-        helium.get_x.return_value = float(0)
-        helium.get_y.return_value = float(0)
-        helium.get_z.return_value = float(0.7313240)
+        helium.get_coordinates.return_value = np.matrix([[0], [0], [0.7316]])
 
     def test_create_basis_set_array_returns_basis_array_with_names_for_sto3g(self):
         file_reader_basis = FileInputBasis('STO-3G.gbs', self.nuclei_array)
         basis_array = file_reader_basis.create_basis_set_array()
-        self.assertEquals(basis_array[0].get_name(),'HELIUM')
-        self.assertEquals(basis_array[1].get_name(),'HYDROGEN')
+        self.assertEquals(basis_array[0].get_name(), 'HELIUM')
+        self.assertEquals(basis_array[1].get_name(), 'HYDROGEN')
 
     def test_create_basis_set_array_returns_basis_array_with_coordinates_for_sto3g(self):
         file_reader_basis = FileInputBasis('STO-3G.gbs', self.nuclei_array)
         basis_array = file_reader_basis.create_basis_set_array()
-        self.assertEquals(basis_array[0].get_x(), 0)
-        self.assertEquals(basis_array[1].get_x(), 0)
-        self.assertEquals(basis_array[0].get_y(), 0)
-        self.assertEquals(basis_array[1].get_y(), 0)
-        self.assertEquals(basis_array[0].get_z(), 0.7313240)
-        self.assertEquals(basis_array[1].get_z(), -0.7313240)
+        self.assertEquals(basis_array[0].get_coordinates().item(0), float(0))
+        self.assertEquals(basis_array[0].get_coordinates().item(1), float(0))
+        self.assertEquals(basis_array[0].get_coordinates().item(2), float(0.7316))
+        self.assertEquals(basis_array[1].get_coordinates().item(0), float(0))
+        self.assertEquals(basis_array[1].get_coordinates().item(1), float(0))
+        self.assertEquals(basis_array[1].get_coordinates().item(2), float(-0.7316))
 
     def test_create_basis_set_array_returns_basis_array_with_orbital_type_for_sto3g(self):
         file_reader_basis = FileInputBasis('STO-3G.gbs', self.nuclei_array)
@@ -60,20 +56,20 @@ class TestFileInputBasis(TestCase):
         file_reader_basis = FileInputBasis('3-21G.gbs', self.nuclei_array)
         basis_array = file_reader_basis.create_basis_set_array()
 
-        self.assertEquals(basis_array[0].get_x(), 0)
-        self.assertEquals(basis_array[1].get_x(), 0)
-        self.assertEquals(basis_array[2].get_x(), 0)
-        self.assertEquals(basis_array[3].get_x(), 0)
+        self.assertEquals(basis_array[0].get_coordinates().item(0), float(0))
+        self.assertEquals(basis_array[1].get_coordinates().item(0), float(0))
+        self.assertEquals(basis_array[2].get_coordinates().item(0), float(0))
+        self.assertEquals(basis_array[3].get_coordinates().item(0), float(0))
 
-        self.assertEquals(basis_array[0].get_y(), 0)
-        self.assertEquals(basis_array[1].get_y(), 0)
-        self.assertEquals(basis_array[2].get_y(), 0)
-        self.assertEquals(basis_array[3].get_y(), 0)
+        self.assertEquals(basis_array[0].get_coordinates().item(1), float(0))
+        self.assertEquals(basis_array[1].get_coordinates().item(1), float(0))
+        self.assertEquals(basis_array[2].get_coordinates().item(1), float(0))
+        self.assertEquals(basis_array[3].get_coordinates().item(1), float(0))
 
-        self.assertEquals(basis_array[0].get_z(), 0.7313240)
-        self.assertEquals(basis_array[1].get_z(), 0.7313240)
-        self.assertEquals(basis_array[2].get_z(), -0.7313240)
-        self.assertEquals(basis_array[3].get_z(), -0.7313240)
+        self.assertEquals(basis_array[0].get_coordinates().item(2), float(0.7316))
+        self.assertEquals(basis_array[1].get_coordinates().item(2), float(0.7316))
+        self.assertEquals(basis_array[2].get_coordinates().item(2), float(-0.7316))
+        self.assertEquals(basis_array[3].get_coordinates().item(2), float(-0.7316))
 
     def test_create_basis_set_array_returns_basis_array_with_orbital_type_for_321g(self):
         file_reader_basis = FileInputBasis('3-21G.gbs', self.nuclei_array)

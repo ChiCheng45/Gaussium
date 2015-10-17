@@ -24,12 +24,12 @@ class TestFileInputNuclei(TestCase):
 
     def test_create_nuclei_array_returns_array_of_nuclei_with_coordinates(self):
         nuclei_array = self.file_reader_nuclei.create_nuclei_array()
-        self.assertEquals(nuclei_array[0].get_x(), 0)
-        self.assertEquals(nuclei_array[1].get_x(), 0)
-        self.assertEquals(nuclei_array[0].get_y(), 0)
-        self.assertEquals(nuclei_array[1].get_y(), 0)
-        self.assertEquals(nuclei_array[0].get_z(), 0.7316)
-        self.assertEquals(nuclei_array[1].get_z(), -0.7316)
+        self.assertEquals(nuclei_array[0].get_coordinates().item(0), float(0))
+        self.assertEquals(nuclei_array[0].get_coordinates().item(1), float(0))
+        self.assertEquals(nuclei_array[0].get_coordinates().item(2), float(0.7316))
+        self.assertEquals(nuclei_array[1].get_coordinates().item(0), float(0))
+        self.assertEquals(nuclei_array[1].get_coordinates().item(1), float(0))
+        self.assertEquals(nuclei_array[1].get_coordinates().item(2), float(-0.7316))
 
     def test_electron_count_return_two(self):
         electron_count = self.file_reader_nuclei.electron_count()

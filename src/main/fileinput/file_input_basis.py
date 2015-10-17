@@ -29,7 +29,7 @@ class FileInputBasis:
                         else:
                             if any(letter in line for letter in ('S', 'L', 'P', 'D')) or line == '\n':
                                 if j == 1:
-                                    basis = Basis(nuclei.get_name(), nuclei.get_y(), nuclei.get_x(), nuclei.get_z(), function_type, coefficients_array)
+                                    basis = Basis(nuclei.get_name(), nuclei.get_coordinates(), function_type, coefficients_array)
                                     basis_array.append(basis)
                                     j = 0
                                 if line != '\n':
@@ -40,7 +40,7 @@ class FileInputBasis:
                                 float_array = [float(x) for x in line.split()]
                                 coefficients_array.append(float_array)
                                 if b + 1 == len(lines):
-                                    basis = Basis(nuclei.get_name(), nuclei.get_y(), nuclei.get_x(), nuclei.get_z(), function_type, coefficients_array)
+                                    basis = Basis(nuclei.get_name(), nuclei.get_coordinates(), function_type, coefficients_array)
                                     basis_array.append(basis)
             file.close()
         return basis_array
