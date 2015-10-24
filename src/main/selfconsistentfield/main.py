@@ -16,7 +16,7 @@ if __name__ == '__main__':
 
     nuclei_array = FileInputNuclei('HeH+.mol').create_nuclei_array()
     electrons = FileInputNuclei('HeH+.mol').electron_count()
-    basis_set_array = FileInputBasis('STO-3g-edited.gbs', nuclei_array).create_basis_set_array()
+    basis_set_array = FileInputBasis('STO-3G-edited.gbs', nuclei_array).create_basis_set_array()
 
     nuclei_name_list = [x.get_name() for x in nuclei_array]
     print(nuclei_name_list)
