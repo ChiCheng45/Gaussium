@@ -53,5 +53,4 @@ class TwoElectronInteractionIntegral:
                             f_0000 = 1
 
                         f_mn += 2 * (((a_1 + a_2) * (a_3 + a_4)) / (np.pi * (a_1 + a_2 + a_3 + a_4)))**(1/2) * s_ab * s_cd * f_0000
-
         return f_mn

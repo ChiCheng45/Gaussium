@@ -1,13 +1,9 @@
-import numpy as np
-
-
 class Basis:
 
-    def __init__(self, name, coordinates, orbital_type, array_of_coefficients):
+    def __init__(self, name, coordinates, primitive_gaussian_array):
         self.name = name
         self.coordinates = coordinates
-        self.orbital_type = orbital_type
-        self.array_of_coefficients = array_of_coefficients
+        self.primitive_gaussian_array = primitive_gaussian_array
 
     def get_name(self):
         return self.name
@@ -15,8 +11,5 @@ class Basis:
     def get_coordinates(self):
         return self.coordinates
 
-    def get_orbital_type(self):
-        return self.orbital_type
-
-    def get_array_of_coefficients(self):
-        return self.array_of_coefficients
+    def get_primitive_gaussian_array(self):
+        return self.primitive_gaussian_array

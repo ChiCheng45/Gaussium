@@ -2,7 +2,7 @@ import os
 import sys
 
 from src.main.objects import Basis
-
+from src.main.objects import PrimitiveBasis
 
 class FileInputBasis:
 
@@ -29,18 +29,19 @@ class FileInputBasis:
                         else:
                             if any(letter in line for letter in ('S', 'L', 'P', 'D')) or line == '\n':
                                 if j == 1:
-                                    basis = Basis(nuclei.get_name(), nuclei.get_coordinates(), function_type, coefficients_array)
+                                    basis = Basis(nuclei.get_name(), nuclei.get_coordinates(), primitive_basis_array)
                                     basis_array.append(basis)
                                     j = 0
                                 if line != '\n':
-                                    coefficients_array = []
+                                    primitive_basis_array = []
                                     function_type = line.split()[0]
                             else:
                                 j = 1
                                 float_array = [float(x) for x in line.split()]
-                                coefficients_array.append(float_array)
+                                primitive_basis = PrimitiveBasis(function_type, float_array)
+                                primitive_basis_array.append(primitive_basis)
                                 if b + 1 == len(lines):
-                                    basis = Basis(nuclei.get_name(), nuclei.get_coordinates(), function_type, coefficients_array)
+                                    basis = Basis(nuclei.get_name(), nuclei.get_coordinates(), primitive_basis_array)
                                     basis_array.append(basis)
             file.close()
         return basis_array

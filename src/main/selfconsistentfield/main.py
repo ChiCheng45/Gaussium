@@ -84,7 +84,7 @@ if __name__ == '__main__':
     print('\n*********************************************************************************************************')
     print('\nBEGIN SCF PROCEDURE')
     total_energy = TotalEnergy()
-    scf_procedure = SCFProcedure(h_core_matrix, x_canonical, matrix, total_energy, basis_set_array, electrons, orbital_coefficients)
+    scf_procedure = SCFProcedure(h_core_matrix, x_canonical, matrix, total_energy, basis_set_array, electrons, orbital_coefficients, orbital_energy_matrix)
     electron_energy = scf_procedure.begin_scf()
 
     print('TOTAL NUCLEAR REPULSION ENERGY: ' + str(nuclear_repulsion) + ' a.u.')
