@@ -2,7 +2,8 @@ import os
 import sys
 
 from src.main.objects import Basis
-from src.main.objects import PrimitiveBasis
+from src.main.objects import PrimitiveBasisFactory
+
 
 class FileInputBasis:
 
@@ -15,7 +16,7 @@ class FileInputBasis:
         for a in range(0, len(self.nuclei_array)):
             i = j = 0
             nuclei = self.nuclei_array[a]
-            coefficients_array = []
+            primitive_basis_array = []
             with open(self.file_input_basis, 'r') as file:
                 lines = file.readlines()
                 for b in range(0, len(lines)):
@@ -38,8 +39,8 @@ class FileInputBasis:
                             else:
                                 j = 1
                                 float_array = [float(x) for x in line.split()]
-                                primitive_basis = PrimitiveBasis(function_type, float_array)
-                                primitive_basis_array.append(primitive_basis)
+                                primitive_basis_from_factory = PrimitiveBasisFactory().expand_basis(function_type, float_array)
+                                primitive_basis_array += primitive_basis_from_factory
                                 if b + 1 == len(lines):
                                     basis = Basis(nuclei.get_name(), nuclei.get_coordinates(), primitive_basis_array)
                                     basis_array.append(basis)

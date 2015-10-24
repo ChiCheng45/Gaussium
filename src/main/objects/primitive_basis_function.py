@@ -1,11 +1,15 @@
 class PrimitiveBasis:
 
-    def __init__(self, orbital_type, coefficients):
+    def __init__(self, orbital_type, contraction, exponent):
         self.orbital_type = orbital_type
-        self.coefficients = coefficients
+        self.contraction = contraction
+        self.exponent = exponent
 
     def get_orbital_type(self):
         return self.orbital_type
 
-    def get_coefficients(self):
-        return self.coefficients
+    def get_contraction(self):
+        return self.contraction
+
+    def get_exponent(self):
+        return self.exponent

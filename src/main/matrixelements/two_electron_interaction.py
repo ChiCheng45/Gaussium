@@ -8,25 +8,25 @@ class TwoElectronInteractionIntegral:
         self.basis_set_array = basis_set_array
 
     def calculate(self, i, j, k, l):
-        basis_coefficients_i = self.basis_set_array[i].get_array_of_coefficients()
-        basis_coefficients_j = self.basis_set_array[j].get_array_of_coefficients()
-        basis_coefficients_k = self.basis_set_array[k].get_array_of_coefficients()
-        basis_coefficients_l = self.basis_set_array[l].get_array_of_coefficients()
+        primitive_gaussian_array_i = self.basis_set_array[i].get_primitive_gaussian_array()
+        primitive_gaussian_array_j = self.basis_set_array[j].get_primitive_gaussian_array()
+        primitive_gaussian_array_k = self.basis_set_array[k].get_primitive_gaussian_array()
+        primitive_gaussian_array_l = self.basis_set_array[l].get_primitive_gaussian_array()
         f_mn = 0
-        for a in range(0, len(basis_coefficients_i)):
-            for b in range(0, len(basis_coefficients_j)):
-                for c in range(0, len(basis_coefficients_k)):
-                    for d in range(0, len(basis_coefficients_l)):
+        for a in range(0, len(primitive_gaussian_array_i)):
+            for b in range(0, len(primitive_gaussian_array_j)):
+                for c in range(0, len(primitive_gaussian_array_k)):
+                    for d in range(0, len(primitive_gaussian_array_l)):
 
-                        a_1 = basis_coefficients_i[a][1]
-                        a_2 = basis_coefficients_j[b][1]
-                        a_3 = basis_coefficients_k[c][1]
-                        a_4 = basis_coefficients_l[d][1]
+                        a_1 = primitive_gaussian_array_i[a].get_exponent()
+                        a_2 = primitive_gaussian_array_j[b].get_exponent()
+                        a_3 = primitive_gaussian_array_k[c].get_exponent()
+                        a_4 = primitive_gaussian_array_l[d].get_exponent()
 
-                        c_1 = basis_coefficients_i[a][0]
-                        c_2 = basis_coefficients_j[b][0]
-                        c_3 = basis_coefficients_k[c][0]
-                        c_4 = basis_coefficients_l[d][0]
+                        c_1 = primitive_gaussian_array_i[a].get_contraction()
+                        c_2 = primitive_gaussian_array_j[b].get_contraction()
+                        c_3 = primitive_gaussian_array_k[c].get_contraction()
+                        c_4 = primitive_gaussian_array_l[d].get_contraction()
 
                         n_1 = ((2 * a_1) / np.pi)**(3/4)
                         n_2 = ((2 * a_2) / np.pi)**(3/4)
