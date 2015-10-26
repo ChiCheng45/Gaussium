@@ -74,13 +74,6 @@ if __name__ == '__main__':
     print('\nORBITAL COEFFICIENTS')
     print(orbital_coefficients)
 
-    """
-    The negative signs that numpy give for the orbital coefficients seems strange but it is because the sign of the
-    orbitals and its wave-function can either have positive or negative values, the square of the wave-function, the
-    electron density, will always end up being positive valued. The elements in the density matrix will made by
-    multiplying two of the orbital coefficients together anyway
-    """
-
     print('\n*********************************************************************************************************')
     print('\nBEGIN SCF PROCEDURE')
     total_energy = TotalEnergy()
