@@ -1,4 +1,5 @@
 import numpy as np
+from scipy.spatial import distance
 import scipy.special as sp
 
 
@@ -40,9 +41,9 @@ class TwoElectronInteractionIntegral:
                         r_p = (a_1 * r_a + a_2 * r_b) / (a_1 + a_2)
                         r_q = (a_3 * r_c + a_4 * r_d) / (a_3 + a_4)
 
-                        r_ab = np.linalg.norm(r_a - r_b)
-                        r_cd = np.linalg.norm(r_c - r_d)
-                        r_pq = np.linalg.norm(r_p - r_q)
+                        r_ab = distance.euclidean(r_a, r_b)
+                        r_cd = distance.euclidean(r_c, r_d)
+                        r_pq = distance.euclidean(r_p, r_q)
 
                         s_ab = c_1 * c_2 * n_1 * n_2 * (np.pi / (a_1 + a_2))**(3/2) * np.exp(- a_1 * a_2 * r_ab**2 / (a_1 + a_2))
                         s_cd = c_3 * c_4 * n_3 * n_4 * (np.pi / (a_3 + a_4))**(3/2) * np.exp(- a_3 * a_4 * r_cd**2 / (a_3 + a_4))

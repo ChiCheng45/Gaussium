@@ -1,5 +1,6 @@
 import numpy as np
 import scipy.special as sp
+from scipy.spatial import distance
 
 
 class NuclearAttractionIntegral:
@@ -14,7 +15,7 @@ class NuclearAttractionIntegral:
         primitive_gaussian_array_j = self.basis_set_array[j].get_primitive_gaussian_array()
         r_1 = self.basis_set_array[i].get_coordinates()
         r_2 = self.basis_set_array[j].get_coordinates()
-        r_12 = np.linalg.norm(r_1 - r_2)
+        r_12 = distance.euclidean(r_1, r_2)
         for a in range(0, len(primitive_gaussian_array_i)):
             for b in range(0, len(primitive_gaussian_array_j)):
                 if primitive_gaussian_array_i[a].get_orbital_type() == 'S' and primitive_gaussian_array_j[b].get_orbital_type() == 'S':
@@ -29,7 +30,7 @@ class NuclearAttractionIntegral:
                         c_k = self.nuclei_array[k].get_charge()
                         r_3 = (a_1 * r_1 + a_2 * r_2) / (a_1 + a_2)
                         r_k = self.nuclei_array[k].get_coordinates()
-                        r_3k = np.linalg.norm(r_k - r_3)
+                        r_3k = distance.euclidean(r_3, r_k)
 
                         if r_3k > 0:
                             f_ij = (1/2) * (np.pi / ((a_1 + a_2) * r_3k**2))**(1/2) * sp.erf(((a_1 + a_2) * r_3k**2)**(1/2))

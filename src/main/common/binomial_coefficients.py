@@ -11,7 +11,7 @@ class BinomialCoefficientsFunction:
 
     def combination(self, n, k):
         if k <= n:
-            combination = np.math.factorial(n) / np.math.factorial(k) * np.math.factorial(n - k)
+            combination = np.math.factorial(n) / (np.math.factorial(k) * np.math.factorial(n - k))
             return combination
         else:
             return 0

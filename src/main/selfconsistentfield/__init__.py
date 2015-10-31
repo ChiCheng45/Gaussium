@@ -1,4 +1,3 @@
 from src.main.selfconsistentfield.total_energy import TotalEnergy
 from src.main.selfconsistentfield.scf_procedure import SCFProcedure
-from src.main.selfconsistentfield.nuclear_repulsion import CoulombsLaw
 from src.main.selfconsistentfield.nuclear_repulsion import CoulombsLawArray

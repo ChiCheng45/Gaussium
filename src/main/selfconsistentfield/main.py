@@ -1,7 +1,7 @@
 from src.main.common import Matrix
 from src.main.fileinput import FileInputBasis, FileInputNuclei
-from src.main.matrixelements import KineticEnergyIntegral, NuclearAttractionIntegral, OverlapIntegral
-from src.main.selfconsistentfield import TotalEnergy, SCFProcedure, CoulombsLaw, CoulombsLawArray
+from src.main.matrixelements import KineticEnergyIntegral, NuclearAttractionIntegral, OverlapElement
+from src.main.selfconsistentfield import TotalEnergy, SCFProcedure, CoulombsLawArray
 
 import numpy as np
 import time
@@ -14,14 +14,13 @@ if __name__ == '__main__':
     print('*********************************************************************************************************')
     print('\nA BASIC QUANTUM CHEMICAL PROGRAM IN PYTHON\n\n')
 
-    nuclei_array = FileInputNuclei('HeH+.mol').create_nuclei_array()
-    electrons = FileInputNuclei('HeH+.mol').electron_count()
+    nuclei_array, electrons = FileInputNuclei('HeH+.mol').create_nuclei_array_and_electron_count()
     basis_set_array = FileInputBasis('STO-3G-edited.gbs', nuclei_array).create_basis_set_array()
 
     nuclei_name_list = [x.get_name() for x in nuclei_array]
     print(nuclei_name_list)
 
-    coulomb_law_array = CoulombsLawArray(CoulombsLaw, nuclei_array).calculate_total_electric_potential_energy()
+    coulomb_law_array = CoulombsLawArray(nuclei_array).calculate_total_electric_potential_energy()
     nuclear_repulsion = coulomb_law_array.sum() / 2
     print('\nNUCLEAR REPULSION ARRAY')
     print(coulomb_law_array)
@@ -31,7 +30,7 @@ if __name__ == '__main__':
 
     matrix = Matrix(len(basis_set_array))
 
-    s_matrix = matrix.create_matrix(OverlapIntegral(basis_set_array))
+    s_matrix = matrix.create_matrix(OverlapElement(basis_set_array))
     print('\nORBITAL OVERLAP MATRIX')
     print(s_matrix)
 
