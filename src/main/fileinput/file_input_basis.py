@@ -21,16 +21,16 @@ class FileInputBasis:
                 lines = file.readlines()
                 for b in range(0, len(lines)):
                     line = lines[b]
-                    if nuclei.get_name() in line:
+                    if nuclei.name in line:
                         i = 1
                     if i == 1:
                         if '#' in line:
-                            if nuclei.get_name() not in line:
+                            if nuclei.name not in line:
                                 break
                         else:
                             if any(letter in line for letter in ('S', 'L', 'P', 'D')) or line == '\n':
                                 if j == 1:
-                                    basis = Basis(nuclei.get_name(), nuclei.get_coordinates(), primitive_basis_array)
+                                    basis = Basis(nuclei.name, primitive_basis_array)
                                     basis_array.append(basis)
                                     j = 0
                                 if line != '\n':
@@ -39,10 +39,10 @@ class FileInputBasis:
                             else:
                                 j = 1
                                 float_array = [float(x) for x in line.split()]
-                                primitive_basis_from_factory = PrimitiveBasisFactory().expand_basis(function_type, float_array)
+                                primitive_basis_from_factory = PrimitiveBasisFactory().expand_basis(function_type, float_array, nuclei.coordinates)
                                 primitive_basis_array += primitive_basis_from_factory
                                 if b + 1 == len(lines):
-                                    basis = Basis(nuclei.get_name(), nuclei.get_coordinates(), primitive_basis_array)
+                                    basis = Basis(nuclei.name, primitive_basis_array)
                                     basis_array.append(basis)
             file.close()
         return basis_array

@@ -17,7 +17,7 @@ if __name__ == '__main__':
     nuclei_array, electrons = FileInputNuclei('HeH+.mol').create_nuclei_array_and_electron_count()
     basis_set_array = FileInputBasis('STO-3G-edited.gbs', nuclei_array).create_basis_set_array()
 
-    nuclei_name_list = [x.get_name() for x in nuclei_array]
+    nuclei_name_list = [x.name for x in nuclei_array]
     print(nuclei_name_list)
 
     coulomb_law_array = CoulombsLawArray(nuclei_array).calculate_total_electric_potential_energy()
