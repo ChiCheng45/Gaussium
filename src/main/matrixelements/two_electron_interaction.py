@@ -1,5 +1,5 @@
 import numpy as np
-from scipy.spatial import distance
+from src.main.common.vector_manipulation import VectorManipulation
 import scipy.special as sp
 
 
@@ -39,12 +39,12 @@ class TwoElectronInteractionIntegral:
                         r_c = primitive_gaussian_array_k[c].coordinates
                         r_d = primitive_gaussian_array_l[d].coordinates
 
-                        r_p = (a_1 * r_a + a_2 * r_b) / (a_1 + a_2)
-                        r_q = (a_3 * r_c + a_4 * r_d) / (a_3 + a_4)
+                        r_p = VectorManipulation.vector_gaussian(a_1, r_a, a_2, r_b)
+                        r_q = VectorManipulation.vector_gaussian(a_3, r_c, a_4, r_d)
 
-                        r_ab = distance.euclidean(r_a, r_b)
-                        r_cd = distance.euclidean(r_c, r_d)
-                        r_pq = distance.euclidean(r_p, r_q)
+                        r_ab = VectorManipulation.squared_distance(r_a, r_b)
+                        r_cd = VectorManipulation.squared_distance(r_c, r_d)
+                        r_pq = VectorManipulation.squared_distance(r_p, r_q)
 
                         s_ab = c_1 * c_2 * n_1 * n_2 * (np.pi / (a_1 + a_2))**(3/2) * np.exp(- a_1 * a_2 * r_ab**2 / (a_1 + a_2))
                         s_cd = c_3 * c_4 * n_3 * n_4 * (np.pi / (a_3 + a_4))**(3/2) * np.exp(- a_3 * a_4 * r_cd**2 / (a_3 + a_4))
