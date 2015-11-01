@@ -10,8 +10,8 @@ class BinomialCoefficientsFunction:
             coefficient += cls.combination(l, k) * cls.combination(m, j - k) * a**(l - k) * b**(m + k - j)
         return coefficient
 
-    @classmethod
-    def combination(cls, n, k):
+    @staticmethod
+    def combination(n, k):
         if k <= n:
             combination = np.math.factorial(n) / (np.math.factorial(k) * np.math.factorial(n - k))
             return combination

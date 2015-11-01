@@ -3,22 +3,22 @@ import math
 
 class VectorManipulation:
 
-    @classmethod
-    def squared_distance(cls, tuple1, tuple2):
+    @staticmethod
+    def squared_distance(tuple1, tuple2):
         tuple3 = tuple([a - b for a, b in zip(tuple1, tuple2)])
         r_ab = math.sqrt(tuple3[0]**2 + tuple3[1]**2 + tuple3[2]**2)
         return r_ab
 
-    @classmethod
-    def vector_add(cls, tuple1, tuple2):
+    @staticmethod
+    def vector_add(tuple1, tuple2):
         return tuple([a + b for a, b in zip(tuple1, tuple2)])
 
-    @classmethod
-    def vector_minus(cls, tuple1, tuple2):
+    @staticmethod
+    def vector_minus(tuple1, tuple2):
         return tuple([a - b for a, b in zip(tuple1, tuple2)])
 
-    @classmethod
-    def vector_multiply(cls, x, tuple1):
+    @staticmethod
+    def vector_multiply(x, tuple1):
         return tuple([a * x for a in tuple1])
 
     @classmethod
