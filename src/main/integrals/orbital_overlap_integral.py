@@ -13,6 +13,7 @@ class OverlapIntegral:
         return s
 
     def primitive_overlap_integral(self, gaussian_1, gaussian_2):
+
         a_1 = gaussian_1.exponent
         a_2 = gaussian_2.exponent
         l_1 = gaussian_1.integral_exponents
