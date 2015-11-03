@@ -1,9 +1,7 @@
 import numpy as np
-import scipy.special as sp
-from src.main.common.vector_manipulation import VectorManipulation
+from src.main.integrals import NuclearAttractionIntegral
 
-
-class NuclearAttractionIntegral:
+class NuclearAttractionElement:
 
     def __init__(self, nuclei_array, basis_set_array):
         self.nuclei_array = nuclei_array
@@ -15,32 +13,17 @@ class NuclearAttractionIntegral:
         primitive_gaussian_array_j = self.basis_set_array[j].primitive_gaussian_array
         for a in range(0, len(primitive_gaussian_array_i)):
             for b in range(0, len(primitive_gaussian_array_j)):
-                if primitive_gaussian_array_i[a].orbital_type == 'S' and primitive_gaussian_array_j[b].orbital_type == 'S':
-                    a_1 = primitive_gaussian_array_i[a].exponent
-                    a_2 = primitive_gaussian_array_j[b].exponent
-                    d_1 = primitive_gaussian_array_i[a].contraction
-                    d_2 = primitive_gaussian_array_j[b].contraction
 
-                    r_1 = primitive_gaussian_array_i[a].coordinates
-                    r_2 = primitive_gaussian_array_j[b].coordinates
-                    r_12 = VectorManipulation.squared_distance(r_1, r_2)
+                a_1 = primitive_gaussian_array_i[a].exponent
+                a_2 = primitive_gaussian_array_j[b].exponent
+                c_1 = primitive_gaussian_array_i[a].contraction
+                c_2 = primitive_gaussian_array_j[b].contraction
+                l_1 = primitive_gaussian_array_i[a].integral_exponents
+                l_2 = primitive_gaussian_array_j[b].integral_exponents
+                n_1 = (((2 * a_1) / np.pi)**(3/4)) * (((((8 * a_1)**(l_1[0] + l_1[1] + l_1[2])) * np.math.factorial(l_1[0]) * np.math.factorial(l_1[1]) * np.math.factorial(l_1[2])) / (np.math.factorial(2 * l_1[0]) * np.math.factorial(2 * l_1[1]) * np.math.factorial(2 * l_1[2])))**(1/2))
+                n_2 = (((2 * a_2) / np.pi)**(3/4)) * (((((8 * a_2)**(l_2[0] + l_2[1] + l_2[2])) * np.math.factorial(l_2[0]) * np.math.factorial(l_2[1]) * np.math.factorial(l_2[2])) / (np.math.factorial(2 * l_2[0]) * np.math.factorial(2 * l_2[1]) * np.math.factorial(2 * l_2[2])))**(1/2))
 
-                    n_1 = ((2 * a_1) / np.pi)**(3/4)
-                    n_2 = ((2 * a_2) / np.pi)**(3/4)
-                    s_ij = d_1 * d_2 * n_1 * n_2 * (np.pi / (a_1 + a_2))**(3/2) * np.exp(- a_1 * a_2 * r_12**2 / (a_1 + a_2))
-                    for k in range(0, len(self.nuclei_array)):
-                        c_k = self.nuclei_array[k].charge
-                        r_3 = VectorManipulation.vector_gaussian(a_1, r_1, a_2, r_2)
-                        r_k = self.nuclei_array[k].coordinates
-                        r_3k = VectorManipulation.squared_distance(r_3, r_k)
-
-                        if r_3k > 0:
-                            f_ij = (1/2) * (np.pi / ((a_1 + a_2) * r_3k**2))**(1/2) * sp.erf(((a_1 + a_2) * r_3k**2)**(1/2))
-                        else:
-                            f_ij = 1
-                        v_ij += - 2 * c_k * np.sqrt((a_1 + a_2) / np.pi) * s_ij * f_ij
-
-                else:
-                    v_ij += 0
+                for k in range(0, len(self.nuclei_array)):
+                    v_ij += - self.nuclei_array[k].charge * n_1 * n_2 * c_1 * c_2 * NuclearAttractionIntegral.primitive_nuclear_attraction(primitive_gaussian_array_i[a], primitive_gaussian_array_j[b], self.nuclei_array[k])
         return v_ij
 

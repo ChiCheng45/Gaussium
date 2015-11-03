@@ -1,6 +1,6 @@
 from src.main.common import Matrix
 from src.main.fileinput import FileInputBasis, FileInputNuclei
-from src.main.matrixelements import KineticEnergyIntegral, NuclearAttractionIntegral, OverlapElement
+from src.main.matrixelements import KineticEnergyElement, NuclearAttractionElement, OverlapElement
 from src.main.selfconsistentfield import TotalEnergy, SCFProcedure, CoulombsLawArray
 
 import numpy as np
@@ -15,7 +15,7 @@ if __name__ == '__main__':
     print('\nA BASIC QUANTUM CHEMICAL PROGRAM IN PYTHON\n\n')
 
     nuclei_array, electrons = FileInputNuclei('HeH+.mol').create_nuclei_array_and_electron_count()
-    basis_set_array = FileInputBasis('STO-3G.gbs', nuclei_array).create_basis_set_array()
+    basis_set_array = FileInputBasis('STO-3G-edited.gbs', nuclei_array).create_basis_set_array()
 
     nuclei_name_list = [x.name for x in nuclei_array]
     print(nuclei_name_list)
@@ -28,17 +28,17 @@ if __name__ == '__main__':
     print('\n*********************************************************************************************************')
     print('\nMATRICES\n')
 
-    matrix = Matrix(len(basis_set_array))
+    matrix = Matrix(basis_set_array)
 
     s_matrix = matrix.create_matrix(OverlapElement(basis_set_array))
     print('\nORBITAL OVERLAP MATRIX')
     print(s_matrix)
 
-    t_matrix = matrix.create_matrix(KineticEnergyIntegral(basis_set_array))
+    t_matrix = matrix.create_matrix(KineticEnergyElement(basis_set_array))
     print('\nKINETIC ENERGY MATRIX')
     print(t_matrix)
 
-    v_matrix = matrix.create_matrix(NuclearAttractionIntegral(nuclei_array, basis_set_array))
+    v_matrix = matrix.create_matrix(NuclearAttractionElement(nuclei_array, basis_set_array))
     print('\nNUCLEAR POTENTIAL ENERGY MATRIX')
     print(v_matrix)
 

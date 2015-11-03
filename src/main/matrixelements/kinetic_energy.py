@@ -2,7 +2,7 @@ from src.main.objects import PrimitiveBasisFactory
 import numpy as np
 from src.main.integrals import OverlapIntegral
 
-class KineticEnergyIntegral:
+class KineticEnergyElement:
 
     def __init__(self, basis_set_array):
         self.basis_set_array = basis_set_array

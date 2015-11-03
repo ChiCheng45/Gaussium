@@ -1,7 +1,7 @@
 from unittest import TestCase
 from numpy import testing
 from unittest.mock import MagicMock
-from src.main.matrixelements import KineticEnergyIntegral
+from src.main.matrixelements import KineticEnergyElement
 import numpy as np
 
 
@@ -17,7 +17,7 @@ class TestKineticEnergyIntegralHehCation(TestCase):
         helium_basis_2 = MagicMock()
         helium_basis_3 = MagicMock()
         basis_set_array = [helium, hydrogen]
-        self.kinetic_energy_integral = KineticEnergyIntegral(basis_set_array)
+        self.kinetic_energy_integral = KineticEnergyElement(basis_set_array)
 
         hydrogen.get_coordinates.return_value = np.matrix([[0], [0], [-0.7316]])
         helium.get_coordinates.return_value = np.matrix([[0], [0], [0.7316]])
@@ -67,7 +67,7 @@ class TestKineticEnergyIntegralHydrogen(TestCase):
         hydrogen_basis_2 = MagicMock()
         hydrogen_basis_3 = MagicMock()
         basis_set_array = [hydrogen_1, hydrogen_2]
-        self.kinetic_energy_integral = KineticEnergyIntegral(basis_set_array)
+        self.kinetic_energy_integral = KineticEnergyElement(basis_set_array)
 
         hydrogen_1.get_coordinates.return_value = np.matrix([[0], [0], [-0.7000]])
         hydrogen_2.get_coordinates.return_value = np.matrix([[0], [0], [0.7000]])
