@@ -4,6 +4,7 @@ from src.main.common import VectorManipulation
 from scipy.misc import factorial
 import numpy as np
 
+
 class NuclearAttractionIntegral:
 
     @staticmethod
