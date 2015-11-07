@@ -1,4 +1,4 @@
-from src.main.matrixelements import TwoElectronInteractionIntegral
+from src.main.matrixelements import TwoElectronRepulsionElement
 
 
 class GMatrixElements:
@@ -11,7 +11,7 @@ class GMatrixElements:
         g_ij = 0
         for a in range(0, self.density_matrix.shape[0]):
             for b in range(0, self.density_matrix.shape[0]):
-                two_electron_repulsion = TwoElectronInteractionIntegral(self.basis_set_array)
+                two_electron_repulsion = TwoElectronRepulsionElement(self.basis_set_array)
                 coulomb_integral = two_electron_repulsion.calculate(i, j, a, b)
                 exchange_integral = two_electron_repulsion.calculate(i, b, a, j)
                 g_ij += self.density_matrix.item((b, a)) * (coulomb_integral - (1/2) * exchange_integral)

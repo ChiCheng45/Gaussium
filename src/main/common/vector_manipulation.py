@@ -21,6 +21,13 @@ class VectorManipulation:
     def vector_multiply(x, tuple1):
         return tuple([a * x for a in tuple1])
 
+    @staticmethod
+    def dot_product(tuple1, tuple2):
+        ans = 0
+        for x in range(0, len(tuple1)):
+            ans += tuple1[x] * tuple2[x]
+        return ans
+
     @classmethod
     def vector_gaussian(cls, a, tuple1, b, tuple2):
         tuple3 = cls.vector_multiply(a, tuple1)
