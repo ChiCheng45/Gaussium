@@ -3,6 +3,7 @@ from src.main.matrixelements.g_matrix import GMatrixElements
 from src.main.matrixelements.density_matrix import DensityMatrixElement
 from src.main.selfconsistentfield import TotalEnergy
 
+
 class SCFProcedure:
 
     def __init__(self, core_hamiltonian_matrix, transformation_matrix, matrix, basis_set_array, electrons):

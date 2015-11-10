@@ -2,7 +2,6 @@ from src.main.common import Matrix
 from src.main.fileinput import FileInputBasis, FileInputNuclei
 from src.main.matrixelements import KineticEnergyElement, NuclearAttractionElement, OverlapElement
 from src.main.selfconsistentfield import SCFProcedure, CoulombsLawArray
-
 import numpy as np
 import time
 
