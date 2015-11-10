@@ -1,6 +1,7 @@
 from src.main.objects import PrimitiveBasis
 from src.main.objects import Basis
 
+
 class PrimitiveBasisFactory:
 
     @staticmethod
@@ -55,7 +56,8 @@ class PrimitiveBasisFactory:
                 basis_list.append(basis_pz)
         return basis_list
 
-    def del_operator(self, primitive_gaussian):
+    @staticmethod
+    def del_operator(primitive_gaussian):
         primitive_array = []
         l = primitive_gaussian.integral_exponents[0]
         m = primitive_gaussian.integral_exponents[1]

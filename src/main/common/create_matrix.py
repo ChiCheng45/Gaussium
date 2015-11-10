@@ -4,7 +4,7 @@ import numpy as np
 class Matrix:
 
     def __init__(self, matrix_size):
-        self.matrix_size = len(matrix_size)
+        self.matrix_size = matrix_size
 
     def create_matrix(self, element):
         matrix = []

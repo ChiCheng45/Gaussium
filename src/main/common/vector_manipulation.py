@@ -1,24 +1,24 @@
 import math
 
 
-class VectorManipulation:
+class Vector:
 
     @staticmethod
-    def squared_distance(tuple1, tuple2):
+    def distance(tuple1, tuple2):
         tuple3 = tuple([a - b for a, b in zip(tuple1, tuple2)])
         r_ab = math.sqrt(tuple3[0]**2 + tuple3[1]**2 + tuple3[2]**2)
         return r_ab
 
     @staticmethod
-    def vector_add(tuple1, tuple2):
+    def add(tuple1, tuple2):
         return tuple([a + b for a, b in zip(tuple1, tuple2)])
 
     @staticmethod
-    def vector_minus(tuple1, tuple2):
+    def minus(tuple1, tuple2):
         return tuple([a - b for a, b in zip(tuple1, tuple2)])
 
     @staticmethod
-    def vector_multiply(x, tuple1):
+    def multiply(x, tuple1):
         return tuple([a * x for a in tuple1])
 
     @staticmethod
@@ -29,9 +29,9 @@ class VectorManipulation:
         return ans
 
     @classmethod
-    def vector_gaussian(cls, a, tuple1, b, tuple2):
-        tuple3 = cls.vector_multiply(a, tuple1)
-        tuple4 = cls.vector_multiply(b, tuple2)
-        tuple_final = cls.vector_add(tuple3, tuple4)
+    def gaussian(cls, a, tuple1, b, tuple2):
+        tuple3 = cls.multiply(a, tuple1)
+        tuple4 = cls.multiply(b, tuple2)
+        tuple_final = cls.add(tuple3, tuple4)
         tuple_final = tuple([x / (a + b) for x in tuple_final])
         return tuple_final

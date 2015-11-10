@@ -1,6 +1,6 @@
 from scipy.misc import factorial2
 from src.main.common import BinomialCoefficientsFunction
-from src.main.common.vector_manipulation import VectorManipulation
+from src.main.common.vector_manipulation import Vector
 import numpy as np
 
 
@@ -23,11 +23,11 @@ class OverlapIntegral:
 
         r_a = gaussian_1.coordinates
         r_b = gaussian_2.coordinates
-        r_ab = VectorManipulation.squared_distance(r_a, r_b)
+        r_ab = Vector.distance(r_a, r_b)
 
-        r_p = VectorManipulation.vector_gaussian(a_1, r_a, a_2, r_b)
-        r_p_a = VectorManipulation.vector_minus(r_p, r_a)
-        r_p_b = VectorManipulation.vector_minus(r_p, r_b)
+        r_p = Vector.gaussian(a_1, r_a, a_2, r_b)
+        r_p_a = Vector.minus(r_p, r_a)
+        r_p_b = Vector.minus(r_p, r_b)
 
         g = a_1 + a_2
 

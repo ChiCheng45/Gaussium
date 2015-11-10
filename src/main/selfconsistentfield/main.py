@@ -15,12 +15,12 @@ if __name__ == '__main__':
     print('\nA BASIC QUANTUM CHEMICAL PROGRAM IN PYTHON\n\n')
 
     nuclei_array, electrons = FileInputNuclei('HeH+.mol').create_nuclei_array_and_electron_count()
-    basis_set_array = FileInputBasis('6-311+GPP.gbs', nuclei_array).create_basis_set_array()
+    basis_set_array = FileInputBasis('STO-3G-edited.gbs', nuclei_array).create_basis_set_array()
 
     nuclei_name_list = [x.element for x in nuclei_array]
     print(nuclei_name_list)
 
-    coulomb_law_array = CoulombsLawArray(nuclei_array).calculate_total_electric_potential_energy()
+    coulomb_law_array = CoulombsLawArray.calculate_total_electric_potential_energy(nuclei_array)
     nuclear_repulsion = coulomb_law_array.sum() / 2
     print('\nNUCLEAR REPULSION ARRAY')
     print(coulomb_law_array)
@@ -28,7 +28,7 @@ if __name__ == '__main__':
     print('\n*********************************************************************************************************')
     print('\nMATRICES\n')
 
-    matrix = Matrix(basis_set_array)
+    matrix = Matrix(len(basis_set_array))
 
     s_matrix = matrix.create_matrix(OverlapElement(basis_set_array))
     print('\nORBITAL OVERLAP MATRIX')
@@ -79,9 +79,8 @@ if __name__ == '__main__':
 
     print('\n*********************************************************************************************************')
     print('\nBEGIN SCF PROCEDURE')
-    total_energy = TotalEnergy()
-    scf_procedure = SCFProcedure(h_core_matrix, x_canonical, matrix, total_energy, basis_set_array, electrons, orbital_coefficients, orbital_energy_matrix)
-    electron_energy = scf_procedure.begin_scf()
+    scf_procedure = SCFProcedure(h_core_matrix, x_canonical, matrix, basis_set_array, electrons)
+    electron_energy = scf_procedure.begin_scf(orbital_coefficients, orbital_energy_matrix)
 
     print('TOTAL NUCLEAR REPULSION ENERGY: ' + str(nuclear_repulsion) + ' a.u.')
     print('TOTAL ENERGY: ' + str(electron_energy + nuclear_repulsion) + ' a.u.')

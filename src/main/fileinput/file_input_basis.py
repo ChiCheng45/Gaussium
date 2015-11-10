@@ -1,8 +1,6 @@
 import os
 import sys
 import re
-
-from src.main.objects import Basis
 from src.main.objects import PrimitiveBasisFactory
 
 

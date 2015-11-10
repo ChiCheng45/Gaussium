@@ -1,5 +1,5 @@
 from src.main.common import BinomialCoefficientsFunction
-from src.main.common import VectorManipulation
+from src.main.common import Vector
 from src.main.common import GammaFunction
 from math import factorial, sqrt
 import numpy as np
@@ -14,8 +14,8 @@ class ElectronRepulsionIntegral:
 
     @staticmethod
     def gaussian_product_factor(a_1, a_2, a_3, a_4, a_p, a_q, r_a, r_b, r_c, r_d):
-        r_ab = VectorManipulation.squared_distance(r_a, r_b)
-        r_cd = VectorManipulation.squared_distance(r_c, r_d)
+        r_ab = Vector.distance(r_a, r_b)
+        r_cd = Vector.distance(r_c, r_d)
         out = ((2 * np.pi**2) / (a_p * a_q)) * sqrt(np.pi / (a_p + a_q)) * np.exp(- ((a_1 * a_2 * r_ab**2) / a_p) - ((a_3 * a_4 * r_cd**2) / a_q))
         return out
 
@@ -51,12 +51,12 @@ class ElectronRepulsionIntegral:
         l_4 = g4.integral_exponents
 
         a_p = a_1 + a_2
-        r_p = VectorManipulation.vector_gaussian(a_1, r_1, a_2, r_2)
+        r_p = Vector.gaussian(a_1, r_1, a_2, r_2)
 
         a_q = a_3 + a_4
-        r_q = VectorManipulation.vector_gaussian(a_3, r_3, a_4, r_4)
+        r_q = Vector.gaussian(a_3, r_3, a_4, r_4)
 
-        r_pq = VectorManipulation.squared_distance(r_p, r_q)
+        r_pq = Vector.distance(r_p, r_q)
 
         delta = (1/(4*a_p)) + (1/(4*a_q))
 

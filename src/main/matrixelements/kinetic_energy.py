@@ -22,7 +22,7 @@ class KineticEnergyElement:
                 l_2 = primitive_gaussian_array_j[b].integral_exponents
                 n_1 = (((2 * a_1) / np.pi)**(3/4)) * (((((8 * a_1)**(l_1[0] + l_1[1] + l_1[2])) * np.math.factorial(l_1[0]) * np.math.factorial(l_1[1]) * np.math.factorial(l_1[2])) / (np.math.factorial(2 * l_1[0]) * np.math.factorial(2 * l_1[1]) * np.math.factorial(2 * l_1[2])))**(1/2))
                 n_2 = (((2 * a_2) / np.pi)**(3/4)) * (((((8 * a_2)**(l_2[0] + l_2[1] + l_2[2])) * np.math.factorial(l_2[0]) * np.math.factorial(l_2[1]) * np.math.factorial(l_2[2])) / (np.math.factorial(2 * l_2[0]) * np.math.factorial(2 * l_2[1]) * np.math.factorial(2 * l_2[2])))**(1/2))
-                primitive_gaussian_array_k = PrimitiveBasisFactory().del_operator(primitive_gaussian_array_j[b])
+                primitive_gaussian_array_k = PrimitiveBasisFactory.del_operator(primitive_gaussian_array_j[b])
                 s_ij = 0
                 for c in range(0, len(primitive_gaussian_array_k)):
                     c_3 = primitive_gaussian_array_k[c].contraction
