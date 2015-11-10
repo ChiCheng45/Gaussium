@@ -56,7 +56,7 @@ and from my program,
     TOTAL ENERGY: -2.88738719746 a.u.
 
 ##Calculation of HeH<sup>+</sup> in 6-311+G**
-Able to run calculations for all types of orbitals now, below shows the HeH+ molecule using the 6-311+G basis set which contains polarization functions for H and He. Some slight differences between Spartan and my program possibly due to symmetry arguments used in Spartan. The coefficients in my program for the p<sub>x</sub> and p<sub>y</sub> are non-zero. This calculation in particular ~4100 times longer then Spartan and has a lot of inefficiencies that need sorting out. 
+Able to run calculations for all types of orbitals now, below shows the HeH+ molecule using the 6-311+G basis set which contains polarization functions for H and He. Some slight differences between Spartan and my program possibly due to symmetry arguments used in Spartan. The coefficients in my program for the p<sub>x</sub> and p<sub>y</sub> are non-zero. This calculation in particular is ~4100 times longer then Spartan and has a lot of inefficiencies that need sorting out. 
         
         SPARTAN STUDENT Quantum Mechanics Program:  (PC/x86)   Release  5.0.0v4
     
