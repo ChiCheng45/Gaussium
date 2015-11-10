@@ -53,7 +53,6 @@ class ElectronRepulsionIntegral:
         a_p = a_1 + a_2
         r_p = VectorManipulation.vector_gaussian(a_1, r_1, a_2, r_2)
 
-
         a_q = a_3 + a_4
         r_q = VectorManipulation.vector_gaussian(a_3, r_3, a_4, r_4)
 
@@ -71,13 +70,13 @@ class ElectronRepulsionIntegral:
                             for m in range(0, l_1[1] + l_2[1] + 1):
                                 for s in range(0, int(m / 2) + 1):
                                     for mm in range(0, l_3[1] + l_4[1] + 1):
-                                        for ss in range(0, int(mm / 2) + 1):
+                                        for ss in range(0, int(mm/2) + 1):
                                             for j in range(0, int((m + mm - 2*s - 2*ss) / 2) + 1):
                                                 out3 = cls.b_function(m, mm, s, ss, j, l_1[1], l_2[1], r_1[1], r_2[1], r_p[1], a_p, l_3[1], l_4[1], r_3[1], r_4[1], r_q[1], a_q)
                                                 for n in range(0, l_1[2] + l_2[2] + 1):
-                                                    for t in range(0, int(n / 2) + 1):
+                                                    for t in range(0, int(n/2) + 1):
                                                         for nn in range(0, l_3[2] + l_4[2] + 1):
-                                                            for tt in range(0, int(nn / 2) + 1):
+                                                            for tt in range(0, int(nn/2) + 1):
                                                                 for k in range(0, int((n + nn - 2*t - 2*tt) / 2) + 1):
                                                                     out4 = cls.b_function(n, nn, t, tt, k, l_1[2], l_2[2], r_1[2], r_2[2], r_p[2], a_p, l_3[2], l_4[2], r_3[2], r_4[2], r_q[2], a_q)
                                                                     v = l + ll + m + mm + n + nn - 2*(r + rr + s + ss + t + tt) - (i + j + k)

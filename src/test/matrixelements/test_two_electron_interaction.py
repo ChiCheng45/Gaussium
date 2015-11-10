@@ -3,6 +3,7 @@ from unittest.mock import MagicMock
 from src.main.matrixelements import TwoElectronRepulsionElement
 from numpy import testing
 
+
 class TestTwoElectronRepulsionElement(TestCase):
 
     def setUp(self):

@@ -22,7 +22,7 @@ class SCFProcedure:
         iteration_counter = 0
         delta_energy = 1
 
-        while abs(delta_energy) > 0.00000000001:
+        while abs(delta_energy) > 0.000001:
 
             iteration_counter += 1
             print('\n\n----------ITERATION: ' + str(iteration_counter) + str('----------'))

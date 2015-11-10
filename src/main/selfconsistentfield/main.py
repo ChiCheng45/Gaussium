@@ -15,9 +15,9 @@ if __name__ == '__main__':
     print('\nA BASIC QUANTUM CHEMICAL PROGRAM IN PYTHON\n\n')
 
     nuclei_array, electrons = FileInputNuclei('HeH+.mol').create_nuclei_array_and_electron_count()
-    basis_set_array = FileInputBasis('STO-3G-edited.gbs', nuclei_array).create_basis_set_array()
+    basis_set_array = FileInputBasis('6-311+GPP.gbs', nuclei_array).create_basis_set_array()
 
-    nuclei_name_list = [x.name for x in nuclei_array]
+    nuclei_name_list = [x.element for x in nuclei_array]
     print(nuclei_name_list)
 
     coulomb_law_array = CoulombsLawArray(nuclei_array).calculate_total_electric_potential_energy()
@@ -47,7 +47,11 @@ if __name__ == '__main__':
     print(h_core_matrix)
 
     s_matrix_eigenvalues, s_matrix_unitary = np.linalg.eig(s_matrix)
-    x_canonical = s_matrix_unitary * np.diag(s_matrix_eigenvalues ** (-1/2))
+    sort = s_matrix_eigenvalues.argsort()[::-1]
+    s_matrix_eigenvalues = s_matrix_eigenvalues[sort]
+    s_matrix_eigenvalues = [x**(-1/2) for x in s_matrix_eigenvalues]
+    s_matrix_unitary = s_matrix_unitary[:, sort]
+    x_canonical = s_matrix_unitary * np.diag(s_matrix_eigenvalues)
     print('\nTRANSFORMATION MATRIX')
     print(x_canonical)
 

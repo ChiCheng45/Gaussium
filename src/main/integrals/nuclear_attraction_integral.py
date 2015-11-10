@@ -54,6 +54,5 @@ class NuclearAttractionIntegral:
                                             out5 = GammaFunction.incomplete_gamma_function(v, g * r_pc**2)
                                             out6 = out2 * out3 * out4 * out5
                                             out1 += out6
-
         out1 *= ((2 * np.pi) / g) * np.exp(- (a_1 * a_2 * r_ab**2) / g)
         return out1

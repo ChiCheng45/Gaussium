@@ -1,5 +1,6 @@
 import numpy as np
 from scipy.spatial import distance
+from src.main.common import VectorManipulation
 
 class CoulombsLawArray:
 
@@ -20,6 +21,6 @@ class CoulombsLawArray:
         return np.matrix(energy_matrix)
 
     def calc_electric_potential_energy(self, nuc1, nuc2):
-        r_12 = distance.euclidean(nuc1.coordinates, nuc2.coordinates)
+        r_12 = VectorManipulation.squared_distance(nuc1.coordinates, nuc2.coordinates)
         electric_potential_energy = (nuc1.charge * nuc2.charge) / r_12
         return electric_potential_energy

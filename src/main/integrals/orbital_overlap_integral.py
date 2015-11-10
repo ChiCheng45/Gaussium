@@ -6,13 +6,15 @@ import numpy as np
 
 class OverlapIntegral:
 
-    def s_function(self, l_1, l_2, a, b, g):
+    @staticmethod
+    def s_function(l_1, l_2, a, b, g):
         s = 0
         for j in range(0, int((l_1 + l_2) / 2) + 1):
             s += BinomialCoefficientsFunction.calculate_coefficient(2 * j, l_1, l_2, a, b) * (factorial2(2 * j - 1) / (2 * g)**j)
         return s
 
-    def primitive_overlap_integral(self, gaussian_1, gaussian_2):
+    @classmethod
+    def primitive_overlap_integral(cls, gaussian_1, gaussian_2):
 
         a_1 = gaussian_1.exponent
         a_2 = gaussian_2.exponent
@@ -29,8 +31,8 @@ class OverlapIntegral:
 
         g = a_1 + a_2
 
-        s_x = self.s_function(l_1[0], l_2[0], r_p_a[0], r_p_b[0], g)
-        s_y = self.s_function(l_1[1], l_2[1], r_p_a[1], r_p_b[1], g)
-        s_z = self.s_function(l_1[2], l_2[2], r_p_a[2], r_p_b[2], g)
+        s_x = cls.s_function(l_1[0], l_2[0], r_p_a[0], r_p_b[0], g)
+        s_y = cls.s_function(l_1[1], l_2[1], r_p_a[1], r_p_b[1], g)
+        s_z = cls.s_function(l_1[2], l_2[2], r_p_a[2], r_p_b[2], g)
         s_ij = (np.pi / g)**(3/2) * np.exp(- a_1 * a_2 * r_ab**2 / g) * s_x * s_y * s_z
         return s_ij

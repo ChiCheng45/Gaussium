@@ -1,20 +1,15 @@
 from unittest import TestCase
 from src.main.fileinput import FileInputBasis
 from unittest.mock import MagicMock
-import numpy as np
 
 
 class TestFileInputBasis(TestCase):
 
     def setUp(self):
-        helium = MagicMock()
-        hydrogen = MagicMock()
-        self.nuclei_array = [helium, hydrogen]
-
-        hydrogen.get_name.return_value = 'HYDROGEN'
-        hydrogen.get_coordinates.return_value = np.matrix([[0], [0], [-0.7316]])
-        helium.get_name.return_value = 'HELIUM'
-        helium.get_coordinates.return_value = np.matrix([[0], [0], [0.7316]])
+        helium = MagicMock(element='HELIUM', charge=2, mass=4, coordinates=(0.000000, 0.000000, 0.7316))
+        hydrogen = MagicMock(element='HYDROGEN', charge=2, mass=1, coordiantes=(0.000000, 0.000000, -0.7316))
+        nuclei_array = [helium, hydrogen]
+        self.file_reader_basis = FileInputBasis('3-21G.gbs', nuclei_array)
 
     def test_create_basis_set_array_returns_basis_array_with_names_for_sto3g(self):
         file_reader_basis = FileInputBasis('STO-3G.gbs', self.nuclei_array)
@@ -110,3 +105,6 @@ class TestFileInputBasis(TestCase):
         self.assertEquals(basis_array[2].get_primitive_gaussian_array()[1].get_exponent(), 0.8245470)
         self.assertEquals(basis_array[3].get_primitive_gaussian_array()[0].get_contraction(), 1.0000000)
         self.assertEquals(basis_array[3].get_primitive_gaussian_array()[0].get_exponent(), 0.1831920)
+
+    def test2(self):
+        basis_array = self.file_reader_basis.create_basis_set_array()

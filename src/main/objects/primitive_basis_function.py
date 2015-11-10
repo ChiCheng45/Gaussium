@@ -1,7 +1,6 @@
 class PrimitiveBasis:
 
-    def __init__(self, orbital_type, contraction, exponent, coordinates, integral_exponents):
-        self.orbital_type = orbital_type
+    def __init__(self, contraction, exponent, coordinates, integral_exponents):
         self.contraction = contraction
         self.exponent = exponent
         self.coordinates = coordinates

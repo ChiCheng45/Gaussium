@@ -1,6 +1,7 @@
 import numpy as np
 from src.main.integrals import NuclearAttractionIntegral
 
+
 class NuclearAttractionElement:
 
     def __init__(self, nuclei_array, basis_set_array):

@@ -1,20 +1,31 @@
-from math import factorial, sqrt
-from scipy.special import erf
+from scipy.special import gamma
 import numpy as np
 
 
 class GammaFunction:
 
     @staticmethod
-    def incomplete_gamma_function(v, u):
-        if u == 0:
-            out = 1
-        else:
-            div = factorial(2*v) / (2*factorial(v))
-            left = ((sqrt(np.pi) * erf(sqrt(u))) / (4**v * u**(v + (1/2))))
-            right = 0
-            for k in range(0, v):
-                right += factorial(v - k) / (4**k * factorial(2*v - 2*k) * u**(k + 1))
-            right *= np.exp(-u)
-            out = div * (left - right)
-        return out
+    def incomplete_gamma_function(v, x):
+        if x <= 20:
+            i = 0
+            out2 = 0
+            while i > -1:
+                out1 = (gamma(v + (1/2)) / gamma(v + i + (3/2))) * x**i
+                if out1 < 1e-10:
+                    break
+                out2 += out1
+                i += 1
+            out2 *= (1/2) * np.exp(-x)
+            return out2
+        elif x > 20:
+            i = 0
+            out2 = 0
+            while i > -1:
+                out1 = (gamma(v + (1/2)) / gamma(v - i + (3/2))) * x**(-i)
+                if out1 < 1e-10:
+                    break
+                out2 += out1
+                i += 1
+            out2 *= (1/2) * np.exp(-x)
+            out2 = (gamma(v + (1/2)) / (2*x**(v + (1/2)))) - out2
+            return out2
