@@ -13,8 +13,8 @@ if __name__ == '__main__':
     print('*********************************************************************************************************')
     print('\nA BASIC QUANTUM CHEMICAL PROGRAM IN PYTHON\n\n')
 
-    nuclei_array, electrons = FileInputNuclei('LiH.mol').create_nuclei_array_and_electron_count()
-    basis_set_array = FileInputBasis('STO-3G.gbs', nuclei_array).create_basis_set_array()
+    nuclei_array, electrons = FileInputNuclei('HeH+.mol').create_nuclei_array_and_electron_count()
+    basis_set_array = FileInputBasis('6-311+GPP.gbs', nuclei_array).create_basis_set_array()
 
     repulsion_dictionary = TwoElectronRepulsionElement(basis_set_array).store_integrals()
 
