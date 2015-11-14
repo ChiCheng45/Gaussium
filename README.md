@@ -56,8 +56,8 @@ and from my program,
     TOTAL ENERGY: -2.88738719746 a.u.
 
 ##Calculation of HeH<sup>+</sup> in 6-311+G**
-Able to run calculations for all types of orbitals now, below shows the HeH+ molecule using the 6-311+G basis set which contains polarization functions for H and He.
-
+Able to run calculations for all types of orbitals now, below shows the HeH+ molecule using the 6-311+G basis set which contains polarization functions for H and He. This calculation in particular takes quite a lot longer then Spartan and has a lot of inefficiencies that need sorting out. 
+        
         SPARTAN STUDENT Quantum Mechanics Program:  (PC/x86)   Release  5.0.0v4
     
     Job type: Single point.
@@ -151,6 +151,17 @@ Able to run calculations for all types of orbitals now, below shows the HeH+ mol
   
 and from my program,
 
+    *********************************************************************************************************
+    
+    BEGIN SCF PROCEDURE
+    SCF ENERGY: -4.197619917017029 a.u.
+    SCF ENERGY: -4.295101268737092 a.u.
+    SCF ENERGY: -4.2960790541862846 a.u.
+    SCF ENERGY: -4.296097875302424 a.u.
+    SCF ENERGY: -4.29609837993943 a.u.
+    SCF ENERGY: -4.296098395922256 a.u.
+    SCF ENERGY: -4.296098396493559 a.u.
+    
     ORBITAL ENERGY EIGENVALUES
     [[-1.63347727  0.          0.          0.          0.          0.          0.          0.          0.          0.          0.          0.        ]
      [ 0.         -0.26339532  0.          0.          0.          0.          0.          0.          0.          0.          0.          0.        ]
@@ -185,5 +196,3 @@ and from my program,
     *********************************************************************************************************
     
     Time Taken: 10.986138812057659s
-    
-    What I cannot create I cannot understand - Richard Feynman
