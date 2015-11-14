@@ -9,13 +9,15 @@ SYNOPSIS
     int matrix_size
 
     create_matrix(self, element)
-    object element
-    numpy.matrix matrix
+    Element element
+    np.matrix matrix
 
 DESCRIPTION
     A class with a create_matrix method that takes in a matrix element calculator and builds the matrix for it for the
     desired matrix_size. For example taking in the orbital overlap matrix element calculator it will build the orbital
-    overlap matrix. The point of this class is to reduced repeating code.
+    overlap matrix. The point of this class is to reduced repeating code. I have purposely made the class calculate go
+    through all values of i, j so that I can check that that element.calculate(i, j) produces a symmetric matrix. It is
+    slightly less efficient but not by much as most of the time is spend on the two electron repulsion integrals.
 
 ARGUMENTS
     def __init__(self, matrix_size)

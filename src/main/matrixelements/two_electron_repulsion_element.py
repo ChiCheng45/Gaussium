@@ -42,6 +42,6 @@ class TwoElectronRepulsionElement:
             for b in range(0, len(self.basis_set_array)):
                 for c in range(0, len(self.basis_set_array)):
                     for d in range(0, len(self.basis_set_array)):
-                        if not (a > b or c > d):
+                        if not (a > b or c > d or a > c or (a == c and b > d)):
                             electron_repulsion_dict[(a, b, c, d)] = self.calculate(a, b, c, d)
         return electron_repulsion_dict

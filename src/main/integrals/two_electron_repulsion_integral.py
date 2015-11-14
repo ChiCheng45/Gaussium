@@ -1,6 +1,6 @@
 from src.main.common import BinomialCoefficientsFunction
 from src.main.common import Vector
-from src.main.common import GammaFunction
+from src.main.common import BoysFunction
 from math import factorial, sqrt
 import numpy as np
 
@@ -81,7 +81,7 @@ class ElectronRepulsionIntegral:
                                                                 for k in range(0, int((n + nn - 2*t - 2*tt) / 2) + 1):
                                                                     out4 = cls.b_function(n, nn, t, tt, k, l_1[2], l_2[2], r_1[2], r_2[2], r_p[2], a_p, l_3[2], l_4[2], r_3[2], r_4[2], r_q[2], a_q)
                                                                     v = l + ll + m + mm + n + nn - 2*(r + rr + s + ss + t + tt) - (i + j + k)
-                                                                    out5 = GammaFunction.incomplete_gamma_function(v, (r_pq**2 / (4 * delta)))
+                                                                    out5 = BoysFunction.calculate(v, (r_pq**2 / (4 * delta)))
                                                                     out6 = out2 * out3 * out4 * out5
                                                                     out1 += out6
         out1 *= cls.gaussian_product_factor(a_1, a_2, a_3, a_4, a_p, a_q, r_1, r_2, r_3, r_4)

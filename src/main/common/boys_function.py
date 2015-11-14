@@ -2,10 +2,10 @@ from scipy.special import gamma
 import numpy as np
 
 
-class GammaFunction:
+class BoysFunction:
 
     @staticmethod
-    def incomplete_gamma_function(v, x):
+    def calculate(v, x):
         if x <= 20:
             i = 0
             out2 = 0

@@ -4,12 +4,6 @@ import math
 class Vector:
 
     @staticmethod
-    def distance(tuple1, tuple2):
-        tuple3 = tuple([a - b for a, b in zip(tuple1, tuple2)])
-        r_ab = math.sqrt(tuple3[0]**2 + tuple3[1]**2 + tuple3[2]**2)
-        return r_ab
-
-    @staticmethod
     def add(tuple1, tuple2):
         return tuple([a + b for a, b in zip(tuple1, tuple2)])
 
@@ -27,6 +21,12 @@ class Vector:
         for x in range(0, len(tuple1)):
             ans += tuple1[x] * tuple2[x]
         return ans
+
+    @staticmethod
+    def distance(tuple1, tuple2):
+        tuple3 = tuple([a - b for a, b in zip(tuple1, tuple2)])
+        r_ab = math.sqrt(tuple3[0]**2 + tuple3[1]**2 + tuple3[2]**2)
+        return r_ab
 
     @classmethod
     def gaussian(cls, a, tuple1, b, tuple2):

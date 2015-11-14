@@ -22,5 +22,12 @@ class GMatrixElement:
             a, b = b, a
         if c > d:
             c, d = d, c
+        if a > c:
+            a, c = c, a
+            b, d = d, b
+        if a == c:
+            if b > d:
+                a, c = c, a
+                b, d = d, b
         out = (a, b, c, d)
         return out
