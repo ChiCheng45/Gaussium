@@ -1,7 +1,6 @@
-from src.main.matrixelements.two_electron_interaction import TwoElectronRepulsionElement
-from src.main.matrixelements.density_matrix import DensityMatrixElement
-from src.main.matrixelements.g_matrix import GMatrixElements
-from src.main.matrixelements.kinetic_energy import KineticEnergyElement
-from src.main.matrixelements.nuclear_attraction import NuclearAttractionElement
-from src.main.matrixelements.orbital_overlap import OverlapElement
-
+from src.main.matrixelements.two_electron_repulsion_element import TwoElectronRepulsionElement
+from src.main.matrixelements.density_matrix_element import DensityMatrixElement
+from src.main.matrixelements.g_matrix_element import GMatrixElement
+from src.main.matrixelements.kinetic_energy_element import KineticEnergyElement
+from src.main.matrixelements.nuclear_attraction_element import NuclearAttractionElement
+from src.main.matrixelements.orbital_overlap_element import OrbitalOverlapElement

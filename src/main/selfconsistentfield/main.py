@@ -1,6 +1,6 @@
 from src.main.common import Matrix
 from src.main.fileinput import FileInputBasis, FileInputNuclei
-from src.main.matrixelements import KineticEnergyElement, NuclearAttractionElement, OverlapElement
+from src.main.matrixelements import KineticEnergyElement, NuclearAttractionElement, OrbitalOverlapElement, TwoElectronRepulsionElement
 from src.main.selfconsistentfield import SCFProcedure, CoulombsLawArray
 import numpy as np
 import time
@@ -13,8 +13,10 @@ if __name__ == '__main__':
     print('*********************************************************************************************************')
     print('\nA BASIC QUANTUM CHEMICAL PROGRAM IN PYTHON\n\n')
 
-    nuclei_array, electrons = FileInputNuclei('HeH+.mol').create_nuclei_array_and_electron_count()
-    basis_set_array = FileInputBasis('STO-3G-edited.gbs', nuclei_array).create_basis_set_array()
+    nuclei_array, electrons = FileInputNuclei('LiH.mol').create_nuclei_array_and_electron_count()
+    basis_set_array = FileInputBasis('STO-3G.gbs', nuclei_array).create_basis_set_array()
+
+    repulsion_dictionary = TwoElectronRepulsionElement(basis_set_array).store_integrals()
 
     nuclei_name_list = [x.element for x in nuclei_array]
     print(nuclei_name_list)
@@ -29,7 +31,7 @@ if __name__ == '__main__':
 
     matrix = Matrix(len(basis_set_array))
 
-    s_matrix = matrix.create_matrix(OverlapElement(basis_set_array))
+    s_matrix = matrix.create_matrix(OrbitalOverlapElement(basis_set_array))
     print('\nORBITAL OVERLAP MATRIX')
     print(s_matrix)
 
@@ -46,7 +48,7 @@ if __name__ == '__main__':
     print(h_core_matrix)
 
     s_matrix_eigenvalues, s_matrix_unitary = np.linalg.eig(s_matrix)
-    sort = s_matrix_eigenvalues.argsort()[::-1]
+    sort = s_matrix_eigenvalues.argsort()[::1]
     s_matrix_eigenvalues = s_matrix_eigenvalues[sort]
     s_matrix_eigenvalues = [x**(-1/2) for x in s_matrix_eigenvalues]
     s_matrix_unitary = s_matrix_unitary[:, sort]
@@ -79,7 +81,7 @@ if __name__ == '__main__':
     print('\n*********************************************************************************************************')
     print('\nBEGIN SCF PROCEDURE')
     scf_procedure = SCFProcedure(h_core_matrix, x_canonical, matrix, basis_set_array, electrons)
-    electron_energy = scf_procedure.begin_scf(orbital_coefficients, orbital_energy_matrix)
+    electron_energy = scf_procedure.begin_scf(orbital_coefficients, repulsion_dictionary)
 
     print('TOTAL NUCLEAR REPULSION ENERGY: ' + str(nuclear_repulsion) + ' a.u.')
     print('TOTAL ENERGY: ' + str(electron_energy + nuclear_repulsion) + ' a.u.')

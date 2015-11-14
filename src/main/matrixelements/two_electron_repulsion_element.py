@@ -1,5 +1,5 @@
 import numpy as np
-from src.main.integrals.two_electron_interaction_integral import ElectronRepulsionIntegral
+from src.main.integrals.two_electron_repulsion_integral import ElectronRepulsionIntegral
 
 
 class TwoElectronRepulsionElement:
@@ -33,6 +33,15 @@ class TwoElectronRepulsionElement:
                         n_2 = (((2 * a_2) / np.pi)**(3/4)) * (((((8 * a_2)**(l_2[0] + l_2[1] + l_2[2])) * np.math.factorial(l_2[0]) * np.math.factorial(l_2[1]) * np.math.factorial(l_2[2])) / (np.math.factorial(2 * l_2[0]) * np.math.factorial(2 * l_2[1]) * np.math.factorial(2 * l_2[2])))**(1/2))
                         n_3 = (((2 * a_3) / np.pi)**(3/4)) * (((((8 * a_3)**(l_3[0] + l_3[1] + l_3[2])) * np.math.factorial(l_3[0]) * np.math.factorial(l_3[1]) * np.math.factorial(l_3[2])) / (np.math.factorial(2 * l_3[0]) * np.math.factorial(2 * l_3[1]) * np.math.factorial(2 * l_3[2])))**(1/2))
                         n_4 = (((2 * a_4) / np.pi)**(3/4)) * (((((8 * a_4)**(l_4[0] + l_4[1] + l_4[2])) * np.math.factorial(l_4[0]) * np.math.factorial(l_4[1]) * np.math.factorial(l_4[2])) / (np.math.factorial(2 * l_4[0]) * np.math.factorial(2 * l_4[1]) * np.math.factorial(2 * l_4[2])))**(1/2))
-
                         f_mn += c_1 * c_2 * c_3 * c_4 * n_1 * n_2 * n_3 * n_4 * ElectronRepulsionIntegral.integral(primitive_gaussian_array_i[a], primitive_gaussian_array_j[b], primitive_gaussian_array_k[c], primitive_gaussian_array_l[d])
         return f_mn
+
+    def store_integrals(self):
+        electron_repulsion_dict = {}
+        for a in range(0, len(self.basis_set_array)):
+            for b in range(0, len(self.basis_set_array)):
+                for c in range(0, len(self.basis_set_array)):
+                    for d in range(0, len(self.basis_set_array)):
+                        if not (a > b or c > d):
+                            electron_repulsion_dict[(a, b, c, d)] = self.calculate(a, b, c, d)
+        return electron_repulsion_dict

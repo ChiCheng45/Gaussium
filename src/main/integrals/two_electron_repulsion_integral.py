@@ -25,9 +25,10 @@ class ElectronRepulsionIntegral:
         pb_x = p_x - b_x
         qc_x = q_x - c_x
         qd_x = q_x - d_x
+        c_x = p_x - q_x
         delta = (1/(4*g_1)) + (1/(4*g_2))
         out1 = (-1)**l * cls.sigma_function(l, l_1, l_2, pa_x, pb_x, r, g_1) * cls.sigma_function(ll, l_3, l_4, qc_x, qd_x, rr, g_2)
-        out2_num = (-1)**i * (2 * delta)**(2 * (r + rr)) * factorial(l + ll - 2*r - 2*rr) * delta**i * p_x**(l + ll - 2*(r + rr + i))
+        out2_num = (-1)**i * (2 * delta)**(2 * (r + rr)) * factorial(l + ll - 2*r - 2*rr) * delta**i * c_x**(l + ll - 2*(r + rr + i))
         out2_den = (4 * delta)**(l + ll) * factorial(i) * factorial(l + ll - 2*(r + rr + i))
         ans = out1 * (out2_num / out2_den)
         return ans

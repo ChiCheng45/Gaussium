@@ -22,3 +22,12 @@ class TestTwoElectronRepulsionElement(TestCase):
     def test_method_calculate_returns_element_for_0000(self):
         element = self.two_electron_repulsion.calculate(0, 0, 0, 0)
         testing.assert_approx_equal(element, 1.3072, 4)
+
+    def test_method_calculate_returns_element_for_0001(self):
+        element = self.two_electron_repulsion.calculate(0, 1, 0, 0)
+        print(element)
+        testing.assert_approx_equal(element, 1.3072, 4)
+
+    def test_store_integrals(self):
+        dictionary = self.two_electron_repulsion.store_integrals()
+        print(dictionary)
