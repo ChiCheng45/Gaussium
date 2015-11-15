@@ -7,9 +7,9 @@ class CoulombsLawArray:
     @classmethod
     def calculate_total_electric_potential_energy(cls, nuclei_array):
         energy_matrix = []
-        for i in range(0, len(nuclei_array)):
+        for i in range(len(nuclei_array)):
             energy_matrix_row = []
-            for j in range(0, len(nuclei_array)):
+            for j in range(len(nuclei_array)):
                 if i == j:
                     energy_matrix_row.append(0)
                 else:

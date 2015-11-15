@@ -13,10 +13,10 @@ class TwoElectronRepulsionElement:
         primitive_gaussian_array_k = self.basis_set_array[k].primitive_gaussian_array
         primitive_gaussian_array_l = self.basis_set_array[l].primitive_gaussian_array
         f_mn = 0
-        for a in range(0, len(primitive_gaussian_array_i)):
-            for b in range(0, len(primitive_gaussian_array_j)):
-                for c in range(0, len(primitive_gaussian_array_k)):
-                    for d in range(0, len(primitive_gaussian_array_l)):
+        for a in range(len(primitive_gaussian_array_i)):
+            for b in range(len(primitive_gaussian_array_j)):
+                for c in range(len(primitive_gaussian_array_k)):
+                    for d in range(len(primitive_gaussian_array_l)):
                         a_1 = primitive_gaussian_array_i[a].exponent
                         a_2 = primitive_gaussian_array_j[b].exponent
                         a_3 = primitive_gaussian_array_k[c].exponent
@@ -38,10 +38,10 @@ class TwoElectronRepulsionElement:
 
     def store_integrals(self):
         electron_repulsion_dict = {}
-        for a in range(0, len(self.basis_set_array)):
-            for b in range(0, len(self.basis_set_array)):
-                for c in range(0, len(self.basis_set_array)):
-                    for d in range(0, len(self.basis_set_array)):
+        for a in range(len(self.basis_set_array)):
+            for b in range(len(self.basis_set_array)):
+                for c in range(len(self.basis_set_array)):
+                    for d in range(len(self.basis_set_array)):
                         if not (a > b or c > d or a > c or (a == c and b > d)):
                             electron_repulsion_dict[(a, b, c, d)] = self.calculate(a, b, c, d)
         return electron_repulsion_dict

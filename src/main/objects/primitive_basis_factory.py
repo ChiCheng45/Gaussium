@@ -7,13 +7,13 @@ class PrimitiveBasisFactory:
     @staticmethod
     def expand_basis(file_list, coordinates, nuclei):
         basis_list = []
-        for a in range(0, len(file_list)):
+        for a in range(len(file_list)):
             if file_list[a][0] == 'S':
                 primitive_basis_s_list = []
                 for b in range(1, len(file_list[a])):
                     primitive_basis = PrimitiveBasis(file_list[a][b][0], file_list[a][b][1], coordinates, (0, 0, 0))
                     primitive_basis_s_list.append(primitive_basis)
-                basis_s = Basis(nuclei, primitive_basis_s_list)
+                basis_s = Basis(primitive_basis_s_list)
                 basis_list.append(basis_s)
             elif file_list[a][0] == 'L':
                 primitive_basis_s_list = []
@@ -29,10 +29,10 @@ class PrimitiveBasisFactory:
                     primitive_basis_px_list.append(primitive_basis_px)
                     primitive_basis_py_list.append(primitive_basis_py)
                     primitive_basis_pz_list.append(primitive_basis_pz)
-                basis_s = Basis(nuclei, primitive_basis_s_list)
-                basis_px = Basis(nuclei, primitive_basis_px_list)
-                basis_py = Basis(nuclei, primitive_basis_py_list)
-                basis_pz = Basis(nuclei, primitive_basis_pz_list)
+                basis_s = Basis(primitive_basis_s_list)
+                basis_px = Basis(primitive_basis_px_list)
+                basis_py = Basis(primitive_basis_py_list)
+                basis_pz = Basis(primitive_basis_pz_list)
                 basis_list.append(basis_s)
                 basis_list.append(basis_px)
                 basis_list.append(basis_py)
@@ -48,9 +48,9 @@ class PrimitiveBasisFactory:
                     primitive_basis_px_list.append(primitive_basis_px)
                     primitive_basis_py_list.append(primitive_basis_py)
                     primitive_basis_pz_list.append(primitive_basis_pz)
-                basis_px = Basis(nuclei, primitive_basis_px_list)
-                basis_py = Basis(nuclei, primitive_basis_py_list)
-                basis_pz = Basis(nuclei, primitive_basis_pz_list)
+                basis_px = Basis(primitive_basis_px_list)
+                basis_py = Basis(primitive_basis_py_list)
+                basis_pz = Basis(primitive_basis_pz_list)
                 basis_list.append(basis_px)
                 basis_list.append(basis_py)
                 basis_list.append(basis_pz)

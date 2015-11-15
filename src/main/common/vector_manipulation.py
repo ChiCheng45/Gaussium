@@ -18,7 +18,7 @@ class Vector:
     @staticmethod
     def dot_product(tuple1, tuple2):
         ans = 0
-        for x in range(0, len(tuple1)):
+        for x in range(len(tuple1)):
             ans += tuple1[x] * tuple2[x]
         return ans
 

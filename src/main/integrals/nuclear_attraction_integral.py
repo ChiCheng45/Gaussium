@@ -38,17 +38,17 @@ class NuclearAttractionIntegral:
         g = a_1 + a_2
 
         out1 = 0
-        for l in range(0, l_1[0] + l_2[0] + 1):
-            for r in range(0, int(l/2) + 1):
-                for i in range(0, int((l - 2*r) / 2) + 1):
+        for l in range(l_1[0] + l_2[0] + 1):
+            for r in range(int(l/2) + 1):
+                for i in range(int((l - 2*r) / 2) + 1):
                     out2 = cls.a_function(l, r, i, l_1[0], l_2[0], r_p_a[0], r_p_b[0], r_p_c[0], g)
-                    for m in range(0, l_1[1] + l_2[1] + 1):
-                        for s in range(0, int(m/2) + 1):
-                            for j in range(0, int((m - 2*s) / 2) + 1):
+                    for m in range(l_1[1] + l_2[1] + 1):
+                        for s in range(int(m/2) + 1):
+                            for j in range(int((m - 2*s) / 2) + 1):
                                 out3 = cls.a_function(m, s, j, l_1[1], l_2[1], r_p_a[1], r_p_b[1], r_p_c[1], g)
-                                for n in range(0, l_1[2] + l_2[2] + 1):
-                                    for t in range(0, int(n/2) + 1):
-                                        for k in range(0, int((n - 2*t) / 2) + 1):
+                                for n in range(l_1[2] + l_2[2] + 1):
+                                    for t in range(int(n/2) + 1):
+                                        for k in range(int((n - 2*t) / 2) + 1):
                                             out4 = cls.a_function(n, t, k, l_1[2], l_2[2], r_p_a[2], r_p_b[2], r_p_c[2], g)
                                             v = (l + m + n) - 2*(r + s + t) - (i + j + k)
                                             out5 = BoysFunction.calculate(v, g * r_pc**2)

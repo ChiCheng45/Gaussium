@@ -12,7 +12,7 @@ class FileInputBasis:
 
     def create_basis_set_array(self):
         basis_array = []
-        for a in range(0, len(self.nuclei_array)):
+        for a in range(len(self.nuclei_array)):
             nuclei = self.nuclei_array[a]
             regex = nuclei.element + '.*?#'
             file = open(self.file_input_basis, 'r')

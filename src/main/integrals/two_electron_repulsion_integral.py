@@ -62,23 +62,23 @@ class ElectronRepulsionIntegral:
         delta = (1/(4*a_p)) + (1/(4*a_q))
 
         out1 = 0
-        for l in range(0, l_1[0] + l_2[0] + 1):
-            for r in range(0, int(l/2) + 1):
-                for ll in range(0, l_3[0] + l_4[0] + 1):
-                    for rr in range(0, int(ll/2) + 1):
-                        for i in range(0, int((l + ll - 2*r - 2*rr) / 2) + 1):
+        for l in range(l_1[0] + l_2[0] + 1):
+            for r in range(int(l/2) + 1):
+                for ll in range(l_3[0] + l_4[0] + 1):
+                    for rr in range(int(ll/2) + 1):
+                        for i in range(int((l + ll - 2*r - 2*rr) / 2) + 1):
                             out2 = cls.b_function(l, ll, r, rr, i, l_1[0], l_2[0], r_1[0], r_2[0], r_p[0], a_p, l_3[0], l_4[0], r_3[0], r_4[0], r_q[0], a_q)
-                            for m in range(0, l_1[1] + l_2[1] + 1):
-                                for s in range(0, int(m / 2) + 1):
-                                    for mm in range(0, l_3[1] + l_4[1] + 1):
-                                        for ss in range(0, int(mm/2) + 1):
-                                            for j in range(0, int((m + mm - 2*s - 2*ss) / 2) + 1):
+                            for m in range(l_1[1] + l_2[1] + 1):
+                                for s in range(int(m / 2) + 1):
+                                    for mm in range(l_3[1] + l_4[1] + 1):
+                                        for ss in range(int(mm/2) + 1):
+                                            for j in range(int((m + mm - 2*s - 2*ss) / 2) + 1):
                                                 out3 = cls.b_function(m, mm, s, ss, j, l_1[1], l_2[1], r_1[1], r_2[1], r_p[1], a_p, l_3[1], l_4[1], r_3[1], r_4[1], r_q[1], a_q)
-                                                for n in range(0, l_1[2] + l_2[2] + 1):
-                                                    for t in range(0, int(n/2) + 1):
-                                                        for nn in range(0, l_3[2] + l_4[2] + 1):
-                                                            for tt in range(0, int(nn/2) + 1):
-                                                                for k in range(0, int((n + nn - 2*t - 2*tt) / 2) + 1):
+                                                for n in range(l_1[2] + l_2[2] + 1):
+                                                    for t in range(int(n/2) + 1):
+                                                        for nn in range(l_3[2] + l_4[2] + 1):
+                                                            for tt in range(int(nn/2) + 1):
+                                                                for k in range(int((n + nn - 2*t - 2*tt) / 2) + 1):
                                                                     out4 = cls.b_function(n, nn, t, tt, k, l_1[2], l_2[2], r_1[2], r_2[2], r_p[2], a_p, l_3[2], l_4[2], r_3[2], r_4[2], r_q[2], a_q)
                                                                     v = l + ll + m + mm + n + nn - 2*(r + rr + s + ss + t + tt) - (i + j + k)
                                                                     out5 = BoysFunction.calculate(v, (r_pq**2 / (4 * delta)))

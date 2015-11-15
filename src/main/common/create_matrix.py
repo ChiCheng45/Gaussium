@@ -47,9 +47,9 @@ class Matrix:
 
     def create_matrix(self, element):
         matrix = []
-        for i in range(0, self.matrix_size):
+        for i in range(self.matrix_size):
             matrix_row = []
-            for j in range(0, self.matrix_size):
+            for j in range(self.matrix_size):
                 element_ij = element.calculate(i, j)
                 matrix_row.append(element_ij)
             matrix.append(matrix_row)

@@ -6,11 +6,10 @@ from src.main.selfconsistentfield import TotalEnergy
 
 class SCFProcedure:
 
-    def __init__(self, core_hamiltonian_matrix, transformation_matrix, matrix, basis_set_array, electrons):
+    def __init__(self, core_hamiltonian_matrix, transformation_matrix, matrix, electrons):
         self.core_hamiltonian_matrix = core_hamiltonian_matrix
         self.transformation_matrix = transformation_matrix
         self.matrix = matrix
-        self.basis_set_array = basis_set_array
         self.electrons = electrons
 
     def begin_scf(self, orbital_coefficients, repulsion_dictionary):

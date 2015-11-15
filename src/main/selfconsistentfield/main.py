@@ -13,8 +13,8 @@ if __name__ == '__main__':
     print('*********************************************************************************************************')
     print('\nA BASIC QUANTUM CHEMICAL PROGRAM IN PYTHON\n\n')
 
-    nuclei_array, electrons = FileInputNuclei('LiH.mol').create_nuclei_array_and_electron_count()
-    basis_set_array = FileInputBasis('STO-3G.gbs', nuclei_array).create_basis_set_array()
+    nuclei_array, electrons = FileInputNuclei('HeH+.mol').create_nuclei_array_and_electron_count()
+    basis_set_array = FileInputBasis('6-311+GPP.gbs', nuclei_array).create_basis_set_array()
 
     nuclei_name_list = [x.element for x in nuclei_array]
     print(nuclei_name_list)
@@ -81,7 +81,7 @@ if __name__ == '__main__':
 
     repulsion_dictionary = TwoElectronRepulsionElement(basis_set_array).store_integrals()
 
-    scf_procedure = SCFProcedure(h_core_matrix, x_canonical, matrix, basis_set_array, electrons)
+    scf_procedure = SCFProcedure(h_core_matrix, x_canonical, matrix, electrons)
     electron_energy = scf_procedure.begin_scf(orbital_coefficients, repulsion_dictionary)
 
     print('TOTAL NUCLEAR REPULSION ENERGY: ' + str(nuclear_repulsion) + ' a.u.')

@@ -14,8 +14,8 @@ class OrbitalOverlapElement:
         else:
             primitive_gaussian_array_i = self.basis_set_array[i].primitive_gaussian_array
             primitive_gaussian_array_j = self.basis_set_array[j].primitive_gaussian_array
-            for a in range(0, len(primitive_gaussian_array_i)):
-                for b in range(0, len(primitive_gaussian_array_j)):
+            for a in range(len(primitive_gaussian_array_i)):
+                for b in range(len(primitive_gaussian_array_j)):
                     a_1 = primitive_gaussian_array_i[a].exponent
                     a_2 = primitive_gaussian_array_j[b].exponent
                     c_1 = primitive_gaussian_array_i[a].contraction
