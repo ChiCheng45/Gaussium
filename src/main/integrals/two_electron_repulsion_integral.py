@@ -1,3 +1,4 @@
+from src.main.objects import PrimitiveBasisFactory
 from src.main.common import BinomialCoefficientsFunction
 from src.main.common import Vector
 from src.main.common import BoysFunction
@@ -35,6 +36,9 @@ class ElectronRepulsionIntegral:
 
     @classmethod
     def integral(cls, g1, g2, g3, g4):
+        g5 = PrimitiveBasisFactory.gaussian_product(g1, g2)
+        g6 = PrimitiveBasisFactory.gaussian_product(g3, g4)
+
         a_1 = g1.exponent
         r_1 = g1.coordinates
         l_1 = g1.integral_exponents
@@ -51,15 +55,14 @@ class ElectronRepulsionIntegral:
         r_4 = g4.coordinates
         l_4 = g4.integral_exponents
 
-        a_p = a_1 + a_2
-        r_p = Vector.gaussian(a_1, r_1, a_2, r_2)
+        a_5 = g5.exponent
+        r_5 = g5.coordinates
 
-        a_q = a_3 + a_4
-        r_q = Vector.gaussian(a_3, r_3, a_4, r_4)
+        a_6 = g6.exponent
+        r_6 = g6.coordinates
 
-        r_pq = Vector.distance(r_p, r_q)
-
-        delta = (1/(4*a_p)) + (1/(4*a_q))
+        r_56 = Vector.distance(r_5, r_6)
+        delta = (1/(4*a_5)) + (1/(4*a_6))
 
         out1 = 0
         for l in range(l_1[0] + l_2[0] + 1):
@@ -67,22 +70,25 @@ class ElectronRepulsionIntegral:
                 for ll in range(l_3[0] + l_4[0] + 1):
                     for rr in range(int(ll/2) + 1):
                         for i in range(int((l + ll - 2*r - 2*rr) / 2) + 1):
-                            out2 = cls.b_function(l, ll, r, rr, i, l_1[0], l_2[0], r_1[0], r_2[0], r_p[0], a_p, l_3[0], l_4[0], r_3[0], r_4[0], r_q[0], a_q)
+                            out2 = cls.b_function(l, ll, r, rr, i, l_1[0], l_2[0], r_1[0], r_2[0], r_5[0], a_5, l_3[0], l_4[0], r_3[0], r_4[0], r_6[0], a_6)
                             for m in range(l_1[1] + l_2[1] + 1):
                                 for s in range(int(m / 2) + 1):
                                     for mm in range(l_3[1] + l_4[1] + 1):
                                         for ss in range(int(mm/2) + 1):
                                             for j in range(int((m + mm - 2*s - 2*ss) / 2) + 1):
-                                                out3 = cls.b_function(m, mm, s, ss, j, l_1[1], l_2[1], r_1[1], r_2[1], r_p[1], a_p, l_3[1], l_4[1], r_3[1], r_4[1], r_q[1], a_q)
+                                                out3 = cls.b_function(m, mm, s, ss, j, l_1[1], l_2[1], r_1[1], r_2[1], r_5[1], a_5, l_3[1], l_4[1], r_3[1], r_4[1], r_6[1], a_6)
                                                 for n in range(l_1[2] + l_2[2] + 1):
                                                     for t in range(int(n/2) + 1):
                                                         for nn in range(l_3[2] + l_4[2] + 1):
                                                             for tt in range(int(nn/2) + 1):
                                                                 for k in range(int((n + nn - 2*t - 2*tt) / 2) + 1):
-                                                                    out4 = cls.b_function(n, nn, t, tt, k, l_1[2], l_2[2], r_1[2], r_2[2], r_p[2], a_p, l_3[2], l_4[2], r_3[2], r_4[2], r_q[2], a_q)
+                                                                    out4 = cls.b_function(n, nn, t, tt, k, l_1[2], l_2[2], r_1[2], r_2[2], r_5[2], a_5, l_3[2], l_4[2], r_3[2], r_4[2], r_6[2], a_6)
                                                                     v = l + ll + m + mm + n + nn - 2*(r + rr + s + ss + t + tt) - (i + j + k)
-                                                                    out5 = BoysFunction.calculate(v, (r_pq**2 / (4 * delta)))
-                                                                    out6 = out2 * out3 * out4 * out5
-                                                                    out1 += out6
-        out1 *= cls.gaussian_product_factor(a_1, a_2, a_3, a_4, a_p, a_q, r_1, r_2, r_3, r_4)
+                                                                    out5 = BoysFunction.function(v, (r_56**2 / (4 * delta)))
+                                                                    out1 += out2 * out3 * out4 * out5
+        out1 *= cls.gaussian_product_factor(a_1, a_2, a_3, a_4, a_5, a_6, r_1, r_2, r_3, r_4)
         return out1
+
+    @classmethod
+    def symmetry_check(cls, g1, g2, g3, g4):
+        pass

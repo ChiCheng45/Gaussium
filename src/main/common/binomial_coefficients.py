@@ -45,7 +45,7 @@ SEE ALSO
     https://en.wikipedia.org/wiki/Combination
 
 DIAGNOSTICS
-    None.
+    None
 """
 
 

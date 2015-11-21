@@ -1,3 +1,4 @@
+from src.main.common import Vector
 from src.main.objects import PrimitiveBasis
 from src.main.objects import Basis
 
@@ -55,6 +56,17 @@ class PrimitiveBasisFactory:
                 basis_list.append(basis_py)
                 basis_list.append(basis_pz)
         return basis_list
+
+    @staticmethod
+    def gaussian_product(gaussian1, gaussian2):
+        contraction = gaussian1.contraction * gaussian2.contraction
+        exponent = gaussian1.exponent + gaussian2.exponent
+        coordinates = Vector.gaussian(gaussian1.exponent, gaussian1.coordinates, gaussian2.exponent, gaussian2.coordinates)
+        l = gaussian1.integral_exponents[0] + gaussian2.integral_exponents[0]
+        m = gaussian1.integral_exponents[1] + gaussian2.integral_exponents[1]
+        n = gaussian1.integral_exponents[2] + gaussian2.integral_exponents[2]
+        gaussian3 = PrimitiveBasis(contraction, exponent, coordinates, (l, m, n))
+        return gaussian3
 
     @staticmethod
     def del_operator(primitive_gaussian):
