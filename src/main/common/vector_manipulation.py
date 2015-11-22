@@ -1,4 +1,4 @@
-import math
+from math import sqrt
 
 """
 NAME
@@ -83,7 +83,7 @@ class Vector:
     @staticmethod
     def distance(tuple1, tuple2):
         tuple3 = tuple([a - b for a, b in zip(tuple1, tuple2)])
-        r_ab = math.sqrt(tuple3[0]**2 + tuple3[1]**2 + tuple3[2]**2)
+        r_ab = sqrt(tuple3[0]**2 + tuple3[1]**2 + tuple3[2]**2)
         return r_ab
 
     @classmethod

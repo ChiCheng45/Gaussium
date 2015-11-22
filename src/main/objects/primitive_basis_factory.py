@@ -1,4 +1,3 @@
-from src.main.common import Vector
 from src.main.objects import PrimitiveBasis
 from src.main.objects import Basis
 
@@ -6,7 +5,7 @@ from src.main.objects import Basis
 class PrimitiveBasisFactory:
 
     @staticmethod
-    def expand_basis(file_list, coordinates, nuclei):
+    def expand_basis(file_list, coordinates):
         basis_list = []
         for a in range(len(file_list)):
             if file_list[a][0] == 'S':
@@ -14,7 +13,7 @@ class PrimitiveBasisFactory:
                 for b in range(1, len(file_list[a])):
                     primitive_basis = PrimitiveBasis(file_list[a][b][0], file_list[a][b][1], coordinates, (0, 0, 0))
                     primitive_basis_s_list.append(primitive_basis)
-                basis_s = Basis(primitive_basis_s_list)
+                basis_s = Basis(primitive_basis_s_list, coordinates, (0, 0, 0))
                 basis_list.append(basis_s)
             elif file_list[a][0] == 'L':
                 primitive_basis_s_list = []
@@ -30,10 +29,10 @@ class PrimitiveBasisFactory:
                     primitive_basis_px_list.append(primitive_basis_px)
                     primitive_basis_py_list.append(primitive_basis_py)
                     primitive_basis_pz_list.append(primitive_basis_pz)
-                basis_s = Basis(primitive_basis_s_list)
-                basis_px = Basis(primitive_basis_px_list)
-                basis_py = Basis(primitive_basis_py_list)
-                basis_pz = Basis(primitive_basis_pz_list)
+                basis_s = Basis(primitive_basis_s_list, coordinates, (0, 0, 0))
+                basis_px = Basis(primitive_basis_px_list, coordinates, (1, 0, 0))
+                basis_py = Basis(primitive_basis_py_list, coordinates, (0, 1, 0))
+                basis_pz = Basis(primitive_basis_pz_list, coordinates, (0, 0, 1))
                 basis_list.append(basis_s)
                 basis_list.append(basis_px)
                 basis_list.append(basis_py)
@@ -49,24 +48,13 @@ class PrimitiveBasisFactory:
                     primitive_basis_px_list.append(primitive_basis_px)
                     primitive_basis_py_list.append(primitive_basis_py)
                     primitive_basis_pz_list.append(primitive_basis_pz)
-                basis_px = Basis(primitive_basis_px_list)
-                basis_py = Basis(primitive_basis_py_list)
-                basis_pz = Basis(primitive_basis_pz_list)
+                basis_px = Basis(primitive_basis_px_list, coordinates, (1, 0, 0))
+                basis_py = Basis(primitive_basis_py_list, coordinates, (0, 1, 0))
+                basis_pz = Basis(primitive_basis_pz_list, coordinates, (0, 0, 1))
                 basis_list.append(basis_px)
                 basis_list.append(basis_py)
                 basis_list.append(basis_pz)
         return basis_list
-
-    @staticmethod
-    def gaussian_product(gaussian1, gaussian2):
-        contraction = gaussian1.contraction * gaussian2.contraction
-        exponent = gaussian1.exponent + gaussian2.exponent
-        coordinates = Vector.gaussian(gaussian1.exponent, gaussian1.coordinates, gaussian2.exponent, gaussian2.coordinates)
-        l = gaussian1.integral_exponents[0] + gaussian2.integral_exponents[0]
-        m = gaussian1.integral_exponents[1] + gaussian2.integral_exponents[1]
-        n = gaussian1.integral_exponents[2] + gaussian2.integral_exponents[2]
-        gaussian3 = PrimitiveBasis(contraction, exponent, coordinates, (l, m, n))
-        return gaussian3
 
     @staticmethod
     def del_operator(primitive_gaussian):

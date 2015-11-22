@@ -35,6 +35,6 @@ class FileInputBasis:
                 else:
                     input2.append([float(b) for b in line.split()])
             input1.append(input2)
-            basis_array_from_fact = PrimitiveBasisFactory.expand_basis(input1, nuclei.coordinates, nuclei.element)
+            basis_array_from_fact = PrimitiveBasisFactory.expand_basis(input1, nuclei.coordinates)
             basis_array += basis_array_from_fact
         return basis_array

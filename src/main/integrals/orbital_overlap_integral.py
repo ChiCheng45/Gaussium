@@ -1,7 +1,7 @@
-from scipy.misc import factorial2
 from src.main.common import BinomialCoefficientsFunction
 from src.main.common.vector_manipulation import Vector
-import numpy as np
+from math import exp, pi
+from scipy.misc import factorial2
 
 
 class OverlapIntegral:
@@ -34,5 +34,5 @@ class OverlapIntegral:
         s_x = cls.s_function(l_1[0], l_2[0], r_p_a[0], r_p_b[0], g)
         s_y = cls.s_function(l_1[1], l_2[1], r_p_a[1], r_p_b[1], g)
         s_z = cls.s_function(l_1[2], l_2[2], r_p_a[2], r_p_b[2], g)
-        s_ij = (np.pi / g)**(3/2) * np.exp(- a_1 * a_2 * r_ab**2 / g) * s_x * s_y * s_z
+        s_ij = (pi / g)**(3/2) * exp(- a_1 * a_2 * r_ab**2 / g) * s_x * s_y * s_z
         return s_ij

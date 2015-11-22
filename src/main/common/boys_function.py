@@ -1,5 +1,5 @@
 from scipy.special import gamma
-import numpy as np
+from math import exp
 
 """
 NAME
@@ -26,7 +26,7 @@ SEE ALSO
     two_electron_repulsion_integral.py
 
 DIAGNOSTICS
-    Potential for the while loops to go on till infinity if the series diverges.
+    Potential for the while loops to go on to infinity if the series diverges.
 """
 
 
@@ -44,7 +44,7 @@ class BoysFunction:
                     break
                 ans += seq
                 i += 1
-            ans *= (1/2) * np.exp(-x)
+            ans *= (1/2) * exp(-x)
             return ans
 
         # Approximation of the boys function for large x
@@ -57,6 +57,6 @@ class BoysFunction:
                     break
                 ans += seq
                 i += 1
-            ans *= (1/2) * np.exp(-x)
+            ans *= (1/2) * exp(-x)
             ans = (gamma(v + (1/2)) / (2*x**(v + (1/2)))) - ans
             return ans

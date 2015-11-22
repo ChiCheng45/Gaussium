@@ -1,8 +1,8 @@
 from src.main.common import BinomialCoefficientsFunction
 from src.main.common import BoysFunction
 from src.main.common import Vector
-from scipy.misc import factorial
-import numpy as np
+from math import factorial as fac
+from math import exp, pi
 
 
 class NuclearAttractionIntegral:
@@ -11,8 +11,8 @@ class NuclearAttractionIntegral:
     def a_function(l, r, i, l_1, l_2, pa, pb, pc, g):
         e = 1 / (4*g)
         f_l = BinomialCoefficientsFunction.calculate_coefficient(l, l_1, l_2, pa, pb)
-        num = (-1)**i * factorial(l) * pc**(l - 2*r - 2*i) * e**(r + i)
-        dom = factorial(r) * factorial(i) * factorial(l - 2*r - 2*i)
+        num = (-1)**i * fac(l) * pc**(l - 2*r - 2*i) * e**(r + i)
+        dom = fac(r) * fac(i) * fac(l - 2*r - 2*i)
         out = (-1)**l * f_l * (num/dom)
         return out
 
@@ -54,5 +54,5 @@ class NuclearAttractionIntegral:
                                             out5 = BoysFunction.function(v, g * r_pc**2)
                                             out6 = out2 * out3 * out4 * out5
                                             out1 += out6
-        out1 *= ((2 * np.pi) / g) * np.exp(- (a_1 * a_2 * r_ab**2) / g)
+        out1 *= ((2 * pi) / g) * exp(- (a_1 * a_2 * r_ab**2) / g)
         return out1
