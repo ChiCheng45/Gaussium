@@ -103,7 +103,7 @@ and from my program,
     Time Taken: 10.986138812057659s
 
 ##Calculation of C<sub>2</sub>H<sub>4</sub> in 3-21G
-With some tweaking the code is fast enough to calculate C<sup>2</sup>H<sup>4</sup>.
+With some tweaking the code is fast enough to calculate C<sub>2</sub>H<sub>4</sub>.
 
     Job type: Single point.
     Method: RHF
