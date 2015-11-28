@@ -1,4 +1,4 @@
-from src.main.common import BinomialCoefficientsFunction
+from src.main.common import Binomial
 from src.main.common import BoysFunction
 from src.main.common import Vector
 from math import factorial as fac
@@ -10,7 +10,7 @@ class NuclearAttractionIntegral:
     @staticmethod
     def a_function(l, r, i, l_1, l_2, pa, pb, pc, g):
         e = 1 / (4*g)
-        f_l = BinomialCoefficientsFunction.calculate_coefficient(l, l_1, l_2, pa, pb)
+        f_l = Binomial.calculate_coefficient(l, l_1, l_2, pa, pb)
         num = (-1)**i * fac(l) * pc**(l - 2*r - 2*i) * e**(r + i)
         dom = fac(r) * fac(i) * fac(l - 2*r - 2*i)
         out = (-1)**l * f_l * (num/dom)

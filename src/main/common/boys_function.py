@@ -1,5 +1,5 @@
-from scipy.special import gamma
-from math import exp
+from math import exp, gamma
+from numba import jit
 
 """
 NAME
@@ -13,7 +13,8 @@ SYNOPSIS
 DESCRIPTION
     This class contains the static method, boys_function that approximates the boys function using a summation. The
     methods follows the equation from the Handbook of Computational Chemistry pg 280. The equation is split into two
-    parts for either a small or large x.
+    parts for either a small or large x. I have included the @jit decoration for this function as its easy to get a
+    small speed up here without doing much. Simply install and use anaconda as your python interpreter.
 
 ARGUMENTS
     boys_function(v, x)
@@ -24,6 +25,7 @@ ARGUMENTS
 SEE ALSO
     nuclear_attraction_integral.py
     two_electron_repulsion_integral.py
+    http://numba.pydata.org/
 
 DIAGNOSTICS
     Potential for the while loops to go on to infinity if the series diverges.
@@ -33,6 +35,7 @@ DIAGNOSTICS
 class BoysFunction:
 
     @staticmethod
+    @jit
     def function(v, x):
         # Approximation of the boys function for small x
         if x <= 20:

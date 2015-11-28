@@ -1,4 +1,4 @@
-from src.main.common import BinomialCoefficientsFunction
+from src.main.common import Binomial
 from src.main.common.vector_manipulation import Vector
 from math import exp, pi
 from scipy.misc import factorial2
@@ -10,7 +10,7 @@ class OverlapIntegral:
     def s_function(l_1, l_2, a, b, g):
         s = 0
         for j in range(int((l_1 + l_2) / 2) + 1):
-            s += BinomialCoefficientsFunction.calculate_coefficient(2 * j, l_1, l_2, a, b) * (factorial2(2 * j - 1) / (2 * g)**j)
+            s += Binomial.calculate_coefficient(2 * j, l_1, l_2, a, b) * (factorial2(2 * j - 1) / (2 * g)**j)
         return s
 
     @classmethod

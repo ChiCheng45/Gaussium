@@ -13,7 +13,7 @@ if __name__ == '__main__':
     print('*********************************************************************************************************')
     print('\nA BASIC QUANTUM CHEMICAL PROGRAM IN PYTHON\n\n')
 
-    nuclei_array, electrons = FileInputNuclei('CH4.mol').create_nuclei_array_and_electron_count()
+    nuclei_array, electrons = FileInputNuclei('C2H4.mol').create_nuclei_array_and_electron_count()
     basis_set_array = FileInputBasis('3-21G.gbs', nuclei_array).create_basis_set_array()
 
     nuclei_name_list = [x.element for x in nuclei_array]
@@ -79,10 +79,18 @@ if __name__ == '__main__':
     print('\n*********************************************************************************************************')
     print('\nBEGIN SCF PROCEDURE')
 
-    repulsion_dictionary = TwoElectronRepulsionElement(basis_set_array).store_integrals()
+    """
+    There are two methods to produce the repulsion dictionary. One uses multiprocessing and gives some speed up on
+    larger basis sets molecule. For smaller basis set molecules its better to use the normal single core method. My
+    computer is a dual core with Hyper-threading and I have found that running four processes gives the most performance
+    boost for the molecules I have tested. Doing this actually maxes my cpu out during this part of the calculation.
+    """
 
-    scf_procedure = SCFProcedure(h_core_matrix, x_canonical, matrix, electrons)
-    electron_energy = scf_procedure.begin_scf(orbital_coefficients, repulsion_dictionary)
+    # repulsion_dictionary = TwoElectronRepulsionElement(basis_set_array).store_integrals()
+    repulsion_dictionary = TwoElectronRepulsionElement(basis_set_array).store_parallel(4)
+
+    scf_procedure = SCFProcedure(h_core_matrix, x_canonical, matrix, electrons, repulsion_dictionary)
+    electron_energy = scf_procedure.begin_scf(orbital_coefficients)
 
     print('TOTAL NUCLEAR REPULSION ENERGY: ' + str(nuclear_repulsion) + ' a.u.')
     print('TOTAL ENERGY: ' + str(electron_energy + nuclear_repulsion) + ' a.u.')

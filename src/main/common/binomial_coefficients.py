@@ -49,7 +49,7 @@ DIAGNOSTICS
 """
 
 
-class BinomialCoefficientsFunction:
+class Binomial:
 
     @staticmethod
     def combination(n, k):
@@ -59,9 +59,9 @@ class BinomialCoefficientsFunction:
         else:
             return 0
 
-    @classmethod
-    def calculate_coefficient(cls, j, l_1, l_2, a, b):
+    @staticmethod
+    def calculate_coefficient(j, l_1, l_2, a, b):
         coefficient = 0
         for k in range(max(0, j - l_2), min(j, l_1) + 1):
-            coefficient += cls.combination(l_1, k) * cls.combination(l_2, j - k) * a**(l_1 - k) * b**(l_2 + k - j)
+            coefficient += Binomial.combination(l_1, k) * Binomial.combination(l_2, j - k) * a**(l_1 - k) * b**(l_2 + k - j)
         return coefficient

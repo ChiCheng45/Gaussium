@@ -6,13 +6,14 @@ from src.main.selfconsistentfield import TotalEnergy
 
 class SCFProcedure:
 
-    def __init__(self, core_hamiltonian_matrix, transformation_matrix, matrix, electrons):
+    def __init__(self, core_hamiltonian_matrix, transformation_matrix, matrix, electrons, repulsion_dictionary):
         self.core_hamiltonian_matrix = core_hamiltonian_matrix
         self.transformation_matrix = transformation_matrix
         self.matrix = matrix
         self.electrons = electrons
+        self.repulsion_dictionary = repulsion_dictionary
 
-    def begin_scf(self, orbital_coefficients, repulsion_dictionary):
+    def begin_scf(self, orbital_coefficients):
 
         total_energy = 0
         previous_total_energy = 0
@@ -23,7 +24,7 @@ class SCFProcedure:
             density_matrix_element = DensityMatrixElement(orbital_coefficients, self.electrons)
             density_matrix = self.matrix.create_matrix(density_matrix_element)
 
-            g_matrix_elements = GMatrixElement(density_matrix, repulsion_dictionary)
+            g_matrix_elements = GMatrixElement(density_matrix, self.repulsion_dictionary)
             g_matrix = self.matrix.create_matrix(g_matrix_elements)
             fock_matrix = self.core_hamiltonian_matrix + g_matrix
 

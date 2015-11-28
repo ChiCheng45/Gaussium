@@ -42,18 +42,18 @@ class Symmetry:
         l_3 = basis3.integral_exponents
         l_4 = basis4.integral_exponents
 
-        if r_1[0] == r_2[0] == r_3[0] == r_4[0]:
-            if cls.even_odd(l_1[0]) * cls.even_odd(l_2[0]) * cls.even_odd(l_3[0]) * cls.even_odd(l_4[0]) == -1:
+        if cls.even_odd(l_1[0]) * cls.even_odd(l_2[0]) * cls.even_odd(l_3[0]) * cls.even_odd(l_4[0]) == -1:
+            if r_1[0] == r_2[0] == r_3[0] == r_4[0]:
                 return False
             else:
                 return True
-        elif r_1[1] == r_2[1] == r_3[1] == r_4[1]:
-            if cls.even_odd(l_1[1]) * cls.even_odd(l_2[1]) * cls.even_odd(l_3[1]) * cls.even_odd(l_4[1]) == -1:
+        elif cls.even_odd(l_1[1]) * cls.even_odd(l_2[1]) * cls.even_odd(l_3[1]) * cls.even_odd(l_4[1]) == -1:
+            if r_1[1] == r_2[1] == r_3[1] == r_4[1]:
                 return False
             else:
                 return True
-        elif r_1[2] == r_2[2] == r_3[2] == r_4[2]:
-            if cls.even_odd(l_1[2]) * cls.even_odd(l_2[2]) * cls.even_odd(l_3[2]) * cls.even_odd(l_4[2]) == -1:
+        elif cls.even_odd(l_1[2]) * cls.even_odd(l_2[2]) * cls.even_odd(l_3[2]) * cls.even_odd(l_4[2]) == -1:
+            if r_1[2] == r_2[2] == r_3[2] == r_4[2]:
                 return False
             else:
                 return True
