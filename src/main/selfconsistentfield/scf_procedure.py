@@ -39,11 +39,10 @@ class SCFProcedure:
             eigenvalues = eigenvalues[sort]
             eigenvectors = eigenvectors[:, sort]
 
-            orbital_energy_matrix = np.diag(eigenvalues)
             orbital_coefficients = self.transformation_matrix * eigenvectors
 
         print('\nORBITAL ENERGY EIGENVALUES')
-        print(orbital_energy_matrix)
+        print(eigenvalues)
 
         print('\nORBITAL COEFFICIENTS')
         print(orbital_coefficients, end='\n\n')

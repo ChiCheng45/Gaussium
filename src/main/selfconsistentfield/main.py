@@ -1,20 +1,20 @@
 from src.main.common import Matrix
 from src.main.fileinput import FileInputBasis, FileInputNuclei
-from src.main.matrixelements import KineticEnergyElement, NuclearAttractionElement, OrbitalOverlapElement, TwoElectronRepulsionElement
+from src.main.matrixelements import KineticEnergyElement, NuclearAttractionElement, OrbitalOverlapElement, TwoElectronRepulsionElementCook, TwoElectronRepulsionElementOS
 from src.main.selfconsistentfield import SCFProcedure, CoulombsLawArray
 import numpy as np
 import time
 
 
 if __name__ == '__main__':
-    np.set_printoptions(linewidth=10000)
+    np.set_printoptions(linewidth=100000, threshold=np.inf)
 
     start = time.clock()
     print('*********************************************************************************************************')
     print('\nA BASIC QUANTUM CHEMICAL PROGRAM IN PYTHON\n\n')
 
     nuclei_array, electrons = FileInputNuclei('C2H4.mol').create_nuclei_array_and_electron_count()
-    basis_set_array = FileInputBasis('3-21G.gbs', nuclei_array).create_basis_set_array()
+    basis_set_array = FileInputBasis('STO-2G.gbs', nuclei_array).create_basis_set_array()
 
     nuclei_name_list = [x.element for x in nuclei_array]
     print(nuclei_name_list)
@@ -48,8 +48,8 @@ if __name__ == '__main__':
     s_matrix_eigenvalues, s_matrix_unitary = np.linalg.eig(s_matrix)
     sort = s_matrix_eigenvalues.argsort()[::1]
     s_matrix_eigenvalues = s_matrix_eigenvalues[sort]
-    s_matrix_eigenvalues = [x**(-1/2) for x in s_matrix_eigenvalues]
     s_matrix_unitary = s_matrix_unitary[:, sort]
+    s_matrix_eigenvalues = [x**(-1/2) for x in s_matrix_eigenvalues]
     x_canonical = s_matrix_unitary * np.diag(s_matrix_eigenvalues)
     print('\nTRANSFORMATION MATRIX')
     print(x_canonical)
@@ -68,9 +68,8 @@ if __name__ == '__main__':
     eigenvalues = eigenvalues[sort]
     eigenvectors = eigenvectors[:, sort]
 
-    orbital_energy_matrix = np.diag(eigenvalues)
     print('\nORBITAL ENERGY EIGENVALUES')
-    print(orbital_energy_matrix)
+    print(eigenvalues)
 
     orbital_coefficients = x_canonical * eigenvectors
     print('\nORBITAL COEFFICIENTS')
@@ -86,8 +85,10 @@ if __name__ == '__main__':
     boost for the molecules I have tested. Doing this actually maxes my cpu out during this part of the calculation.
     """
 
-    # repulsion_dictionary = TwoElectronRepulsionElement(basis_set_array).store_integrals()
-    repulsion_dictionary = TwoElectronRepulsionElement(basis_set_array).store_parallel(4)
+    repulsion_dictionary = TwoElectronRepulsionElementCook(basis_set_array).store_integrals()
+    # repulsion_dictionary = TwoElectronRepulsionElementOS(basis_set_array).store_integrals()
+    # repulsion_dictionary = TwoElectronRepulsionElementCook(basis_set_array).store_parallel(4)
+    # repulsion_dictionary = TwoElectronRepulsionElementOS(basis_set_array).store_parallel(4)
 
     scf_procedure = SCFProcedure(h_core_matrix, x_canonical, matrix, electrons, repulsion_dictionary)
     electron_energy = scf_procedure.begin_scf(orbital_coefficients)

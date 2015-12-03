@@ -1,11 +1,11 @@
 ##Introduction
-A basic quantum chemical program written in python using the numpy and scipy library and is currently at the very beginnings. My time is tight as I try to balance this between my job and real-life so development may go slowly.
+A basic quantum chemical program written in python using the numpy and scipy libraries and is currently at the very beginnings. My time is tight as I try to balance this between my job and real-life so development may go slowly.
 
-Currently I'm looking to write HF in python and then to more accurate methods such as CI, CCSD and DFT. After this project is complete I may try out other languages such as Fortran, C, C++, Java, C# or even Haskell if I have the time.
+The basic HF part is complete, calculations can be carried out on all molecules and basis sets. It's a little slow at the moment and I need to work on making it faster. The biggest problem at the moment are the ERI, currently having a look at different method and trying to implement them. I have some plans to move the project to c++ but I think its better for me to understand computational chemistry first and then learn another language as python will speed up the process. 
 
-I'm basing this work on Attlia Szabo and Neil S. Ostlunds "Modern Quantum Chemistry: Introduction to Advanced Electronic Structure Theory". It is a old but well written book, and is by far the best introduction to the computational chemistry I have read. The only other textbook that comes close to this is probably Robert G. Parr and Weitao Yangs "Density Functional Theory of Atoms and Molecules". After this I intend to check out David B. Cooks "Handbook of Computational Chemistry" which appears to be quite in depth.
+I'm basing this work on Attlia Szabo and Neil S. Ostlunds "Modern Quantum Chemistry: Introduction to Advanced Electronic Structure Theory". It is a old but well written book, and is by far the best introduction to the computational chemistry I have read. The only other textbook that comes close to this is probably Robert G. Parr and Weitao Yangs "Density Functional Theory of Atoms and Molecules". I'm also looking at David B. Cooks "Handbook of Computational Chemistry" which appears to be quite in depth and has some programming parts.
 
-I must apologies for the bad/ugly code, I'm going to try refactor the code sometime in future and begin developing properly when I get more comfortable with writing and unit testing in python.
+The tests section is very poor at the moment because it isn't worth my time will start adding more later.
 
 ##Calculation of HeH<sup>+</sup> in STO-3G
 Completed my first calculation of HeH<sup>+</sup> with a bond-length of 1.4632 a<sub>0</sub> using the STO-3G basis set. Below is the output from Spartan Student Edition v5,

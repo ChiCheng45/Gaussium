@@ -15,8 +15,8 @@ class KineticEnergyElement:
             for b in range(len(primitive_gaussian_array_j)):
                 c_1 = primitive_gaussian_array_i[a].contraction
                 c_2 = primitive_gaussian_array_j[b].contraction
-                n_1 = primitive_gaussian_array_i[a].normalisation
-                n_2 = primitive_gaussian_array_j[b].normalisation
+                n_1 = primitive_gaussian_array_i[a].normalisation()
+                n_2 = primitive_gaussian_array_j[b].normalisation()
                 primitive_gaussian_array_k = PrimitiveBasisFactory.del_operator(primitive_gaussian_array_j[b])
                 s_ij = 0
                 for c in range(len(primitive_gaussian_array_k)):

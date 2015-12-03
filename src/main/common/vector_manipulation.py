@@ -1,4 +1,6 @@
 from math import sqrt
+import numpy as np
+from numba import vectorize
 
 """
 NAME
@@ -62,34 +64,29 @@ DIAGNOSTICS
 class Vector:
 
     @staticmethod
-    def add(tuple1, tuple2):
-        return tuple([a + b for a, b in zip(tuple1, tuple2)])
+    def add(a, b):
+        return tuple((a[0] + b[0], a[1] + b[1], a[2] + b[2]))
 
     @staticmethod
-    def minus(tuple1, tuple2):
-        return tuple([a - b for a, b in zip(tuple1, tuple2)])
+    def minus(a, b):
+        return tuple((a[0] - b[0], a[1] - b[1], a[2] - b[2]))
 
     @staticmethod
-    def multiply(x, tuple1):
-        return tuple([a * x for a in tuple1])
+    def multiply(x, a):
+        return tuple((a[0] * x, a[1] * x, a[2] * x))
 
     @staticmethod
-    def dot_product(tuple1, tuple2):
-        ans = 0
-        for x in range(len(tuple1)):
-            ans += tuple1[x] * tuple2[x]
-        return ans
+    def dot_product(a, b):
+        return a[0] * b[0] + a[1] * b[1] + a[2] + b[2]
 
     @staticmethod
-    def distance(tuple1, tuple2):
-        tuple3 = tuple([a - b for a, b in zip(tuple1, tuple2)])
-        r_ab = sqrt(tuple3[0]**2 + tuple3[1]**2 + tuple3[2]**2)
+    def distance(a, b):
+        r_ab = sqrt((a[0] - b[0])**2 + (a[1] - b[1])**2 + (a[2] - b[2])**2)
         return r_ab
 
-    @classmethod
-    def gaussian(cls, x, tuple1, y, tuple2):
-        tuple3 = cls.multiply(x, tuple1)
-        tuple4 = cls.multiply(y, tuple2)
-        ans = cls.add(tuple3, tuple4)
-        ans = tuple([a / (x + y) for a in ans])
-        return ans
+    @staticmethod
+    def gaussian(x, a, y, b):
+        c = Vector.multiply(x, a)
+        d = Vector.multiply(y, b)
+        ans = Vector.add(c, d)
+        return tuple((ans[0] / (x + y), ans[1] / (x + y), ans[2] / (x + y)))
