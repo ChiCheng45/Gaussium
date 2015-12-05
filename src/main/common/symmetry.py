@@ -1,38 +1,7 @@
 class Symmetry:
 
-    @staticmethod
-    def check_sym_1(gaussian1, gaussian2):
-        r_1 = gaussian1.coordinates
-        r_2 = gaussian2.coordinates
-        l_1 = gaussian1.integral_exponents
-        l_2 = gaussian2.integral_exponents
-
-        if r_1[0] == r_2[0]:
-            if (l_1[1] % 2 == 0 and l_2[1] % 2 != 0) or (l_1[1] % 2 != 0 and l_2[1] % 2 == 0):
-                return False
-            elif (l_1[2] % 2 == 0 and l_2[2] % 2 != 0) or (l_1[2] % 2 != 0 and l_2[2] % 2 == 0):
-                return False
-            else:
-                return True
-        elif r_1[1] == r_2[1]:
-            if (l_1[0] % 2 == 0 and l_2[0] % 2 != 0) or (l_1[0] % 2 != 0 and l_2[0] % 2 == 0):
-                return False
-            elif (l_1[2] % 2 == 0 and l_2[2] % 2 != 0) or (l_1[2] % 2 != 0 and l_2[2] % 2 == 0):
-                return False
-            else:
-                return True
-        elif r_1[2] == r_2[2]:
-            if (l_1[0] % 2 == 0 and l_2[0] % 2 != 0) or (l_1[0] % 2 != 0 and l_2[0] % 2 == 0):
-                return False
-            elif (l_1[1] % 2 == 0 and l_2[1] % 2 != 0) or (l_1[1] % 2 != 0 and l_2[1] % 2 == 0):
-                return False
-            else:
-                return True
-        else:
-            return True
-
     @classmethod
-    def check_sym_2(cls, basis1, basis2, basis3, basis4):
+    def check_sym(cls, basis1, basis2, basis3, basis4):
         r_1 = basis1.coordinates
         r_2 = basis2.coordinates
         r_3 = basis3.coordinates

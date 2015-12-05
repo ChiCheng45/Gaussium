@@ -41,7 +41,7 @@ ARGUMENTS
 SEE ALSO
     nuclear_attraction_integral.py
     orbital_overlap_integral.py
-    two_electron_repulsion_integral.py
+    cook_integral.py
     https://en.wikipedia.org/wiki/Combination
 
 DIAGNOSTICS

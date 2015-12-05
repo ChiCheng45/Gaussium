@@ -29,5 +29,5 @@ class TestTwoElectronRepulsionElement(TestCase):
         testing.assert_approx_equal(element, 1.3072, 4)
 
     def test_store_integrals(self):
-        dictionary = self.two_electron_repulsion.store_integrals()
+        dictionary = self.two_electron_repulsion.store_series()
         print(dictionary)

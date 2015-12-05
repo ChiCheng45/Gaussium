@@ -54,6 +54,38 @@ class PrimitiveBasisFactory:
                 basis_list.append(basis_px)
                 basis_list.append(basis_py)
                 basis_list.append(basis_pz)
+            elif file_list[a][0] == 'D':
+                primitive_basis_dxx_list = []
+                primitive_basis_dyy_list = []
+                primitive_basis_dzz_list = []
+                primitive_basis_dxy_list = []
+                primitive_basis_dxz_list = []
+                primitive_basis_dyz_list = []
+                for b in range(1, len(file_list[a])):
+                    primitive_basis_dxx = PrimitiveBasis(file_list[a][b][0], file_list[a][b][1], coordinates, (2, 0, 0))
+                    primitive_basis_dyy = PrimitiveBasis(file_list[a][b][0], file_list[a][b][1], coordinates, (0, 2, 0))
+                    primitive_basis_dzz = PrimitiveBasis(file_list[a][b][0], file_list[a][b][1], coordinates, (0, 0, 2))
+                    primitive_basis_dxy = PrimitiveBasis(file_list[a][b][0], file_list[a][b][1], coordinates, (1, 1, 0))
+                    primitive_basis_dxz = PrimitiveBasis(file_list[a][b][0], file_list[a][b][1], coordinates, (1, 0, 1))
+                    primitive_basis_dyz = PrimitiveBasis(file_list[a][b][0], file_list[a][b][1], coordinates, (0, 1, 1))
+                    primitive_basis_dxx_list.append(primitive_basis_dxx)
+                    primitive_basis_dyy_list.append(primitive_basis_dyy)
+                    primitive_basis_dzz_list.append(primitive_basis_dzz)
+                    primitive_basis_dxy_list.append(primitive_basis_dxy)
+                    primitive_basis_dxz_list.append(primitive_basis_dxz)
+                    primitive_basis_dyz_list.append(primitive_basis_dyz)
+                basis_dxx = Basis(primitive_basis_dxx_list, coordinates, (2, 0, 0))
+                basis_dyy = Basis(primitive_basis_dyy_list, coordinates, (0, 2, 0))
+                basis_dzz = Basis(primitive_basis_dzz_list, coordinates, (0, 0, 2))
+                basis_dxy = Basis(primitive_basis_dxy_list, coordinates, (1, 1, 0))
+                basis_dxz = Basis(primitive_basis_dxz_list, coordinates, (1, 0, 1))
+                basis_dyz = Basis(primitive_basis_dyz_list, coordinates, (0, 1, 1))
+                basis_list.append(basis_dxx)
+                basis_list.append(basis_dyy)
+                basis_list.append(basis_dzz)
+                basis_list.append(basis_dxy)
+                basis_list.append(basis_dxz)
+                basis_list.append(basis_dyz)
         return basis_list
 
     @staticmethod

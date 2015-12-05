@@ -1,6 +1,5 @@
 from math import sqrt
-import numpy as np
-from numba import vectorize
+from numba import jit
 
 """
 NAME
@@ -53,7 +52,7 @@ ARGUMENTS
 SEE ALSO
     nuclear_attraction_integral.py
     orbital_overlap_integral.py
-    two_electron_repulsion_integral.py
+    cook_integral.py
 
 DIAGNOSTICS
     None
@@ -65,15 +64,15 @@ class Vector:
 
     @staticmethod
     def add(a, b):
-        return tuple((a[0] + b[0], a[1] + b[1], a[2] + b[2]))
+        return a[0] + b[0], a[1] + b[1], a[2] + b[2]
 
     @staticmethod
     def minus(a, b):
-        return tuple((a[0] - b[0], a[1] - b[1], a[2] - b[2]))
+        return a[0] - b[0], a[1] - b[1], a[2] - b[2]
 
     @staticmethod
     def multiply(x, a):
-        return tuple((a[0] * x, a[1] * x, a[2] * x))
+        return a[0] * x, a[1] * x, a[2] * x
 
     @staticmethod
     def dot_product(a, b):
@@ -89,4 +88,4 @@ class Vector:
         c = Vector.multiply(x, a)
         d = Vector.multiply(y, b)
         ans = Vector.add(c, d)
-        return tuple((ans[0] / (x + y), ans[1] / (x + y), ans[2] / (x + y)))
+        return ans[0] / (x + y), ans[1] / (x + y), ans[2] / (x + y)

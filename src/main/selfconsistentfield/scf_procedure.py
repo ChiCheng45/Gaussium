@@ -18,14 +18,12 @@ class SCFProcedure:
         total_energy = 0
         previous_total_energy = 0
         delta_energy = 1
+        eigenvalues = []
 
         while abs(delta_energy) > 1e-9:
 
-            density_matrix_element = DensityMatrixElement(orbital_coefficients, self.electrons)
-            density_matrix = self.matrix.create_matrix(density_matrix_element)
-
-            g_matrix_elements = GMatrixElement(density_matrix, self.repulsion_dictionary)
-            g_matrix = self.matrix.create_matrix(g_matrix_elements)
+            density_matrix = self.matrix.create_matrix(DensityMatrixElement(orbital_coefficients, self.electrons))
+            g_matrix = self.matrix.create_matrix(GMatrixElement(density_matrix, self.repulsion_dictionary))
             fock_matrix = self.core_hamiltonian_matrix + g_matrix
 
             total_energy = TotalEnergy.calculate_total_energy(density_matrix, self.core_hamiltonian_matrix, fock_matrix)
@@ -33,10 +31,10 @@ class SCFProcedure:
             previous_total_energy = total_energy
             print('SCF ENERGY: ' + str(total_energy) + ' a.u.')
 
-            orthonormal_fock_matrix = self.transformation_matrix.T * fock_matrix * self.transformation_matrix
-            eigenvalues, eigenvectors = np.linalg.eig(orthonormal_fock_matrix)
-            sort = eigenvalues.argsort()[::1]
-            eigenvalues = eigenvalues[sort]
+            orthonormal_fock_matrix = np.transpose(self.transformation_matrix) * fock_matrix * self.transformation_matrix
+            eigenvalues, eigenvectors = np.linalg.eigh(orthonormal_fock_matrix)
+            sort = np.argsort(eigenvalues)
+            eigenvalues = np.array(eigenvalues)[sort]
             eigenvectors = eigenvectors[:, sort]
 
             orbital_coefficients = self.transformation_matrix * eigenvectors

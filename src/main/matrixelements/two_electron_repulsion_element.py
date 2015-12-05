@@ -1,18 +1,16 @@
-from src.main.integrals.two_electron_repulsion_integral import ElectronRepulsionIntegral, ObaraSaika
-from src.main.common import Symmetry
 from multiprocessing import Pool
+from src.main.integrals.twoelectronrepulsion import ElectronRepulsionIntegral, ObaraSaika
+from src.main.common import Symmetry
 
 
 class TwoElectronRepulsionElement:
 
-    def __init__(self, basis_set_array):
+    def __init__(self, basis_set_array, integral):
         self.basis_set_array = basis_set_array
-
-    def integral(self, g1, g2, g3, g4):
-        pass
+        self.integral = integral
 
     def calculate(self, i):
-        if Symmetry.check_sym_2(self.basis_set_array[i[0]], self.basis_set_array[i[1]], self.basis_set_array[i[2]], self.basis_set_array[i[3]]):
+        if Symmetry.check_sym(self.basis_set_array[i[0]], self.basis_set_array[i[1]], self.basis_set_array[i[2]], self.basis_set_array[i[3]]):
             primitive_gaussian_array_i = self.basis_set_array[i[0]].primitive_gaussian_array
             primitive_gaussian_array_j = self.basis_set_array[i[1]].primitive_gaussian_array
             primitive_gaussian_array_k = self.basis_set_array[i[2]].primitive_gaussian_array
@@ -37,7 +35,7 @@ class TwoElectronRepulsionElement:
             return 0
 
     # single process method
-    def store_integrals(self):
+    def store_series(self):
         repulsion_dict = {}
         for a in range(len(self.basis_set_array)):
             for b in range(len(self.basis_set_array)):
@@ -60,20 +58,23 @@ class TwoElectronRepulsionElement:
         return dict_key
 
     def store_parallel(self, processes):
-        keys = self.keys_parallel()
-        pool = Pool(processes)
-        values = pool.map(self.calculate, keys)
-        repulsion_dict = dict(zip(keys, values))
-        return repulsion_dict
+        if processes == 1:
+            return self.store_series()
+        else:
+            keys = self.keys_parallel()
+            pool = Pool(processes)
+            values = pool.map(self.calculate, keys)
+            repulsion_dict = dict(zip(keys, values))
+            return repulsion_dict
 
 
 class TwoElectronRepulsionElementCook(TwoElectronRepulsionElement):
 
-    def integral(self, g1, g2, g3, g4):
-        return ElectronRepulsionIntegral.integral(g1, g2, g3, g4)
+    def __init__(self, basis_set_array):
+        TwoElectronRepulsionElement.__init__(self, basis_set_array, ElectronRepulsionIntegral.integral)
 
 
 class TwoElectronRepulsionElementOS(TwoElectronRepulsionElement):
 
-    def integral(self, g1, g2, g3, g4):
-        return ObaraSaika.os_set(g1, g2, g3, g4)
+    def __init__(self, basis_set_array):
+        TwoElectronRepulsionElement.__init__(self, basis_set_array, ObaraSaika.os_set)

@@ -24,7 +24,7 @@ ARGUMENTS
 
 SEE ALSO
     nuclear_attraction_integral.py
-    two_electron_repulsion_integral.py
+    cook_integral.py
     http://numba.pydata.org/
 
 DIAGNOSTICS
