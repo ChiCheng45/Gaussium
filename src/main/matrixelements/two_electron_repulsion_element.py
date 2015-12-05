@@ -77,4 +77,4 @@ class TwoElectronRepulsionElementCook(TwoElectronRepulsionElement):
 class TwoElectronRepulsionElementOS(TwoElectronRepulsionElement):
 
     def __init__(self, basis_set_array):
-        TwoElectronRepulsionElement.__init__(self, basis_set_array, ObaraSaika.os_set)
+        TwoElectronRepulsionElement.__init__(self, basis_set_array, ObaraSaika().os_set)

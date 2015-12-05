@@ -13,8 +13,8 @@ if __name__ == '__main__':
     print('*********************************************************************************************************')
     print('\nA BASIC QUANTUM CHEMICAL PROGRAM IN PYTHON\n\n')
 
-    nuclei_array, electrons = FileInputNuclei('HeH+.mol').create_nuclei_array_and_electron_count()
-    basis_set_array = FileInputBasis('3-21G.gbs', nuclei_array).create_basis_set_array()
+    nuclei_array, electrons = FileInputNuclei('CH4.mol').create_nuclei_array_and_electron_count()
+    basis_set_array = FileInputBasis('4-31G.gbs', nuclei_array).create_basis_set_array()
 
     nuclei_name_list = [x.element for x in nuclei_array]
     print(nuclei_name_list)
@@ -85,8 +85,8 @@ if __name__ == '__main__':
     boost for the molecules I have tested. Doing this actually maxes my cpu out during this part of the calculation.
     """
 
-    repulsion_dictionary = TwoElectronRepulsionElementCook(basis_set_array).store_parallel(1)
-    # repulsion_dictionary = TwoElectronRepulsionElementOS(basis_set_array).store_parallel(1)
+    # repulsion_dictionary = TwoElectronRepulsionElementCook(basis_set_array).store_parallel(1)
+    repulsion_dictionary = TwoElectronRepulsionElementOS(basis_set_array).store_parallel(4)
 
     scf_procedure = SCFProcedure(h_core_matrix, x_canonical, matrix, electrons, repulsion_dictionary)
     electron_energy = scf_procedure.begin_scf(orbital_coefficients)
