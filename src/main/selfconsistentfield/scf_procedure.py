@@ -14,14 +14,12 @@ class SCFProcedure:
         self.repulsion_dictionary = repulsion_dictionary
 
     def begin_scf(self, orbital_coefficients):
-
         total_energy = 0
         previous_total_energy = 0
         delta_energy = 1
         eigenvalues = []
 
         while abs(delta_energy) > 1e-9:
-
             density_matrix = self.matrix.create_matrix(DensityMatrixElement(orbital_coefficients, self.electrons))
             g_matrix = self.matrix.create_matrix(GMatrixElement(density_matrix, self.repulsion_dictionary))
             fock_matrix = self.core_hamiltonian_matrix + g_matrix

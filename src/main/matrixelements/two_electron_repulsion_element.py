@@ -71,7 +71,7 @@ class TwoElectronRepulsionElement:
 class TwoElectronRepulsionElementCook(TwoElectronRepulsionElement):
 
     def __init__(self, basis_set_array):
-        TwoElectronRepulsionElement.__init__(self, basis_set_array, ElectronRepulsionIntegral.integral)
+        TwoElectronRepulsionElement.__init__(self, basis_set_array, ElectronRepulsionIntegral().integral)
 
 
 class TwoElectronRepulsionElementOS(TwoElectronRepulsionElement):

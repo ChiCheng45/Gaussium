@@ -1,6 +1,6 @@
 from src.main.common import Matrix
 from src.main.fileinput import FileInputBasis, FileInputNuclei
-from src.main.matrixelements import KineticEnergyElement, NuclearAttractionElement, OrbitalOverlapElement, TwoElectronRepulsionElementCook, TwoElectronRepulsionElementOS
+from src.main.matrixelements import KineticEnergyElement, NuclearAttractionElement, OrbitalOverlapElement, GMatrixElement, DensityMatrixElement, TwoElectronRepulsionElementCook, TwoElectronRepulsionElementOS
 from src.main.selfconsistentfield import SCFProcedure, CoulombsLawArray
 import numpy as np
 import time
@@ -13,8 +13,8 @@ if __name__ == '__main__':
     print('*********************************************************************************************************')
     print('\nA BASIC QUANTUM CHEMICAL PROGRAM IN PYTHON\n\n')
 
-    nuclei_array, electrons = FileInputNuclei('CH4.mol').create_nuclei_array_and_electron_count()
-    basis_set_array = FileInputBasis('4-31G.gbs', nuclei_array).create_basis_set_array()
+    nuclei_array, electrons = FileInputNuclei('He.mol').create_nuclei_array_and_electron_count()
+    basis_set_array = FileInputBasis('6-311+GPP.gbs', nuclei_array).create_basis_set_array()
 
     nuclei_name_list = [x.element for x in nuclei_array]
     print(nuclei_name_list)
@@ -29,29 +29,29 @@ if __name__ == '__main__':
 
     matrix = Matrix(len(basis_set_array))
 
-    s_matrix = matrix.create_matrix(OrbitalOverlapElement(basis_set_array))
     print('\nORBITAL OVERLAP MATRIX')
+    s_matrix = matrix.create_matrix(OrbitalOverlapElement(basis_set_array))
     print(s_matrix)
 
-    t_matrix = matrix.create_matrix(KineticEnergyElement(basis_set_array))
     print('\nKINETIC ENERGY MATRIX')
+    t_matrix = matrix.create_matrix(KineticEnergyElement(basis_set_array))
     print(t_matrix)
 
-    v_matrix = matrix.create_matrix(NuclearAttractionElement(nuclei_array, basis_set_array))
     print('\nNUCLEAR POTENTIAL ENERGY MATRIX')
+    v_matrix = matrix.create_matrix(NuclearAttractionElement(nuclei_array, basis_set_array))
     print(v_matrix)
 
-    h_core_matrix = t_matrix + v_matrix
     print('\nCORE HAMILTONIAN MATRIX')
+    h_core_matrix = t_matrix + v_matrix
     print(h_core_matrix)
 
+    print('\nTRANSFORMATION MATRIX')
     s_matrix_eigenvalues, s_matrix_unitary = np.linalg.eigh(s_matrix)
     sort = np.argsort(s_matrix_eigenvalues)
     s_matrix_eigenvalues = np.array(s_matrix_eigenvalues)[sort]
     s_matrix_unitary = s_matrix_unitary[:, sort]
     s_matrix_eigenvalues = [x**(-1/2) for x in s_matrix_eigenvalues]
     x_canonical = s_matrix_unitary * np.diag(s_matrix_eigenvalues)
-    print('\nTRANSFORMATION MATRIX')
     print(x_canonical)
 
     print('\n*********************************************************************************************************')
@@ -62,17 +62,16 @@ if __name__ == '__main__':
     interactions turned off. The two-electron parts are then turned back on during the SCF procedure.
     """
 
+    print('\nORBITAL ENERGY EIGENVALUES')
     orthonormal_h_matrix = np.transpose(x_canonical) * h_core_matrix * x_canonical
     eigenvalues, eigenvectors = np.linalg.eigh(orthonormal_h_matrix)
     sort = np.argsort(eigenvalues)
     eigenvalues = np.array(eigenvalues)[sort]
-    eigenvectors = eigenvectors[:, sort]
-
-    print('\nORBITAL ENERGY EIGENVALUES')
     print(eigenvalues)
 
-    orbital_coefficients = x_canonical * eigenvectors
     print('\nORBITAL COEFFICIENTS')
+    eigenvectors = eigenvectors[:, sort]
+    orbital_coefficients = x_canonical * eigenvectors
     print(orbital_coefficients)
 
     print('\n*********************************************************************************************************')
@@ -86,7 +85,7 @@ if __name__ == '__main__':
     """
 
     # repulsion_dictionary = TwoElectronRepulsionElementCook(basis_set_array).store_parallel(1)
-    repulsion_dictionary = TwoElectronRepulsionElementOS(basis_set_array).store_parallel(4)
+    repulsion_dictionary = TwoElectronRepulsionElementOS(basis_set_array).store_parallel(1)
 
     scf_procedure = SCFProcedure(h_core_matrix, x_canonical, matrix, electrons, repulsion_dictionary)
     electron_energy = scf_procedure.begin_scf(orbital_coefficients)

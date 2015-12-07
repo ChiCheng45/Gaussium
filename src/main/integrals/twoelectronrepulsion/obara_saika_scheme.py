@@ -10,7 +10,7 @@ class ObaraSaika:
 
     def os_set(self, g1, g2, g3, g4):
         self.end_dict = {}
-        return ObaraSaika.os_begin(self, g1, g2, g3, g4, 0)
+        return self.os_begin(g1, g2, g3, g4, 0)
 
     def os_begin(self, g1, g2, g3, g4, m):
         l_1 = g1.integral_exponents
@@ -19,7 +19,7 @@ class ObaraSaika:
         l_4 = g4.integral_exponents
 
         if l_1[0] + l_1[1] + l_1[2] + l_2[0] + l_2[1] + l_2[2] + l_3[0] + l_3[1] + l_3[2] + l_4[0] + l_4[1] + l_4[2] == 0:
-            return ObaraSaika.os_end(self, g1, g2, g3, g4, m)
+            return self.os_end(g1, g2, g3, g4, m)
         else:
             if l_1[0] > 0:
                 recursive_array = self.os_gaussian_factory(g1, g2, g3, g4, 0)
@@ -31,13 +31,13 @@ class ObaraSaika:
                 recursive_array = self.os_gaussian_factory(g1, g2, g3, g4, 2)
                 return self.os_recursive(recursive_array, 2, m)
             if l_2[0] > 0:
-                recursive_array = self.os_gaussian_factory(g2, g1, g3, g4, 0)
+                recursive_array = self.os_gaussian_factory(g2, g1, g4, g3, 0)
                 return self.os_recursive(recursive_array, 0, m)
             if l_2[1] > 0:
-                recursive_array = self.os_gaussian_factory(g2, g1, g3, g4, 1)
+                recursive_array = self.os_gaussian_factory(g2, g1, g4, g3, 1)
                 return self.os_recursive(recursive_array, 1, m)
             if l_2[2] > 0:
-                recursive_array = self.os_gaussian_factory(g2, g1, g3, g4, 2)
+                recursive_array = self.os_gaussian_factory(g2, g1, g4, g3, 2)
                 return self.os_recursive(recursive_array, 2, m)
             if l_3[0] > 0:
                 recursive_array = self.os_gaussian_factory(g3, g4, g1, g2, 0)
@@ -49,13 +49,13 @@ class ObaraSaika:
                 recursive_array = self.os_gaussian_factory(g3, g4, g1, g2, 2)
                 return self.os_recursive(recursive_array, 2, m)
             if l_4[0] > 0:
-                recursive_array = self.os_gaussian_factory(g4, g3, g1, g2, 0)
+                recursive_array = self.os_gaussian_factory(g4, g3, g2, g1, 0)
                 return self.os_recursive(recursive_array, 0, m)
             if l_4[1] > 0:
-                recursive_array = self.os_gaussian_factory(g4, g3, g1, g2, 1)
+                recursive_array = self.os_gaussian_factory(g4, g3, g2, g1, 1)
                 return self.os_recursive(recursive_array, 1, m)
             if l_4[2] > 0:
-                recursive_array = self.os_gaussian_factory(g4, g3, g1, g2, 2)
+                recursive_array = self.os_gaussian_factory(g4, g3, g2, g1, 2)
                 return self.os_recursive(recursive_array, 2, m)
 
     def os_recursive(self, g, xyz, m):
@@ -128,13 +128,15 @@ class ObaraSaika:
             self.end_dict[m] = ans
         return ans
 
-    def os_count(self, i):
+    @staticmethod
+    def os_count(i):
         if i == 0:
             return 1
         else:
             return i
 
-    def os_gaussian_factory(self, g1, g2, g3, g4, xyz):
+    @staticmethod
+    def os_gaussian_factory(g1, g2, g3, g4, xyz):
         d_1 = g1.contraction
         d_2 = g2.contraction
         d_3 = g3.contraction
