@@ -84,8 +84,8 @@ if __name__ == '__main__':
     boost for the molecules I have tested. Doing this actually maxes my cpu out during this part of the calculation.
     """
 
-    # repulsion_dictionary = TwoElectronRepulsionElementCook(basis_set_array).store_parallel(4)
-    repulsion_dictionary = TwoElectronRepulsionElementOS(basis_set_array).store_parallel(4)
+    repulsion_dictionary = TwoElectronRepulsionElementCook(basis_set_array).store_parallel(4)
+    # repulsion_dictionary = TwoElectronRepulsionElementOS(basis_set_array).store_parallel(4)
     # repulsion_dictionary = TwoElectronRepulsionElementHGP(basis_set_array).store_parallel(4)
 
     scf_procedure = SCFProcedure(h_core_matrix, x_canonical, matrix, electrons, repulsion_dictionary)
