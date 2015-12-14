@@ -1,5 +1,5 @@
 from multiprocessing import Pool
-from src.main.integrals.twoelectronrepulsion import ElectronRepulsionIntegral, ObaraSaika
+from src.main.integrals.twoelectronrepulsion import ElectronRepulsionIntegral, ObaraSaika, HeadGordonPople
 from src.main.common import Symmetry
 
 
@@ -78,3 +78,9 @@ class TwoElectronRepulsionElementOS(TwoElectronRepulsionElement):
 
     def __init__(self, basis_set_array):
         TwoElectronRepulsionElement.__init__(self, basis_set_array, ObaraSaika().os_set)
+
+
+class TwoElectronRepulsionElementHGP(TwoElectronRepulsionElement):
+
+    def __init__(self, basis_set_array):
+        TwoElectronRepulsionElement.__init__(self, basis_set_array, HeadGordonPople().hgp_set)

@@ -1,4 +1,4 @@
-from math import pi
+from math import pi, sqrt
 from math import factorial as fac
 
 
@@ -10,9 +10,7 @@ class PrimitiveBasis:
         self.integral_exponents = integral_exponents
 
     def normalisation(self):
-        normalisation = (((2 * self.exponent) / pi) ** (3 / 4)) * (((((8 * self.exponent) ** (
-            self.integral_exponents[0] + self.integral_exponents[1] + self.integral_exponents[2])) * fac(
-            self.integral_exponents[0]) * fac(self.integral_exponents[1]) * fac(self.integral_exponents[2])) / (fac(
-            2 * self.integral_exponents[0]) * fac(2 * self.integral_exponents[1]) * fac(
-            2 * self.integral_exponents[2]))) ** (1 / 2))
+        l = self.integral_exponents
+        normalisation = ((2 * self.exponent) / pi) ** (3 / 4) * sqrt(((8 * self.exponent) ** (l[0] + l[1] + l[2]) * fac(
+            l[0]) * fac(l[1]) * fac(l[2])) / (fac(2 * l[0]) * fac(2 * l[1]) * fac(2 * l[2])))
         return normalisation

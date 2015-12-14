@@ -1,5 +1,6 @@
 from src.main.matrixelements.two_electron_repulsion_element import TwoElectronRepulsionElementCook
 from src.main.matrixelements.two_electron_repulsion_element import TwoElectronRepulsionElementOS
+from src.main.matrixelements.two_electron_repulsion_element import TwoElectronRepulsionElementHGP
 from src.main.matrixelements.density_matrix_element import DensityMatrixElement
 from src.main.matrixelements.g_matrix_element import GMatrixElement
 from src.main.matrixelements.kinetic_energy_element import KineticEnergyElement

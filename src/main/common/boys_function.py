@@ -38,10 +38,10 @@ class BoysFunction:
     @jit
     def function(v, x):
         # Approximation of the boys function for small x
-        if x <= 20:
+        if x <= 25:
             i = 0
             ans = 0
-            while i > -1:
+            while 1 > 0:
                 seq = (gamma(v + (1/2)) / gamma(v + i + (3/2))) * x**i
                 if seq < 1e-10:
                     break
@@ -51,10 +51,10 @@ class BoysFunction:
             return ans
 
         # Approximation of the boys function for large x
-        elif x > 20:
+        elif x > 25:
             i = 0
             ans = 0
-            while i > -1:
+            while 1 > 0:
                 seq = (gamma(v + (1/2)) / gamma(v - i + (3/2))) * x**(-i)
                 if seq < 1e-10:
                     break

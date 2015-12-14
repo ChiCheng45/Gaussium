@@ -1,5 +1,4 @@
 from math import sqrt
-from numba import jit
 
 """
 NAME
@@ -83,9 +82,9 @@ class Vector:
         r_ab = sqrt((a[0] - b[0])**2 + (a[1] - b[1])**2 + (a[2] - b[2])**2)
         return r_ab
 
-    @staticmethod
-    def gaussian(x, a, y, b):
-        c = Vector.multiply(x, a)
-        d = Vector.multiply(y, b)
-        ans = Vector.add(c, d)
+    @classmethod
+    def gaussian(cls, x, a, y, b):
+        c = cls.multiply(x, a)
+        d = cls.multiply(y, b)
+        ans = cls.add(c, d)
         return ans[0] / (x + y), ans[1] / (x + y), ans[2] / (x + y)
