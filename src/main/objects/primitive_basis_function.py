@@ -11,6 +11,8 @@ class PrimitiveBasis:
 
     def normalisation(self):
         l = self.integral_exponents
-        normalisation = ((2 * self.exponent) / pi) ** (3 / 4) * sqrt(((8 * self.exponent) ** (l[0] + l[1] + l[2]) * fac(
-            l[0]) * fac(l[1]) * fac(l[2])) / (fac(2 * l[0]) * fac(2 * l[1]) * fac(2 * l[2])))
+        out1 = ((2 * self.exponent) / pi) ** (3 / 4)
+        out2 = (8 * self.exponent) ** (l.l + l.m + l.n) * fac(l.l) * fac(l.m) * fac(l.n)
+        out3 = fac(2 * l.l) * fac(2 * l.m) * fac(2 * l.n)
+        normalisation = out1 * sqrt(out2 / out3)
         return normalisation

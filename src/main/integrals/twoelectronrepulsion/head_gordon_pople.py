@@ -1,6 +1,6 @@
 from src.main.common import Vector, BoysFunction
 from math import sqrt, pi, exp
-from src.main.objects import PrimitiveBasis
+from src.main.objects import PrimitiveBasis, IntegralExponents
 
 
 class HeadGordonPople:
@@ -17,13 +17,13 @@ class HeadGordonPople:
         l_2 = g2.integral_exponents
         l_3 = g3.integral_exponents
         l_4 = g4.integral_exponents
-        if l_1[0] + l_1[1] + l_1[2] >= l_2[0] + l_2[1] + l_2[2]:
-            if l_3[0] + l_3[1] + l_3[2] >= l_4[0] + l_4[1] + l_4[2]:
+        if l_1.l + l_1.m + l_1.n >= l_2.l + l_2.m + l_2.n:
+            if l_3.l + l_3.m + l_3.n >= l_4.l + l_4.m + l_4.n:
                 return self.hgp_begin_horizontal(g1, g2, g3, g4)
             else:
                 return self.hgp_begin_horizontal(g1, g2, g4, g3)
         else:
-            if l_3[0] + l_3[1] + l_3[2] >= l_4[0] + l_4[1] + l_4[2]:
+            if l_3.l + l_3.m + l_3.n >= l_4.l + l_4.m + l_4.n:
                 return self.hgp_begin_horizontal(g2, g1, g3, g4)
             else:
                 return self.hgp_begin_horizontal(g2, g1, g4, g3)
@@ -31,85 +31,85 @@ class HeadGordonPople:
     def hgp_begin_horizontal(self, g1, g2, g3, g4):
         l_2 = g2.integral_exponents
         l_4 = g4.integral_exponents
-        if l_2[0] > 0:
-            recursive_array = self.hgp_horizontal_factory(g1, g2, g3, g4, 0)
-            return self.horizontal_recursion(recursive_array, 0)
-        elif l_2[1] > 0:
-            recursive_array = self.hgp_horizontal_factory(g1, g2, g3, g4, 1)
-            return self.horizontal_recursion(recursive_array, 1)
-        elif l_2[2] > 0:
-            recursive_array = self.hgp_horizontal_factory(g1, g2, g3, g4, 2)
-            return self.horizontal_recursion(recursive_array, 2)
-        elif l_4[0] > 0:
-            recursive_array = self.hgp_horizontal_factory(g3, g4, g1, g2, 0)
-            return self.horizontal_recursion(recursive_array, 0)
-        elif l_4[1] > 0:
-            recursive_array = self.hgp_horizontal_factory(g3, g4, g1, g2, 1)
-            return self.horizontal_recursion(recursive_array, 1)
-        elif l_4[2] > 0:
-                recursive_array = self.hgp_horizontal_factory(g3, g4, g1, g2, 2)
-                return self.horizontal_recursion(recursive_array, 2)
+        if l_2.l > 0:
+            recursive_array = self.hgp_horizontal_factory(0, g1, g2, g3, g4)
+            return self.horizontal_recursion(0, *recursive_array)
+        elif l_2.m > 0:
+            recursive_array = self.hgp_horizontal_factory(1, g1, g2, g3, g4)
+            return self.horizontal_recursion(1, *recursive_array)
+        elif l_2.n > 0:
+            recursive_array = self.hgp_horizontal_factory(2, g1, g2, g3, g4)
+            return self.horizontal_recursion(2, *recursive_array)
+        elif l_4.l > 0:
+            recursive_array = self.hgp_horizontal_factory(0, g3, g4, g1, g2)
+            return self.horizontal_recursion(0, *recursive_array)
+        elif l_4.m > 0:
+            recursive_array = self.hgp_horizontal_factory(1, g3, g4, g1, g2)
+            return self.horizontal_recursion(1, *recursive_array)
+        elif l_4.n > 0:
+                recursive_array = self.hgp_horizontal_factory(2, g3, g4, g1, g2)
+                return self.horizontal_recursion(2, *recursive_array)
         else:
-            return self.hgp_begin_vertical(g1, g2, g3, g4, 0)
+            return self.hgp_begin_vertical(0, g1, g2, g3, g4)
 
-    def horizontal_recursion(self, g, xyz):
-        r_1 = g[1].coordinates
-        r_2 = g[2].coordinates
-        out1 = self.hgp_begin_horizontal(g[0], g[2], g[3], g[4])
-        out2 = (r_1[xyz] - r_2[xyz]) * self.hgp_begin_horizontal(g[1], g[2], g[3], g[4])
+    def horizontal_recursion(self, r, g1, g2, g3, g4, g5):
+        r_1 = g2.coordinates
+        r_2 = g3.coordinates
+        out1 = self.hgp_begin_horizontal(g1, g3, g4, g5)
+        out2 = (r_1[r] - r_2[r]) * self.hgp_begin_horizontal(g2, g3, g4, g5)
         return out1 + out2
 
-    def hgp_begin_vertical(self, g1, g2, g3, g4, m):
+    def hgp_begin_vertical(self, m, g1, g2, g3, g4):
         l_1 = g1.integral_exponents
         l_3 = g3.integral_exponents
-        if l_1[0] > 0:
-            recursive_array = self.hgp_vertical_factory(g1, g2, g3, g4, 0)
-            return self.vertical_recursion(recursive_array, 0, m)
-        if l_3[0] > 0:
-            recursive_array = self.hgp_vertical_factory(g3, g4, g1, g2, 0)
-            return self.vertical_recursion(recursive_array, 0, m)
-        if l_1[1] > 0:
-            recursive_array = self.hgp_vertical_factory(g1, g2, g3, g4, 1)
-            return self.vertical_recursion(recursive_array, 1, m)
-        if l_3[1] > 0:
-            recursive_array = self.hgp_vertical_factory(g3, g4, g1, g2, 1)
-            return self.vertical_recursion(recursive_array, 1, m)
-        if l_1[2] > 0:
-            recursive_array = self.hgp_vertical_factory(g1, g2, g3, g4, 2)
-            return self.vertical_recursion(recursive_array, 2, m)
-        if l_3[2] > 0:
-            recursive_array = self.hgp_vertical_factory(g3, g4, g1, g2, 2)
-            return self.vertical_recursion(recursive_array, 2, m)
+        if l_1.l > 0:
+            recursive_array = self.hgp_vertical_factory(0, g1, g2, g3, g4)
+            return self.vertical_recursion(0, m, *recursive_array)
+        if l_3.l > 0:
+            recursive_array = self.hgp_vertical_factory(0, g3, g4, g1, g2)
+            return self.vertical_recursion(0, m, *recursive_array)
+        if l_1.m > 0:
+            recursive_array = self.hgp_vertical_factory(1, g1, g2, g3, g4)
+            return self.vertical_recursion(1, m, *recursive_array)
+        if l_3.m > 0:
+            recursive_array = self.hgp_vertical_factory(1, g3, g4, g1, g2)
+            return self.vertical_recursion(1, m, *recursive_array)
+        if l_1.n > 0:
+            recursive_array = self.hgp_vertical_factory(2, g1, g2, g3, g4)
+            return self.vertical_recursion(2, m, *recursive_array)
+        if l_3.n > 0:
+            recursive_array = self.hgp_vertical_factory(2, g3, g4, g1, g2)
+            return self.vertical_recursion(2, m, *recursive_array)
         else:
-            return self.hgp_end(g1, g2, g3, g4, m)
+            return self.hgp_end(m, g1, g2, g3, g4)
 
-    def vertical_recursion(self, g, xyz, m):
-        a_1 = g[0].exponent
-        a_2 = g[1].exponent
-        a_3 = g[2].exponent
-        a_4 = g[3].exponent
+    def vertical_recursion(self, r, m, g1, g2, g3, g4, g5, g6):
+        a_1 = g1.exponent
+        a_2 = g2.exponent
+        a_3 = g3.exponent
+        a_4 = g4.exponent
         a_5 = a_1 + a_2
         a_6 = a_3 + a_4
         rho = (a_5 * a_6) / (a_5 + a_6)
 
-        r_1 = g[0].coordinates
-        r_2 = g[1].coordinates
-        r_3 = g[2].coordinates
-        r_4 = g[3].coordinates
+        r_1 = g1.coordinates
+        r_2 = g2.coordinates
+        r_3 = g3.coordinates
+        r_4 = g4.coordinates
         r_5 = Vector.gaussian(a_1, r_1, a_2, r_2)
         r_6 = Vector.gaussian(a_3, r_3, a_4, r_4)
         r_7 = Vector.gaussian(a_5, r_5, a_6, r_6)
 
-        out1 = (r_5[xyz] - r_1[xyz]) * self.hgp_begin_vertical(g[0], g[1], g[2], g[3], m)
-        out2 = (r_7[xyz] - r_5[xyz]) * self.hgp_begin_vertical(g[0], g[1], g[2], g[3], (m+1))
-        if g[4].integral_exponents[xyz] >= 0:
-            out3 = self.os_count(g[0].integral_exponents[xyz]) * (1 / (2 * a_5)) * self.hgp_begin_vertical(g[4], g[1], g[2], g[3], m)
-            out4 = - self.os_count(g[0].integral_exponents[xyz]) * (rho / (2 * a_5**2)) * self.hgp_begin_vertical(g[4], g[1], g[2], g[3], (m+1))
+        out1 = (r_5[r] - r_1[r]) * self.hgp_begin_vertical(m, g1, g2, g3, g4)
+        out2 = (r_7[r] - r_5[r]) * self.hgp_begin_vertical((m+1), g1, g2, g3, g4)
+        if g5.integral_exponents[r] >= 0:
+            out3 = self.os_count(g1.integral_exponents[r]) * (1 / (2 * a_5)) * self.hgp_begin_vertical(m, g5, g2, g3, g4)
+            out4 = - self.os_count(g1.integral_exponents[r]) * (rho / (2 * a_5**2)) * self.hgp_begin_vertical((m+1), g5, g2, g3, g4)
         else:
             out3 = 0
             out4 = 0
-        if g[5].integral_exponents[xyz] >= 0:
-            out5 = self.os_count(g[2].integral_exponents[xyz]) * (1 / (2*(a_5 + a_6))) * self.hgp_begin_vertical(g[0], g[1], g[5], g[3], (m+1))
+        if g6.integral_exponents[r] >= 0:
+            out5 = self.os_count(g3.integral_exponents[r]) * (1 / (2*(a_5 + a_6))) * self.hgp_begin_vertical((m+1), g1, g2, g6, g4)
         else:
             out5 = 0
         return out1 + out2 + out3 + out4 + out5
@@ -122,7 +122,7 @@ class HeadGordonPople:
             return i
 
     @staticmethod
-    def hgp_horizontal_factory(g1, g2, g3, g4, xyz):
+    def hgp_horizontal_factory(r, g1, g2, g3, g4):
         d_1 = g1.contraction
         d_2 = g2.contraction
         a_1 = g1.exponent
@@ -131,21 +131,21 @@ class HeadGordonPople:
         r_2 = g2.coordinates
         l_1 = g1.integral_exponents
         l_2 = g2.integral_exponents
-        if xyz == 0:
-            g1xa1 = PrimitiveBasis(d_1, a_1, r_1, (l_1[0] + 1, l_1[1], l_1[2]))
-            g2x1 = PrimitiveBasis(d_2, a_2, r_2, (l_2[0] - 1, l_2[1], l_2[2]))
-            return g1xa1, g1, g2x1, g3, g4
-        elif xyz == 1:
-            g1ya1 = PrimitiveBasis(d_1, a_1, r_1, (l_1[0], l_1[1] + 1, l_1[2]))
-            g2y1 = PrimitiveBasis(d_2, a_2, r_2, (l_2[0], l_2[1] - 1, l_2[2]))
-            return g1ya1, g1, g2y1, g3, g4
-        elif xyz == 2:
-            g1za1 = PrimitiveBasis(d_1, a_1, r_1, (l_1[0], l_1[1], l_1[2] + 1))
-            g2z1 = PrimitiveBasis(d_2, a_2, r_2, (l_2[0], l_2[1], l_2[2] - 1))
-            return g1za1, g1, g2z1, g3, g4
+        if r == 0:
+            g1xa1 = PrimitiveBasis(d_1, a_1, r_1, IntegralExponents(l_1.l + 1, l_1.m, l_1.n))
+            g2xm1 = PrimitiveBasis(d_2, a_2, r_2, IntegralExponents(l_2.l - 1, l_2.m, l_2.n))
+            return g1xa1, g1, g2xm1, g3, g4
+        elif r == 1:
+            g1ya1 = PrimitiveBasis(d_1, a_1, r_1, IntegralExponents(l_1.l, l_1.m + 1, l_1.n))
+            g2ym1 = PrimitiveBasis(d_2, a_2, r_2, IntegralExponents(l_2.l, l_2.m - 1, l_2.n))
+            return g1ya1, g1, g2ym1, g3, g4
+        elif r == 2:
+            g1za1 = PrimitiveBasis(d_1, a_1, r_1, IntegralExponents(l_1.l, l_1.m, l_1.n + 1))
+            g2zm1 = PrimitiveBasis(d_2, a_2, r_2, IntegralExponents(l_2.l, l_2.m, l_2.n - 1))
+            return g1za1, g1, g2zm1, g3, g4
 
     @staticmethod
-    def hgp_vertical_factory(g1, g2, g3, g4, xyz):
+    def hgp_vertical_factory(r, g1, g2, g3, g4):
         d_1 = g1.contraction
         d_3 = g3.contraction
         a_1 = g1.exponent
@@ -154,23 +154,23 @@ class HeadGordonPople:
         r_3 = g3.coordinates
         l_1 = g1.integral_exponents
         l_3 = g3.integral_exponents
-        if xyz == 0:
-            g1x1 = PrimitiveBasis(d_1, a_1, r_1, (l_1[0] - 1, l_1[1], l_1[2]))
-            g1x2 = PrimitiveBasis(d_1, a_1, r_1, (l_1[0] - 2, l_1[1], l_1[2]))
-            g3x1 = PrimitiveBasis(d_3, a_3, r_3, (l_3[0] - 1, l_3[1], l_3[2]))
-            return g1x1, g2, g3, g4, g1x2, g3x1
-        elif xyz == 1:
-            g1y1 = PrimitiveBasis(d_1, a_1, r_1, (l_1[0], l_1[1] - 1, l_1[2]))
-            g1y2 = PrimitiveBasis(d_1, a_1, r_1, (l_1[0], l_1[1] - 2, l_1[2]))
-            g3y1 = PrimitiveBasis(d_3, a_3, r_3, (l_3[0], l_3[1] - 1, l_3[2]))
-            return g1y1, g2, g3, g4, g1y2, g3y1
-        elif xyz == 2:
-            g1z1 = PrimitiveBasis(d_1, a_1, r_1, (l_1[0], l_1[1], l_1[2] - 1))
-            g1z2 = PrimitiveBasis(d_1, a_1, r_1, (l_1[0], l_1[1], l_1[2] - 2))
-            g3z1 = PrimitiveBasis(d_3, a_3, r_3, (l_3[0], l_3[1], l_3[2] - 1))
-            return g1z1, g2, g3, g4, g1z2, g3z1
+        if r == 0:
+            g1xm1 = PrimitiveBasis(d_1, a_1, r_1, IntegralExponents(l_1.l - 1, l_1.m, l_1.n))
+            g1xm2 = PrimitiveBasis(d_1, a_1, r_1, IntegralExponents(l_1.l - 2, l_1.m, l_1.n))
+            g3xm1 = PrimitiveBasis(d_3, a_3, r_3, IntegralExponents(l_3.l - 1, l_3.m, l_3.n))
+            return g1xm1, g2, g3, g4, g1xm2, g3xm1
+        elif r == 1:
+            g1ym1 = PrimitiveBasis(d_1, a_1, r_1, IntegralExponents(l_1.l, l_1.m - 1, l_1.n))
+            g1ym2 = PrimitiveBasis(d_1, a_1, r_1, IntegralExponents(l_1.l, l_1.m - 2, l_1.n))
+            g3ym1 = PrimitiveBasis(d_3, a_3, r_3, IntegralExponents(l_3.l, l_3.m - 1, l_3.n))
+            return g1ym1, g2, g3, g4, g1ym2, g3ym1
+        elif r == 2:
+            g1zm1 = PrimitiveBasis(d_1, a_1, r_1, IntegralExponents(l_1.l, l_1.m, l_1.n - 1))
+            g1zm2 = PrimitiveBasis(d_1, a_1, r_1, IntegralExponents(l_1.l, l_1.m, l_1.n - 2))
+            g3zm1 = PrimitiveBasis(d_3, a_3, r_3, IntegralExponents(l_3.l, l_3.m, l_3.n - 1))
+            return g1zm1, g2, g3, g4, g1zm2, g3zm1
 
-    def hgp_end(self, g1, g2, g3, g4, m):
+    def hgp_end(self, m, g1, g2, g3, g4):
         if m in self.end_dict:
             return self.end_dict[m]
         else:

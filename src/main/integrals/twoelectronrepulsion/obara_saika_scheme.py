@@ -1,6 +1,6 @@
 from src.main.common import Vector, BoysFunction
 from math import sqrt, pi, exp
-from src.main.objects import PrimitiveBasis
+from src.main.objects import PrimitiveBasis, IntegralExponents
 
 
 class ObaraSaika:
@@ -10,95 +10,95 @@ class ObaraSaika:
 
     def os_set(self, g1, g2, g3, g4):
         self.end_dict = {}
-        return self.os_begin(g1, g2, g3, g4, 0)
+        return self.os_begin(0, g1, g2, g3, g4)
 
-    def os_begin(self, g1, g2, g3, g4, m):
+    def os_begin(self, m, g1, g2, g3, g4):
         l_1 = g1.integral_exponents
         l_2 = g2.integral_exponents
         l_3 = g3.integral_exponents
         l_4 = g4.integral_exponents
 
-        if l_1[0] > 0:
-            recursive_array = self.os_gaussian_factory(g1, g2, g3, g4, 0)
-            return self.os_recursive(recursive_array, 0, m)
-        elif l_1[1] > 0:
-            recursive_array = self.os_gaussian_factory(g1, g2, g3, g4, 1)
-            return self.os_recursive(recursive_array, 1, m)
-        elif l_1[2] > 0:
-            recursive_array = self.os_gaussian_factory(g1, g2, g3, g4, 2)
-            return self.os_recursive(recursive_array, 2, m)
-        elif l_2[0] > 0:
-            recursive_array = self.os_gaussian_factory(g2, g1, g4, g3, 0)
-            return self.os_recursive(recursive_array, 0, m)
-        elif l_2[1] > 0:
-            recursive_array = self.os_gaussian_factory(g2, g1, g4, g3, 1)
-            return self.os_recursive(recursive_array, 1, m)
-        elif l_2[2] > 0:
-            recursive_array = self.os_gaussian_factory(g2, g1, g4, g3, 2)
-            return self.os_recursive(recursive_array, 2, m)
-        elif l_3[0] > 0:
-            recursive_array = self.os_gaussian_factory(g3, g4, g1, g2, 0)
-            return self.os_recursive(recursive_array, 0, m)
-        elif l_3[1] > 0:
-            recursive_array = self.os_gaussian_factory(g3, g4, g1, g2, 1)
-            return self.os_recursive(recursive_array, 1, m)
-        elif l_3[2] > 0:
-            recursive_array = self.os_gaussian_factory(g3, g4, g1, g2, 2)
-            return self.os_recursive(recursive_array, 2, m)
-        elif l_4[0] > 0:
-            recursive_array = self.os_gaussian_factory(g4, g3, g2, g1, 0)
-            return self.os_recursive(recursive_array, 0, m)
-        elif l_4[1] > 0:
-            recursive_array = self.os_gaussian_factory(g4, g3, g2, g1, 1)
-            return self.os_recursive(recursive_array, 1, m)
-        elif l_4[2] > 0:
-            recursive_array = self.os_gaussian_factory(g4, g3, g2, g1, 2)
-            return self.os_recursive(recursive_array, 2, m)
+        if l_1.l > 0:
+            recursive_array = self.os_gaussian_factory(0, g1, g2, g3, g4)
+            return self.os_recursive(0, m, *recursive_array)
+        elif l_1.m > 0:
+            recursive_array = self.os_gaussian_factory(1, g1, g2, g3, g4)
+            return self.os_recursive(1, m, *recursive_array)
+        elif l_1.n > 0:
+            recursive_array = self.os_gaussian_factory(2, g1, g2, g3, g4)
+            return self.os_recursive(2, m, *recursive_array)
+        elif l_2.l > 0:
+            recursive_array = self.os_gaussian_factory(0, g2, g1, g4, g3)
+            return self.os_recursive(0, m, *recursive_array)
+        elif l_2.m > 0:
+            recursive_array = self.os_gaussian_factory(1, g2, g1, g4, g3)
+            return self.os_recursive(1, m, *recursive_array)
+        elif l_2.n > 0:
+            recursive_array = self.os_gaussian_factory(2, g2, g1, g4, g3)
+            return self.os_recursive(2, m, *recursive_array)
+        elif l_3.l > 0:
+            recursive_array = self.os_gaussian_factory(0, g3, g4, g1, g2)
+            return self.os_recursive(0, m, *recursive_array)
+        elif l_3.m > 0:
+            recursive_array = self.os_gaussian_factory(1, g3, g4, g1, g2)
+            return self.os_recursive(1, m, *recursive_array)
+        elif l_3.n > 0:
+            recursive_array = self.os_gaussian_factory(2, g3, g4, g1, g2)
+            return self.os_recursive(2, m, *recursive_array)
+        elif l_4.l > 0:
+            recursive_array = self.os_gaussian_factory(0, g4, g3, g2, g1)
+            return self.os_recursive(0, m, *recursive_array)
+        elif l_4.m > 0:
+            recursive_array = self.os_gaussian_factory(1, g4, g3, g2, g1)
+            return self.os_recursive(1, m, *recursive_array)
+        elif l_4.n > 0:
+            recursive_array = self.os_gaussian_factory(2, g4, g3, g2, g1)
+            return self.os_recursive(2, m, *recursive_array)
         else:
-            return self.os_end(g1, g2, g3, g4, m)
+            return self.os_end(m, g1, g2, g3, g4)
 
-    def os_recursive(self, g, xyz, m):
-        a_1 = g[0].exponent
-        a_2 = g[1].exponent
-        a_3 = g[2].exponent
-        a_4 = g[3].exponent
+    def os_recursive(self, r, m, g1, g2, g3, g4, g5, g6, g7, g8):
+        a_1 = g1.exponent
+        a_2 = g2.exponent
+        a_3 = g3.exponent
+        a_4 = g4.exponent
         a_5 = a_1 + a_2
         a_6 = a_3 + a_4
         rho = (a_5 * a_6) / (a_5 + a_6)
 
-        r_1 = g[0].coordinates
-        r_2 = g[1].coordinates
-        r_3 = g[2].coordinates
-        r_4 = g[3].coordinates
+        r_1 = g1.coordinates
+        r_2 = g2.coordinates
+        r_3 = g3.coordinates
+        r_4 = g4.coordinates
         r_5 = Vector.gaussian(a_1, r_1, a_2, r_2)
         r_6 = Vector.gaussian(a_3, r_3, a_4, r_4)
         r_7 = Vector.gaussian(a_5, r_5, a_6, r_6)
 
-        out1 = (r_5[xyz] - r_1[xyz]) * self.os_begin(g[0], g[1], g[2], g[3], m)
-        out2 = (r_7[xyz] - r_5[xyz]) * self.os_begin(g[0], g[1], g[2], g[3], (m+1))
-        if g[4].integral_exponents[xyz] >= 0:
-            out3 = self.os_count(g[0].integral_exponents[xyz]) * (1 / (2 * a_5)) * self.os_begin(g[4], g[1], g[2], g[3], m)
-            out4 = - self.os_count(g[0].integral_exponents[xyz]) * (rho / (2 * a_5**2)) * self.os_begin(g[4], g[1], g[2], g[3], (m+1))
+        out1 = (r_5[r] - r_1[r]) * self.os_begin(m, g1, g2, g3, g4)
+        out2 = (r_7[r] - r_5[r]) * self.os_begin((m+1), g1, g2, g3, g4)
+        if g5.integral_exponents[r] >= 0:
+            out3 = self.os_count(g1.integral_exponents[r]) * (1 / (2 * a_5)) * self.os_begin(m, g5, g2, g3, g4)
+            out4 = self.os_count(g1.integral_exponents[r]) * (rho / (2 * a_5**2)) * self.os_begin((m+1), g5, g2, g3, g4)
         else:
             out3 = 0
             out4 = 0
-        if g[5].integral_exponents[xyz] >= 0:
-            out5 = self.os_count(g[1].integral_exponents[xyz]) * (1 / (2 * a_5)) * self.os_begin(g[0], g[5], g[2], g[3], m)
-            out6 = - self.os_count(g[1].integral_exponents[xyz]) * (rho / (2 * a_5**2)) * self.os_begin(g[0], g[5], g[2], g[3], (m+1))
+        if g6.integral_exponents[r] >= 0:
+            out5 = self.os_count(g2.integral_exponents[r]) * (1 / (2 * a_5)) * self.os_begin(m, g1, g6, g3, g4)
+            out6 = self.os_count(g2.integral_exponents[r]) * (rho / (2 * a_5**2)) * self.os_begin((m+1), g1, g6, g3, g4)
         else:
             out5 = 0
             out6 = 0
-        if g[6].integral_exponents[xyz] >= 0:
-            out7 = self.os_count(g[2].integral_exponents[xyz]) * (1 / (2*(a_5 + a_6))) * self.os_begin(g[0], g[1], g[6], g[3], (m+1))
+        if g7.integral_exponents[r] >= 0:
+            out7 = self.os_count(g3.integral_exponents[r]) * (1 / (2*(a_5 + a_6))) * self.os_begin((m+1), g1, g2, g7, g4)
         else:
             out7 = 0
-        if g[7].integral_exponents[xyz] >= 0:
-            out8 = self.os_count(g[3].integral_exponents[xyz]) * (1 / (2*(a_5 + a_6))) * self.os_begin(g[0], g[1], g[2], g[7], (m+1))
+        if g8.integral_exponents[r] >= 0:
+            out8 = self.os_count(g4.integral_exponents[r]) * (1 / (2*(a_5 + a_6))) * self.os_begin((m+1), g1, g2, g3, g8)
         else:
             out8 = 0
-        return out1 + out2 + out3 + out4 + out5 + out6 + out7 + out8
+        return out1 + out2 + out3 - out4 + out5 - out6 + out7 + out8
 
-    def os_end(self, g1, g2, g3, g4, m):
+    def os_end(self, m, g1, g2, g3, g4):
         if m in self.end_dict:
             return self.end_dict[m]
         else:
@@ -135,7 +135,7 @@ class ObaraSaika:
             return i
 
     @staticmethod
-    def os_gaussian_factory(g1, g2, g3, g4, xyz):
+    def os_gaussian_factory(r, g1, g2, g3, g4):
         d_1 = g1.contraction
         d_2 = g2.contraction
         d_3 = g3.contraction
@@ -156,24 +156,24 @@ class ObaraSaika:
         l_3 = g3.integral_exponents
         l_4 = g4.integral_exponents
 
-        if xyz == 0:
-            g1x1 = PrimitiveBasis(d_1, a_1, r_1, (l_1[0] - 1, l_1[1], l_1[2]))
-            g1x2 = PrimitiveBasis(d_1, a_1, r_1, (l_1[0] - 2, l_1[1], l_1[2]))
-            g2x1 = PrimitiveBasis(d_2, a_2, r_2, (l_2[0] - 1, l_2[1], l_2[2]))
-            g3x1 = PrimitiveBasis(d_3, a_3, r_3, (l_3[0] - 1, l_3[1], l_3[2]))
-            g4x1 = PrimitiveBasis(d_4, a_4, r_4, (l_4[0] - 1, l_4[1], l_4[2]))
+        if r == 0:
+            g1x1 = PrimitiveBasis(d_1, a_1, r_1, IntegralExponents(l_1.l - 1, l_1.m, l_1.n))
+            g1x2 = PrimitiveBasis(d_1, a_1, r_1, IntegralExponents(l_1.l - 2, l_1.m, l_1.n))
+            g2x1 = PrimitiveBasis(d_2, a_2, r_2, IntegralExponents(l_2.l - 1, l_2.m, l_2.n))
+            g3x1 = PrimitiveBasis(d_3, a_3, r_3, IntegralExponents(l_3.l - 1, l_3.m, l_3.n))
+            g4x1 = PrimitiveBasis(d_4, a_4, r_4, IntegralExponents(l_4.l - 1, l_4.m, l_4.n))
             return g1x1, g2, g3, g4, g1x2, g2x1, g3x1, g4x1
-        elif xyz == 1:
-            g1y1 = PrimitiveBasis(d_1, a_1, r_1, (l_1[0], l_1[1] - 1, l_1[2]))
-            g1y2 = PrimitiveBasis(d_1, a_1, r_1, (l_1[0], l_1[1] - 2, l_1[2]))
-            g2y1 = PrimitiveBasis(d_2, a_2, r_2, (l_2[0], l_2[1] - 1, l_2[2]))
-            g3y1 = PrimitiveBasis(d_3, a_3, r_3, (l_3[0], l_3[1] - 1, l_3[2]))
-            g4y1 = PrimitiveBasis(d_4, a_4, r_4, (l_4[0], l_4[1] - 1, l_4[2]))
+        elif r == 1:
+            g1y1 = PrimitiveBasis(d_1, a_1, r_1, IntegralExponents(l_1.l, l_1.m - 1, l_1.n))
+            g1y2 = PrimitiveBasis(d_1, a_1, r_1, IntegralExponents(l_1.l, l_1.m - 2, l_1.n))
+            g2y1 = PrimitiveBasis(d_2, a_2, r_2, IntegralExponents(l_2.l, l_2.m - 1, l_2.n))
+            g3y1 = PrimitiveBasis(d_3, a_3, r_3, IntegralExponents(l_3.l, l_3.m - 1, l_3.n))
+            g4y1 = PrimitiveBasis(d_4, a_4, r_4, IntegralExponents(l_4.l, l_4.m - 1, l_4.n))
             return g1y1, g2, g3, g4, g1y2, g2y1, g3y1, g4y1
-        elif xyz == 2:
-            g1z1 = PrimitiveBasis(d_1, a_1, r_1, (l_1[0], l_1[1], l_1[2] - 1))
-            g1z2 = PrimitiveBasis(d_1, a_1, r_1, (l_1[0], l_1[1], l_1[2] - 2))
-            g2z1 = PrimitiveBasis(d_2, a_2, r_2, (l_2[0], l_2[1], l_2[2] - 1))
-            g3z1 = PrimitiveBasis(d_3, a_3, r_3, (l_3[0], l_3[1], l_3[2] - 1))
-            g4z1 = PrimitiveBasis(d_4, a_4, r_4, (l_4[0], l_4[1], l_4[2] - 1))
+        elif r == 2:
+            g1z1 = PrimitiveBasis(d_1, a_1, r_1, IntegralExponents(l_1.l, l_1.m, l_1.n - 1))
+            g1z2 = PrimitiveBasis(d_1, a_1, r_1, IntegralExponents(l_1.l, l_1.m, l_1.n - 2))
+            g2z1 = PrimitiveBasis(d_2, a_2, r_2, IntegralExponents(l_2.l, l_2.m, l_2.n - 1))
+            g3z1 = PrimitiveBasis(d_3, a_3, r_3, IntegralExponents(l_3.l, l_3.m, l_3.n - 1))
+            g4z1 = PrimitiveBasis(d_4, a_4, r_4, IntegralExponents(l_4.l, l_4.m, l_4.n - 1))
             return g1z1, g2, g3, g4, g1z2, g2z1, g3z1, g4z1

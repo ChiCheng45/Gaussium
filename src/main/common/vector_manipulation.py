@@ -1,4 +1,5 @@
 from math import sqrt
+from src.main.objects import Coordinates
 
 """
 NAME
@@ -24,21 +25,21 @@ DESCRIPTION
 
 ARGUMENTS
     add(tuple1, tuple2), minus(tuple1, tuple2)
-    tuple1  input: a tuple of any length
-    tuple2  input: a tuple of any length
+    tuple1  input: a tuple of length three
+    tuple2  input: a tuple of length three
 
     dot_product(tuple1, tuple2)
-    tuple1  input: a tuple of any length
-    tuple2  input: a tuple of any length
+    tuple1  input: a tuple of length three
+    tuple2  input: a tuple of length three
     ans     output: the tuple of the dot product of tuple1 and tuple2
 
     distance(tuple1, tuple2)
-    tuple1  input: a tuple of any length
-    tuple2  input: a tuple of any length
+    tuple1  input: a tuple of length three
+    tuple2  input: a tuple of length three
     r_ab    output: the euclidean distance between the vectors of tuple1 and tuple2
 
     multiply(x, tuple1)
-    tuple1  input: a tuple of any length
+    tuple1  input: a tuple of length three
     x       input: x any number
 
     gaussian(cls, x, tuple1, y, tuple2)
@@ -62,29 +63,29 @@ DIAGNOSTICS
 class Vector:
 
     @staticmethod
-    def add(a, b):
-        return a[0] + b[0], a[1] + b[1], a[2] + b[2]
+    def add(r_1, r_2):
+        return Coordinates(r_1.x + r_2.x, r_1.y + r_2.y, r_1.z + r_2.z)
 
     @staticmethod
-    def minus(a, b):
-        return a[0] - b[0], a[1] - b[1], a[2] - b[2]
+    def minus(r_1, r_2):
+        return Coordinates(r_1.x - r_2.x, r_1.y - r_2.y, r_1.z - r_2.z)
 
     @staticmethod
-    def multiply(x, a):
-        return a[0] * x, a[1] * x, a[2] * x
+    def multiply(a, r_1):
+        return Coordinates(a * r_1.x, a * r_1.y, a * r_1.z)
 
     @staticmethod
-    def dot_product(a, b):
-        return a[0] * b[0] + a[1] * b[1] + a[2] + b[2]
+    def dot_product(r_1, r_2):
+        return r_1.x * r_2.x + r_1.y * r_2.y + r_1.z + r_2.z
 
     @staticmethod
-    def distance(a, b):
-        r_ab = sqrt((a[0] - b[0])**2 + (a[1] - b[1])**2 + (a[2] - b[2])**2)
-        return r_ab
+    def distance(r_1, r_2):
+        r_12 = sqrt((r_1.x - r_2.x)**2 + (r_1.y - r_2.y)**2 + (r_1.z - r_2.z)**2)
+        return r_12
 
     @classmethod
-    def gaussian(cls, x, a, y, b):
-        c = cls.multiply(x, a)
-        d = cls.multiply(y, b)
-        ans = cls.add(c, d)
-        return ans[0] / (x + y), ans[1] / (x + y), ans[2] / (x + y)
+    def gaussian(cls, a, r_1, b, r_2):
+        i = (a * r_1.x + b * r_2.x) / (a + b)
+        j = (a * r_1.y + b * r_2.y) / (a + b)
+        k = (a * r_1.z + b * r_2.z) / (a + b)
+        return Coordinates(i, j, k)
