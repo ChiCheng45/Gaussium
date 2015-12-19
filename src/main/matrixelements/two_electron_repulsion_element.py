@@ -34,7 +34,6 @@ class TwoElectronRepulsionElement:
         else:
             return 0
 
-    # single process method
     def store_series(self):
         repulsion_dict = {}
         for a in range(len(self.basis_set_array)):
@@ -46,7 +45,6 @@ class TwoElectronRepulsionElement:
                             repulsion_dict[index] = self.calculate(index)
         return repulsion_dict
 
-    # multiprocess methods
     def keys_parallel(self):
         dict_key = []
         for a in range(len(self.basis_set_array)):

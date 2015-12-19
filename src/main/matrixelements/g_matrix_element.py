@@ -13,8 +13,7 @@ class GMatrixElement:
                 g_ij += self.density_matrix.item(b, a) * (coulomb_integral - (1/2) * exchange_integral)
         return g_ij
 
-    @staticmethod
-    def sort(i, j, k, l):
+    def sort(self, i, j, k, l):
         a = i
         b = j
         c = k
