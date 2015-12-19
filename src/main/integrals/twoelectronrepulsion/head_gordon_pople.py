@@ -63,23 +63,23 @@ class HeadGordonPople:
         l_1 = g1.integral_exponents
         l_3 = g3.integral_exponents
         if l_1[0] > 0:
-            recursive_array = self.hgp_vertical_factory(0, g1, g2, g3, g4)
-            return self.vertical_recursion(0, m, *recursive_array)
+            gaussian_tuple = self.hgp_vertical_factory(0, g1, g2, g3, g4)
+            return self.vertical_recursion(0, m, *gaussian_tuple)
         if l_3[0] > 0:
-            recursive_array = self.hgp_vertical_factory(0, g3, g4, g1, g2)
-            return self.vertical_recursion(0, m, *recursive_array)
+            gaussian_tuple = self.hgp_vertical_factory(0, g3, g4, g1, g2)
+            return self.vertical_recursion(0, m, *gaussian_tuple)
         if l_1[1] > 0:
-            recursive_array = self.hgp_vertical_factory(1, g1, g2, g3, g4)
-            return self.vertical_recursion(1, m, *recursive_array)
+            gaussian_tuple = self.hgp_vertical_factory(1, g1, g2, g3, g4)
+            return self.vertical_recursion(1, m, *gaussian_tuple)
         if l_3[1] > 0:
-            recursive_array = self.hgp_vertical_factory(1, g3, g4, g1, g2)
-            return self.vertical_recursion(1, m, *recursive_array)
+            gaussian_tuple = self.hgp_vertical_factory(1, g3, g4, g1, g2)
+            return self.vertical_recursion(1, m, *gaussian_tuple)
         if l_1[2] > 0:
-            recursive_array = self.hgp_vertical_factory(2, g1, g2, g3, g4)
-            return self.vertical_recursion(2, m, *recursive_array)
+            gaussian_tuple = self.hgp_vertical_factory(2, g1, g2, g3, g4)
+            return self.vertical_recursion(2, m, *gaussian_tuple)
         if l_3[2] > 0:
-            recursive_array = self.hgp_vertical_factory(2, g3, g4, g1, g2)
-            return self.vertical_recursion(2, m, *recursive_array)
+            gaussian_tuple = self.hgp_vertical_factory(2, g3, g4, g1, g2)
+            return self.vertical_recursion(2, m, *gaussian_tuple)
         else:
             return self.hgp_end(m, g1, g2, g3, g4)
 
