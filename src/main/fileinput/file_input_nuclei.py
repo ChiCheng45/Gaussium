@@ -1,6 +1,6 @@
 import os
 import sys
-from src.main.objects import Nuclei, Coordinates
+from src.main.objects import Nuclei
 
 
 class FileInputNuclei:
@@ -18,7 +18,7 @@ class FileInputNuclei:
                 line = lines[a]
                 array = line.split()
                 total_nuclei_charge += int(array[1])
-                coordinates = Coordinates(float(array[3]), float(array[4]), float(array[5]))
+                coordinates = (float(array[3]), float(array[4]), float(array[5]))
                 nuclei = Nuclei(array[0], float(array[1]), float(array[2]), coordinates)
                 nuclei_array.append(nuclei)
         file.close()

@@ -1,5 +1,5 @@
 from math import sqrt
-from src.main.objects import Coordinates
+
 
 """
 NAME
@@ -56,7 +56,6 @@ SEE ALSO
 
 DIAGNOSTICS
     None
-
 """
 
 
@@ -64,28 +63,28 @@ class Vector:
 
     @staticmethod
     def add(r_1, r_2):
-        return Coordinates(r_1.x + r_2.x, r_1.y + r_2.y, r_1.z + r_2.z)
+        return r_1[0] + r_2[0], r_1[1] + r_2[1], r_1[2] + r_2[2]
 
     @staticmethod
     def minus(r_1, r_2):
-        return Coordinates(r_1.x - r_2.x, r_1.y - r_2.y, r_1.z - r_2.z)
+        return r_1[0] - r_2[0], r_1[1] - r_2[1], r_1[2] - r_2[2]
 
     @staticmethod
     def multiply(a, r_1):
-        return Coordinates(a * r_1.x, a * r_1.y, a * r_1.z)
+        return a * r_1[0], a * r_1[1], a * r_1[2]
 
     @staticmethod
     def dot_product(r_1, r_2):
-        return r_1.x * r_2.x + r_1.y * r_2.y + r_1.z + r_2.z
+        return r_1[0] * r_2[0] + r_1[1] * r_2[1] + r_1[2] + r_2[2]
 
     @staticmethod
     def distance(r_1, r_2):
-        r_12 = sqrt((r_1.x - r_2.x)**2 + (r_1.y - r_2.y)**2 + (r_1.z - r_2.z)**2)
+        r_12 = sqrt((r_1[0] - r_2[0])**2 + (r_1[1] - r_2[1])**2 + (r_1[2] - r_2[2])**2)
         return r_12
 
     @classmethod
-    def gaussian(cls, a, r_1, b, r_2):
-        i = (a * r_1.x + b * r_2.x) / (a + b)
-        j = (a * r_1.y + b * r_2.y) / (a + b)
-        k = (a * r_1.z + b * r_2.z) / (a + b)
-        return Coordinates(i, j, k)
+    def gaussian_product(cls, a, r_1, b, r_2):
+        i = (a * r_1[0] + b * r_2[0]) / (a + b)
+        j = (a * r_1[1] + b * r_2[1]) / (a + b)
+        k = (a * r_1[2] + b * r_2[2]) / (a + b)
+        return i, j, k

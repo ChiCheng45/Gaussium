@@ -13,8 +13,8 @@ if __name__ == '__main__':
     print('***********************************************************************************************************')
     print('\nA BASIC QUANTUM CHEMICAL PROGRAM IN PYTHON\n\n')
 
-    nuclei_array, electrons = FileInputNuclei('CH4.mol').create_nuclei_array_and_electron_count()
-    basis_set_array = FileInputBasis('4-31G.gbs', nuclei_array).create_basis_set_array()
+    nuclei_array, electrons = FileInputNuclei('C2H4.mol').create_nuclei_array_and_electron_count()
+    basis_set_array = FileInputBasis('3-21G.gbs', nuclei_array).create_basis_set_array()
 
     nuclei_name_list = [x.element for x in nuclei_array]
     print(nuclei_name_list)
@@ -56,7 +56,6 @@ if __name__ == '__main__':
 
     print('\n*********************************************************************************************************')
     print('\nINITIAL GUESS\n')
-
     """
     Create a initial guess for the density matrix from the solutions of the orbital coefficients with all two-electron
     interactions turned off. The two-electron parts are then turned back on during the SCF procedure.
@@ -76,7 +75,6 @@ if __name__ == '__main__':
 
     print('\n*********************************************************************************************************')
     print('\nBEGIN SCF PROCEDURE')
-
     """
     There are two methods to produce the repulsion dictionary. One uses multiprocessing and gives some speed up on
     larger basis sets molecule. For smaller basis set molecules its better to use the normal single core method. My
@@ -84,9 +82,9 @@ if __name__ == '__main__':
     boost for the molecules I have tested. Doing this actually maxes my cpu out during this part of the calculation.
     """
 
-    # repulsion_dictionary = TwoElectronRepulsionElementCook(basis_set_array).store_parallel(1)
-    # repulsion_dictionary = TwoElectronRepulsionElementOS(basis_set_array).store_parallel(1)
-    repulsion_dictionary = TwoElectronRepulsionElementHGP(basis_set_array).store_parallel(1)
+    repulsion_dictionary = TwoElectronRepulsionElementCook(basis_set_array).store_parallel(4)
+    # repulsion_dictionary = TwoElectronRepulsionElementOS(basis_set_array).store_parallel(4)
+    # repulsion_dictionary = TwoElectronRepulsionElementHGP(basis_set_array).store_parallel(4)
 
     scf_procedure = SCFProcedure(h_core_matrix, x_canonical, matrix, electrons, repulsion_dictionary)
     electron_energy = scf_procedure.begin_scf(orbital_coefficients)

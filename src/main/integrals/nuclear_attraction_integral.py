@@ -26,7 +26,7 @@ class NuclearAttractionIntegral:
         r_a = gaussian_1.coordinates
         r_b = gaussian_2.coordinates
         r_c = nuclei.coordinates
-        r_p = Vector.gaussian(a_1, r_a, a_2, r_b)
+        r_p = Vector.gaussian_product(a_1, r_a, a_2, r_b)
 
         r_ab = Vector.distance(r_a, r_b)
         r_pc = Vector.distance(r_p, r_c)

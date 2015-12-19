@@ -43,24 +43,24 @@ class ElectronRepulsionIntegral:
         delta = (1/(4*a_5)) + (1/(4*a_6))
 
         ans = 0
-        for l in range(l_5.l + 1):
+        for l in range(l_5[0] + 1):
             for r in range(int(l/2) + 1):
-                for ll in range(l_6.l + 1):
+                for ll in range(l_6[0] + 1):
                     for rr in range(int(ll/2) + 1):
                         for i in range(int((l + ll - 2*r - 2*rr) / 2) + 1):
-                            out1 = self.b_function(l, ll, r, rr, i, l_1.l, l_2.l, r_1.x, r_2.x, r_5.x, a_5, l_3.l, l_4.l, r_3.x, r_4.x, r_6.x, a_6)
-                            for m in range(l_5.m + 1):
+                            out1 = self.b_function(l, ll, r, rr, i, l_1[0], l_2[0], r_1[0], r_2[0], r_5[0], a_5, l_3[0], l_4[0], r_3[0], r_4[0], r_6[0], a_6)
+                            for m in range(l_5[1] + 1):
                                 for s in range(int(m / 2) + 1):
-                                    for mm in range(l_6.m + 1):
+                                    for mm in range(l_6[1] + 1):
                                         for ss in range(int(mm/2) + 1):
                                             for j in range(int((m + mm - 2*s - 2*ss) / 2) + 1):
-                                                out2 = self.b_function(m, mm, s, ss, j, l_1.m, l_2.m, r_1.y, r_2.y, r_5.y, a_5, l_3.m, l_4.m, r_3.y, r_4.y, r_6.y, a_6)
-                                                for n in range(l_5.n + 1):
+                                                out2 = self.b_function(m, mm, s, ss, j, l_1[1], l_2[1], r_1[1], r_2[1], r_5[1], a_5, l_3[1], l_4[1], r_3[1], r_4[1], r_6[1], a_6)
+                                                for n in range(l_5[2] + 1):
                                                     for t in range(int(n/2) + 1):
-                                                        for nn in range(l_6.n + 1):
+                                                        for nn in range(l_6[2] + 1):
                                                             for tt in range(int(nn/2) + 1):
                                                                 for k in range(int((n + nn - 2*t - 2*tt) / 2) + 1):
-                                                                    out3 = self.b_function(n, nn, t, tt, k, l_1.n, l_2.n, r_1.z, r_2.z, r_5.z, a_5, l_3.n, l_4.n, r_3.z, r_4.z, r_6.z, a_6)
+                                                                    out3 = self.b_function(n, nn, t, tt, k, l_1[2], l_2[2], r_1[2], r_2[2], r_5[2], a_5, l_3[2], l_4[2], r_3[2], r_4[2], r_6[2], a_6)
                                                                     v = l + ll + m + mm + n + nn - 2*(r + rr + s + ss + t + tt) - (i + j + k)
                                                                     if v in self.end_dict:
                                                                         out4 = self.end_dict[v]
