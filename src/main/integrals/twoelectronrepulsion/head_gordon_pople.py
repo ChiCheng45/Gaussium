@@ -114,15 +114,13 @@ class HeadGordonPople:
             out5 = 0
         return out1 + out2 + out3 + out4 + out5
 
-    @staticmethod
-    def os_count(i):
+    def os_count(self, i):
         if i == 0:
             return 1
         else:
             return i
 
-    @staticmethod
-    def hgp_horizontal_factory(r, g1, g2, g3, g4):
+    def hgp_horizontal_factory(self, r, g1, g2, g3, g4):
         d_1 = g1.contraction
         d_2 = g2.contraction
         a_1 = g1.exponent
@@ -144,8 +142,7 @@ class HeadGordonPople:
             g2zm1 = PrimitiveBasis(d_2, a_2, r_2, (l_2[0], l_2[1], l_2[2] - 1))
             return g1za1, g1, g2zm1, g3, g4
 
-    @staticmethod
-    def hgp_vertical_factory(r, g1, g2, g3, g4):
+    def hgp_vertical_factory(self, r, g1, g2, g3, g4):
         d_1 = g1.contraction
         d_3 = g3.contraction
         a_1 = g1.exponent

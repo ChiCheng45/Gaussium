@@ -127,15 +127,13 @@ class ObaraSaika:
             self.end_dict[m] = ans
         return ans
 
-    @staticmethod
-    def os_count(i):
+    def os_count(self, i):
         if i == 0:
             return 1
         else:
             return i
 
-    @staticmethod
-    def os_gaussian_factory(r, g1, g2, g3, g4):
+    def os_gaussian_factory(self, r, g1, g2, g3, g4):
         d_1 = g1.contraction
         d_2 = g2.contraction
         d_3 = g3.contraction

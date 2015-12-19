@@ -83,8 +83,8 @@ if __name__ == '__main__':
     """
 
     # repulsion_dictionary = TwoElectronRepulsionElementCook(basis_set_array).store_parallel(4)
-    repulsion_dictionary = TwoElectronRepulsionElementOS(basis_set_array).store_parallel(4)
-    # repulsion_dictionary = TwoElectronRepulsionElementHGP(basis_set_array).store_parallel(4)
+    # repulsion_dictionary = TwoElectronRepulsionElementOS(basis_set_array).store_parallel(4)
+    repulsion_dictionary = TwoElectronRepulsionElementHGP(basis_set_array).store_parallel(4)
 
     scf_procedure = SCFProcedure(h_core_matrix, x_canonical, matrix, electrons, repulsion_dictionary)
     electron_energy = scf_procedure.begin_scf(orbital_coefficients)
