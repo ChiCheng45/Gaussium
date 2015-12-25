@@ -82,8 +82,8 @@ class Vector:
         r_12 = sqrt((r_1[0] - r_2[0])**2 + (r_1[1] - r_2[1])**2 + (r_1[2] - r_2[2])**2)
         return r_12
 
-    @classmethod
-    def gaussian_product(cls, a, r_1, b, r_2):
+    @staticmethod
+    def gaussian_product(a, r_1, b, r_2):
         i = (a * r_1[0] + b * r_2[0]) / (a + b)
         j = (a * r_1[1] + b * r_2[1]) / (a + b)
         k = (a * r_1[2] + b * r_2[2]) / (a + b)

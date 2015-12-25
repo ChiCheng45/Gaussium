@@ -13,5 +13,5 @@ class TestTotalEnergyHeH(TestCase):
 
     def test_calculate_total_energy_for_the_heh_case(self):
         total_energy = TotalEnergy()
-        electronic_energy = total_energy.calculate_total_energy(self.density_matrix, self.h_core_matrix, self.fock_matrix)
+        electronic_energy = total_energy.restricted(self.density_matrix, self.h_core_matrix, self.fock_matrix)
         testing.assert_approx_equal(electronic_energy, -4.14186, 6)
