@@ -1,23 +1,23 @@
 from src.main.common import Matrix, CoulombsLawArray
 from src.main.fileinput import FileInputBasis, FileInputNuclei
 from src.main.matrixelements import KineticEnergyElement, NuclearAttractionElement, OrbitalOverlapElement, TwoElectronRepulsionElementCook, TwoElectronRepulsionElementOS, TwoElectronRepulsionElementHGP
-from src.main.selfconsistentfield import RHFSCFProcedure
+from src.main.hartreefock import SCF
 import numpy as np
 import time
 
 
-class RestrictedHartreeFock:
+class HartreeFock:
 
     @staticmethod
-    def begin():
+    def begin(mol, basis, method):
         np.set_printoptions(linewidth=100000, threshold=np.inf)
 
         start = time.clock()
         print('*******************************************************************************************************')
-        print('\nA BASIC QUANTUM CHEMICAL PROGRAM IN PYTHON: RHF\n\n')
+        print('\nA BASIC QUANTUM CHEMICAL PROGRAM IN PYTHON\n\n')
 
-        nuclei_array, electrons = FileInputNuclei('O2.mol').create_nuclei_array_and_electron_count()
-        basis_set_array = FileInputBasis('STO-3G.gbs', nuclei_array).create_basis_set_array()
+        nuclei_array, electrons, multiplicity = FileInputNuclei(mol).create_nuclei_array_and_electron_count()
+        basis_set_array = FileInputBasis(basis, nuclei_array).create_basis_set_array()
 
         nuclei_name_list = [x.element for x in nuclei_array]
         print(nuclei_name_list)
@@ -30,26 +30,26 @@ class RestrictedHartreeFock:
         print('\n*****************************************************************************************************')
         print('\nMATRICES\n')
 
-        matrix = Matrix(len(basis_set_array))
+        create = Matrix(len(basis_set_array)).create_matrix
 
         print('\nORBITAL OVERLAP MATRIX')
-        s_matrix = matrix.create_matrix(OrbitalOverlapElement(basis_set_array))
-        print(s_matrix)
+        orbital_overlap = create(OrbitalOverlapElement(basis_set_array))
+        print(orbital_overlap)
 
         print('\nKINETIC ENERGY MATRIX')
-        t_matrix = matrix.create_matrix(KineticEnergyElement(basis_set_array))
-        print(t_matrix)
+        kinetic_energy = create(KineticEnergyElement(basis_set_array))
+        print(kinetic_energy)
 
         print('\nNUCLEAR POTENTIAL ENERGY MATRIX')
-        v_matrix = matrix.create_matrix(NuclearAttractionElement(nuclei_array, basis_set_array))
-        print(v_matrix)
+        nuclear_potential = create(NuclearAttractionElement(nuclei_array, basis_set_array))
+        print(nuclear_potential)
 
         print('\nCORE HAMILTONIAN MATRIX')
-        h_core_matrix = t_matrix + v_matrix
-        print(h_core_matrix)
+        core_hamiltonian = kinetic_energy + nuclear_potential
+        print(core_hamiltonian)
 
         print('\nTRANSFORMATION MATRIX')
-        s_matrix_eigenvalues, s_matrix_unitary = np.linalg.eigh(s_matrix)
+        s_matrix_eigenvalues, s_matrix_unitary = np.linalg.eigh(orbital_overlap)
         sort = np.argsort(s_matrix_eigenvalues)
         s_matrix_eigenvalues = np.array(s_matrix_eigenvalues)[sort]
         s_matrix_unitary = s_matrix_unitary[:, sort]
@@ -59,42 +59,36 @@ class RestrictedHartreeFock:
 
         print('\n*****************************************************************************************************')
         print('\nINITIAL GUESS\n')
-        """
-        Create a initial guess for the density matrix from the solutions of the orbital coefficients with all
-        two-electron interactions turned off. The two-electron parts are then turned back on during the SCF procedure.
-        """
 
         print('\nORBITAL ENERGY EIGENVALUES')
-        orthonormal_h_matrix = np.transpose(x_canonical) * h_core_matrix * x_canonical
+        orthonormal_h_matrix = np.transpose(x_canonical) * core_hamiltonian * x_canonical
         eigenvalues, eigenvectors = np.linalg.eigh(orthonormal_h_matrix)
         sort = np.argsort(eigenvalues)
         eigenvalues = np.array(eigenvalues)[sort]
+        eigenvectors = eigenvectors[:, sort]
+        orbital_coefficients = x_canonical * eigenvectors
         print(eigenvalues)
 
         print('\nORBITAL COEFFICIENTS')
-        eigenvectors = eigenvectors[:, sort]
-        orbital_coefficients = x_canonical * eigenvectors
         print(orbital_coefficients)
 
         print('\n*****************************************************************************************************')
-        """
-        There are two methods to produce the repulsion dictionary. One uses multiprocessing and gives some speed up on
-        larger basis sets molecule. For smaller basis set molecules its better to use the normal single core method. My
-        computer is a dual core with Hyper-threading and I have found that running four processes gives the most
-        performance boost for the molecules I have tested. Doing this actually maxes my cpu out during this part of the
-        calculation.
-        """
 
         print('\nBEGIN TWO ELECTRON REPULSION CALCULATION')
         start_repulsion = time.clock()
         # repulsion_dictionary = TwoElectronRepulsionElementCook(basis_set_array).store_parallel(4)
+        # repulsion_dictionary = TwoElectronRepulsionElementHGP(basis_set_array).store_parallel(4)
         repulsion_dictionary = TwoElectronRepulsionElementOS(basis_set_array).store_parallel(4)
-        # repulsion_dictionary = TwoElectronRepulsionElementHGP(basis_set_array).store_parallel(1)
         print('TIME TAKEN: ' + str(time.clock() - start_repulsion) + 's\n')
 
         print('\nBEGIN SCF PROCEDURE')
-        scf_procedure = RHFSCFProcedure(h_core_matrix, x_canonical, matrix, electrons, repulsion_dictionary)
-        electron_energy = scf_procedure.begin_scf(orbital_coefficients)
+        scf_procedure = SCF(core_hamiltonian, x_canonical, create, electrons, repulsion_dictionary)
+        if method == 'RHF':
+            electron_energy = scf_procedure.begin_rhf(orbital_coefficients)
+        elif method == 'UHF':
+            electron_energy = scf_procedure.begin_uhf(orbital_coefficients, multiplicity)
+        else:
+            electron_energy = 0
         print('TOTAL NUCLEAR REPULSION ENERGY: ' + str(nuclear_repulsion) + ' a.u.')
         print('TOTAL ENERGY: ' + str(electron_energy + nuclear_repulsion) + ' a.u.')
 

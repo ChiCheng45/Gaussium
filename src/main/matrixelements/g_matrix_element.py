@@ -19,7 +19,7 @@ class GMatrixElement:
         return a, b, c, d
 
 
-class GMatrixElementRestricted(GMatrixElement):
+class GElementRestricted(GMatrixElement):
 
     def __init__(self, density_matrix, repulsion_dictionary):
         self.density_matrix = density_matrix
@@ -35,7 +35,7 @@ class GMatrixElementRestricted(GMatrixElement):
         return g_ij
 
 
-class GMatrixElementUnrestricted(GMatrixElement):
+class GElementUnrestricted(GMatrixElement):
 
     def __init__(self, density_matrix_total, density_matrix, repulsion_dictionary):
         self.density_matrix_total = density_matrix_total

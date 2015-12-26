@@ -1,6 +1,6 @@
 from unittest import TestCase
 from src.main.objects import Nuclei
-from src.main.selfconsistentfield import CoulombsLawArray
+from src.main.hartreefock import CoulombsLawArray
 from numpy import testing
 
 

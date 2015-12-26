@@ -5,7 +5,7 @@ class DensityMatrix:
         self.electrons = electrons
 
 
-class DensityMatrixRestricted(DensityMatrix):
+class DensityElementRestricted(DensityMatrix):
 
     def calculate(self, i, j):
         p_ij = 0
@@ -15,7 +15,7 @@ class DensityMatrixRestricted(DensityMatrix):
         return p_ij
 
 
-class DensityMatrixUnrestricted(DensityMatrix):
+class DensityElementUnrestricted(DensityMatrix):
 
     def calculate(self, i, j):
         p_ij = 0

@@ -13,7 +13,8 @@ class FileInputNuclei:
         total_nuclei_charge = 0
         with open(self.file_input_mol, 'r') as file:
             lines = file.readlines()
-            molecular_charge = int(lines[0])
+            molecular_charge = int(lines[0].split()[0])
+            multiplicity = int(lines[0].split()[1])
             for a in range(1, len(lines)):
                 line = lines[a]
                 array = line.split()
@@ -23,5 +24,5 @@ class FileInputNuclei:
                 nuclei_array.append(nuclei)
         file.close()
         electron_count = total_nuclei_charge - molecular_charge
-        return nuclei_array, electron_count
+        return nuclei_array, electron_count, multiplicity
 

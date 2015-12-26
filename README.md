@@ -85,7 +85,7 @@ Python Program,
     Time Taken: 72.70841306778921s
 
 ##UHF of O<sub>2</sub> in STO-3G
-UHF calculation have been implemented the below shows energy calculations of O<sub>2</sub> with a multiplicity of 3. When calculating in the Psi4,
+UHF calculation have been implemented, the below shows energy calculations of O<sub>2</sub> with a multiplicity of 3. When calculating in the Psi4,
 
         Alpha Virtual:                                                        
     
