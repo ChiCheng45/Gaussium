@@ -6,7 +6,7 @@ NAME
     BoysFunction
 
 SYNOPSIS
-    boys_function(v, x)
+    def boys_function(v, x)
     int v
     double x
 
@@ -17,7 +17,7 @@ DESCRIPTION
     small speed up here without doing much. Simply install and use anaconda as your python interpreter.
 
 ARGUMENTS
-    boys_function(v, x)
+    def boys_function(v, x)
     v       input: has different definition depending on which integral is used in.
     x       input: has different definition depending on which integral is used in.
     ans     output: the answer.

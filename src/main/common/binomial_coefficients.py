@@ -1,14 +1,13 @@
 from math import factorial as fac
 
 """
-NAME
-    BinomialCoefficientsFunction
+BinomialCoefficientsFunction.
 
 SYNOPSIS
-    combination(n, k)
+    def combination(n, k)
     int n, k, combination
 
-    calculate_coefficient(cls, j, l_1, l_2, a, b)
+    def calculate_coefficient(cls, j, l_1, l_2, a, b)
     int j, l_1, l_2
     float a, b, coefficient
 
@@ -24,11 +23,11 @@ DESCRIPTION
     molecular integrals for p-type and higher as we need to multiply the polynomials eqn.1.
 
 ARGUMENTS
-    combination(n, k)
+    def combination(n, k)
     n, k        Input:  simply the definitions from mathematics
     combination Output: the output of the combination from mathematics
 
-    calculate_coefficient(cls, j, l, m, a, b)
+    def calculate_coefficient(cls, j, l, m, a, b)
     j           Input:  determine the power of x you want to calculate the coefficient for, e.g.
                         calculate_coefficient(cls, 2, l, m, a, b) will calculated the coefficient for x**2
     l_1, l_2    Input:  these are the powers of the polynomials from eqn.1. When used in the molecular integral

@@ -6,16 +6,14 @@ class CoulombsLawArray:
 
     @classmethod
     def calculate_total_electric_potential_energy(cls, nuclei_array):
-        energy_matrix = []
-        for i in range(len(nuclei_array)):
-            energy_matrix_row = []
-            for j in range(len(nuclei_array)):
+        matrix_length = len(nuclei_array)
+        energy_matrix = np.matrix(np.zeros((matrix_length, matrix_length)))
+        for i in range(matrix_length):
+            for j in range(matrix_length):
                 if i == j:
-                    energy_matrix_row.append(0)
+                    energy_matrix[i, j] = 0
                 else:
-                    energy = cls.calc_electric_potential_energy(nuclei_array[i], nuclei_array[j])
-                    energy_matrix_row.append(energy)
-            energy_matrix.append(energy_matrix_row)
+                    energy_matrix[i, j] = cls.calc_electric_potential_energy(nuclei_array[i], nuclei_array[j])
         return np.matrix(energy_matrix)
 
     @staticmethod

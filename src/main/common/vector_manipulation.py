@@ -6,13 +6,13 @@ NAME
     Vector
 
 SYNOPSIS
-    add(tuple1, tuple2)
-    minus(tuple1, tuple2)
-    multiply(x, tuple1)
-    dot_product(tuple1, tuple2)
-    distance(tuple1, tuple2)
-    gaussian(cls, x, tuple1, y, tuple2)
-    tuple tuple1, tuple2
+    def add(tuple1, tuple2)
+    def minus(tuple1, tuple2)
+    def multiply(x, tuple1)
+    def dot_product(tuple1, tuple2)
+    def distance(tuple1, tuple2)
+    def gaussian(x, tuple1, y, tuple2)
+    def tuple tuple1, tuple2
     double x, y
 
 DESCRIPTION
@@ -24,25 +24,25 @@ DESCRIPTION
     x and y.
 
 ARGUMENTS
-    add(tuple1, tuple2), minus(tuple1, tuple2)
+    def add(tuple1, tuple2), minus(tuple1, tuple2)
     tuple1  input: a tuple of length three
     tuple2  input: a tuple of length three
 
-    dot_product(tuple1, tuple2)
+    def dot_product(tuple1, tuple2)
     tuple1  input: a tuple of length three
     tuple2  input: a tuple of length three
     ans     output: the tuple of the dot product of tuple1 and tuple2
 
-    distance(tuple1, tuple2)
+    def distance(tuple1, tuple2)
     tuple1  input: a tuple of length three
     tuple2  input: a tuple of length three
     r_ab    output: the euclidean distance between the vectors of tuple1 and tuple2
 
-    multiply(x, tuple1)
+    def multiply(x, tuple1)
     tuple1  input: a tuple of length three
     x       input: x any number
 
-    gaussian(cls, x, tuple1, y, tuple2)
+    def gaussian(x, tuple1, y, tuple2)
     tuple1  input: the coordinates of gaussian1
     tuple2  input: the coordinates of gaussian2
     x       input: the exponent of gaussian1
