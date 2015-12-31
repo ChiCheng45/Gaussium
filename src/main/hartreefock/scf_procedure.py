@@ -1,7 +1,6 @@
 from src.main.matrixelements import GElementUnrestricted, GElementRestricted
 from src.main.matrixelements import DensityElementUnrestricted, DensityElementRestricted
 from src.main.common import TotalEnergy
-from src.main.mollerplesset import MollerPlesset
 import numpy as np
 from math import floor, ceil
 import time
