@@ -5,7 +5,7 @@ from math import factorial as fac
 from math import exp, pi
 
 
-class NuclearAttractionIntegral:
+class NuclearAttraction:
 
     @staticmethod
     def a_function(l, r, i, l_1, l_2, pa, pb, pc, g):
@@ -17,7 +17,7 @@ class NuclearAttractionIntegral:
         return out
 
     @classmethod
-    def primitive_nuclear_attraction(cls, gaussian_1, gaussian_2, nuclei):
+    def integral(cls, gaussian_1, gaussian_2, nuclei):
         a_1 = gaussian_1.exponent
         a_2 = gaussian_2.exponent
         l_1 = gaussian_1.integral_exponents

@@ -1,4 +1,4 @@
-from src.main.integrals import OverlapIntegral
+from src.main.integrals import OrbitalOverlap
 
 
 class OrbitalOverlapElement:
@@ -11,13 +11,13 @@ class OrbitalOverlapElement:
         if i == j:
             return 1
         else:
-            primitive_gaussian_array_i = self.basis_set_array[i].primitive_gaussian_array
-            primitive_gaussian_array_j = self.basis_set_array[j].primitive_gaussian_array
-            for a in range(len(primitive_gaussian_array_i)):
-                for b in range(len(primitive_gaussian_array_j)):
-                    c_1 = primitive_gaussian_array_i[a].contraction
-                    c_2 = primitive_gaussian_array_j[b].contraction
-                    n_1 = primitive_gaussian_array_i[a].normalisation()
-                    n_2 = primitive_gaussian_array_j[b].normalisation()
-                    s_ij += n_1 * n_2 * c_1 * c_2 * OverlapIntegral.primitive_overlap_integral(primitive_gaussian_array_i[a], primitive_gaussian_array_j[b])
+            primitive_array_i = self.basis_set_array[i].primitive_gaussian_array
+            primitive_array_j = self.basis_set_array[j].primitive_gaussian_array
+            for primitive_a in primitive_array_i:
+                for primitive_b in primitive_array_j:
+                    c_1 = primitive_a.contraction
+                    c_2 = primitive_b.contraction
+                    n_1 = primitive_a.normalisation()
+                    n_2 = primitive_b.normalisation()
+                    s_ij += n_1 * n_2 * c_1 * c_2 * OrbitalOverlap.integral(primitive_a, primitive_b)
             return s_ij

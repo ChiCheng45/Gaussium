@@ -2,8 +2,7 @@ from math import exp, gamma
 from numba import jit
 
 """
-NAME
-    BoysFunction
+BoysFunction
 
 SYNOPSIS
     def boys_function(v, x)

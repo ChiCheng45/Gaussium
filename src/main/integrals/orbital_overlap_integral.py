@@ -4,17 +4,17 @@ from math import exp, pi
 from scipy.misc import factorial2
 
 
-class OverlapIntegral:
+class OrbitalOverlap:
 
     @staticmethod
     def s_function(l_1, l_2, a, b, g):
         s = 0
-        for j in range(int((l_1 + l_2) / 2) + 1):
+        for j in range(((l_1 + l_2) // 2) + 1):
             s += Binomial.calculate_coefficient(2 * j, l_1, l_2, a, b) * (factorial2(2 * j - 1) / (2 * g)**j)
         return s
 
     @classmethod
-    def primitive_overlap_integral(cls, gaussian_1, gaussian_2):
+    def integral(cls, gaussian_1, gaussian_2):
         a_1 = gaussian_1.exponent
         a_2 = gaussian_2.exponent
         l_1 = gaussian_1.integral_exponents

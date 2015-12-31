@@ -1,8 +1,7 @@
 import numpy as np
 
 """
-NAME
-    Matrix
+Matrix
 
 SYNOPSIS
     def __init__(self, matrix_size)

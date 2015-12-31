@@ -4,7 +4,7 @@ from math import factorial as fac
 from math import sqrt, pi, exp
 
 
-class ElectronRepulsionIntegral:
+class ElectronRepulsion:
 
     def __init__(self):
         self.end_dict = {}
@@ -50,7 +50,7 @@ class ElectronRepulsionIntegral:
                         for i in range(int((l + ll - 2*r - 2*rr) / 2) + 1):
                             out1 = self.b_function(l, ll, r, rr, i, l_1[0], l_2[0], r_1[0], r_2[0], r_5[0], a_5, l_3[0], l_4[0], r_3[0], r_4[0], r_6[0], a_6)
                             for m in range(l_5[1] + 1):
-                                for s in range(int(m / 2) + 1):
+                                for s in range(int(m/2) + 1):
                                     for mm in range(l_6[1] + 1):
                                         for ss in range(int(mm/2) + 1):
                                             for j in range(int((m + mm - 2*s - 2*ss) / 2) + 1):
