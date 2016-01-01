@@ -35,3 +35,22 @@ class Symmetry:
             return 1
         else:
             return -1
+
+    @staticmethod
+    def sort(i, j, k, l):
+        a = i
+        b = j
+        c = k
+        d = l
+        if a > b:
+            a, b = b, a
+        if c > d:
+            c, d = d, c
+        if a > c:
+            a, c = c, a
+            b, d = d, b
+        if a == c:
+            if b > d:
+                a, c = c, a
+                b, d = d, b
+        return a, b, c, d

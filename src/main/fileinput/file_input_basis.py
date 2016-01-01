@@ -6,16 +6,14 @@ from src.main.objects import PrimitiveBasisFactory
 
 class FileInputBasis:
 
-    def __init__(self, file_input_basis, nuclei_array):
-        self.file_input_basis = os.path.join(sys.path[1], 'basissets\\' + file_input_basis)
-        self.nuclei_array = nuclei_array
-
-    def create_basis_set_array(self):
+    @staticmethod
+    def create_basis_set_array(file_input_basis, nuclei_array):
+        file_input_basis = os.path.join(sys.path[1], 'basissets\\' + file_input_basis)
         basis_array = []
-        for a in range(len(self.nuclei_array)):
-            nuclei = self.nuclei_array[a]
+        for a in range(len(nuclei_array)):
+            nuclei = nuclei_array[a]
             regex = nuclei.element + '.*?#'
-            file = open(self.file_input_basis, 'r')
+            file = open(file_input_basis, 'r')
             lines = file.read().replace('\n', ':')
             file.close()
             lines = ' '.join(lines.split())

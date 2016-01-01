@@ -5,13 +5,12 @@ from src.main.objects import Nuclei
 
 class FileInputNuclei:
 
-    def __init__(self, file_input_mol):
-        self.file_input_mol = os.path.join(sys.path[1], 'molfiles\\' + file_input_mol)
-
-    def create_nuclei_array_and_electron_count(self):
+    @staticmethod
+    def create_nuclei_array_and_electron_count(file_input_mol):
+        file_input_mol = os.path.join(sys.path[1], 'molfiles\\' + file_input_mol)
         nuclei_array = []
         total_nuclei_charge = 0
-        with open(self.file_input_mol, 'r') as file:
+        with open(file_input_mol, 'r') as file:
             lines = file.readlines()
             molecular_charge = int(lines[0].split()[0])
             multiplicity = int(lines[0].split()[1])

@@ -4,6 +4,9 @@ class DensityMatrix:
         self.orbital_coefficient_matrix = orbital_coefficient_matrix
         self.electrons = electrons
 
+    def calculate(self, i, j):
+        pass
+
 
 class DensityElementRestricted(DensityMatrix):
 

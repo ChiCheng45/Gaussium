@@ -1,16 +1,14 @@
 from src.main.matrixelements import GElementUnrestricted, GElementRestricted
 from src.main.matrixelements import DensityElementUnrestricted, DensityElementRestricted
 from src.main.common import TotalEnergy
-import numpy as np
 from math import floor, ceil
-import time
 
 
 class SCF:
 
-    def __init__(self, core_hamiltonian, transformation_matrix, create_matrix, electrons, repulsion_dictionary):
+    def __init__(self, core_hamiltonian, diagonalize, create_matrix, electrons, repulsion_dictionary):
         self.core_hamiltonian = core_hamiltonian
-        self.transformation_matrix = transformation_matrix
+        self.diagonalize = diagonalize
         self.create = create_matrix
         self.electrons = electrons
         self.repulsion = repulsion_dictionary
@@ -19,9 +17,7 @@ class SCF:
         self.delta_energy = 1
 
     def begin_rhf(self, orbital_coefficients):
-        start = time.clock()
         eigenvalues = []
-
         while abs(self.delta_energy) > 1e-9:
             density_matrix = self.create(DensityElementRestricted(orbital_coefficients, self.electrons))
             g_matrix = self.create(GElementRestricted(density_matrix, self.repulsion))
@@ -33,15 +29,9 @@ class SCF:
             self.previous_total_energy = self.total_energy
             print('SCF ENERGY: ' + str(self.total_energy) + ' a.u.')
 
-        print('TIME TAKEN: ' + str(time.clock() - start) + 's\n')
-        print('\nORBITAL ENERGY EIGENVALUES')
-        print(eigenvalues)
-        print('\nORBITAL COEFFICIENTS')
-        print(orbital_coefficients, end='\n\n')
-        return self.total_energy
+        return self.total_energy, eigenvalues, orbital_coefficients
 
     def begin_uhf(self, orbital_coefficients, multiplicity):
-        start = time.clock()
         difference = floor(multiplicity / 2)
         electrons_alpha = ceil(self.electrons / 2) + difference
         electrons_beta = floor(self.electrons / 2) - difference
@@ -71,22 +61,4 @@ class SCF:
             self.previous_total_energy = self.total_energy
             print('SCF ENERGY: ' + str(self.total_energy) + ' a.u.')
 
-        print('TIME TAKEN: ' + str(time.clock() - start) + 's\n')
-        print('\nALPHA ORBITAL ENERGY EIGENVALUES')
-        print(eigenvalues_alpha)
-        print('\nBETA ORBITAL ENERGY EIGENVALUES')
-        print(eigenvalues_beta)
-        print('\nALPHA ORBITAL COEFFICIENTS')
-        print(orbital_coefficients_alpha, end='\n\n')
-        print('\nBETA ORBITAL COEFFICIENTS')
-        print(orbital_coefficients_beta, end='\n\n')
-        return self.total_energy
-
-    def diagonalize(self, fock_matrix):
-        orthonormal_fock_matrix = np.transpose(self.transformation_matrix) * fock_matrix * self.transformation_matrix
-        eigenvalues, eigenvectors = np.linalg.eigh(orthonormal_fock_matrix)
-        sort = np.argsort(eigenvalues)
-        eigenvalues = np.array(eigenvalues)[sort]
-        eigenvectors = eigenvectors[:, sort]
-        orbital_coefficients = self.transformation_matrix * eigenvectors
-        return eigenvalues, orbital_coefficients
+        return self.total_energy, eigenvalues_alpha, eigenvalues_beta, orbital_coefficients_alpha, orbital_coefficients_beta

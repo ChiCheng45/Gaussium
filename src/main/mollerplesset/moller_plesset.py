@@ -1,34 +1,39 @@
+from src.main.common import Symmetry
+from src.main.hartreefock import HartreeFock
+
+
 class MollerPlesset:
 
-    def __init__(self):
-        pass
-
-    @classmethod
-    def second_order(self, electrons, orbital_energies, orbital_coefficients, repulsion):
+    @staticmethod
+    def second_order(nuclei_array, electrons, multiplicity, basis_set_array):
+        electron_energy, orbital_energies, orbital_coefficients, repulsion = HartreeFock.restricted(nuclei_array, electrons, multiplicity, basis_set_array)
+        correlation = 0
         occupied_orbitals = electrons // 2
-        ans = 0
+        molecular_integral = MolecularIntegrals(repulsion, orbital_coefficients).calc
         for i in range(occupied_orbitals):
             for j in range(occupied_orbitals):
                 for a in range(occupied_orbitals, len(orbital_energies)):
                     for b in range(occupied_orbitals, len(orbital_energies)):
-                        ans += (repulsion[self.sort(i, j, a, b)] - repulsion[self.sort(i, b, a, j)])**2 / (2*(orbital_energies[0] - orbital_energies[1]))
-        return ans
+                        out1 = (orbital_energies[i] + orbital_energies[j] - orbital_energies[a] - orbital_energies[b])
+                        out2 = 2 * (molecular_integral(i, a, j, b))**2 / out1
+                        out3 = (molecular_integral(i, a, j, b) * molecular_integral(i, b, j, a)) / out1
+                        correlation += out2 - out3
+        return correlation, electron_energy
 
-    @staticmethod
-    def sort(i, j, k, l):
-        a = i
-        b = j
-        c = k
-        d = l
-        if a > b:
-            a, b = b, a
-        if c > d:
-            c, d = d, c
-        if a > c:
-            a, c = c, a
-            b, d = d, b
-        if a == c:
-            if b > d:
-                a, c = c, a
-                b, d = d, b
-        return a, b, c, d
+
+class MolecularIntegrals:
+
+    def __init__(self, repulsion, orbital_coefficients):
+        self.repulsion = repulsion
+        self.orbital_coefficients = orbital_coefficients
+
+    def calc(self, i, j, k, l):
+        ans = 0
+        c = self.orbital_coefficients
+        for r in range(c.shape[0]):
+            for s in range(c.shape[0]):
+                for t in range(c.shape[0]):
+                    for u in range(c.shape[0]):
+                        coefficients = c.item(r, i) * c.item(s, j) * c.item(t, k) * c.item(u, l)
+                        ans += coefficients * self.repulsion[Symmetry.sort(r, s, t, u)]
+        return ans
