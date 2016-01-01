@@ -1,13 +1,13 @@
 from src.main.hartreefock import HartreeFock
 from src.main.fileinput import FileInputBasis, FileInputNuclei
 from src.main.common import CoulombsLawArray
-from src.main.mollerplesset import MollerPlesset
+from src.main.moellerplesset import MoellerPlesset
 import numpy as np
 import time
 
 
 def menu():
-    start('C2H4.mol', '3-21G.gbs', 'RHF')
+    start('HeH+.mol', '3-21G.gbs', 'MP2')
     # start('O2.mol', 'STO-3G.gbs', 'UHF')
 
 
@@ -34,7 +34,7 @@ def start(mol, basis, method):
     elif method == 'UHF':
         electron_energy = HartreeFock.unrestricted(nuclei_array, electrons, multiplicity, basis_set_array)[0]
     elif method == 'MP2':
-        correlation, electron_energy = MollerPlesset.second_order(nuclei_array, electrons, multiplicity, basis_set_array)
+        correlation, electron_energy = MoellerPlesset.second_order(nuclei_array, electrons, multiplicity, basis_set_array)
 
     print('\nNUCLEAR REPULSION ENERGY:    ' + str(nuclear_repulsion) + ' a.u.')
     print('SCF ENERGY:                  ' + str(electron_energy) + ' a.u.')
