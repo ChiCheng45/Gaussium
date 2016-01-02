@@ -10,7 +10,7 @@ class OrbitalOverlap:
     def s_function(l_1, l_2, a, b, g):
         s = 0
         for j in range(((l_1 + l_2) // 2) + 1):
-            s += Binomial.calculate_coefficient(2 * j, l_1, l_2, a, b) * (factorial2(2 * j - 1) / (2 * g)**j)
+            s += Binomial.coefficient(2 * j, l_1, l_2, a, b) * (factorial2(2 * j - 1) / (2 * g)**j)
         return s
 
     @classmethod

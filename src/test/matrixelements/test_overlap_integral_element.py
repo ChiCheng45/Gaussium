@@ -1,5 +1,5 @@
 from unittest import TestCase
-from src.main.matrixelements import OrbitalOverlapElement
+from src.main.matrixelements import OrbitalOverlapMatrix
 
 
 class TestOverlapIntegral(TestCase):

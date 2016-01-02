@@ -1,10 +1,17 @@
 from src.main.integrals import OrbitalOverlap
+from src.main.matrixelements import Matrix
 
 
-class OrbitalOverlapElement:
+class OrbitalOverlapMatrix(Matrix):
 
-    def __init__(self, basis_set_array):
+    def __init__(self):
+        super().__init__()
+        self.basis_set_array = []
+
+    def create(self, basis_set_array):
         self.basis_set_array = basis_set_array
+        self.matrix_size = len(basis_set_array)
+        return self.create_matrix(self.calculate)
 
     def calculate(self, i, j):
         s_ij = 0

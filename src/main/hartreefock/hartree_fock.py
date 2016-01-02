@@ -1,5 +1,4 @@
-from src.main.common import Matrix
-from src.main.matrixelements import KineticEnergyElement, NuclearAttractionElement, OrbitalOverlapElement, TwoElectronRepulsionElementCook, TwoElectronRepulsionElementOS, TwoElectronRepulsionElementHGP
+from src.main.matrixelements import KineticEnergyMatrix, NuclearAttractionMatrix, OrbitalOverlapMatrix, DensityMatrix, GMatrix, TwoElectronRepulsionElementCook, TwoElectronRepulsionElementOS, TwoElectronRepulsionElementHGP
 from src.main.hartreefock import SelfConsistentField, LinearAlgebra
 import time
 
@@ -14,10 +13,9 @@ class HartreeFock:
 
     def begin(self):
         print('\n*****************************************************************************************************')
-        create_matrix = Matrix(len(self.basis_set_array)).create_matrix
-        orbital_overlap = create_matrix(OrbitalOverlapElement(self.basis_set_array))
-        kinetic_energy = create_matrix(KineticEnergyElement(self.basis_set_array))
-        nuclear_potential = create_matrix(NuclearAttractionElement(self.nuclei_array, self.basis_set_array))
+        orbital_overlap = OrbitalOverlapMatrix().create(self.basis_set_array)
+        kinetic_energy = KineticEnergyMatrix().create(self.basis_set_array)
+        nuclear_potential = NuclearAttractionMatrix().create(self.basis_set_array, self.nuclei_array)
         core_hamiltonian = kinetic_energy + nuclear_potential
         transformation_matrix = LinearAlgebra.transformation_matrix(orbital_overlap)
 
@@ -51,7 +49,7 @@ class HartreeFock:
         repulsion = TwoElectronRepulsionElementOS(self.basis_set_array).store_parallel(4)
         print('TIME TAKEN: ' + str(time.clock() - start_repulsion) + 's\n')
 
-        scf = SelfConsistentField(core_hamiltonian, repulsion, diagonalize, create_matrix, self.electrons, self.multiplicity)
+        scf = SelfConsistentField(core_hamiltonian, DensityMatrix(), GMatrix(repulsion), self.electrons, self.multiplicity, diagonalize)
         return scf, orbital_coefficients, repulsion
 
     def restricted(self):
@@ -81,7 +79,7 @@ class HartreeFock:
         print('\nBETA ORBITAL ENERGY EIGENVALUES')
         print(energies_beta)
         print('\nALPHA ORBITAL COEFFICIENTS')
-        print(coefficients_alpha, end='\n\n')
+        print(coefficients_alpha, end='\n')
         print('\nBETA ORBITAL COEFFICIENTS')
         print(coefficients_beta, end='\n\n')
         return electron_energy, energies_alpha, energies_beta, coefficients_alpha, coefficients_beta, repulsion

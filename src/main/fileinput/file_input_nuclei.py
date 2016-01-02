@@ -1,6 +1,6 @@
+from src.main.objects import Nuclei
 import os
 import sys
-from src.main.objects import Nuclei
 
 
 class FileInputNuclei:

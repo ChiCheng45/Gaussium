@@ -1,11 +1,19 @@
 from src.main.integrals import NuclearAttraction
+from src.main.matrixelements import Matrix
 
 
-class NuclearAttractionElement:
+class NuclearAttractionMatrix(Matrix):
 
-    def __init__(self, nuclei_array, basis_set_array):
-        self.nuclei_array = nuclei_array
+    def __init__(self):
+        super().__init__()
+        self.nuclei_array = []
+        self.basis_set_array = []
+
+    def create(self, basis_set_array, nuclei_array):
         self.basis_set_array = basis_set_array
+        self.nuclei_array = nuclei_array
+        self.matrix_size = len(basis_set_array)
+        return self.create_matrix(self.calculate)
 
     def calculate(self, i, j):
         v_ij = 0
@@ -20,4 +28,3 @@ class NuclearAttractionElement:
                 for nuclei in self.nuclei_array:
                     v_ij += - nuclei.charge * n_1 * n_2 * c_1 * c_2 * NuclearAttraction.integral(primitive_a, primitive_b, nuclei)
         return v_ij
-

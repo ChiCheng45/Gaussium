@@ -8,19 +8,19 @@ class TestBinomialCoefficientsFunction(TestCase):
     # returns correct answer for the coefficient of x^2 for (x + 0.7313240)(x - 0.7313240)
     def test_calculate_coefficient_return_the_correct_answer_1(self):
         binomial_coefficient_function = Binomial()
-        binomial_coefficient = binomial_coefficient_function.calculate_coefficient(2, 1, 1, 0.7313240, -0.7313240)
+        binomial_coefficient = binomial_coefficient_function.coefficient(2, 1, 1, 0.7313240, -0.7313240)
         self.assertEquals(binomial_coefficient, 1)
 
     # returns correct answer for the coefficient of x^1 for (x + 0.7313240)(x - 0.7313240)
     def test_calculate_coefficient_return_the_correct_answer_2(self):
         binomial_coefficient_function = Binomial()
-        binomial_coefficient = binomial_coefficient_function.calculate_coefficient(1, 1, 1, 0.7313240, -0.7313240)
+        binomial_coefficient = binomial_coefficient_function.coefficient(1, 1, 1, 0.7313240, -0.7313240)
         self.assertEquals(binomial_coefficient, 0)
 
     # returns correct answer for the coefficient of x^0 for (x + 0.7313240)(x - 0.7313240)
     def test_calculate_coefficient_return_the_correct_answer_3(self):
         binomial_coefficient_function = Binomial()
-        binomial_coefficient = binomial_coefficient_function.calculate_coefficient(0, 1, 1, 0.7313240, -0.7313240)
+        binomial_coefficient = binomial_coefficient_function.coefficient(0, 1, 1, 0.7313240, -0.7313240)
         testing.assert_approx_equal(binomial_coefficient, -0.534834793, 9)
 
     # test C(0, 0) = 1

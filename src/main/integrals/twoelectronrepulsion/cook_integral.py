@@ -86,7 +86,7 @@ class ElectronRepulsion:
         return ans
 
     def sigma(self, l, l_1, l_2, a, b, r, g):
-        return Binomial.calculate_coefficient(l, l_1, l_2, a, b) * ((fac(l) * g**(r - l)) / (fac(r) * fac(l - 2*r)))
+        return Binomial.coefficient(l, l_1, l_2, a, b) * ((fac(l) * g**(r - l)) / (fac(r) * fac(l - 2*r)))
 
     def gaussian_product_factor(self, a_1, a_2, a_3, a_4, a_p, a_q, r_ab, r_cd):
         ans = ((2 * pi**2) / (a_p * a_q)) * sqrt(pi / (a_p + a_q)) * exp(- ((a_1 * a_2 * r_ab**2) / a_p) - ((a_3 * a_4 * r_cd**2) / a_q))
