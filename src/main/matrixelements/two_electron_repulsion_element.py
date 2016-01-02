@@ -24,10 +24,10 @@ class TwoElectronRepulsionElement:
                             c_2 = primitive_b.contraction
                             c_3 = primitive_c.contraction
                             c_4 = primitive_d.contraction
-                            n_1 = primitive_a.normalisation()
-                            n_2 = primitive_b.normalisation()
-                            n_3 = primitive_c.normalisation()
-                            n_4 = primitive_d.normalisation()
+                            n_1 = primitive_a.normalisation
+                            n_2 = primitive_b.normalisation
+                            n_3 = primitive_c.normalisation
+                            n_4 = primitive_d.normalisation
                             integral = self.integral(primitive_a, primitive_b, primitive_c, primitive_d)
                             f_mn += c_1 * c_2 * c_3 * c_4 * n_1 * n_2 * n_3 * n_4 * integral
             return f_mn

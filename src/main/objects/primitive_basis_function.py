@@ -10,6 +10,7 @@ class PrimitiveBasis:
         self.coordinates = coordinates
         self.integral_exponents = integral_exponents
 
+    @property
     def normalisation(self):
         l = self.integral_exponents
         out1 = ((2 * self.exponent) / pi) ** (3 / 4)

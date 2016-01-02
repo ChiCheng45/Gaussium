@@ -7,8 +7,9 @@ import time
 
 
 def menu():
-    start('HeH+.mol', '3-21G.gbs', 'MP2')
-    # start('O2.mol', 'STO-3G.gbs', 'UHF')
+    start('C2H4.mol', '3-21G.gbs', 'RHF')
+    start('O2.mol', 'STO-3G.gbs', 'UHF')
+    start('HeH+.mol', 'STO-3g.gbs', 'MP2')
 
 
 def start(mol, basis, method):
@@ -16,8 +17,8 @@ def start(mol, basis, method):
     start_time = time.clock()
     electron_energy = correlation = 0.0
 
-    nuclei_array, electrons, multiplicity = FileInputNuclei.create_nuclei_array_and_electron_count(mol)
-    basis_set_array = FileInputBasis.create_basis_set_array(basis, nuclei_array)
+    nuclei_array, electrons, multiplicity = FileInputNuclei.read(mol)
+    basis_set_array = FileInputBasis.read(basis, nuclei_array)
     nuclei_name_list = [x.element for x in nuclei_array]
 
     coulomb_law_array = CoulombsLawArray.calculate_total_electric_potential_energy(nuclei_array)
@@ -30,11 +31,11 @@ def start(mol, basis, method):
     print(coulomb_law_array)
 
     if method == 'RHF':
-        electron_energy = HartreeFock.restricted(nuclei_array, electrons, multiplicity, basis_set_array)[0]
-    elif method == 'UHF':
-        electron_energy = HartreeFock.unrestricted(nuclei_array, electrons, multiplicity, basis_set_array)[0]
-    elif method == 'MP2':
-        correlation, electron_energy = MoellerPlesset.second_order(nuclei_array, electrons, multiplicity, basis_set_array)
+        electron_energy = HartreeFock(nuclei_array, electrons, multiplicity, basis_set_array).restricted()[0]
+    if method == 'UHF':
+        electron_energy = HartreeFock(nuclei_array, electrons, multiplicity, basis_set_array).unrestricted()[0]
+    if method == 'MP2':
+        electron_energy, correlation = MoellerPlesset.second_order(nuclei_array, electrons, multiplicity, basis_set_array)
 
     print('\nNUCLEAR REPULSION ENERGY:    ' + str(nuclear_repulsion) + ' a.u.')
     print('SCF ENERGY:                  ' + str(electron_energy) + ' a.u.')

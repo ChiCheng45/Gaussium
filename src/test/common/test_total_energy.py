@@ -1,7 +1,7 @@
 from unittest import TestCase
 import numpy as np
 from numpy import testing
-from src.main.hartreefock import TotalEnergy
+from src.main.common import TotalEnergy
 
 
 class TestTotalEnergyHeH(TestCase):

@@ -6,7 +6,7 @@ class MoellerPlesset:
 
     @staticmethod
     def second_order(nuclei_array, electrons, multiplicity, basis_set_array):
-        electron_energy, orbital_energies, orbital_coefficients, repulsion = HartreeFock.restricted(nuclei_array, electrons, multiplicity, basis_set_array)
+        electron_energy, orbital_energies, orbital_coefficients, repulsion = HartreeFock(nuclei_array, electrons, multiplicity, basis_set_array).restricted()
         correlation = 0
         occupied_orbitals = electrons // 2
         molecular_integral = MolecularIntegrals(repulsion, orbital_coefficients).calc
@@ -18,7 +18,7 @@ class MoellerPlesset:
                         out2 = 2 * (molecular_integral(i, a, j, b))**2 / out1
                         out3 = (molecular_integral(i, a, j, b) * molecular_integral(i, b, j, a)) / out1
                         correlation += out2 - out3
-        return correlation, electron_energy
+        return electron_energy, correlation
 
 
 class MolecularIntegrals:

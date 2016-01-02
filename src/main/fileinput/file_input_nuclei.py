@@ -6,7 +6,7 @@ from src.main.objects import Nuclei
 class FileInputNuclei:
 
     @staticmethod
-    def create_nuclei_array_and_electron_count(file_input_mol):
+    def read(file_input_mol):
         file_input_mol = os.path.join(sys.path[1], 'molfiles\\' + file_input_mol)
         nuclei_array = []
         total_nuclei_charge = 0
@@ -21,7 +21,6 @@ class FileInputNuclei:
                 coordinates = (float(array[3]), float(array[4]), float(array[5]))
                 nuclei = Nuclei(array[0], float(array[1]), float(array[2]), coordinates)
                 nuclei_array.append(nuclei)
-        file.close()
         electron_count = total_nuclei_charge - molecular_charge
         return nuclei_array, electron_count, multiplicity
 

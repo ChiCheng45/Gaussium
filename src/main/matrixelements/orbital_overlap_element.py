@@ -17,7 +17,7 @@ class OrbitalOverlapElement:
                 for primitive_b in primitive_array_j:
                     c_1 = primitive_a.contraction
                     c_2 = primitive_b.contraction
-                    n_1 = primitive_a.normalisation()
-                    n_2 = primitive_b.normalisation()
+                    n_1 = primitive_a.normalisation
+                    n_2 = primitive_b.normalisation
                     s_ij += n_1 * n_2 * c_1 * c_2 * OrbitalOverlap.integral(primitive_a, primitive_b)
             return s_ij

@@ -16,7 +16,7 @@ class LinearAlgebra:
         return orbital_energies, orbital_coefficients
 
     @staticmethod
-    def create_transformation_matrix(orbital_overlap):
+    def transformation_matrix(orbital_overlap):
         s_matrix_eigenvalues, s_matrix_unitary = np.linalg.eigh(orbital_overlap)
         sort = np.argsort(s_matrix_eigenvalues)
         s_matrix_eigenvalues = np.array(s_matrix_eigenvalues)[sort]
