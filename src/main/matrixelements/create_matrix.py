@@ -25,11 +25,11 @@ ARGUMENTS
     matrix      Output: an numpy matrix, e.g. the overlap matrix.
 
 SEE ALSO
-    density_matrix_element.py
-    g_matrix_element.py
-    kinetic_energy_element.py
-    nuclear_attraction_element.py
-    orbital_overlap_element.py
+    density_matrix.py
+    g_matrix.py
+    kinetic_energy_matrix.py
+    nuclear_attraction_matrix.py
+    orbital_overlap_matrix.py
     two_electron_repulsion_element.py
 
 DIAGNOSTICS

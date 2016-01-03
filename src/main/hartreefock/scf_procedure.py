@@ -4,12 +4,12 @@ from math import floor, ceil
 
 class SelfConsistentField:
 
-    def __init__(self, core_hamiltonian, density_matrix_factory, g_matrix_factory, electrons, multiplicity, diagonalize):
+    def __init__(self, core_hamiltonian, density_matrix_factory, g_matrix_factory, linear_algebra, electrons, multiplicity):
         self.core_hamiltonian = core_hamiltonian
         self.density_matrix_factory = density_matrix_factory
         self.g_matrix_factory = g_matrix_factory
+        self.linear_algebra = linear_algebra
         self.electrons = electrons
-        self.diagonalize = diagonalize
         self.multiplicity = multiplicity
         self.total_energy = 0
         self.previous_total_energy = 0
@@ -21,7 +21,7 @@ class SelfConsistentField:
             density_matrix = self.density_matrix_factory.create_restricted(self.electrons, orbital_coefficients)
             g_matrix = self.g_matrix_factory.create_restricted(density_matrix)
             fock_matrix = self.core_hamiltonian + g_matrix
-            orbital_energies, orbital_coefficients = self.diagonalize(fock_matrix)
+            orbital_energies, orbital_coefficients = self.linear_algebra.diagonalize(fock_matrix)
             self.total_energy = TotalEnergy.restricted(density_matrix, self.core_hamiltonian, fock_matrix)
             self.delta_energy = self.previous_total_energy - self.total_energy
             self.previous_total_energy = self.total_energy
@@ -50,8 +50,8 @@ class SelfConsistentField:
             g_matrix_beta = self.g_matrix_factory.create_unrestricted(density_matrix_beta, density_matrix_alpha)
             fock_matrix_alpha = self.core_hamiltonian + g_matrix_alpha
             fock_matrix_beta = self.core_hamiltonian + g_matrix_beta
-            energies_alpha, coefficients_alpha = self.diagonalize(fock_matrix_alpha)
-            energies_beta, coefficients_beta = self.diagonalize(fock_matrix_beta)
+            energies_alpha, coefficients_alpha = self.linear_algebra.diagonalize(fock_matrix_alpha)
+            energies_beta, coefficients_beta = self.linear_algebra.diagonalize(fock_matrix_beta)
 
             self.total_energy = TotalEnergy.unrestricted(density_matrix_alpha, density_matrix_beta, self.core_hamiltonian, fock_matrix_alpha, fock_matrix_beta)
             self.delta_energy = self.previous_total_energy - self.total_energy
