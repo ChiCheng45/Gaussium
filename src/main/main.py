@@ -1,4 +1,4 @@
-from src.main.hartreefock import HartreeFock
+from src.main.hartreefock import UnrestrictedHF, RestrictedHF
 from src.main.fileinput import FileInputBasis, FileInputNuclei
 from src.main.common import CoulombsLawMatrix
 from src.main.moellerplesset import MoellerPlesset
@@ -30,13 +30,13 @@ def start(mol, basis, method):
     print(coulomb_law_matrix)
 
     if method == 'RHF':
-        electron_energy = HartreeFock(nuclei_array, electrons, multiplicity, basis_set_array).restricted()[0]
+        electron_energy = RestrictedHF(nuclei_array, basis_set_array, electrons).begin()[0]
     if method == 'UHF':
-        electron_energy = HartreeFock(nuclei_array, electrons, multiplicity, basis_set_array).unrestricted()[0]
+        electron_energy = UnrestrictedHF(nuclei_array, basis_set_array, electrons, multiplicity).begin()[0]
     if method == 'MP2':
-        electron_energy, correlation = MoellerPlesset.second_order(nuclei_array, electrons, multiplicity, basis_set_array)
+        electron_energy, correlation = MoellerPlesset.second_order(nuclei_array, basis_set_array, electrons)
 
-    print('\nNUCLEAR REPULSION ENERGY:    ' + str(nuclear_repulsion) + ' a.u.')
+    print('NUCLEAR REPULSION ENERGY:    ' + str(nuclear_repulsion) + ' a.u.')
     print('SCF ENERGY:                  ' + str(electron_energy) + ' a.u.')
     print('CORRELATION ENERGY:          ' + str(correlation) + ' a.u.')
     print('TOTAL ENERGY:                ' + str(electron_energy + nuclear_repulsion + correlation) + ' a.u.')

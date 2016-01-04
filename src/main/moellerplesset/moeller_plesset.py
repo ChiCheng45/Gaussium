@@ -1,12 +1,12 @@
 from src.main.common import Symmetry
-from src.main.hartreefock import HartreeFock
+from src.main.hartreefock import RestrictedHF
 
 
 class MoellerPlesset:
 
     @staticmethod
-    def second_order(nuclei_array, electrons, multiplicity, basis_set_array):
-        electron_energy, orbital_energies, orbital_coefficients, repulsion = HartreeFock(nuclei_array, electrons, multiplicity, basis_set_array).restricted()
+    def second_order(nuclei_array, basis_set_array, electrons):
+        electron_energy, orbital_energies, orbital_coefficients, repulsion = RestrictedHF(nuclei_array, basis_set_array, electrons).begin()
         correlation = 0
         occupied_orbitals = electrons // 2
         molecular_integral = MolecularIntegrals(repulsion, orbital_coefficients).calc

@@ -4,15 +4,13 @@ from src.main.matrixelements import Matrix
 
 class NuclearAttractionMatrix(Matrix):
 
-    def __init__(self):
+    def __init__(self, basis_set_array, nuclei_array):
         super().__init__()
-        self.nuclei_array = []
-        self.basis_set_array = []
-
-    def create(self, basis_set_array, nuclei_array):
         self.basis_set_array = basis_set_array
         self.nuclei_array = nuclei_array
-        self.matrix_size = len(basis_set_array)
+
+    def create(self):
+        self.matrix_size = len(self.basis_set_array)
         return self.create_matrix(self.calculate)
 
     def calculate(self, i, j):

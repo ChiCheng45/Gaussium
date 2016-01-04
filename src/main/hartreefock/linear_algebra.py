@@ -3,8 +3,8 @@ import numpy as np
 
 class LinearAlgebra:
 
-    def __init__(self, transformation_matrix):
-        self.transformation_matrix = transformation_matrix
+    def __init__(self, orbital_overlap):
+        self.transformation_matrix = self.create_transformation_matrix(orbital_overlap)
 
     def diagonalize(self, fock_matrix):
         orthonormal_h_matrix = np.transpose(self.transformation_matrix) * fock_matrix * self.transformation_matrix
@@ -16,7 +16,7 @@ class LinearAlgebra:
         return orbital_energies, orbital_coefficients
 
     @staticmethod
-    def transformation_matrix(orbital_overlap):
+    def create_transformation_matrix(orbital_overlap):
         s_matrix_eigenvalues, s_matrix_unitary = np.linalg.eigh(orbital_overlap)
         sort = np.argsort(s_matrix_eigenvalues)
         s_matrix_eigenvalues = np.array(s_matrix_eigenvalues)[sort]

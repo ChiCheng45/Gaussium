@@ -14,7 +14,7 @@ SYNOPSIS
 DESCRIPTION
     A class with a create_matrix method that takes in a matrix element calculator and builds the matrix for it for the
     desired matrix_size. For example taking in the orbital overlap matrix element calculator it will build the orbital
-    overlap matrix. The point of this class is to reduced repeating code.
+    overlap matrix.
 
 ARGUMENTS
     def __init__(self, matrix_size)
