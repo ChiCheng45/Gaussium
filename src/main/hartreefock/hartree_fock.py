@@ -11,10 +11,11 @@ import time
 
 class HartreeFock:
 
-    def __init__(self, nuclei_array, basis_set_array, electrons):
+    def __init__(self, nuclei_array, basis_set_array, electrons, scf_method):
         self.nuclei_array = nuclei_array
         self.basis_set_array = basis_set_array
         self.electrons = electrons
+        self.scf_method = scf_method
         self.orbital_overlap_matrix = OrbitalOverlapMatrix(basis_set_array)
         self.kinetic_energy_matrix = KineticEnergyMatrix(basis_set_array)
         self.nuclear_attraction_matrix = NuclearAttractionMatrix(basis_set_array, nuclei_array)
@@ -64,8 +65,7 @@ class HartreeFock:
 class RestrictedHF(HartreeFock):
 
     def __init__(self, nuclei_array, basis_set_array, electrons):
-        super().__init__(nuclei_array, basis_set_array, electrons)
-        self.scf_method = RestrictedSCF
+        super().__init__(nuclei_array, basis_set_array, electrons, RestrictedSCF)
 
     def begin(self):
         initial_coefficients = self.start()
@@ -86,9 +86,8 @@ class RestrictedHF(HartreeFock):
 class UnrestrictedHF(HartreeFock):
 
     def __init__(self, nuclei_array, basis_set_array, electrons, multiplicity):
-        super().__init__(nuclei_array, basis_set_array, electrons)
+        super().__init__(nuclei_array, basis_set_array, electrons, UnrestrictedSCF)
         self.multiplicity = multiplicity
-        self.scf_method = UnrestrictedSCF
 
     def begin(self):
         initial_coefficients = self.start()
