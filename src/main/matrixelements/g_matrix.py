@@ -19,9 +19,9 @@ class GMatrixRestricted(Matrix):
         g_ij = 0
         for a in range(self.matrix_size):
             for b in range(self.matrix_size):
-                coulomb_integral = self.repulsion_dictionary[Symmetry.sort(i, j, a, b)]
-                exchange_integral = self.repulsion_dictionary[Symmetry.sort(i, b, a, j)]
-                g_ij += self.density_matrix.item(b, a) * (coulomb_integral - (1/2) * exchange_integral)
+                coulomb_integral = self.repulsion_dictionary[i, j, a, b]
+                exchange_integral = self.repulsion_dictionary[i, b, a, j]
+                g_ij += self.density_matrix.item(a, b) * (coulomb_integral - (1/2) * exchange_integral)
         return g_ij
 
 
@@ -53,7 +53,7 @@ class GMatrixUnrestricted(Matrix):
         g_ij = 0
         for a in range(self.matrix_size):
             for b in range(self.matrix_size):
-                coulomb_integral = self.repulsion_dictionary[Symmetry.sort(i, j, a, b)]
-                exchange_integral = self.repulsion_dictionary[Symmetry.sort(i, b, a, j)]
-                g_ij += self.density_matrix_total.item(b, a) * coulomb_integral - self.density_matrix.item(b, a) * exchange_integral
+                coulomb_integral = self.repulsion_dictionary[i, j, a, b]
+                exchange_integral = self.repulsion_dictionary[i, b, a, j]
+                g_ij += self.density_matrix_total.item(a, b) * coulomb_integral - self.density_matrix.item(a, b) * exchange_integral
         return g_ij

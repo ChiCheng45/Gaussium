@@ -35,5 +35,5 @@ class MolecularIntegrals:
                 for t in range(c.shape[0]):
                     for u in range(c.shape[0]):
                         coefficients = c.item(r, i) * c.item(s, j) * c.item(t, k) * c.item(u, l)
-                        ans += coefficients * self.repulsion[Symmetry.sort(r, s, t, u)]
+                        ans += coefficients * self.repulsion[r, s, t, u]
         return ans

@@ -19,7 +19,9 @@ class HartreeFock:
         self.orbital_overlap_matrix = OrbitalOverlapMatrix(basis_set_array)
         self.kinetic_energy_matrix = KineticEnergyMatrix(basis_set_array)
         self.nuclear_attraction_matrix = NuclearAttractionMatrix(basis_set_array, nuclei_array)
+        # self.repulsion_elements = TwoElectronRepulsionElementCook(basis_set_array)
         self.repulsion_elements = TwoElectronRepulsionElementOS(basis_set_array)
+        # self.repulsion_elements = TwoElectronRepulsionElementHGP(basis_set_array)
         self.linear_algebra = LinearAlgebra
         self.core_hamiltonian = np.matrix([])
         self.repulsion = {}
@@ -54,8 +56,6 @@ class HartreeFock:
         print('\n*****************************************************************************************************')
         print('\nBEGIN TWO ELECTRON REPULSION CALCULATION')
         start_repulsion = time.clock()
-        # repulsion_dictionary = TwoElectronRepulsionElementCook(basis_set_array).store_parallel(4)
-        # repulsion_dictionary = TwoElectronRepulsionElementHGP(basis_set_array).store_parallel(4)
         self.repulsion = self.repulsion_elements.store_parallel(4)
         print('TIME TAKEN: ' + str(time.clock() - start_repulsion) + 's\n')
 

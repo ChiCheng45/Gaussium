@@ -1,12 +1,14 @@
 from multiprocessing import Pool
 from src.main.integrals.twoelectronrepulsion import ElectronRepulsion, ObaraSaika, HeadGordonPople
 from src.main.common import Symmetry
+import numpy as np
 
 
 class TwoElectronRepulsionElement:
 
     def __init__(self, basis_set_array, integral):
         self.basis_set_array = basis_set_array
+        self.matrix_size = len(basis_set_array)
         self.integral = integral
 
     def calculate(self, i, j, k, l):
@@ -34,36 +36,27 @@ class TwoElectronRepulsionElement:
         else:
             return 0
 
-    def store_series(self):
-        repulsion_dict = {}
-        for a in range(len(self.basis_set_array)):
-            for b in range(len(self.basis_set_array)):
-                for c in range(len(self.basis_set_array)):
-                    for d in range(len(self.basis_set_array)):
-                        if not (a > b or c > d or a > c or (a == c and b > d)):
-                            index = (a, b, c, d)
-                            repulsion_dict[index] = self.calculate(*index)
-        return repulsion_dict
-
-    def keys_parallel(self):
-        dict_key = []
-        for a in range(len(self.basis_set_array)):
-            for b in range(len(self.basis_set_array)):
-                for c in range(len(self.basis_set_array)):
-                    for d in range(len(self.basis_set_array)):
-                        if not (a > b or c > d or a > c or (a == c and b > d)):
-                            dict_key.append((a, b, c, d))
-        return dict_key
-
     def store_parallel(self, processes):
-        if processes == 1:
-            return self.store_series()
-        else:
-            keys = self.keys_parallel()
-            pool = Pool(processes)
-            values = pool.starmap(self.calculate, keys)
-            repulsion_dict = dict(zip(keys, values))
-            return repulsion_dict
+        keys = []
+        for a in range(self.matrix_size):
+            for b in range(self.matrix_size):
+                for c in range(self.matrix_size):
+                    for d in range(self.matrix_size):
+                        if not (a > b or c > d or a > c or (a == c and b > d)):
+                            keys.append((a, b, c, d))
+
+        pool = Pool(processes)
+        values = pool.starmap(self.calculate, keys)
+        repulsion_dict = dict(zip(keys, values))
+
+        repulsion_matrix = np.zeros((self.matrix_size, self.matrix_size, self.matrix_size, self.matrix_size))
+        for a in range(self.matrix_size):
+            for b in range(self.matrix_size):
+                for c in range(self.matrix_size):
+                    for d in range(self.matrix_size):
+                        repulsion_matrix[a, b, c, d] = repulsion_dict[Symmetry.sort(a, b, c, d)]
+
+        return repulsion_matrix
 
 
 class TwoElectronRepulsionElementCook(TwoElectronRepulsionElement):
