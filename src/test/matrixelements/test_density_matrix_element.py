@@ -7,8 +7,7 @@ import numpy as np
 class TestDensityElementRestricted(TestCase):
 
     def setUp(self):
-        self.density_matrix_element = DensityMatrixRestricted()
-        self.density_matrix_element.electrons = 2
+        self.density_matrix_element = DensityMatrixRestricted(2)
         self.density_matrix_element.matrix_size = 2
         self.density_matrix_element.orbital_coefficient = np.matrix([[0.9291, -0.6259], [0.1398, 1.1115]])
 

@@ -20,6 +20,7 @@ ARGUMENTS
 
         Methods
         -------
+        @staticmethod
         def combination(n, k):
 
             Parameters
@@ -32,7 +33,7 @@ ARGUMENTS
             combination : int
                 the output of the combination from mathematics
 
-
+        @staticmethod
         def coefficient(cls, j, l_1, l_2, a, b):
 
             Parameters

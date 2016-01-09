@@ -1,4 +1,3 @@
-from src.main.common import Symmetry
 from src.main.hartreefock import RestrictedHF
 
 

@@ -7,8 +7,8 @@ import time
 
 
 def menu():
-    # start('HeH+.mol', 'STO-3G.gbs', 'MP2')
-    # start('O2.mol', 'STO-3G.gbs', 'UHF')
+    start('HeH+.mol', 'STO-3G.gbs', 'MP2')
+    start('O2.mol', 'STO-3G.gbs', 'UHF')
     start('C2H4.mol', '3-21G.gbs', 'RHF')
 
 
@@ -20,7 +20,7 @@ def start(mol, basis, method):
     nuclei_array, electrons, multiplicity = FileInputNuclei.read(mol)
     basis_set_array = FileInputBasis.read(basis, nuclei_array)
 
-    coulomb_law_matrix = CoulombsLawMatrix.total_electric_potential_energy(nuclei_array)
+    coulomb_law_matrix = CoulombsLawMatrix.create(nuclei_array)
     nuclear_repulsion = coulomb_law_matrix.sum() / 2
 
     print('*******************************************************************************************************')
