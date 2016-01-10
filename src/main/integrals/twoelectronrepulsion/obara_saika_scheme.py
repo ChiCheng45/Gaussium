@@ -9,11 +9,15 @@ class ObaraSaika:
     def __init__(self):
         self.a_7 = 0
         self.r_7 = ()
-        self.boys_out1 = 0
-        self.boys_x = 0
         self.end_dict = {}
 
     def os_set(self, g1, g2, g3, g4):
+        l_1 = g1.integral_exponents
+        l_2 = g2.integral_exponents
+        l_3 = g3.integral_exponents
+        l_4 = g4.integral_exponents
+        l_total = sum(l_1) + sum(l_2) + sum(l_3) + sum(l_4)
+
         a_1 = g1.exponent
         a_2 = g2.exponent
         a_3 = g3.exponent
@@ -33,9 +37,20 @@ class ObaraSaika:
 
         self.a_7 = (a_5 * a_6) / (a_5 + a_6)
         self.r_7 = Vector.gaussian_product(a_5, r_5, a_6, r_6)
-        self.boys_out1 = (2 * pi**(5/2)) / (a_5 * a_6 * sqrt(a_5 + a_6)) * exp(((- a_1 * a_2 * r_12**2) / a_5) - ((a_3 * a_4 * r_34**2) / a_6))
-        self.boys_x = (a_5 * a_6 * r_56**2) / (a_5 + a_6)
-        self.end_dict = {}
+
+        boys_x = (a_5 * a_6 * r_56**2) / (a_5 + a_6)
+        boys_out1 = (2 * pi**(5/2)) / (a_5 * a_6 * sqrt(a_5 + a_6))
+        boys_out2 = exp(((- a_1 * a_2 * r_12**2) / a_5) - ((a_3 * a_4 * r_34**2) / a_6))
+        boys_out3 = BoysFunction.calculate(l_total, boys_x)
+        ans = boys_out1 * boys_out2 * boys_out3
+
+        self.end_dict = {l_total: ans}
+
+        while l_total >= 1:
+            boys_out3 = BoysFunction.recursion(l_total, boys_x, boys_out3)
+            ans = boys_out1 * boys_out2 * boys_out3
+            l_total -= 1
+            self.end_dict[l_total] = ans
 
         return self.os_begin(0, g1, g2, g3, g4)
 
@@ -70,7 +85,7 @@ class ObaraSaika:
         elif l_4[2] > 0:
             return self.os_recursive(2, m, *self.os_gaussian_factory(2, g4, g3, g2, g1))
         else:
-            return self.os_end(m)
+            return self.end_dict[m]
 
     def os_recursive(self, r, m, g1, g2, g3, g4, g5, g6, g7, g8):
         out3 = out4 = out5 = out6 = out7 = out8 = 0
@@ -149,12 +164,3 @@ class ObaraSaika:
             g3z1 = PrimitiveBasis(d_3, a_3, r_3, (l_3[0], l_3[1], l_3[2] - 1))
             g4z1 = PrimitiveBasis(d_4, a_4, r_4, (l_4[0], l_4[1], l_4[2] - 1))
             return g1z1, g2, g3, g4, g1z2, g2z1, g3z1, g4z1
-
-    def os_end(self, m):
-        if m in self.end_dict:
-            return self.end_dict[m]
-        else:
-            boys_out2 = BoysFunction.calculate(m, self.boys_x)
-            ans = self.boys_out1 * boys_out2
-            self.end_dict[m] = ans
-        return ans
