@@ -30,7 +30,7 @@ SEE ALSO
     kinetic_energy_matrix.py
     nuclear_attraction_matrix.py
     orbital_overlap_matrix.py
-    two_electron_repulsion_element.py
+    two_electron_repulsion_matrix.py
 
 DIAGNOSTICS
     None, as long as this object and the element objects are correctly initialised.

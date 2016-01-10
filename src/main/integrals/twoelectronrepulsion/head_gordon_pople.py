@@ -1,4 +1,5 @@
-from src.main.common import Vector, BoysFunction
+from src.main.common import Vector
+from src.main.integrals import BoysFunction
 from math import sqrt, pi, exp
 from src.main.objects import PrimitiveBasis
 
@@ -178,6 +179,6 @@ class HeadGordonPople:
 
             out1 = (2 * pi**(5/2)) / (a_5 * a_6 * sqrt(a_5 + a_6))
             out2 = exp(((- a_1 * a_2 * r_12**2) / a_5) - ((a_3 * a_4 * r_34**2) / a_6))
-            out3 = BoysFunction.function(m, (a_5 * a_6 * r_56**2) / (a_5 + a_6))
+            out3 = BoysFunction.calculate(m, (a_5 * a_6 * r_56**2) / (a_5 + a_6))
             self.end_dict[m] = out1 * out2 * out3
         return out1 * out2 * out3

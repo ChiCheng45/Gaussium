@@ -1,4 +1,5 @@
-from src.main.common import Binomial, Vector, BoysFunction
+from src.main.common import Binomial, Vector
+from src.main.integrals import BoysFunction
 from src.main.objects import PrimitiveBasisFactory
 from math import factorial as fac
 from math import sqrt, pi, exp
@@ -11,7 +12,7 @@ class ElectronRepulsion:
 
     def integral(self, g1, g2, g3, g4):
         self.end_dict = {}
-        boys_function = BoysFunction.function
+        boys_function = BoysFunction.calculate
 
         g5 = PrimitiveBasisFactory.gaussian_product(g1, g2)
         g6 = PrimitiveBasisFactory.gaussian_product(g3, g4)

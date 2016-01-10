@@ -59,16 +59,16 @@ class TwoElectronRepulsionElement:
         return repulsion_matrix
 
 
-class TwoElectronRepulsionElementCook(TwoElectronRepulsionElement):
-
-    def __init__(self, basis_set_array):
-        super().__init__(basis_set_array, ElectronRepulsion().integral)
-
-
 class TwoElectronRepulsionElementOS(TwoElectronRepulsionElement):
 
     def __init__(self, basis_set_array):
         super().__init__(basis_set_array, ObaraSaika().os_set)
+
+
+class TwoElectronRepulsionElementCook(TwoElectronRepulsionElement):
+
+    def __init__(self, basis_set_array):
+        super().__init__(basis_set_array, ElectronRepulsion().integral)
 
 
 class TwoElectronRepulsionElementHGP(TwoElectronRepulsionElement):

@@ -1,3 +1,4 @@
+from src.main.hartreefock.total_energy import TotalEnergy
 from src.main.hartreefock.scf_procedure import RestrictedSCF
 from src.main.hartreefock.scf_procedure import UnrestrictedSCF
 from src.main.hartreefock.linear_algebra import LinearAlgebra

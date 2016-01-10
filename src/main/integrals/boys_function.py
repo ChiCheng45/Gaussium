@@ -46,7 +46,7 @@ class BoysFunction:
 
     @staticmethod
     @jit
-    def function(v, x):
+    def calculate(v, x):
 
         # Approximation of the boys function for small x
         if x <= 25:
@@ -74,3 +74,7 @@ class BoysFunction:
             ans *= (1/2) * exp(-x)
             ans = (gamma(v + (1/2)) / (2*x**(v + (1/2)))) - ans
             return ans
+
+    @staticmethod
+    def recursion(v, x, f_v):
+        return (exp(-x) + 2 * x * f_v) / (2 * v - 1)

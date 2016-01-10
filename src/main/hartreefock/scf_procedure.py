@@ -2,7 +2,7 @@ from src.main.matrixelements import DensityMatrixRestricted
 from src.main.matrixelements import DensityMatrixUnrestricted
 from src.main.matrixelements import GMatrixRestricted
 from src.main.matrixelements import GMatrixUnrestricted
-from src.main.common import TotalEnergy
+from src.main.hartreefock import TotalEnergy
 from math import floor, ceil
 
 

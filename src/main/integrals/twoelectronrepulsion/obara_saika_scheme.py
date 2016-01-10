@@ -1,4 +1,5 @@
-from src.main.common import Vector, BoysFunction
+from src.main.common import Vector
+from src.main.integrals import BoysFunction
 from math import sqrt, pi, exp
 from src.main.objects import PrimitiveBasis
 
@@ -6,10 +7,36 @@ from src.main.objects import PrimitiveBasis
 class ObaraSaika:
 
     def __init__(self):
+        self.r_7 = ()
+        self.a_7 = 0
+        self.boys_out1 = 0
+        self.boys_x = 0
         self.end_dict = {}
 
     def os_set(self, g1, g2, g3, g4):
+        a_1 = g1.exponent
+        a_2 = g2.exponent
+        a_3 = g3.exponent
+        a_4 = g4.exponent
+        a_5 = a_1 + a_2
+        a_6 = a_3 + a_4
+
+        r_1 = g1.coordinates
+        r_2 = g2.coordinates
+        r_3 = g3.coordinates
+        r_4 = g4.coordinates
+        r_5 = Vector.gaussian_product(a_1, r_1, a_2, r_2)
+        r_6 = Vector.gaussian_product(a_3, r_3, a_4, r_4)
+        r_12 = Vector.distance(r_1, r_2)
+        r_34 = Vector.distance(r_3, r_4)
+        r_56 = Vector.distance(r_5, r_6)
+
+        self.a_7 = (a_5 * a_6) / (a_5 + a_6)
+        self.r_7 = Vector.gaussian_product(a_5, r_5, a_6, r_6)
+        self.boys_out1 = (2 * pi**(5/2)) / (a_5 * a_6 * sqrt(a_5 + a_6)) * exp(((- a_1 * a_2 * r_12**2) / a_5) - ((a_3 * a_4 * r_34**2) / a_6))
+        self.boys_x = (a_5 * a_6 * r_56**2) / (a_5 + a_6)
         self.end_dict = {}
+
         return self.os_begin(0, g1, g2, g3, g4)
 
     def os_begin(self, m, g1, g2, g3, g4):
@@ -43,7 +70,7 @@ class ObaraSaika:
         elif l_4[2] > 0:
             return self.os_recursive(2, m, *self.os_gaussian_factory(2, g4, g3, g2, g1))
         else:
-            return self.os_end(m, g1, g2, g3, g4)
+            return self.os_end(m)
 
     def os_recursive(self, r, m, g1, g2, g3, g4, g5, g6, g7, g8):
         out3 = out4 = out5 = out6 = out7 = out8 = 0
@@ -54,24 +81,19 @@ class ObaraSaika:
         a_4 = g4.exponent
         a_5 = a_1 + a_2
         a_6 = a_3 + a_4
-        a_7 = (a_5 * a_6) / (a_5 + a_6)
 
         r_1 = g1.coordinates
         r_2 = g2.coordinates
-        r_3 = g3.coordinates
-        r_4 = g4.coordinates
         r_5 = Vector.gaussian_product(a_1, r_1, a_2, r_2)
-        r_6 = Vector.gaussian_product(a_3, r_3, a_4, r_4)
-        r_7 = Vector.gaussian_product(a_5, r_5, a_6, r_6)
 
         out1 = (r_5[r] - r_1[r]) * self.os_begin(m, g1, g2, g3, g4)
-        out2 = (r_7[r] - r_5[r]) * self.os_begin((m+1), g1, g2, g3, g4)
+        out2 = (self.r_7[r] - r_5[r]) * self.os_begin((m+1), g1, g2, g3, g4)
         if g5.integral_exponents[r] >= 0:
             out3 = self.os_count(g1.integral_exponents[r]) * (1 / (2 * a_5)) * self.os_begin(m, g5, g2, g3, g4)
-            out4 = self.os_count(g1.integral_exponents[r]) * (a_7 / (2 * a_5**2)) * self.os_begin((m+1), g5, g2, g3, g4)
+            out4 = self.os_count(g1.integral_exponents[r]) * (self.a_7 / (2 * a_5**2)) * self.os_begin((m+1), g5, g2, g3, g4)
         if g6.integral_exponents[r] >= 0:
             out5 = self.os_count(g2.integral_exponents[r]) * (1 / (2 * a_5)) * self.os_begin(m, g1, g6, g3, g4)
-            out6 = self.os_count(g2.integral_exponents[r]) * (a_7 / (2 * a_5**2)) * self.os_begin((m+1), g1, g6, g3, g4)
+            out6 = self.os_count(g2.integral_exponents[r]) * (self.a_7 / (2 * a_5**2)) * self.os_begin((m+1), g1, g6, g3, g4)
         if g7.integral_exponents[r] >= 0:
             out7 = self.os_count(g3.integral_exponents[r]) * (1 / (2*(a_5 + a_6))) * self.os_begin((m+1), g1, g2, g7, g4)
         if g8.integral_exponents[r] >= 0:
@@ -128,30 +150,11 @@ class ObaraSaika:
             g4z1 = PrimitiveBasis(d_4, a_4, r_4, (l_4[0], l_4[1], l_4[2] - 1))
             return g1z1, g2, g3, g4, g1z2, g2z1, g3z1, g4z1
 
-    def os_end(self, m, g1, g2, g3, g4):
+    def os_end(self, m):
         if m in self.end_dict:
             return self.end_dict[m]
         else:
-            a_1 = g1.exponent
-            a_2 = g2.exponent
-            a_3 = g3.exponent
-            a_4 = g4.exponent
-            a_5 = a_1 + a_2
-            a_6 = a_3 + a_4
-
-            r_1 = g1.coordinates
-            r_2 = g2.coordinates
-            r_3 = g3.coordinates
-            r_4 = g4.coordinates
-            r_5 = Vector.gaussian_product(a_1, r_1, a_2, r_2)
-            r_6 = Vector.gaussian_product(a_3, r_3, a_4, r_4)
-
-            r_12 = Vector.distance(r_1, r_2)
-            r_34 = Vector.distance(r_3, r_4)
-            r_56 = Vector.distance(r_5, r_6)
-
-            out1 = (2 * pi**(5/2)) / (a_5 * a_6 * sqrt(a_5 + a_6))
-            out2 = exp(((- a_1 * a_2 * r_12**2) / a_5) - ((a_3 * a_4 * r_34**2) / a_6))
-            out3 = BoysFunction.function(m, (a_5 * a_6 * r_56**2) / (a_5 + a_6))
-            self.end_dict[m] = out1 * out2 * out3
-        return out1 * out2 * out3
+            boys_out2 = BoysFunction.calculate(m, self.boys_x)
+            ans = self.boys_out1 * boys_out2
+            self.end_dict[m] = ans
+        return ans

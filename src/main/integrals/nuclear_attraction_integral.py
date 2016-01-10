@@ -1,5 +1,5 @@
 from src.main.common import Binomial
-from src.main.common import BoysFunction
+from src.main.integrals import BoysFunction
 from src.main.common import Vector
 from math import factorial as fac
 from math import exp, pi
@@ -51,7 +51,7 @@ class NuclearAttraction:
                                         for k in range(int((n - 2*t) / 2) + 1):
                                             out4 = cls.a_function(n, t, k, l_1[2], l_2[2], r_p_a[2], r_p_b[2], r_p_c[2], g)
                                             v = (l + m + n) - 2*(r + s + t) - (i + j + k)
-                                            out5 = BoysFunction.function(v, g * r_pc**2)
+                                            out5 = BoysFunction.calculate(v, g * r_pc**2)
                                             out6 = out2 * out3 * out4 * out5
                                             out1 += out6
         out1 *= ((2 * pi) / g) * exp(- (a_1 * a_2 * r_ab**2) / g)
