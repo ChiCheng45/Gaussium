@@ -7,8 +7,8 @@ from src.main.objects import PrimitiveBasis
 class ObaraSaika:
 
     def __init__(self):
-        self.r_7 = ()
         self.a_7 = 0
+        self.r_7 = ()
         self.boys_out1 = 0
         self.boys_x = 0
         self.end_dict = {}
