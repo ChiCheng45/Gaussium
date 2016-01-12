@@ -54,7 +54,7 @@ class TwoElectronRepulsionElement:
             for b in range(self.matrix_size):
                 for c in range(self.matrix_size):
                     for d in range(self.matrix_size):
-                        repulsion_matrix[a, b, c, d] = repulsion_dict[Symmetry.sort(a, b, c, d)]
+                        repulsion_matrix.itemset((a, b, c, d), repulsion_dict[Symmetry.sort(a, b, c, d)])
 
         return repulsion_matrix
 

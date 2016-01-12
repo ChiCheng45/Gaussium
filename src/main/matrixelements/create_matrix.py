@@ -47,5 +47,5 @@ class Matrix:
         for i in range(self.matrix_size):
             for j in range(self.matrix_size):
                 if i <= j:
-                    matrix[i, j] = calculate(i, j)
+                    matrix.itemset((i, j), calculate(i, j))
         return matrix + np.transpose(matrix) - np.diag(np.diag(matrix))
