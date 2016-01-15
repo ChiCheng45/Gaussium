@@ -1,6 +1,5 @@
 from src.main.hartreefock import RestrictedHF
 from src.main.moellerplesset import MolecularIntegrals
-import time
 
 
 class MoellerPlesset:
@@ -8,13 +7,10 @@ class MoellerPlesset:
     @staticmethod
     def second_order(nuclei_array, basis_set_array, electrons):
         electron_energy, orbital_energies, orbital_coefficients, repulsion = RestrictedHF(nuclei_array, basis_set_array, electrons).begin()
+
         correlation = 0
         occupied_orbitals = electrons // 2
-
-        start_time = time.clock()
-        print('BEGIN TWO-ELECTRON TRANSFORMATION')
-        molecular_integral_matrix = MolecularIntegrals(repulsion, orbital_coefficients).store_parallel(4)
-        print('TIME TAKEN: ' + str(time.clock() - start_time) + 's', end='\n\n')
+        molecular_integral_matrix = MolecularIntegrals.calculate(repulsion, orbital_coefficients)
 
         print('BEGIN MP2 CALCULATION', end='\n\n')
         for i in range(occupied_orbitals):

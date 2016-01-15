@@ -24,6 +24,7 @@ class ObaraSaika:
         a_4 = g4.exponent
         a_5 = a_1 + a_2
         a_6 = a_3 + a_4
+        self.a_7 = (a_5 * a_6) / (a_5 + a_6)
 
         r_1 = g1.coordinates
         r_2 = g2.coordinates
@@ -31,26 +32,23 @@ class ObaraSaika:
         r_4 = g4.coordinates
         r_5 = Vector.gaussian_product(a_1, r_1, a_2, r_2)
         r_6 = Vector.gaussian_product(a_3, r_3, a_4, r_4)
+        self.r_7 = Vector.gaussian_product(a_5, r_5, a_6, r_6)
+
         r_12 = Vector.distance(r_1, r_2)
         r_34 = Vector.distance(r_3, r_4)
         r_56 = Vector.distance(r_5, r_6)
-
-        self.a_7 = (a_5 * a_6) / (a_5 + a_6)
-        self.r_7 = Vector.gaussian_product(a_5, r_5, a_6, r_6)
 
         boys_x = (a_5 * a_6 * r_56**2) / (a_5 + a_6)
         boys_out1 = (2 * pi**(5/2)) / (a_5 * a_6 * sqrt(a_5 + a_6))
         boys_out2 = exp(((- a_1 * a_2 * r_12**2) / a_5) - ((a_3 * a_4 * r_34**2) / a_6))
         boys_out3 = BoysFunction.calculate(l_total, boys_x)
-        ans = boys_out1 * boys_out2 * boys_out3
 
-        self.end_dict = {l_total: ans}
+        self.end_dict = {l_total: boys_out1 * boys_out2 * boys_out3}
 
         while l_total >= 1:
             boys_out3 = BoysFunction.recursion(l_total, boys_x, boys_out3)
-            ans = boys_out1 * boys_out2 * boys_out3
             l_total -= 1
-            self.end_dict[l_total] = ans
+            self.end_dict[l_total] = boys_out1 * boys_out2 * boys_out3
 
         return self.os_begin(0, g1, g2, g3, g4)
 
