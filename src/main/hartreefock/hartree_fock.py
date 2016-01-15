@@ -24,7 +24,7 @@ class HartreeFock:
         # self.repulsion_elements = TwoElectronRepulsionElementHGP(basis_set_array)
         self.linear_algebra = LinearAlgebra
         self.core_hamiltonian = np.matrix([])
-        self.repulsion = {}
+        self.repulsion = np.matrix([])
 
     def start(self):
         print('\n*****************************************************************************************************')
