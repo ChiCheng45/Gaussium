@@ -30,9 +30,9 @@ class ObaraSaika:
         r_2 = g2.coordinates
         r_3 = g3.coordinates
         r_4 = g4.coordinates
-        r_5 = Vector.gaussian_product(a_1, r_1, a_2, r_2)
-        r_6 = Vector.gaussian_product(a_3, r_3, a_4, r_4)
-        self.r_7 = Vector.gaussian_product(a_5, r_5, a_6, r_6)
+        r_5 = Vector.gaussian(a_1, r_1, a_2, r_2)
+        r_6 = Vector.gaussian(a_3, r_3, a_4, r_4)
+        self.r_7 = Vector.gaussian(a_5, r_5, a_6, r_6)
 
         r_12 = Vector.distance(r_1, r_2)
         r_34 = Vector.distance(r_3, r_4)
@@ -97,7 +97,7 @@ class ObaraSaika:
 
         r_1 = g1.coordinates
         r_2 = g2.coordinates
-        r_5 = Vector.gaussian_product(a_1, r_1, a_2, r_2)
+        r_5 = Vector.gaussian(a_1, r_1, a_2, r_2)
 
         out1 = (r_5[r] - r_1[r]) * self.os_begin(m, g1, g2, g3, g4)
         out2 = (self.r_7[r] - r_5[r]) * self.os_begin((m+1), g1, g2, g3, g4)

@@ -74,7 +74,7 @@ class Vector:
         return a * r_1[0], a * r_1[1], a * r_1[2]
 
     @staticmethod
-    def dot_product(r_1, r_2):
+    def dot(r_1, r_2):
         return r_1[0] * r_2[0] + r_1[1] * r_2[1] + r_1[2] + r_2[2]
 
     @staticmethod
@@ -83,7 +83,7 @@ class Vector:
         return r_12
 
     @staticmethod
-    def gaussian_product(a, r_1, b, r_2):
+    def gaussian(a, r_1, b, r_2):
         i = (a * r_1[0] + b * r_2[0]) / (a + b)
         j = (a * r_1[1] + b * r_2[1]) / (a + b)
         k = (a * r_1[2] + b * r_2[2]) / (a + b)

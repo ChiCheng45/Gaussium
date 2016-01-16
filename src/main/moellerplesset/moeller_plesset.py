@@ -1,5 +1,5 @@
 from src.main.hartreefock import RestrictedHF
-from src.main.moellerplesset import MolecularIntegrals
+from src.main.matrixelements import MolecularIntegrals
 
 
 class MoellerPlesset:

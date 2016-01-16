@@ -53,7 +53,7 @@ class BoysFunction:
             i = 0
             ans = 0
             while 1 > 0:
-                seq = (gamma(v + (1/2)) / gamma(v + i + (3/2))) * x**i
+                seq = (gamma(v + 0.5) / gamma(v + i + 1.5)) * x**i
                 if seq < 1e-10:
                     break
                 ans += seq
@@ -66,13 +66,13 @@ class BoysFunction:
             i = 0
             ans = 0
             while 1 > 0:
-                seq = (gamma(v + (1/2)) / gamma(v - i + (3/2))) * x**(-i)
+                seq = (gamma(v + 0.5) / gamma(v - i + 1.5)) * x**(-i)
                 if seq < 1e-10:
                     break
                 ans += seq
                 i += 1
             ans *= (1/2) * exp(-x)
-            ans = (gamma(v + (1/2)) / (2*x**(v + (1/2)))) - ans
+            ans = (gamma(v + 0.5) / (2*x**(v + 1.5))) - ans
             return ans
 
     @staticmethod
