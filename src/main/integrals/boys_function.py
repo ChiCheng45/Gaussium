@@ -72,7 +72,7 @@ class BoysFunction:
                 ans += seq
                 i += 1
             ans *= (1/2) * exp(-x)
-            ans = (gamma(v + 0.5) / (2*x**(v + 1.5))) - ans
+            ans = (gamma(v + 0.5) / (2*x**(v + 0.5))) - ans
             return ans
 
     @staticmethod
