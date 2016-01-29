@@ -1,4 +1,4 @@
-from src.main.hartreefock import UnrestrictedHF, RestrictedHF
+from src.main.hartreefock import UnrestrictedHF, RestrictedHF, TimeDependentHartreeFock
 from src.main.fileinput import FileInputBasis, FileInputNuclei
 from src.main.common import CoulombsLawMatrix
 from src.main.moellerplesset import MoellerPlesset
@@ -7,7 +7,7 @@ import time
 
 
 def menu():
-    start('CO.mol', 'STO-3G.gbs', 'MP2')
+    start('HeH+.mol', '3-21G.gbs', 'RHF')
     # start('O2.mol', 'STO-3G.gbs', 'UHF')
     # start('C2H4.mol', '3-21G.gbs', 'MP2')
 
@@ -33,6 +33,8 @@ def start(mol, basis, method):
         electron_energy = RestrictedHF(nuclei_array, basis_set_array, electrons).begin()[0]
     if method == 'UHF':
         electron_energy = UnrestrictedHF(nuclei_array, basis_set_array, electrons, multiplicity).begin()[0]
+    if method == 'TDHF':
+        electron_energy = TimeDependentHartreeFock.tamm_dancoff_approximation(nuclei_array, basis_set_array, electrons)
     if method == 'MP2':
         electron_energy, correlation = MoellerPlesset.second_order(nuclei_array, basis_set_array, electrons)
 

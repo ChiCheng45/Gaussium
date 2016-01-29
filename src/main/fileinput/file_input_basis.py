@@ -17,6 +17,7 @@ class FileInputBasis:
 
             regex = nuclei_array[a].element + '.*?#'
             lines = ' '.join(lines.split())
+            lines += '#'
             lines = re.search(regex, lines).group(0)
             lines = re.split(':', lines.replace(': ', ':'))
             lines = lines[1:len(lines) - 2]

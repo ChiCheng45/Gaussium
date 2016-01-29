@@ -69,9 +69,7 @@ class CoulombsLawMatrix:
         matrix = np.matrix(np.zeros((matrix_length, matrix_length)))
         for i in range(matrix_length):
             for j in range(matrix_length):
-                if i == j:
-                    matrix[i, j] = 0
-                else:
+                if i != j:
                     matrix[i, j] = cls.coulombs_law(nuclei_array[i], nuclei_array[j])
         return matrix
 
