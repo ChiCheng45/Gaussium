@@ -4,7 +4,7 @@ from src.main.matrixelements import KineticEnergyMatrix
 from numpy import testing
 
 
-class TestKineticEnergyIntegralHehCation(TestCase):
+class TestKineticEnergyMatrixHeHCation(TestCase):
 
     def setUp(self):
         hydrogen_basis_1 = MagicMock(contraction=0.15432897, exponent=3.42525091, coordinates=(0, 0, -0.7316), integral_exponents=(0, 0, 0), normalisation = 1.794441832218435)
@@ -32,7 +32,7 @@ class TestKineticEnergyIntegralHehCation(TestCase):
         testing.assert_approx_equal(kinetic_energy, 0.7600, 4)
 
 
-class TestKineticEnergyIntegralHydrogen(TestCase):
+class TestKineticEnergyMatrixHydrogen(TestCase):
 
     def setUp(self):
         hydrogen_basis_1 = MagicMock(contraction=0.15432897, exponent=3.42525091, coordinates=(0, 0, 0.7000), integral_exponents=(0, 0, 0), normalisation = 1.794441832218435)

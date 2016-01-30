@@ -16,6 +16,7 @@ class TestTwoElectronRepulsionElementCook(TestCase):
         helium = MagicMock(primitive_gaussian_array=[helium_basis_1, helium_basis_2, helium_basis_3], coordinates=(0, 0, 0.7316), integral_exponents=(0, 0, 0))
         hydrogen = MagicMock(primitive_gaussian_array=[hydrogen_basis_1, hydrogen_basis_2, hydrogen_basis_3], coordinates=(0, 0, -0.7316), integral_exponents=(0, 0, 0))
         basis_set_array = [helium, hydrogen]
+
         self.two_electron_repulsion = TwoElectronRepulsionElementCook(basis_set_array)
 
     def test_method_calculate_returns_element_for_0000(self):
@@ -55,6 +56,7 @@ class TestTwoElectronRepulsionElementOS(TestCase):
         helium = MagicMock(primitive_gaussian_array=[helium_basis_1, helium_basis_2, helium_basis_3], coordinates=(0, 0, 0.7316), integral_exponents=(0, 0, 0))
         hydrogen = MagicMock(primitive_gaussian_array=[hydrogen_basis_1, hydrogen_basis_2, hydrogen_basis_3], coordinates=(0, 0, -0.7316), integral_exponents=(0, 0, 0))
         basis_set_array = [helium, hydrogen]
+
         self.two_electron_repulsion = TwoElectronRepulsionElementOS(basis_set_array)
 
     def test_method_calculate_returns_element_for_0000(self):

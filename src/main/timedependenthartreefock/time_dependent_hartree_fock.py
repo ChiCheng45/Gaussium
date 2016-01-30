@@ -9,6 +9,7 @@ class TimeDependentHartreeFock:
     def __init__(self):
         pass
 
+    @staticmethod
     def tamm_dancoff_approximation(nuclei_array, basis_set_array, electrons):
         electron_energy, orbital_energies, orbital_coefficients, repulsion = RestrictedHF(nuclei_array, basis_set_array, electrons).begin()
 

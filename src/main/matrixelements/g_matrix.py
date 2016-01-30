@@ -4,9 +4,9 @@ import numpy as np
 
 class GMatrixRestricted(Matrix):
 
-    def __init__(self, repulsion_dictionary):
+    def __init__(self, repulsion_matrix):
         super().__init__()
-        self.repulsion_dictionary = repulsion_dictionary
+        self.repulsion_matrix = repulsion_matrix
         self.density_matrix = np.matrix([])
 
     def create(self, density_matrix):
@@ -18,8 +18,8 @@ class GMatrixRestricted(Matrix):
         g_ij = 0
         for a in range(self.matrix_size):
             for b in range(self.matrix_size):
-                coulomb_integral = self.repulsion_dictionary.item(i, j, a, b)
-                exchange_integral = self.repulsion_dictionary.item(i, b, a, j)
+                coulomb_integral = self.repulsion_matrix.item(i, j, a, b)
+                exchange_integral = self.repulsion_matrix.item(i, b, a, j)
                 g_ij += self.density_matrix.item(a, b) * (coulomb_integral - (1/2) * exchange_integral)
         return g_ij
 

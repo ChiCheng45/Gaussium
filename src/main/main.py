@@ -1,4 +1,5 @@
-from src.main.hartreefock import UnrestrictedHF, RestrictedHF, TimeDependentHartreeFock
+from src.main.hartreefock import UnrestrictedHF, RestrictedHF
+from src.main.timedependenthartreefock import TimeDependentHartreeFock
 from src.main.fileinput import FileInputBasis, FileInputNuclei
 from src.main.common import CoulombsLawMatrix
 from src.main.moellerplesset import MoellerPlesset
@@ -7,9 +8,9 @@ import time
 
 
 def menu():
-    start('HeH+.mol', '3-21G.gbs', 'RHF')
-    # start('O2.mol', 'STO-3G.gbs', 'UHF')
-    # start('C2H4.mol', '3-21G.gbs', 'MP2')
+    # start('HeH+.mol', 'STO-3G-edited.gbs', 'RHF')
+    start('O2.mol', 'STO-3G.gbs', 'UHF')
+    # start('CO.mol', 'STO-3G.gbs', 'MP2')
 
 
 def start(mol, basis, method):
