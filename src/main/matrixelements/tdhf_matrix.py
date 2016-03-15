@@ -9,15 +9,14 @@ class TDHFMatrix(Matrix):
         self.molecular_integrals = molecular_integrals
         self.orbital_energies = np.matrix(np.diag(orbital_energies))
         self.electrons = electrons
-        self.matrix_size = orbital_energies.shape[0] // 2
+        self.matrix_size = orbital_energies.shape[0] * 2
         self.key = self.create_index_key()
 
     def create_index_key(self):
-        orbitals = self.orbital_energies.shape[0]
         key = {}
         i = -1
-        for a in range(0, self.electrons // 2):
-            for b in range(self.electrons // 2, orbitals):
+        for a in range(0, self.electrons):
+            for b in range(0, self.electrons):
                 i += 1
                 key[i] = (a, b)
         return key

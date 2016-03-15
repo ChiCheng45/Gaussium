@@ -59,7 +59,7 @@ class HartreeFock:
         self.repulsion = self.repulsion_elements.store_parallel(4)
         print('TIME TAKEN: ' + str(time.clock() - start_repulsion) + 's\n')
 
-        return initial_orbital_coefficients
+        return initial_orbital_coefficients, orbital_overlap
 
 
 class RestrictedHF(HartreeFock):
@@ -68,8 +68,8 @@ class RestrictedHF(HartreeFock):
         super().__init__(nuclei_array, basis_set_array, electrons, RestrictedSCF)
 
     def begin(self):
-        initial_coefficients = self.start()
-        self.scf_method = self.scf_method(self.core_hamiltonian, self.linear_algebra, self.repulsion, self.electrons)
+        initial_coefficients, orbital_overlap = self.start()
+        self.scf_method = self.scf_method(self.core_hamiltonian, self.linear_algebra, self.repulsion, self.electrons, orbital_overlap)
 
         start = time.clock()
         print('\nBEGIN SCF PROCEDURE')
@@ -90,7 +90,7 @@ class UnrestrictedHF(HartreeFock):
         self.multiplicity = multiplicity
 
     def begin(self):
-        initial_coefficients = self.start()
+        initial_coefficients, orbital_overlap = self.start()
         self.scf_method = self.scf_method(self.core_hamiltonian, self.linear_algebra, self.repulsion, self.electrons, self.multiplicity)
 
         start = time.clock()

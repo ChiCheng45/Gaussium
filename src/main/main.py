@@ -8,8 +8,8 @@ import time
 
 
 def menu():
-    # start('HeH+.mol', 'STO-3G-edited.gbs', 'RHF')
-    start('O2.mol', 'STO-3G.gbs', 'UHF')
+    start('CO.mol', '4-31G.gbs', 'RHF')
+    # start('O2.mol', 'STO-3G.gbs', 'UHF')
     # start('CO.mol', 'STO-3G.gbs', 'MP2')
 
 
