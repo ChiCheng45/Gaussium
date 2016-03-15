@@ -1,3 +1,4 @@
+from src.main.hartreefock import LinearAlgebra
 import numpy as np
 
 
@@ -5,12 +6,14 @@ class DIIS:
 
     def __init__(self, overlap):
         self.overlap = overlap
+        self.transform = LinearAlgebra.create_transformation_matrix(self.overlap)
         self.matrix_size = overlap.shape[0]
         self.fock_array = []
         self.error_array = []
 
     def fock_matrix(self, fock, density):
         error = self.overlap * density * fock - fock * density * self.overlap
+        error = np.transpose(self.transform) * error * self.transform
         self.error_array.append(error)
         self.fock_array.append(fock)
         array_length = len(self.fock_array)

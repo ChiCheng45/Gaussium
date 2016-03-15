@@ -4,7 +4,7 @@ from src.main.matrixelements import OrbitalOverlapMatrix
 from src.main.matrixelements import TwoElectronRepulsionElementCook
 from src.main.matrixelements import TwoElectronRepulsionElementHGP
 from src.main.matrixelements import TwoElectronRepulsionElementOS
-from src.main.hartreefock import RestrictedSCF, UnrestrictedSCF, LinearAlgebra
+from src.main.hartreefock import LinearAlgebra, RestrictedSCF, UnrestrictedSCF
 import numpy as np
 import time
 
