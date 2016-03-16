@@ -3,7 +3,7 @@ from src.main.matrixelements import DensityMatrixUnrestricted
 from src.main.matrixelements import GMatrixRestricted
 from src.main.matrixelements import GMatrixUnrestricted
 from src.main.hartreefock import TotalEnergy
-from src.main.diis import DIIS
+from src.main.diis_method import DIIS
 from math import floor, ceil
 
 
@@ -24,7 +24,7 @@ class SelfConsistentField:
 class RestrictedSCF(SelfConsistentField):
 
     def __init__(self, core_hamiltonian, linear_algebra, repulsion, electrons, overlap):
-        super().__init__(core_hamiltonian, linear_algebra, DensityMatrixRestricted(electrons), GMatrixRestricted(repulsion), DIIS(overlap))
+        super().__init__(core_hamiltonian, linear_algebra, DensityMatrixRestricted(electrons), GMatrixRestricted(repulsion), DIIS(overlap, linear_algebra))
 
     def begin(self, orbital_coefficients):
         orbital_energies = []

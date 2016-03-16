@@ -15,6 +15,9 @@ class LinearAlgebra:
         orbital_coefficients = self.transformation_matrix * orbital_coefficients
         return orbital_energies, orbital_coefficients
 
+    def orthonormalize(self, matrix):
+        return np.transpose(self.transformation_matrix) * matrix * self.transformation_matrix
+
     @staticmethod
     def create_transformation_matrix(orbital_overlap):
         s_matrix_eigenvalues, s_matrix_unitary = np.linalg.eigh(orbital_overlap)

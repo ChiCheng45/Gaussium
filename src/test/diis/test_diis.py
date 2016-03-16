@@ -1,5 +1,5 @@
+from src.main.diis_method import DIIS
 from unittest import TestCase
-from src.main.diis import DIIS
 from numpy import testing
 import numpy as np
 
