@@ -9,21 +9,32 @@ class DIIS:
         self.matrix_size = overlap.shape[0]
         self.fock_array = []
         self.error_array = []
+        self.begin = False
 
     def fock_matrix(self, fock, density):
         error = self.overlap * density * fock - fock * density * self.overlap
         error = self.linear_algebra.orthonormalize(error)
-        self.error_array.append(error)
-        self.fock_array.append(fock)
 
-        if len(self.fock_array) > 1:
-            diis_fock_matrix = np.matrix(np.zeros((self.matrix_size, self.matrix_size)))
-            diis_coefficients = self.create_b_matrix()
+        if np.any(error < 0.1 * np.ones((self.matrix_size, self.matrix_size))):
+            self.begin = True
+        if np.all(error < 1e-6 * np.ones((self.matrix_size, self.matrix_size))):
+            self.begin = False
 
-            for l in range(len(self.fock_array)):
-                diis_fock_matrix += diis_coefficients[l, 0] * self.fock_array[l]
+        if self.begin:
+            self.error_array.append(error)
+            self.fock_array.append(fock)
 
-            return diis_fock_matrix
+            if len(self.fock_array) > 1:
+                diis_fock_matrix = np.matrix(np.zeros((self.matrix_size, self.matrix_size)))
+                diis_coefficients = self.create_b_matrix()
+
+                for l in range(len(self.fock_array)):
+                    diis_fock_matrix += diis_coefficients[l, 0] * self.fock_array[l]
+
+                return diis_fock_matrix
+            else:
+                return fock
+
         else:
             return fock
 
@@ -48,5 +59,5 @@ class DIIS:
         except np.linalg.linalg.LinAlgError:
             self.fock_array.pop(0)
             self.error_array.pop(0)
-            print("np.linalg.linalg.LinAlgError")
+            print("np.linalg.linalg.LinAlgError: removing a DIIS vector")
             return self.create_b_matrix()

@@ -3,7 +3,7 @@ from src.main.matrixelements import DensityMatrixUnrestricted
 from src.main.matrixelements import GMatrixRestricted
 from src.main.matrixelements import GMatrixUnrestricted
 from src.main.hartreefock import TotalEnergy
-from src.main.diis_method import DIIS
+from src.main.diismethod import DIIS
 from math import floor, ceil
 
 

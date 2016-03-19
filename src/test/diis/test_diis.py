@@ -1,4 +1,4 @@
-from src.main.diis_method import DIIS
+from src.main.diismethod import DIIS
 from unittest import TestCase
 from numpy import testing
 import numpy as np
