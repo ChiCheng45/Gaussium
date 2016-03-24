@@ -72,5 +72,3 @@ class CoulombsLawMatrix:
                 if i != j:
                     matrix[i, j] = cls.coulombs_law(nuclei_array[i], nuclei_array[j])
         return matrix
-
-
