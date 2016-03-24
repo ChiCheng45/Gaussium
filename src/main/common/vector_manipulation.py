@@ -6,10 +6,7 @@ NAME
     Vector
 
 SYNOPSIS
-    def add(tuple1, tuple2)
     def minus(tuple1, tuple2)
-    def multiply(x, tuple1)
-    def dot_product(tuple1, tuple2)
     def distance(tuple1, tuple2)
     def gaussian(x, tuple1, y, tuple2)
     def tuple tuple1, tuple2
@@ -62,20 +59,8 @@ DIAGNOSTICS
 class Vector:
 
     @staticmethod
-    def add(r_1, r_2):
-        return r_1[0] + r_2[0], r_1[1] + r_2[1], r_1[2] + r_2[2]
-
-    @staticmethod
     def minus(r_1, r_2):
         return r_1[0] - r_2[0], r_1[1] - r_2[1], r_1[2] - r_2[2]
-
-    @staticmethod
-    def multiply(a, r_1):
-        return a * r_1[0], a * r_1[1], a * r_1[2]
-
-    @staticmethod
-    def dot(r_1, r_2):
-        return r_1[0] * r_2[0] + r_1[1] * r_2[1] + r_1[2] + r_2[2]
 
     @staticmethod
     def distance(r_1, r_2):

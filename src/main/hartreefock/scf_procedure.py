@@ -9,12 +9,11 @@ from math import floor, ceil
 
 class SelfConsistentField:
 
-    def __init__(self, core_hamiltonian, linear_algebra, density_matrix_factory, g_matrix_factory, diis):
+    def __init__(self, core_hamiltonian, linear_algebra, density_matrix_factory, g_matrix_factory):
         self.core_hamiltonian = core_hamiltonian
         self.linear_algebra = linear_algebra
         self.density_matrix_factory = density_matrix_factory
         self.g_matrix_factory = g_matrix_factory
-        self.diis = diis
         self.calculate = TotalEnergy(core_hamiltonian)
         self.total_energy = 0
         self.previous_total_energy = 0
@@ -24,7 +23,8 @@ class SelfConsistentField:
 class RestrictedSCF(SelfConsistentField):
 
     def __init__(self, core_hamiltonian, linear_algebra, repulsion, electrons, overlap):
-        super().__init__(core_hamiltonian, linear_algebra, DensityMatrixRestricted(electrons), GMatrixRestricted(repulsion), DIIS(overlap, linear_algebra))
+        super().__init__(core_hamiltonian, linear_algebra, DensityMatrixRestricted(electrons), GMatrixRestricted(repulsion))
+        self.diis = DIIS(overlap, linear_algebra)
 
     def begin(self, orbital_coefficients):
         orbital_energies = []
