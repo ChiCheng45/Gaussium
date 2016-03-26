@@ -13,6 +13,7 @@ class MoellerPlesset:
         molecular_integral_matrix = MolecularIntegrals.calculate(repulsion, orbital_coefficients)
 
         print('BEGIN MP2 CALCULATION', end='\n\n')
+
         for i in range(occupied_orbitals):
             for j in range(occupied_orbitals):
                 for a in range(occupied_orbitals, len(orbital_energies)):

@@ -1,7 +1,7 @@
 from src.main.matrixelements import KineticEnergyMatrix
 from src.main.matrixelements import NuclearAttractionMatrix
 from src.main.matrixelements import OrbitalOverlapMatrix
-from src.main.matrixelements import TwoElectronRepulsionElementOS
+from src.main.matrixelements import TwoElectronRepulsionMatrixOS
 from src.main.hartreefock import LinearAlgebra, RestrictedSCF, UnrestrictedSCF
 import numpy as np
 import time
@@ -17,7 +17,7 @@ class HartreeFock:
         self.orbital_overlap_matrix = OrbitalOverlapMatrix(basis_set_array)
         self.kinetic_energy_matrix = KineticEnergyMatrix(basis_set_array)
         self.nuclear_attraction_matrix = NuclearAttractionMatrix(basis_set_array, nuclei_array)
-        self.repulsion_elements = TwoElectronRepulsionElementOS(basis_set_array)
+        self.repulsion_elements = TwoElectronRepulsionMatrixOS(basis_set_array)
         self.linear_algebra = LinearAlgebra
         self.core_hamiltonian = np.matrix([])
         self.orbital_overlap = np.matrix([])

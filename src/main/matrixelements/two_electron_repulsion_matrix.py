@@ -47,31 +47,31 @@ class TwoElectronRepulsionElement:
 
         pool = Pool(processes)
         values = pool.starmap(self.calculate, keys)
-        repulsion_dict = dict(zip(keys, values))
+        repulsion_dictionary = dict(zip(keys, values))
 
         repulsion_matrix = np.zeros((self.matrix_size, self.matrix_size, self.matrix_size, self.matrix_size))
         for a in range(self.matrix_size):
             for b in range(self.matrix_size):
                 for c in range(self.matrix_size):
                     for d in range(self.matrix_size):
-                        repulsion_matrix.itemset((a, b, c, d), repulsion_dict[Symmetry.sort(a, b, c, d)])
+                        repulsion_matrix.itemset((a, b, c, d), repulsion_dictionary[Symmetry.sort(a, b, c, d)])
 
         return repulsion_matrix
 
 
-class TwoElectronRepulsionElementOS(TwoElectronRepulsionElement):
+class TwoElectronRepulsionMatrixOS(TwoElectronRepulsionElement):
 
     def __init__(self, basis_set_array):
         super().__init__(basis_set_array, ObaraSaika().os_set)
 
 
-class TwoElectronRepulsionElementCook(TwoElectronRepulsionElement):
+class TwoElectronRepulsionMatrixCook(TwoElectronRepulsionElement):
 
     def __init__(self, basis_set_array):
         super().__init__(basis_set_array, ElectronRepulsion().integral)
 
 
-class TwoElectronRepulsionElementHGP(TwoElectronRepulsionElement):
+class TwoElectronRepulsionMatrixHGP(TwoElectronRepulsionElement):
 
     def __init__(self, basis_set_array):
         super().__init__(basis_set_array, HeadGordonPople().hgp_set)
