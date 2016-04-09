@@ -66,18 +66,12 @@ class GMatrix(Matrix):
 
 class GMatrixRestricted(GMatrix):
 
-    def __init__(self, repulsion_matrix):
-        super().__init__(repulsion_matrix)
-
     def create(self, density_matrix):
         self.density_matrix_total = density_matrix
         return self.create_matrix(self.calculate_restricted)
 
 
 class GMatrixUnrestricted(GMatrix):
-
-    def __init__(self, repulsion_matrix):
-        super().__init__(repulsion_matrix)
 
     def create(self, density_matrix_alph, density_matrix_beta):
         self.density_matrix_alph = density_matrix_alph
