@@ -1,4 +1,6 @@
-from src.main.hartreefock import UnrestrictedHF, RestrictedHF
+from src.main.hartreefock import RestrictedHF
+from src.main.hartreefock import DODSUnrestricted
+from src.main.hartreefock import ConstrainedUnrestricted
 from src.main.fileinput import FileInputBasis, FileInputNuclei
 from src.main.common import CoulombsLawMatrix
 from src.main.moellerplesset import MoellerPlesset
@@ -9,6 +11,7 @@ import time
 def menu():
     start('HeH+.mol', 'STO-3G.gbs', 'RHF')
     start('O2.mol', '3-21G.gbs', 'UHF')
+    start('O2.mol', '3-21G.gbs', 'CUHF')
     # start('HeH+.mol', 'aug-pcJ-2.gbs', 'MP2')
 
 
@@ -32,7 +35,9 @@ def start(mol, basis, method):
     if method == 'RHF':
         electron_energy = RestrictedHF(nuclei_array, basis_set_array, electrons).begin()[0]
     if method == 'UHF':
-        electron_energy = UnrestrictedHF(nuclei_array, basis_set_array, electrons, multiplicity).begin()[0]
+        electron_energy = DODSUnrestricted(nuclei_array, basis_set_array, electrons, multiplicity).begin()[0]
+    if method == 'CUHF':
+        electron_energy = ConstrainedUnrestricted(nuclei_array, basis_set_array, electrons, multiplicity).begin()[0]
     if method == 'MP2':
         electron_energy, correlation = MoellerPlesset.second_order(nuclei_array, basis_set_array, electrons)
 

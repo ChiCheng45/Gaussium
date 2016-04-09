@@ -85,8 +85,8 @@ class RestrictedHF(HartreeFock):
 
 class UnrestrictedHF(HartreeFock):
 
-    def __init__(self, nuclei_array, basis_set_array, electrons, multiplicity):
-        super().__init__(nuclei_array, basis_set_array, electrons, DifferentOrbitalsDifferentSpins)
+    def __init__(self, nuclei_array, basis_set_array, electrons, multiplicity, scf_method):
+        super().__init__(nuclei_array, basis_set_array, electrons, scf_method)
         self.multiplicity = multiplicity
 
     def begin(self):
@@ -107,3 +107,15 @@ class UnrestrictedHF(HartreeFock):
         print('\nBETA ORBITAL COEFFICIENTS')
         print(coefficients_beta, end='\n\n\n')
         return electron_energy, energies_alpha, energies_beta, coefficients_alpha, coefficients_beta, self.repulsion
+
+
+class DODSUnrestricted(UnrestrictedHF):
+
+    def __init__(self, nuclei_array, basis_set_array, electrons, multiplicity):
+        super().__init__(nuclei_array, basis_set_array, electrons, multiplicity, DifferentOrbitalsDifferentSpins)
+
+
+class ConstrainedUnrestricted(UnrestrictedHF):
+
+    def __init__(self, nuclei_array, basis_set_array, electrons, multiplicity):
+        super().__init__(nuclei_array, basis_set_array, electrons, multiplicity, ConstrainedUnrestrictedSCF)

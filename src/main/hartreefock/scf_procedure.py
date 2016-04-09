@@ -47,7 +47,8 @@ class RestrictedSCF(SelfConsistentField):
 
 class PopleNesbetBerthier(SelfConsistentField):
 
-    def __init__(self, core_hamiltonian, linear_algebra, electrons, multiplicity, density_matrix_factory, fock_matrix_factory, overlap):
+    def __init__(self, core_hamiltonian, linear_algebra, electrons, multiplicity, density_matrix_factory,
+                 fock_matrix_factory, overlap):
         super().__init__(core_hamiltonian, linear_algebra, electrons, density_matrix_factory, fock_matrix_factory)
         self.electrons_alph = ceil(self.electrons / 2) + floor(multiplicity / 2)
         self.electrons_beta = floor(self.electrons / 2) - floor(multiplicity / 2)

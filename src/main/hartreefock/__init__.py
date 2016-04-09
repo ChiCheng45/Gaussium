@@ -6,3 +6,5 @@ from src.main.hartreefock.scf_procedure import DifferentOrbitalsDifferentSpins
 from src.main.hartreefock.scf_procedure import ConstrainedUnrestrictedSCF
 from src.main.hartreefock.hartree_fock import RestrictedHF
 from src.main.hartreefock.hartree_fock import UnrestrictedHF
+from src.main.hartreefock.hartree_fock import DODSUnrestricted
+from src.main.hartreefock.hartree_fock import ConstrainedUnrestricted
