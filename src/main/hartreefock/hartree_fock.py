@@ -2,7 +2,7 @@ from src.main.matrixelements import KineticEnergyMatrix
 from src.main.matrixelements import NuclearAttractionMatrix
 from src.main.matrixelements import OrbitalOverlapMatrix
 from src.main.matrixelements import TwoElectronRepulsionMatrixOS
-from src.main.hartreefock import LinearAlgebra, RestrictedSCF, UnrestrictedSCF
+from src.main.hartreefock import LinearAlgebra, RestrictedSCF, DifferentOrbitalsDifferentSpins
 import numpy as np
 import time
 
@@ -83,7 +83,7 @@ class RestrictedHF(HartreeFock):
 class UnrestrictedHF(HartreeFock):
 
     def __init__(self, nuclei_array, basis_set_array, electrons, multiplicity):
-        super().__init__(nuclei_array, basis_set_array, electrons, UnrestrictedSCF)
+        super().__init__(nuclei_array, basis_set_array, electrons, DifferentOrbitalsDifferentSpins)
         self.multiplicity = multiplicity
 
     def begin(self):

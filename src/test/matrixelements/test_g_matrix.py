@@ -27,7 +27,7 @@ class TestGMatrixRestricted(TestCase):
         ])
 
         self.g_matrix = GMatrixRestricted(repulsion_matrix)
-        self.g_matrix.density_matrix = density_matrix
+        self.g_matrix.density_matrix_total = density_matrix
         self.g_matrix.matrix_size = 2
 
     def test_method_calculate_returns_g_matrix_element_for_0_0(self):
