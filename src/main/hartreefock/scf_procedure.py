@@ -2,6 +2,7 @@ from src.main.matrixelements import DensityMatrixRestricted
 from src.main.matrixelements import DensityMatrixUnrestricted
 from src.main.matrixelements import GMatrixRestricted
 from src.main.matrixelements import GMatrixUnrestricted
+from src.main.matrixelements import GMatrixConstrainedUnrestricted
 from src.main.hartreefock import TotalEnergy
 from src.main.diismethod import DIIS
 from math import floor, ceil
@@ -52,9 +53,8 @@ class PopleNesbetBerthier(SelfConsistentField):
         self.multiplicity = multiplicity
 
     def begin(self, orbital_coefficients):
-        difference = floor(self.multiplicity / 2)
-        electrons_alph = ceil(self.electrons / 2) + difference
-        electrons_beta = floor(self.electrons / 2) - difference
+        electrons_alph = ceil(self.electrons / 2) + floor(self.multiplicity / 2)
+        electrons_beta = floor(self.electrons / 2) - floor(self.multiplicity / 2)
         coefficients_alph = orbital_coefficients
         coefficients_beta = orbital_coefficients
         energies_alph = []
@@ -63,8 +63,8 @@ class PopleNesbetBerthier(SelfConsistentField):
         while abs(self.delta_energy) > 1e-12:
 
             if self.total_energy == 0:
-                density_matrix_alph = self.density_matrix_factory.create((electrons_alph + 1), coefficients_alph)
-                density_matrix_beta = self.density_matrix_factory.create((electrons_beta - 1), coefficients_beta)
+                density_matrix_alph = self.density_matrix_factory.create((electrons_alph + 2), coefficients_alph)
+                density_matrix_beta = self.density_matrix_factory.create((electrons_beta - 2), coefficients_beta)
             else:
                 density_matrix_alph = self.density_matrix_factory.create(electrons_alph, coefficients_alph)
                 density_matrix_beta = self.density_matrix_factory.create(electrons_beta, coefficients_beta)
@@ -88,3 +88,10 @@ class DifferentOrbitalsDifferentSpins(PopleNesbetBerthier):
     def __init__(self, core_hamiltonian, linear_algebra, repulsion, electrons, multiplicity):
         super().__init__(core_hamiltonian, linear_algebra, electrons, multiplicity, DensityMatrixUnrestricted(),
                          GMatrixUnrestricted(repulsion))
+
+
+class ConstrainedUnrestrictedSCF(PopleNesbetBerthier):
+
+    def __init__(self, core_hamiltonian, linear_algebra, repulsion, electrons, multiplicity):
+        super().__init__(core_hamiltonian, linear_algebra, electrons, multiplicity, DensityMatrixUnrestricted(),
+                         GMatrixConstrainedUnrestricted(repulsion, electrons, multiplicity))

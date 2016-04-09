@@ -1,4 +1,5 @@
 from src.main.matrixelements import Matrix
+from math import floor, ceil
 import numpy as np
 
 
@@ -58,10 +59,10 @@ class GMatrixUnrestricted(GMatrix):
 
 class GMatrixConstrainedUnrestricted(GMatrix):
 
-    def __init__(self, repulsion_matrix, electrons_alph, electrons_beta):
+    def __init__(self, repulsion_matrix, electrons, multiplicity):
         super().__init__(repulsion_matrix)
-        self.electrons_alph = electrons_alph
-        self.electrons_beta = electrons_beta
+        self.electrons_alph = ceil(electrons / 2) + floor(multiplicity / 2)
+        self.electrons_beta = floor(electrons / 2) - floor(multiplicity / 2)
 
     def create(self, density_matrix_alph, density_matrix_beta):
         self.matrix_size = density_matrix_alph.shape[0]
@@ -72,7 +73,7 @@ class GMatrixConstrainedUnrestricted(GMatrix):
 
     def calc_constrained_alph(self, i, j):
         # (i is virtual and j is open or closed) or (i is virtual and j is open or closed)
-        if i > self.electrons_alph and j < (self.electrons_alph or self.electrons_beta) \
+        if i > self.electrons_alph and j < (self.electrons_alph and self.electrons_beta) \
         or j > self.electrons_alph and i < (self.electrons_alph or self.electrons_beta):
 
             return self.calculate_restricted(i, j)
@@ -83,8 +84,8 @@ class GMatrixConstrainedUnrestricted(GMatrix):
 
     def calc_constrained_beta(self, i, j):
         # (i is virtual and j is open or closed) or (i is virtual and j is open or closed)
-        if i > self.electrons_beta and j < (self.electrons_alph or self.electrons_beta) \
-        or j > self.electrons_beta and i < (self.electrons_alph or self.electrons_beta):
+        if i > self.electrons_beta and j < (self.electrons_alph and self.electrons_beta) \
+        or j > self.electrons_beta and i < (self.electrons_alph and self.electrons_beta):
 
             return self.calculate_restricted(i, j)
 

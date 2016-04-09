@@ -2,7 +2,10 @@ from src.main.matrixelements import KineticEnergyMatrix
 from src.main.matrixelements import NuclearAttractionMatrix
 from src.main.matrixelements import OrbitalOverlapMatrix
 from src.main.matrixelements import TwoElectronRepulsionMatrixOS
-from src.main.hartreefock import LinearAlgebra, RestrictedSCF, DifferentOrbitalsDifferentSpins
+from src.main.hartreefock import LinearAlgebra
+from src.main.hartreefock import RestrictedSCF
+from src.main.hartreefock import DifferentOrbitalsDifferentSpins
+from src.main.hartreefock import ConstrainedUnrestrictedSCF
 import numpy as np
 import time
 
