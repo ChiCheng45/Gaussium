@@ -9,7 +9,7 @@ class TestBinomialCoefficientsFunction(TestCase):
     def setUp(self):
         orbital_coefficients = np.matrix([
             [1., 0.45077116],
-            [0.45077116,  1.]
+            [0.45077116, 1.]
         ])
 
         self.diis = DIIS(orbital_coefficients)

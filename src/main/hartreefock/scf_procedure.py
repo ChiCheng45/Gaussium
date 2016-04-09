@@ -7,17 +7,24 @@ from src.main.diismethod import DIIS
 from math import floor, ceil
 
 
-class RestrictedSCF:
+class SelfConsistentField:
 
-    def __init__(self, core_hamiltonian, linear_algebra, repulsion, electrons, overlap):
+    def __init__(self, core_hamiltonian, linear_algebra, electrons, density_matrix_factory, g_matrix_factory):
         self.core_hamiltonian = core_hamiltonian
         self.linear_algebra = linear_algebra
-        self.density_matrix_factory = DensityMatrixRestricted(electrons)
-        self.g_matrix_factory = GMatrixRestricted(repulsion)
+        self.electrons = electrons
+        self.density_matrix_factory = density_matrix_factory
+        self.g_matrix_factory = g_matrix_factory
         self.calculate = TotalEnergy(core_hamiltonian)
         self.total_energy = 0
         self.previous_total_energy = 0
         self.delta_energy = 1
+
+
+class RestrictedSCF(SelfConsistentField):
+
+    def __init__(self, core_hamiltonian, linear_algebra, repulsion, electrons, overlap):
+        super().__init__(core_hamiltonian, linear_algebra, electrons, DensityMatrixRestricted(electrons), GMatrixRestricted(repulsion))
         self.diis = DIIS(overlap, linear_algebra)
 
     def begin(self, orbital_coefficients):
@@ -38,19 +45,11 @@ class RestrictedSCF:
         return self.total_energy, orbital_energies, orbital_coefficients
 
 
-class PopleNesbetBerthier:
+class PopleNesbetBerthier(SelfConsistentField):
 
     def __init__(self, core_hamiltonian, linear_algebra, electrons, multiplicity, density_matrix_factory, g_matrix_factory):
-        self.core_hamiltonian = core_hamiltonian
-        self.linear_algebra = linear_algebra
-        self.electrons = electrons
+        super().__init__(core_hamiltonian, linear_algebra, electrons, density_matrix_factory, g_matrix_factory)
         self.multiplicity = multiplicity
-        self.density_matrix_factory = density_matrix_factory
-        self.g_matrix_factory = g_matrix_factory
-        self.calculate = TotalEnergy(core_hamiltonian)
-        self.total_energy = 0
-        self.previous_total_energy = 0
-        self.delta_energy = 1
 
     def begin(self, orbital_coefficients):
         difference = floor(self.multiplicity / 2)
