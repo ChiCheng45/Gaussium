@@ -91,7 +91,7 @@ class UnrestrictedHF(HartreeFock):
 
     def begin(self):
         initial_coefficients = self.start()
-        self.scf_method = self.scf_method(self.core_hamiltonian, self.linear_algebra, self.repulsion, self.electrons, self.multiplicity)
+        self.scf_method = self.scf_method(self.core_hamiltonian, self.linear_algebra, self.repulsion, self.electrons, self.multiplicity, self.orbital_overlap)
 
         start = time.clock()
         print('\nBEGIN SCF PROCEDURE')

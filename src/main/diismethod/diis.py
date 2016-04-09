@@ -24,15 +24,22 @@ class DIIS:
             self.error_array.append(error)
             self.fock_array.append(fock)
 
-            if len(self.fock_array) > 1:
-                diis_fock_matrix = np.matrix(np.zeros((self.matrix_size, self.matrix_size)))
-                diis_coefficients = self.create_b_matrix()
+            if len(self.fock_array) <= 5:  # DIIS subspace reset
 
-                for l in range(len(self.fock_array)):
-                    diis_fock_matrix += diis_coefficients[l, 0] * self.fock_array[l]
+                if len(self.fock_array) > 1:
+                    diis_fock_matrix = np.matrix(np.zeros((self.matrix_size, self.matrix_size)))
+                    diis_coefficients = self.create_b_matrix()
 
-                return diis_fock_matrix
+                    for l in range(len(self.fock_array)):
+                        diis_fock_matrix += diis_coefficients[l, 0] * self.fock_array[l]
+
+                    return diis_fock_matrix
+                else:
+                    return fock
+
             else:
+                self.fock_array = []
+                self.error_array = []
                 return fock
 
         else:

@@ -1,5 +1,5 @@
 from unittest import TestCase
-from src.main.matrixelements import GMatrixRestricted
+from src.main.matrixelements import FockMatrixRestricted
 from numpy import testing
 import numpy as np
 
@@ -26,7 +26,7 @@ class TestGMatrixRestricted(TestCase):
             [0.2599, 0.0391]
         ])
 
-        self.g_matrix = GMatrixRestricted(repulsion_matrix)
+        self.g_matrix = FockMatrixRestricted(repulsion_matrix)
         self.g_matrix.density_matrix_total = density_matrix
         self.g_matrix.matrix_size = 2
 

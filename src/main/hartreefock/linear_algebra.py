@@ -18,6 +18,9 @@ class LinearAlgebra:
     def orthonormalize(self, matrix):
         return np.transpose(self.transformation_matrix) * matrix * self.transformation_matrix
 
+    def non_orthonormal(self, matrix):
+        return np.linalg.inv(np.transpose(self.transformation_matrix)) * matrix * np.linalg.inv(self.transformation_matrix)
+
     @staticmethod
     def create_transformation_matrix(orbital_overlap):
         s_matrix_eigenvalues, s_matrix_unitary = np.linalg.eigh(orbital_overlap)

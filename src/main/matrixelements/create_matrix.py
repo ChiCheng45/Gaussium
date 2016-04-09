@@ -26,7 +26,7 @@ ARGUMENTS
 
 SEE ALSO
     density_matrix.py
-    g_matrix.py
+    fock_matrix.py
     kinetic_energy_matrix.py
     nuclear_attraction_matrix.py
     orbital_overlap_matrix.py
