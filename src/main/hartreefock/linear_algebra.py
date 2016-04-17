@@ -7,7 +7,7 @@ class LinearAlgebra:
         self.transformation_matrix = self.create_transformation_matrix(orbital_overlap)
 
     def diagonalize(self, fock_matrix):
-        orthonormal_h_matrix = np.transpose(self.transformation_matrix) * fock_matrix * self.transformation_matrix
+        orthonormal_h_matrix = self.transformation_matrix.T * fock_matrix * self.transformation_matrix
         orbital_energies, orbital_coefficients = np.linalg.eigh(orthonormal_h_matrix)
         sort = np.argsort(orbital_energies)
         orbital_energies = np.array(orbital_energies)[sort]
@@ -16,10 +16,10 @@ class LinearAlgebra:
         return orbital_energies, orbital_coefficients
 
     def orthonormalize(self, matrix):
-        return np.transpose(self.transformation_matrix) * matrix * self.transformation_matrix
+        return self.transformation_matrix.T * matrix * self.transformation_matrix
 
     def non_orthonormal(self, matrix):
-        return np.linalg.inv(np.transpose(self.transformation_matrix)) * matrix * np.linalg.inv(self.transformation_matrix)
+        return np.linalg.inv(self.transformation_matrix.T) * matrix * np.linalg.inv(self.transformation_matrix)
 
     @staticmethod
     def create_transformation_matrix(orbital_overlap):

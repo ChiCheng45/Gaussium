@@ -1,8 +1,10 @@
 from src.main.matrixelements import DensityMatrixRestricted
 from src.main.matrixelements import DensityMatrixUnrestricted
+from src.main.matrixelements import DensityMatrixRestrictedOpenShell
 from src.main.matrixelements import FockMatrixRestricted
 from src.main.matrixelements import FockMatrixUnrestricted
 from src.main.matrixelements import FockMatrixConstrained
+from src.main.matrixelements import FockMatrixRestrictedOpenShell
 from src.main.hartreefock import TotalEnergy
 from src.main.diismethod import DIIS
 from math import floor, ceil
@@ -24,7 +26,8 @@ class SelfConsistentField:
 class RestrictedSCF(SelfConsistentField):
 
     def __init__(self, core_hamiltonian, linear_algebra, repulsion, electrons, overlap):
-        super().__init__(core_hamiltonian, linear_algebra, electrons, DensityMatrixRestricted(electrons), FockMatrixRestricted(core_hamiltonian, repulsion))
+        super().__init__(core_hamiltonian, linear_algebra, electrons, DensityMatrixRestricted(electrons),
+                FockMatrixRestricted(core_hamiltonian, repulsion))
         self.diis = DIIS(overlap, linear_algebra)
 
     def begin(self, orbital_coefficients):
@@ -64,15 +67,17 @@ class PopleNesbetBerthier(SelfConsistentField):
         while abs(self.delta_energy) > 1e-12:
 
             if self.total_energy == 0:
-                density_matrix_alph = self.density_matrix_factory.create((self.electrons_alph + 1), coefficients_alph)
-                density_matrix_beta = self.density_matrix_factory.create((self.electrons_beta - 1), coefficients_beta)
+                density_matrix_alph = self.density_matrix_factory.create(coefficients_alph, coefficients_alph.shape[0])
+                density_matrix_beta = self.density_matrix_factory.create(coefficients_beta, 0)
             else:
-                density_matrix_alph = self.density_matrix_factory.create(self.electrons_alph, coefficients_alph)
-                density_matrix_beta = self.density_matrix_factory.create(self.electrons_beta, coefficients_beta)
+                density_matrix_alph = self.density_matrix_factory.create(coefficients_alph, self.electrons_alph)
+                density_matrix_beta = self.density_matrix_factory.create(coefficients_beta, self.electrons_beta)
 
-            fock_matrix_alph, fock_matrix_beta = self.fock_matrix_factory.create(density_matrix_alph, density_matrix_beta)
+            fock_matrix_alph, fock_matrix_beta \
+                    = self.fock_matrix_factory.create(density_matrix_alph, density_matrix_beta)
 
-            self.total_energy = self.calculate.unrestricted(density_matrix_alph, density_matrix_beta, fock_matrix_alph, fock_matrix_beta)
+            self.total_energy = self.calculate.unrestricted(density_matrix_alph, density_matrix_beta, fock_matrix_alph,
+                    fock_matrix_beta)
             self.delta_energy = self.previous_total_energy - self.total_energy
             self.previous_total_energy = self.total_energy
             print('SCF ENERGY: ' + str(self.total_energy) + ' a.u.')
@@ -90,12 +95,42 @@ class DifferentOrbitalsDifferentSpins(PopleNesbetBerthier):
 
     def __init__(self, core_hamiltonian, linear_algebra, repulsion, electrons, multiplicity, overlap):
         super().__init__(core_hamiltonian, linear_algebra, electrons, multiplicity, DensityMatrixUnrestricted(),
-                         FockMatrixUnrestricted(core_hamiltonian, repulsion), overlap)
+                FockMatrixUnrestricted(core_hamiltonian, repulsion), overlap)
 
 
 class ConstrainedUnrestrictedSCF(PopleNesbetBerthier):
 
     def __init__(self, core_hamiltonian, linear_algebra, repulsion, electrons, multiplicity, overlap):
         super().__init__(core_hamiltonian, linear_algebra, electrons, multiplicity, DensityMatrixUnrestricted(),
-                         FockMatrixConstrained(core_hamiltonian, repulsion, electrons, multiplicity, linear_algebra),
-                         overlap)
+                FockMatrixConstrained(core_hamiltonian, repulsion, electrons, multiplicity, linear_algebra), overlap)
+
+
+class RestrictedOpenShellSCF(SelfConsistentField):
+
+    def __init__(self, core_hamiltonian, linear_algebra, repulsion, electrons, multiplicity, overlap):
+        super().__init__(core_hamiltonian, linear_algebra, electrons, DensityMatrixRestrictedOpenShell(),
+                FockMatrixRestrictedOpenShell(core_hamiltonian, repulsion))
+        self.multiplicity = multiplicity
+        self.diis = DIIS(overlap, linear_algebra)
+
+    def begin(self, orbital_coefficients):
+        orbital_energies = []
+
+        while abs(self.delta_energy) > 1e-6:
+
+            density_matrix_doubly, density_matrix_singly, density_matrix_empty \
+                    = self.density_matrix_factory.create(orbital_coefficients, self.electrons, self.multiplicity)
+            fock_matrix = self.fock_matrix_factory.create(density_matrix_doubly, density_matrix_singly,
+                    density_matrix_empty)
+
+            self.total_energy = self.calculate.restricted_open_shell(density_matrix_doubly, density_matrix_singly,
+                    self.fock_matrix_factory.fock_matrix_doubly, self.fock_matrix_factory.fock_matrix_singly)
+            self.delta_energy = self.previous_total_energy - self.total_energy
+            self.previous_total_energy = self.total_energy
+
+            print('SCF ENERGY: ' + str(self.total_energy) + ' a.u.')
+
+            if abs(self.delta_energy) > 1e-6:
+                orbital_energies, orbital_coefficients = self.linear_algebra.diagonalize(fock_matrix)
+
+        return self.total_energy, orbital_energies, orbital_coefficients

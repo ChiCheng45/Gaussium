@@ -1,17 +1,19 @@
+from src.main.fileinput import FileInputBasis
+from src.main.fileinput import FileInputNuclei
+from src.main.common import CoulombsLawMatrix
 from src.main.hartreefock import RestrictedHF
+from src.main.hartreefock import RestrictedOpenShell
 from src.main.hartreefock import DODSUnrestricted
 from src.main.hartreefock import ConstrainedUnrestricted
-from src.main.fileinput import FileInputBasis, FileInputNuclei
-from src.main.common import CoulombsLawMatrix
 from src.main.moellerplesset import MoellerPlesset
 import numpy as np
 import time
 
 
 def menu():
-    start('HeH+.mol', 'STO-3G.gbs', 'RHF')
-    start('O2.mol', '3-21G.gbs', 'UHF')
-    start('O2.mol', '3-21G.gbs', 'CUHF')
+    # start('CO.mol', 'STO-3G.gbs', 'MP2')
+    # start('O2.mol', 'STO-3G.gbs', 'ROHF')
+    start('O2.mol', 'STO-3G.gbs', 'CUHF')
     # start('HeH+.mol', 'aug-pcJ-2.gbs', 'MP2')
 
 
@@ -34,6 +36,8 @@ def start(mol, basis, method):
 
     if method == 'RHF':
         electron_energy = RestrictedHF(nuclei_array, basis_set_array, electrons).begin()[0]
+    if method == 'ROHF':
+        electron_energy = RestrictedOpenShell(nuclei_array, basis_set_array, electrons, multiplicity).begin()[0]
     if method == 'UHF':
         electron_energy = DODSUnrestricted(nuclei_array, basis_set_array, electrons, multiplicity).begin()[0]
     if method == 'CUHF':
