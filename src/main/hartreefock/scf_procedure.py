@@ -1,13 +1,10 @@
 from src.main.matrixelements import DensityMatrixRestricted
 from src.main.matrixelements import DensityMatrixUnrestricted
-from src.main.matrixelements import DensityMatrixRestrictedOpenShell
 from src.main.matrixelements import FockMatrixRestricted
 from src.main.matrixelements import FockMatrixUnrestricted
 from src.main.matrixelements import FockMatrixConstrained
-from src.main.matrixelements import FockMatrixRestrictedOpenShell
 from src.main.hartreefock import TotalEnergy
 from src.main.diismethod import DIIS
-from math import floor, ceil
 
 
 class SelfConsistentField:
@@ -53,8 +50,8 @@ class PopleNesbetBerthier(SelfConsistentField):
     def __init__(self, core_hamiltonian, linear_algebra, electrons, multiplicity, density_matrix_factory,
                  fock_matrix_factory, overlap):
         super().__init__(core_hamiltonian, linear_algebra, electrons, density_matrix_factory, fock_matrix_factory)
-        self.electrons_alph = ceil(self.electrons / 2) + floor(multiplicity / 2)
-        self.electrons_beta = floor(self.electrons / 2) - floor(multiplicity / 2)
+        self.electrons_alph = (electrons + multiplicity - 1) // 2
+        self.electrons_beta = (electrons - multiplicity + 1) // 2
         self.diis_alph = DIIS(overlap, linear_algebra)
         self.diis_beta = DIIS(overlap, linear_algebra)
 
@@ -103,34 +100,3 @@ class ConstrainedUnrestrictedSCF(PopleNesbetBerthier):
     def __init__(self, core_hamiltonian, linear_algebra, repulsion, electrons, multiplicity, overlap):
         super().__init__(core_hamiltonian, linear_algebra, electrons, multiplicity, DensityMatrixUnrestricted(),
                 FockMatrixConstrained(core_hamiltonian, repulsion, electrons, multiplicity, linear_algebra), overlap)
-
-
-class RestrictedOpenShellSCF(SelfConsistentField):
-
-    def __init__(self, core_hamiltonian, linear_algebra, repulsion, electrons, multiplicity, overlap):
-        super().__init__(core_hamiltonian, linear_algebra, electrons, DensityMatrixRestrictedOpenShell(),
-                FockMatrixRestrictedOpenShell(core_hamiltonian, repulsion))
-        self.multiplicity = multiplicity
-        self.diis = DIIS(overlap, linear_algebra)
-
-    def begin(self, orbital_coefficients):
-        orbital_energies = []
-
-        while abs(self.delta_energy) > 1e-6:
-
-            density_matrix_doubly, density_matrix_singly, density_matrix_empty \
-                    = self.density_matrix_factory.create(orbital_coefficients, self.electrons, self.multiplicity)
-            fock_matrix = self.fock_matrix_factory.create(density_matrix_doubly, density_matrix_singly,
-                    density_matrix_empty)
-
-            self.total_energy = self.calculate.restricted_open_shell(density_matrix_doubly, density_matrix_singly,
-                    self.fock_matrix_factory.fock_matrix_doubly, self.fock_matrix_factory.fock_matrix_singly)
-            self.delta_energy = self.previous_total_energy - self.total_energy
-            self.previous_total_energy = self.total_energy
-
-            print('SCF ENERGY: ' + str(self.total_energy) + ' a.u.')
-
-            if abs(self.delta_energy) > 1e-6:
-                orbital_energies, orbital_coefficients = self.linear_algebra.diagonalize(fock_matrix)
-
-        return self.total_energy, orbital_energies, orbital_coefficients

@@ -24,7 +24,7 @@ class DIIS:
             self.error_array.append(error)
             self.fock_array.append(fock)
 
-            if len(self.fock_array) <= 5:  # DIIS subspace reset
+            if len(self.fock_array) <= 15:  # DIIS subspace reset
 
                 if len(self.fock_array) > 1:
                     diis_fock_matrix = np.matrix(np.zeros((self.matrix_size, self.matrix_size)))
