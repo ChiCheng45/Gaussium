@@ -1,5 +1,4 @@
 from src.main.matrixelements import Matrix
-from math import floor, ceil
 import numpy as np
 
 
@@ -98,9 +97,9 @@ class FockMatrixConstrained(FockMatrixUnrestricted):
 
     def calc_constrained_alph(self, i, j):
 
-        # (i is virtual and j is open or closed) or (j is virtual and i is open or closed)
-        if i > (self.electrons_alph and self.electrons_beta) and j < (self.electrons_alph or self.electrons_beta) \
-        or j > (self.electrons_alph and self.electrons_beta) and i < (self.electrons_alph or self.electrons_beta):
+        # (i is virtual and j is core) or (j is virtual and i is core)
+        if i > (self.electrons_alph + 1 and self.electrons_beta + 1) > j \
+        or j > (self.electrons_alph + 1 and self.electrons_beta + 1) > i:
 
             return self.orthonormal_fock_closed.item(i, j)
 
@@ -110,9 +109,9 @@ class FockMatrixConstrained(FockMatrixUnrestricted):
 
     def calc_constrained_beta(self, i, j):
 
-        # (i is virtual and j is open or closed) or (j is virtual and i is open or closed)
-        if i > (self.electrons_alph and self.electrons_beta) and j < (self.electrons_alph or self.electrons_beta) \
-        or j > (self.electrons_alph and self.electrons_beta) and i < (self.electrons_alph or self.electrons_beta):
+        # (i is virtual and j is core) or (j is virtual and i is core)
+        if i > (self.electrons_alph + 1 and self.electrons_beta + 1) > j \
+        or j > (self.electrons_alph + 1 and self.electrons_beta + 1) > i:
 
             return self.orthonormal_fock_closed.item(i, j)
 
