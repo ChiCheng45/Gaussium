@@ -9,7 +9,7 @@ class TotalEnergy:
         for i in range(length):
             for j in range(length):
                 total_energy += (1/2) * density_matrix.item(i, j) * (self.core_hamiltonian.item(i, j)
-                        + fock_matrix.item(i, j))
+                + fock_matrix.item(i, j))
         return total_energy
 
     def unrestricted(self, density_matrix_alpha, density_matrix_beta, fock_matrix_alpha, fock_matrix_beta):

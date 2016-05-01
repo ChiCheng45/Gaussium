@@ -118,3 +118,36 @@ class FockMatrixConstrained(FockMatrixUnrestricted):
         else:
 
             return self.orthonormal_fock_beta.item(i, j)
+
+
+class BlockedFockMatrixUnrestricted(Matrix):
+
+    def __init__(self, core_hamiltonian, repulsion_matrix):
+        super().__init__()
+        self.matrix_size = repulsion_matrix.shape[0]
+        self.repulsion_matrix = repulsion_matrix
+        self.core_hamiltonian = core_hamiltonian
+        self.density_matrix = np.matrix([])
+
+    def calc_coulomb(self, i, j):
+        j_ij = 0
+        for a in range(self.matrix_size):
+            for b in range(self.matrix_size):
+                coulomb_integral = self.repulsion_matrix.item(i, j, a, b)
+                j_ij += self.density_matrix.item(a, b) * coulomb_integral
+        return j_ij
+
+    def calc_exchange(self, i, j):
+        j_ij = 0
+        for a in range(self.matrix_size):
+            for b in range(self.matrix_size):
+                exchange_integral = self.repulsion_matrix.item(i, b, a, j)
+                j_ij += self.density_matrix.item(a, b) * exchange_integral
+        return j_ij
+
+    def create(self, density_matrix):
+        self.density_matrix = density_matrix
+        coulomb = self.create_matrix(self.calc_coulomb)
+        exchange = self.create_matrix(self.calc_exchange)
+        fock_matrix = self.core_hamiltonian + coulomb - exchange
+        return fock_matrix

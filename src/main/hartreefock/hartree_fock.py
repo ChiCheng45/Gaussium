@@ -3,9 +3,12 @@ from src.main.matrixelements import NuclearAttractionMatrix
 from src.main.matrixelements import OrbitalOverlapMatrix
 from src.main.matrixelements import TwoElectronRepulsionMatrixOS
 from src.main.hartreefock import LinearAlgebra
+from src.main.hartreefock import BlockedLinearAlgebra
 from src.main.hartreefock import RestrictedSCF
 from src.main.hartreefock import DifferentOrbitalsDifferentSpins
 from src.main.hartreefock import ConstrainedUnrestrictedSCF
+from src.main.hartreefock import BlockedUnrestrictedSCF
+from src.main.matrixelements import IntegralTransformations
 import numpy as np
 import time
 
@@ -70,7 +73,7 @@ class RestrictedHF(HartreeFock):
     def begin(self):
         initial_coefficients = self.start()
         self.scf_method = self.scf_method(self.core_hamiltonian, self.linear_algebra, self.repulsion, self.electrons,
-                self.orbital_overlap)
+        self.orbital_overlap)
 
         start = time.clock()
         print('\nBEGIN SCF PROCEDURE')
@@ -93,12 +96,12 @@ class UnrestrictedHF(HartreeFock):
     def begin(self):
         initial_coefficients = self.start()
         self.scf_method = self.scf_method(self.core_hamiltonian, self.linear_algebra, self.repulsion, self.electrons,
-                self.multiplicity, self.orbital_overlap)
+        self.multiplicity, self.orbital_overlap)
 
         start = time.clock()
         print('\nBEGIN SCF PROCEDURE')
         electron_energy, energies_alpha, energies_beta, coefficients_alpha, coefficients_beta \
-                = self.scf_method.begin(initial_coefficients)
+        = self.scf_method.begin(initial_coefficients)
         print('TIME TAKEN: ' + str(time.clock() - start) + 's\n')
 
         print('\nALPHA ORBITAL ENERGY EIGENVALUES')
@@ -122,3 +125,44 @@ class ConstrainedUnrestricted(UnrestrictedHF):
 
     def __init__(self, nuclei_array, basis_set_array, electrons, multiplicity):
         super().__init__(nuclei_array, basis_set_array, electrons, multiplicity, ConstrainedUnrestrictedSCF)
+
+
+class BlockedHartreeFock(HartreeFock):
+
+    def __init__(self, nuclei_array, basis_set_array, electrons, multiplicity):
+        super().__init__(nuclei_array, basis_set_array, electrons, BlockedUnrestrictedSCF)
+        self.multiplicity = multiplicity
+        self.block_linear_algebra = BlockedLinearAlgebra
+
+    def begin(self):
+        initial_coefficients = self.start()
+        zeros = np.zeros((self.orbital_overlap.shape[0], self.orbital_overlap.shape[0]))
+
+        self.orbital_overlap = np.bmat([
+                [self.orbital_overlap, zeros],
+                [zeros, self.orbital_overlap]])
+
+        self.core_hamiltonian = np.bmat([
+                [self.core_hamiltonian, zeros],
+                [zeros, self.core_hamiltonian]])
+
+        initial_coefficients = np.bmat([
+                [initial_coefficients, zeros],
+                [zeros, initial_coefficients]])
+
+        self.repulsion = IntegralTransformations.create_spin_basis_integrals(self.repulsion)
+        self.block_linear_algebra = self.block_linear_algebra(self.orbital_overlap)
+
+        self.scf_method = self.scf_method(self.core_hamiltonian, self.block_linear_algebra, self.repulsion,
+        self.electrons, self.multiplicity, self.orbital_overlap)
+
+        start = time.clock()
+        print('\nBEGIN SCF PROCEDURE')
+        electron_energy, orbital_energies, orbital_coefficients = self.scf_method.begin(initial_coefficients)
+        print('TIME TAKEN: ' + str(time.clock() - start) + 's\n')
+
+        print('\nORBITAL ENERGY EIGENVALUES')
+        print(orbital_energies)
+        print('\nORBITAL COEFFICIENTS')
+        print(orbital_coefficients, end='\n\n\n')
+        return electron_energy, orbital_energies, orbital_coefficients, self.repulsion
