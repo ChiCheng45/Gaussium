@@ -47,6 +47,7 @@ class BlockedDensityMatrixUnrestricted(Matrix):
 
     def __init__(self):
         super().__init__()
+        self.half_matrix_size = 0
         self.electrons_alph = 0
         self.electrons_beta = 0
         self.orbital_coefficient = np.matrix([])
@@ -56,6 +57,7 @@ class BlockedDensityMatrixUnrestricted(Matrix):
         self.electrons_beta = electrons_beta
         self.orbital_coefficient = orbital_coefficient
         self.matrix_size = orbital_coefficient.shape[0]
+        self.half_matrix_size = self.matrix_size // 2
         density_matrix = self.create_matrix(self.density_alph) + self.create_matrix(self.density_beta)
         return density_matrix
 
@@ -69,6 +71,6 @@ class BlockedDensityMatrixUnrestricted(Matrix):
     def density_beta(self, i, j):
         p_ij = 0
         c = self.orbital_coefficient
-        for a in range(self.electrons_alph + 1, self.electrons_alph + self.electrons_beta + 1):
+        for a in range(self.half_matrix_size, self.half_matrix_size + self.electrons_beta):
             p_ij += c.item(i, a) * c.item(j, a)
         return p_ij

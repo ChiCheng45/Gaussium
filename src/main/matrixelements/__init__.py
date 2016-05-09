@@ -12,4 +12,4 @@ from src.main.matrixelements.fock_matrix import BlockedFockMatrixUnrestricted
 from src.main.matrixelements.kinetic_energy_matrix import KineticEnergyMatrix
 from src.main.matrixelements.nuclear_attraction_matrix import NuclearAttractionMatrix
 from src.main.matrixelements.orbital_overlap_matrix import OrbitalOverlapMatrix
-from src.main.matrixelements.integral_transformation import IntegralTransformations
+from src.main.matrixelements.integral_transformations import IntegralTransformations

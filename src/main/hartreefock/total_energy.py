@@ -8,7 +8,7 @@ class TotalEnergy:
         total_energy = 0
         for i in range(length):
             for j in range(length):
-                total_energy += (1/2) * density_matrix.item(i, j) * (self.core_hamiltonian.item(i, j)
+                total_energy += 1/2 * density_matrix.item(i, j) * (self.core_hamiltonian.item(i, j)
                 + fock_matrix.item(i, j))
         return total_energy
 
