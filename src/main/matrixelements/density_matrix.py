@@ -43,10 +43,10 @@ class DensityMatrixUnrestricted(Matrix):
         return p_ij
 
 
-class BlockedDensityMatrixUnrestricted(Matrix):
+class BlockedDensityMatrixUnrestricted:
 
     def __init__(self):
-        super().__init__()
+        self.matrix_size = 0
         self.half_matrix_size = 0
         self.electrons_alph = 0
         self.electrons_beta = 0
@@ -58,19 +58,17 @@ class BlockedDensityMatrixUnrestricted(Matrix):
         self.orbital_coefficient = orbital_coefficient
         self.matrix_size = orbital_coefficient.shape[0]
         self.half_matrix_size = self.matrix_size // 2
-        density_matrix = self.create_matrix(self.density_alph) + self.create_matrix(self.density_beta)
+        density_matrix = self.density_alph() + self.density_beta()
         return density_matrix
 
-    def density_alph(self, i, j):
-        p_ij = 0
-        c = self.orbital_coefficient
-        for a in range(self.electrons_alph):
-            p_ij += c.item(i, a) * c.item(j, a)
-        return p_ij
+    def density_alph(self):
+        density_matrix = np.zeros((self.matrix_size, self.matrix_size))
+        for i in range(self.electrons_alph):
+            density_matrix += self.orbital_coefficient[:, i] * self.orbital_coefficient[:, i].T
+        return density_matrix
 
-    def density_beta(self, i, j):
-        p_ij = 0
-        c = self.orbital_coefficient
-        for a in range(self.half_matrix_size, self.half_matrix_size + self.electrons_beta):
-            p_ij += c.item(i, a) * c.item(j, a)
-        return p_ij
+    def density_beta(self):
+        density_matrix = np.zeros((self.matrix_size, self.matrix_size))
+        for i in range(self.half_matrix_size, self.half_matrix_size + self.electrons_beta):
+            density_matrix += self.orbital_coefficient[:, i] * self.orbital_coefficient[:, i].T
+        return density_matrix
