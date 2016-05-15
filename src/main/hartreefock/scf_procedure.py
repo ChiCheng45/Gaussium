@@ -82,8 +82,8 @@ class PopleNesbetBerthier(SelfConsistentField):
             print('SCF ENERGY: ' + str(self.total_energy) + ' a.u.')
 
             if abs(self.delta_energy) > 1e-12:
-                fock_matrix_alph = self.diis_alph.fock_matrix(fock_matrix_alph, density_matrix_alph)
-                fock_matrix_beta = self.diis_beta.fock_matrix(fock_matrix_beta, density_matrix_beta)
+                # fock_matrix_alph = self.diis_alph.fock_matrix(fock_matrix_alph, density_matrix_alph)
+                # fock_matrix_beta = self.diis_beta.fock_matrix(fock_matrix_beta, density_matrix_beta)
                 energies_alph, coefficients_alph = self.linear_algebra.diagonalize(fock_matrix_alph)
                 energies_beta, coefficients_beta = self.linear_algebra.diagonalize(fock_matrix_beta)
 
