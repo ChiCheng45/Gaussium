@@ -50,7 +50,7 @@ class TestSymmetryChangeCoordinatesHe(TestCase):
         self.nuclei_array_he = [helium_1]
 
     def test_move_nuclei_to_the_origin(self):
-        helium = Symmetry.standard_orientation(self.nuclei_array_he)[0]
+        helium = Symmetry.point_group(self.nuclei_array_he)[0]
         testing.assert_array_equal(helium.coordinates, (0.0, 0.0, 0.0))
 
 
@@ -63,7 +63,7 @@ class TestSymmetryChangeCoordinatesN2O(TestCase):
         self.nuclei_array_n2o = [nitrogen_1, nitrogen_2, oxygen_1]
 
     def test_change_coordinates_changes_to_standard_orientation(self):
-        carbon = Symmetry.standard_orientation(self.nuclei_array_n2o)[0]
+        carbon = Symmetry.point_group(self.nuclei_array_n2o)[0]
         testing.assert_array_almost_equal(carbon.coordinates, (0.0, 0.0, 0.0), 6)
 
 
@@ -78,5 +78,5 @@ class TestSymmetryChangeCoordinatesCH4(TestCase):
         self.nuclei_array_ch4 = [carbon_1, hydrogen_1, hydrogen_2, hydrogen_3, hydrogen_4]
 
     def test_change_coordinates_changes_to_standard_orientation(self):
-       carbon = Symmetry.standard_orientation(self.nuclei_array_ch4)[0]
+       carbon = Symmetry.point_group(self.nuclei_array_ch4)[0]
        testing.assert_array_almost_equal(carbon.coordinates, (0.0, 0.0, 0.0), 6)
