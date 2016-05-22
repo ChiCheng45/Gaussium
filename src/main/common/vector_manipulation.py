@@ -1,59 +1,5 @@
 from math import sqrt
-
-
-"""
-NAME
-    Vector
-
-SYNOPSIS
-    def minus(tuple1, tuple2)
-    def distance(tuple1, tuple2)
-    def gaussian(x, tuple1, y, tuple2)
-    def tuple tuple1, tuple2
-    double x, y
-
-DESCRIPTION
-    The Vector class acts as a container for all the basic tuple manipulation. As the class stores the coordinates as
-    tuples we use these methods to carry out all the important mathematics. For some reason, python is far faster having
-    these methods then to use the scipy or numpy equivalents.
-    All the below methods are obvious except gaussian method which is a method which returns the coordinates of a
-    gaussian function from the product of two other gaussian function with coordinates tuple1, tuple2 and with exponents
-    x and y.
-
-ARGUMENTS
-    def add(tuple1, tuple2), minus(tuple1, tuple2)
-    tuple1  input: a tuple of length three
-    tuple2  input: a tuple of length three
-
-    def dot_product(tuple1, tuple2)
-    tuple1  input: a tuple of length three
-    tuple2  input: a tuple of length three
-    ans     output: the tuple of the dot product of tuple1 and tuple2
-
-    def distance(tuple1, tuple2)
-    tuple1  input: a tuple of length three
-    tuple2  input: a tuple of length three
-    r_ab    output: the euclidean distance between the vectors of tuple1 and tuple2
-
-    def multiply(x, tuple1)
-    tuple1  input: a tuple of length three
-    x       input: x any number
-
-    def gaussian(x, tuple1, y, tuple2)
-    tuple1  input: the coordinates of gaussian1
-    tuple2  input: the coordinates of gaussian2
-    x       input: the exponent of gaussian1
-    y       input: the exponent of gaussian2
-    ans     output: a tuple of the coordinates of a gaussian made from the product of gaussian1 and gaussian2
-
-SEE ALSO
-    nuclear_attraction_integral.py
-    orbital_overlap_integral.py
-    cook_integral.py
-
-DIAGNOSTICS
-    None
-"""
+from math import cos, sin, acos, atan2
 
 
 class Vector:
@@ -73,3 +19,69 @@ class Vector:
         j = (a * r_1[1] + b * r_2[1]) / (a + b)
         k = (a * r_1[2] + b * r_2[2]) / (a + b)
         return i, j, k
+
+    @staticmethod
+    def normalize(r):
+        magnitude = sqrt(r[0]**2 + r[1]**2 + r[2]**2)
+        r_x = r[0] / magnitude
+        r_y = r[1] / magnitude
+        r_z = r[2] / magnitude
+        return r_x, r_y, r_z
+
+    @staticmethod
+    def quaternion_multi(q_1, q_2):
+        a_1, b_1, c_1, d_1 = q_1
+        a_2, b_2, c_2, d_2 = q_2
+
+        a = (a_1 * a_2) - (b_1 * b_2) - (c_1 * c_2) - (d_1 * d_2)
+        b = (a_1 * b_2) + (b_1 * a_2) + (c_1 * d_2) - (d_1 * c_2)
+        c = (a_1 * c_2) - (b_1 * d_2) + (c_1 * a_2) + (d_1 * b_2)
+        d = (a_1 * d_2) + (b_1 * c_2) - (c_1 * b_2) + (d_1 * a_2)
+
+        return a, b, c, d
+
+    @staticmethod
+    def quaternion_conj(q):
+        a, b, c, d = q
+        return a, -b, -c, -d
+
+    @classmethod
+    def create_quaternion(cls, vector, theta):
+        vector = cls.normalize(vector)
+        a = cos(theta / 2)
+        b = vector[0] * sin(theta / 2)
+        c = vector[1] * sin(theta / 2)
+        d = vector[2] * sin(theta / 2)
+        return a, b, c, d
+
+    @classmethod
+    def quaternion_rotation(cls, quaternion, point):
+        point = (0.0, point[0], point[1], point[2])
+        point = cls.quaternion_multi(cls.quaternion_multi(quaternion, point), cls.quaternion_conj(quaternion))
+        return point[1], point[2], point[3]
+
+    @staticmethod
+    def rho(r):
+        return sqrt(r[0] ** 2 + r[1] ** 2 + r[2] ** 2)
+
+    @staticmethod
+    def theta(r):
+        rho = sqrt(r[0] ** 2 + r[1] ** 2 + r[2] ** 2)
+        if rho <= 1e-3:
+            return 0.0
+        else:
+            return acos(r[2] / rho)
+
+    @staticmethod
+    def phi(r):
+        if abs(r[1]) <= 1e-3:
+            return 0.0
+        else:
+            return atan2(r[1], r[0])
+
+    @classmethod
+    def cartesian_to_spherical(cls, r):
+        rho = cls.rho(r)
+        theta = cls.theta(r)
+        phi = cls.phi(r)
+        return rho, theta, phi

@@ -1,46 +1,6 @@
 from math import exp, gamma
 from numba import jit
 
-"""
-BoysFunction used in the nuclear-attraction and electron repulsion integrals.
-
-DESCRIPTION
-    This class contains the static method, boys_function that approximates the boys function using a summation. The
-    methods follows the equation from the Handbook of Computational Chemistry pg 280. The equation is split into two
-    parts for either a small or large x. I have included the @jit decoration for this function as its easy to get a
-    small speed up here without doing much. Simply install and use anaconda as your python interpreter.
-
-ARGUMENTS
-
-    class BoysFunction:
-
-        Methods
-        -------
-        @staticmethod
-        @jit
-        def function(v, x):
-
-            Parameters
-            ----------
-            v : int
-                has different definition depending on which integral is used in
-            x : float
-                has different definition depending on which integral is used in
-
-            Returns
-            -------
-            ans : float
-                the answer
-
-SEE ALSO
-    nuclear_attraction_integral.py
-    cook_integral.py
-    http://numba.pydata.org/
-
-DIAGNOSTICS
-    Potential for the while loops to go on to infinity if the series diverges.
-"""
-
 
 class BoysFunction:
 
