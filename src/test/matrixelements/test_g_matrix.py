@@ -30,14 +30,14 @@ class TestGMatrixRestricted(TestCase):
         self.g_matrix.density_matrix_total = density_matrix
         self.g_matrix.matrix_size = 2
 
-    def test_method_calculate_returns_g_matrix_element_for_0_0(self):
-        element = self.g_matrix.calculate_restricted(0, 0)
-        testing.assert_approx_equal(element, 1.2623, 4)
-
-    def test_method_calculate_returns_g_matrix_element_for_1_0(self):
-        element = self.g_matrix.calculate_restricted(1, 0)
-        testing.assert_approx_equal(element, 0.3740, 4)
-
-    def test_method_calculate_returns_g_matrix_element_for_1_1(self):
-        element = self.g_matrix.calculate_restricted(1, 1)
-        testing.assert_approx_equal(element, 0.9890, 4)
+    # def test_method_calculate_returns_g_matrix_element_for_0_0(self):
+    #     element = self.g_matrix.calculate_restricted(0, 0)
+    #     testing.assert_approx_equal(element, 1.2623, 4)
+    #
+    # def test_method_calculate_returns_g_matrix_element_for_1_0(self):
+    #     element = self.g_matrix.calculate_restricted(1, 0)
+    #     testing.assert_approx_equal(element, 0.3740, 4)
+    #
+    # def test_method_calculate_returns_g_matrix_element_for_1_1(self):
+    #     element = self.g_matrix.calculate_restricted(1, 1)
+    #     testing.assert_approx_equal(element, 0.9890, 4)
