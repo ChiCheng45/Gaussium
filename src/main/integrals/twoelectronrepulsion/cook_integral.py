@@ -1,5 +1,6 @@
-from src.main.common import Binomial, Vector
+from src.main.common import Vector
 from src.main.integrals import BoysFunction
+from src.main.integrals import Binomial
 from src.main.objects import PrimitiveBasisFactory
 from math import factorial as fac
 from math import sqrt, pi, exp

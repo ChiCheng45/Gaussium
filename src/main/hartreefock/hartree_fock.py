@@ -150,7 +150,7 @@ class BlockedHartreeFock(HartreeFock):
                 [initial_coefficients, zeros],
                 [zeros, initial_coefficients]])
 
-        self.repulsion = IntegralTransformations.create_spin_basis_integrals(self.repulsion)
+        self.repulsion = IntegralTransformations.spin_basis_set(self.repulsion)
         self.block_linear_algebra = self.block_linear_algebra(self.orbital_overlap)
 
         self.scf_method = self.scf_method(self.core_hamiltonian, self.block_linear_algebra, self.repulsion,

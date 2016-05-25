@@ -1,4 +1,4 @@
-from src.main.common import Binomial
+from src.main.integrals import Binomial
 from src.main.integrals import BoysFunction
 from src.main.common import Vector
 from math import factorial as fac

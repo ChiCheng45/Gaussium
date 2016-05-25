@@ -1,6 +1,6 @@
 from unittest import TestCase
 from numpy import testing
-from src.main.common import Binomial
+from src.main.integrals import Binomial
 
 
 class TestBinomialCoefficientsFunction(TestCase):

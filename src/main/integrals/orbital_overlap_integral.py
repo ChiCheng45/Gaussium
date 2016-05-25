@@ -1,5 +1,5 @@
-from src.main.common import Binomial
-from src.main.common.vector_manipulation import Vector
+from src.main.common import Vector
+from src.main.integrals import Binomial
 from math import exp, pi
 from scipy.misc import factorial2
 

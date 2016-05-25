@@ -4,7 +4,7 @@ import numpy as np
 class IntegralTransformations:
 
     @staticmethod
-    def calculate(repulsion, coefficients):
+    def molecular_orbitals(repulsion, coefficients):
         matrix_size = coefficients.shape[0]
         for r in range(matrix_size):
             for s in range(matrix_size):
@@ -15,7 +15,7 @@ class IntegralTransformations:
         return repulsion
 
     @staticmethod
-    def create_spin_basis_integrals(repulsion):
+    def spin_basis_set(repulsion):
         half_matrix_size = repulsion.shape[0]
         matrix_size = half_matrix_size * 2
         zero_matrix = np.zeros((half_matrix_size, half_matrix_size))

@@ -29,12 +29,12 @@ class MoleculeFactory:
     def standard_orientation(cls, nuclei_array):
 
         nuclei_array = cls.center_molecule(nuclei_array)
-        cls.brute_force_rotation(nuclei_array)
+        cls.brute_force_rotation_symmetry(nuclei_array)
 
         return nuclei_array
 
     @classmethod
-    def brute_force_rotation(cls, nuclei_array):
+    def brute_force_rotation_symmetry(cls, nuclei_array):
         nuclei_array_copy = copy.deepcopy(nuclei_array)
         axis_of_rotations_vertices = []
         axis_of_rotations_edges = []
@@ -50,8 +50,6 @@ class MoleculeFactory:
             coordinates = Vector.normalize(nuclei.coordinates)
             axis_of_rotations_vertices.append(coordinates)
 
-        axis_of_rotations_vertices = cls.remove_duplicate(axis_of_rotations_vertices)
-
         # brute force all vectors in-between points
         for axis_i in axis_of_rotations_vertices:
             for axis_j in axis_of_rotations_vertices:
@@ -61,21 +59,55 @@ class MoleculeFactory:
                     if Vector.rho(axis_edge) > 1e-3:
                         axis_of_rotations_edges.append(axis_edge)
 
-        axis_of_rotations_edges = cls.remove_duplicate(axis_of_rotations_edges)
+        # brute force vectors in the middle of faces with odd numbers of edges
+        for axis_i in axis_of_rotations_vertices:
+            for axis_j in axis_of_rotations_vertices:
+                for axis_k in axis_of_rotations_vertices:
+                    if Vector.distance(axis_i, axis_j) > 1e-3 and Vector.distance(axis_i, axis_k) > 1e-3 \
+                    and Vector.distance(axis_j, axis_k) > 1e-3:
+                        axis_face = Vector.add(Vector.add(axis_i, axis_j), axis_k)
+                        axis_face = Vector.normalize(axis_face)
+                        if Vector.rho(axis_face) > 1e-3:
+                            axis_of_rotations_faces.append(axis_face)
 
-        for axis in axis_of_rotations_vertices:
-            print(axis)
+        axis_of_rotations_total = axis_of_rotations_vertices + axis_of_rotations_edges + axis_of_rotations_faces
+        axis_of_rotations_total = cls.remove_duplicate(axis_of_rotations_total)
 
-        for axis in axis_of_rotations_edges:
-            print(axis)
-
-        quaternion_matrix = np.empty((5, len(axis_of_rotations_edges)), dtype=tuple)
+        quaternion_matrix = np.empty((5, len(axis_of_rotations_total)), dtype=tuple)
         for i in range(5):
             angle = 2 * pi / (i + 2)
-            for j, axis in enumerate(axis_of_rotations_edges):
+            for j, axis in enumerate(axis_of_rotations_total):
                 quaternion_matrix[i, j] = Vector.create_quaternion(axis, angle)
 
-        return axis_of_rotations_edges
+        n_fold_symmetry = np.zeros(len(axis_of_rotations_total))
+        for i in range(5):
+            for j in range(len(axis_of_rotations_total)):
+                if cls.check_quaternion(nuclei_array_copy, quaternion_matrix[i, j]):
+                    n_fold_symmetry[j] = i + 2
+
+        print(n_fold_symmetry)
+        print()
+
+        return axis_of_rotations_total
+
+    @staticmethod
+    def check_quaternion(nuclei_array, quaternion):
+        nuclei_array_copy = copy.deepcopy(nuclei_array)
+
+        for nuclei in nuclei_array_copy:
+            nuclei.coordinates = Vector.quaternion_rotation(quaternion, nuclei.coordinates)
+
+        for i, nuclei_i in enumerate(nuclei_array):
+            for j, nuclei_j in enumerate(nuclei_array_copy):
+
+                if Vector.distance(nuclei_i.coordinates, nuclei_j.coordinates) < 1e-3 \
+                and (nuclei_i.charge - nuclei_j.charge) == 0.0:
+                    break
+
+                if j == len(nuclei_array_copy) - 1:
+                    return False
+
+        return True
 
     @classmethod
     def remove_duplicate(cls, axis_of_rotations_i):
