@@ -1,3 +1,4 @@
+from src.main.objects.rotation_symmetry import RotationSymmetry
 from src.main.objects.molecule import Molecule
 from src.main.objects.molecule_factory import MoleculeFactory
 from src.main.objects.nuclei import Nuclei

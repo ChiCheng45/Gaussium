@@ -1,4 +1,3 @@
-from math import isclose
 
 
 class Symmetry:

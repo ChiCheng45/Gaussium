@@ -38,6 +38,31 @@ class TestSymmetryChangeCoordinatesCH4(TestCase):
         hydrogen_4 = MagicMock(element='HYDROGEN', charge=1, mass=1, coordinates=(-1.34448, -0.56571, 0.23432))
         self.nuclei_array_ch4 = [carbon_1, hydrogen_1, hydrogen_2, hydrogen_3, hydrogen_4]
 
-    def test_change_coordinates_changes_to_standard_orientation(self):
-        carbon_1 = MoleculeFactory.point_group(self.nuclei_array_ch4).nuclei_array[0]
+    def test_center_molecule_changes_to_carbon_1_at_origin(self):
+        carbon_1 = MoleculeFactory.center_molecule(self.nuclei_array_ch4)[0]
         testing.assert_array_almost_equal(carbon_1.coordinates, (0.0, 0.0, 0.0), 6)
+
+    def test_center_molecule_changes_to_hydrogen_1(self):
+        hydrogen_1 = MoleculeFactory.center_molecule(self.nuclei_array_ch4)[1]
+        testing.assert_array_almost_equal(hydrogen_1.coordinates, (1.07, 0.0, 0.0), 6)
+
+    def test_center_molecule_changes_to_hydrogen_2(self):
+        hydrogen_2 = MoleculeFactory.center_molecule(self.nuclei_array_ch4)[2]
+        testing.assert_array_almost_equal(hydrogen_2.coordinates, (-0.35666, 0.28768, -0.96692), 6)
+
+    def test_center_molecule_changes_to_hydrogen_3(self):
+        hydrogen_3 = MoleculeFactory.center_molecule(self.nuclei_array_ch4)[3]
+        testing.assert_array_almost_equal(hydrogen_3.coordinates, (-0.35667, 0.69353, 0.73260), 6)
+
+    def test_center_molecule_changes_to_hydrogen_4(self):
+        hydrogen_4 = MoleculeFactory.center_molecule(self.nuclei_array_ch4)[4]
+        testing.assert_array_almost_equal(hydrogen_4.coordinates, (-0.35667, -0.98122, 0.23432), 6)
+
+    def test_brute_force_rotation_symmetry_returns_list_of_seven_axis_of_rotations(self):
+        nuclei_array = MoleculeFactory.center_molecule(self.nuclei_array_ch4)
+        symmetry_list = MoleculeFactory.brute_force_rotation_symmetry(nuclei_array)
+        self.assertEqual(len(symmetry_list), 7)
+
+    def test_point_group_returns_t_d_symmetry_for_methane(self):
+        symmetry = MoleculeFactory.point_group(self.nuclei_array_ch4).symmetry
+        testing.assert_equal(symmetry, 'T_{d}')
