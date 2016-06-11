@@ -15,6 +15,19 @@ class TestSymmetryChangeCoordinatesHe(TestCase):
         testing.assert_array_equal(helium.coordinates, (0.0, 0.0, 0.0))
 
 
+class TestSymmetryChangeCoordinatesHOF(TestCase):
+
+    def setUp(self):
+        oxygen_1 = MagicMock(element='OXYGEN', charge=8, mass=16, coordinates=(-1.4186923158, 0.1090030362, 0.0000000000))
+        hydrogen_1 = MagicMock(element='HYDROGEN', charge=1, mass=1, coordinates=(-1.7313653816, -1.6895740638, 0.0000000000))
+        fluorine_1 = MagicMock(element='FLUORINE', charge=9, mass=19, coordinates=(1.2899273141, 0.0031592817, 0.0000000000))
+        self.nuclei_array_hof = [oxygen_1, hydrogen_1, fluorine_1]
+
+    def test_point_group_returns_c_s_symmetry_for_hypofluorous_acid(self):
+        symmetry = MoleculeFactory.point_group(self.nuclei_array_hof).symmetry
+        testing.assert_equal(symmetry, 'C_{s}')
+
+
 class TestSymmetryChangeCoordinatesN2O(TestCase):
 
     def setUp(self):
@@ -23,9 +36,21 @@ class TestSymmetryChangeCoordinatesN2O(TestCase):
         oxygen_1 = MagicMock(element='OXYGEN', charge=8, mass=16, coordinates=(0.0000000000, 0.0000000000, 2.1042369647))
         self.nuclei_array_n2o = [nitrogen_1, nitrogen_2, oxygen_1]
 
-    # def test_change_coordinates_changes_to_standard_orientation(self):
-    #     nitrogen_1 = MoleculeFactory.point_group(self.nuclei_array_n2o).nuclei_array[0]
-    #     testing.assert_array_almost_equal(nitrogen_1.coordinates, (0.0, 0.0, 0.0), 6)
+    def test_point_group_returns_c_inf_v_symmetry_for_nitrous_oxide(self):
+        symmetry = MoleculeFactory.point_group(self.nuclei_array_n2o).symmetry
+        testing.assert_equal(symmetry, 'C_{inf v}')
+
+
+class TestSymmetryChangeCoordinatesN2(TestCase):
+
+    def setUp(self):
+        nitrogen_1 = MagicMock(element='NITROGEN', charge=7, mass=14, coordinates=(0.0000000000, 0.0000000000, 1.0399092291))
+        nitrogen_2 = MagicMock(element='NITROGEN', charge=7, mass=14, coordinates=(0.0000000000, 0.0000000000, -1.0399092291))
+        self.nuclei_array_n2 = [nitrogen_1, nitrogen_2]
+
+    def test_point_group_returns_d_inf_h_symmetry_for_nitrogen(self):
+        symmetry = MoleculeFactory.point_group(self.nuclei_array_n2).symmetry
+        testing.assert_equal(symmetry, 'D_{inf h}')
 
 
 class TestSymmetryChangeCoordinatesCH4(TestCase):
@@ -62,6 +87,16 @@ class TestSymmetryChangeCoordinatesCH4(TestCase):
         nuclei_array = MoleculeFactory.center_molecule(self.nuclei_array_ch4)
         symmetry_list = MoleculeFactory.brute_force_rotation_symmetry(nuclei_array)
         self.assertEqual(len(symmetry_list), 7)
+
+    def test_brute_force_rotation_symmetry_returns_list_of_four_axis_of_rotations_with_n_three(self):
+        nuclei_array = MoleculeFactory.center_molecule(self.nuclei_array_ch4)
+        symmetry_list = MoleculeFactory.brute_force_rotation_symmetry(nuclei_array)
+        self.assertEqual([symmetry.fold for symmetry in symmetry_list].count(3), 4)
+
+    def test_brute_force_rotation_symmetry_returns_list_of_four_axis_of_rotations_with_n_two(self):
+        nuclei_array = MoleculeFactory.center_molecule(self.nuclei_array_ch4)
+        symmetry_list = MoleculeFactory.brute_force_rotation_symmetry(nuclei_array)
+        self.assertEqual([symmetry.fold for symmetry in symmetry_list].count(2), 3)
 
     def test_point_group_returns_t_d_symmetry_for_methane(self):
         symmetry = MoleculeFactory.point_group(self.nuclei_array_ch4).symmetry

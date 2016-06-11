@@ -1,4 +1,5 @@
-from src.main.objects import PrimitiveBasis, Basis
+from src.main.objects import PrimitiveBasis
+from src.main.objects import Basis
 
 
 class PrimitiveBasisFactory:

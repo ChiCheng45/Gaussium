@@ -1,5 +1,5 @@
-import numpy as np
 from src.main.common import Vector
+import numpy as np
 
 
 class CoulombsLawMatrix:

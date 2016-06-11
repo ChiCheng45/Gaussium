@@ -1,7 +1,7 @@
 from src.main.common import Vector
 from src.main.integrals import Binomial
-from math import exp, pi
 from scipy.misc import factorial2
+from math import exp, pi
 
 
 class OrbitalOverlap:

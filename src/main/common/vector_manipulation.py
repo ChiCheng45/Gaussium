@@ -1,5 +1,4 @@
-from math import sqrt
-from math import cos, sin, acos, atan2
+from math import sqrt, cos, sin, acos, atan2
 
 
 class Vector:

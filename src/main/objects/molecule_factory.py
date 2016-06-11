@@ -1,10 +1,10 @@
-import copy
-import heapq
-import numpy as np
-from math import pi
-from src.main.common.vector_manipulation import Vector
-from src.main.objects.rotation_symmetry import RotationSymmetry
+from src.main.common import Vector
+from src.main.objects import RotationSymmetry
+from src.main.objects import ReflectionSymmetry
 from src.main.objects import Molecule
+from math import pi
+import numpy as np
+import copy, heapq
 
 
 class MoleculeFactory:
@@ -21,13 +21,12 @@ class MoleculeFactory:
             nuclei_array[0].coordinates = (0.0, 0.0, 0.0)
             return nuclei_array
 
-        elif number_of_nuclei == 2:
-            return nuclei_array
-
         else:
+
             # put the molecule in the standard orientation
             nuclei_array, rotation_symmetry = cls.standard_orientation(nuclei_array)
 
+            # run molecule through the flow diagram
             if cls.check_linear(nuclei_array):
 
                 if cls.check_inversion_symmetry(nuclei_array):
@@ -50,6 +49,7 @@ class MoleculeFactory:
 
             elif len(rotation_symmetry) >= 1:
                 pass
+
             else:
                 pass
 
@@ -106,6 +106,7 @@ class MoleculeFactory:
     def standard_orientation(cls, nuclei_array):
         nuclei_array = cls.center_molecule(nuclei_array)
         rotation_symmetry_list = cls.brute_force_rotation_symmetry(nuclei_array)
+        reflection_symmetry_list = cls.brute_force_reflection_symmetry(nuclei_array)
 
         if len(rotation_symmetry_list) > 1:
             first_highest_symmetry = None
@@ -164,6 +165,70 @@ class MoleculeFactory:
             return nuclei_array, rotation_symmetry_list
 
     @classmethod
+    def brute_force_reflection_symmetry(cls, nuclei_array):
+        nuclei_array_copy = copy.deepcopy(nuclei_array)
+        vectors = []
+        vectors_cross = []
+        householder_matrices = []
+
+        # remove the nuclei from the center
+        for i, nuclei in enumerate(nuclei_array_copy):
+            if Vector.rho(nuclei.coordinates) <= 1e-3:
+                nuclei_array_copy.pop(i)
+
+        for nuclei in nuclei_array_copy:
+            coordinates = Vector.normalize(nuclei.coordinates)
+            vectors.append(coordinates)
+
+        # brute force vector perpendicular to two vertices
+        for axis_i in vectors:
+            for axis_j in vectors:
+                if Vector.distance(axis_i, axis_j) > 1e-3:
+                    axis_cross = Vector.cross(axis_i, axis_j)
+                    if Vector.rho(axis_cross) > 1e-3:
+                        axis_cross = Vector.normalize(axis_cross)
+                        vectors_cross.append(axis_cross)
+
+        vectors_cross = cls.remove_duplicate(vectors_cross)
+
+        # create householder matrices
+        for planes in vectors_cross:
+            planes = np.matrix(planes)
+            householder_matrices.append(np.identity(3) - 2 * planes.T * planes)
+
+        # check each reflection
+        reflection_planes = []
+        for i, matrix in enumerate(householder_matrices):
+            if cls.check_reflection(nuclei_array_copy, matrix):
+                planes_of_reflection = ReflectionSymmetry(vectors_cross[i])
+                reflection_planes.append(planes_of_reflection)
+
+        print(reflection_planes)
+
+        return []
+
+    @staticmethod
+    def check_reflection(nuclei_array, householder_matrix):
+        nuclei_array_copy = copy.deepcopy(nuclei_array)
+
+        for nuclei in nuclei_array_copy:
+            coordinates = householder_matrix * np.matrix(nuclei.coordinates).T
+            coordinates = coordinates.T.tolist()[0]
+            nuclei.coordinates = tuple(coordinates)
+
+        for i, nuclei_i in enumerate(nuclei_array):
+            for j, nuclei_j in enumerate(nuclei_array_copy):
+
+                if Vector.distance(nuclei_i.coordinates, nuclei_j.coordinates) < 1e-3 \
+                and (nuclei_i.charge - nuclei_j.charge) == 0.0:
+                    break
+
+                if j == len(nuclei_array_copy) - 1:
+                    return False
+
+        return True
+
+    @classmethod
     def brute_force_rotation_symmetry(cls, nuclei_array):
         nuclei_array_copy = copy.deepcopy(nuclei_array)
         axis_of_rotations_vertices = []
@@ -171,7 +236,7 @@ class MoleculeFactory:
         axis_of_rotations_faces = []
         axis_of_rotations_cross = []
 
-        # remove the molecule from the center
+        # remove the nuclei from the center
         for i, nuclei in enumerate(nuclei_array_copy):
             if Vector.rho(nuclei.coordinates) <= 1e-3:
                 nuclei_array_copy.pop(i)

@@ -1,7 +1,7 @@
 from src.main.common import Vector
 from src.main.integrals import BoysFunction
-from math import sqrt, pi, exp
 from src.main.objects import PrimitiveBasis
+from math import sqrt, pi, exp
 
 
 class HeadGordonPople:

@@ -1,5 +1,3 @@
-
-
 class Symmetry:
 
     @classmethod

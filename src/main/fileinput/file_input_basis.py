@@ -1,7 +1,5 @@
 from src.main.objects import PrimitiveBasisFactory
-import os
-import sys
-import re
+import os, sys, re
 
 
 class FileInputBasis:
