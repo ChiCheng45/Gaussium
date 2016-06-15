@@ -25,14 +25,13 @@ class TestSymmetryHOF(TestCase):
 
     def test_brute_force_rotation_symmetry_returns_list_of_zero_axis_of_rotations(self):
         nuclei_array = MoleculeFactory.center_molecule(self.nuclei_array_hof)
-        symmetry_list = MoleculeFactory.brute_force_rotation_symmetry(nuclei_array)
-        self.assertEqual(len(symmetry_list), 0)
+        nuclei_array, rotation, reflection = MoleculeFactory.standard_orientation(nuclei_array)
+        self.assertEqual(len(rotation), 0)
 
     def test_brute_force_reflection_symmetry_returns_list_of_one_reflection_planes(self):
         nuclei_array = MoleculeFactory.center_molecule(self.nuclei_array_hof)
-        rotation_symmetry_list = MoleculeFactory.brute_force_rotation_symmetry(nuclei_array)
-        reflection_symmetry_list = MoleculeFactory.brute_force_reflection_symmetry(nuclei_array, rotation_symmetry_list)
-        self.assertEqual(len(reflection_symmetry_list), 1)
+        nuclei_array, rotation, reflection = MoleculeFactory.standard_orientation(nuclei_array)
+        self.assertEqual(len(reflection), 1)
 
     def test_check_linear_returns_false(self):
         nuclei_array = MoleculeFactory.center_molecule(self.nuclei_array_hof)
@@ -41,15 +40,14 @@ class TestSymmetryHOF(TestCase):
 
     def test_check_high_symmetry_returns_false(self):
         nuclei_array = MoleculeFactory.center_molecule(self.nuclei_array_hof)
-        symmetry_list = MoleculeFactory.brute_force_rotation_symmetry(nuclei_array)
-        boolean = MoleculeFactory.check_high_symmetry(symmetry_list)
+        nuclei_array, rotation, reflection = MoleculeFactory.standard_orientation(nuclei_array)
+        boolean = MoleculeFactory.check_high_symmetry(rotation)
         self.assertEqual(boolean, False)
 
     def test_check_sigma_h_returns_true(self):
         nuclei_array = MoleculeFactory.center_molecule(self.nuclei_array_hof)
-        rotation_symmetry_list = MoleculeFactory.brute_force_rotation_symmetry(nuclei_array)
-        reflection_symmetry_list = MoleculeFactory.brute_force_reflection_symmetry(nuclei_array, rotation_symmetry_list)
-        boolean = MoleculeFactory.check_sigma_h(reflection_symmetry_list)
+        nuclei_array, rotation, reflection = MoleculeFactory.standard_orientation(nuclei_array)
+        boolean = MoleculeFactory.check_sigma_h(reflection)
         self.assertEqual(boolean, True)
 
     def test_point_group_returns_c_s_symmetry_for_hypofluorous_acid(self):
@@ -67,19 +65,18 @@ class TestSymmetryH2O(TestCase):
 
     def test_brute_force_rotation_symmetry_returns_list_of_one_axis_of_rotations(self):
         nuclei_array = MoleculeFactory.center_molecule(self.nuclei_array_h2o)
-        symmetry_list = MoleculeFactory.brute_force_rotation_symmetry(nuclei_array)
-        self.assertEqual(len(symmetry_list), 1)
+        nuclei_array, rotation, reflection = MoleculeFactory.standard_orientation(nuclei_array)
+        self.assertEqual(len(rotation), 1)
 
     def test_brute_force_rotation_symmetry_returns_axis_of_rotation_of_two_fold_symmetry(self):
         nuclei_array = MoleculeFactory.center_molecule(self.nuclei_array_h2o)
-        symmetry_list = MoleculeFactory.brute_force_rotation_symmetry(nuclei_array)
-        self.assertEqual(symmetry_list[0].fold, 2)
+        nuclei_array, rotation, reflection = MoleculeFactory.standard_orientation(nuclei_array)
+        self.assertEqual(rotation[0].fold, 2)
 
     def test_brute_force_reflection_symmetry_returns_list_of_two_reflection_planes(self):
         nuclei_array = MoleculeFactory.center_molecule(self.nuclei_array_h2o)
-        rotation_symmetry_list = MoleculeFactory.brute_force_rotation_symmetry(nuclei_array)
-        reflection_symmetry_list = MoleculeFactory.brute_force_reflection_symmetry(nuclei_array, rotation_symmetry_list)
-        self.assertEqual(len(reflection_symmetry_list), 2)
+        nuclei_array, rotation, reflection = MoleculeFactory.standard_orientation(nuclei_array)
+        self.assertEqual(len(reflection), 2)
 
     def test_check_linear_returns_false(self):
         nuclei_array = MoleculeFactory.center_molecule(self.nuclei_array_h2o)
@@ -88,9 +85,37 @@ class TestSymmetryH2O(TestCase):
 
     def test_check_high_symmetry_returns_false(self):
         nuclei_array = MoleculeFactory.center_molecule(self.nuclei_array_h2o)
-        symmetry_list = MoleculeFactory.brute_force_rotation_symmetry(nuclei_array)
-        boolean = MoleculeFactory.check_high_symmetry(symmetry_list)
+        nuclei_array, rotation, reflection = MoleculeFactory.standard_orientation(nuclei_array)
+        boolean = MoleculeFactory.check_high_symmetry(rotation)
         self.assertEqual(boolean, False)
+
+    def test_get_n_fold_returns_two(self):
+        nuclei_array = MoleculeFactory.center_molecule(self.nuclei_array_h2o)
+        nuclei_array, rotation, reflection = MoleculeFactory.standard_orientation(nuclei_array)
+        n = MoleculeFactory.get_n_fold(rotation)
+        self.assertEqual(n, 2)
+
+    def test_check_n_two_fold_rotation_perpendicular_to_n_fold_returns_false(self):
+        nuclei_array = MoleculeFactory.center_molecule(self.nuclei_array_h2o)
+        nuclei_array, rotation, reflection = MoleculeFactory.standard_orientation(nuclei_array)
+        boolean = MoleculeFactory.check_n_two_fold_perpendicular_to_n_fold(rotation)
+        self.assertEqual(boolean, False)
+
+    def test_check_sigma_h_returns_false(self):
+        nuclei_array = MoleculeFactory.center_molecule(self.nuclei_array_h2o)
+        nuclei_array, rotation, reflection = MoleculeFactory.standard_orientation(nuclei_array)
+        boolean = MoleculeFactory.check_sigma_h(reflection)
+        self.assertEqual(boolean, False)
+
+    def test_check_n_sigma_v_returns_true(self):
+        nuclei_array = MoleculeFactory.center_molecule(self.nuclei_array_h2o)
+        nuclei_array, rotation, reflection = MoleculeFactory.standard_orientation(nuclei_array)
+        boolean = MoleculeFactory.check_n_sigma_v(2, reflection)
+        self.assertEqual(boolean, True)
+
+    def test_point_group_returns_c_2v_symmetry_for_water(self):
+        symmetry = MoleculeFactory.point_group(self.nuclei_array_h2o).symmetry_group
+        testing.assert_equal(symmetry, 'C_{2v}')
 
 
 class TestSymmetryN2O(TestCase):
@@ -170,24 +195,23 @@ class TestSymmetryCH4(TestCase):
 
     def test_brute_force_rotation_symmetry_returns_list_of_seven_axis_of_rotations(self):
         nuclei_array = MoleculeFactory.center_molecule(self.nuclei_array_ch4)
-        symmetry_list = MoleculeFactory.brute_force_rotation_symmetry(nuclei_array)
-        self.assertEqual(len(symmetry_list), 7)
+        nuclei_array, rotation, reflection = MoleculeFactory.standard_orientation(nuclei_array)
+        self.assertEqual(len(rotation), 7)
 
     def test_brute_force_rotation_symmetry_returns_list_of_four_axis_of_rotations_with_n_three(self):
         nuclei_array = MoleculeFactory.center_molecule(self.nuclei_array_ch4)
-        symmetry_list = MoleculeFactory.brute_force_rotation_symmetry(nuclei_array)
-        self.assertEqual([symmetry.fold for symmetry in symmetry_list].count(3), 4)
+        nuclei_array, rotation, reflection = MoleculeFactory.standard_orientation(nuclei_array)
+        self.assertEqual([symmetry.fold for symmetry in rotation].count(3), 4)
 
     def test_brute_force_rotation_symmetry_returns_list_of_four_axis_of_rotations_with_n_two(self):
         nuclei_array = MoleculeFactory.center_molecule(self.nuclei_array_ch4)
-        symmetry_list = MoleculeFactory.brute_force_rotation_symmetry(nuclei_array)
-        self.assertEqual([symmetry.fold for symmetry in symmetry_list].count(2), 3)
+        nuclei_array, rotation, reflection = MoleculeFactory.standard_orientation(nuclei_array)
+        self.assertEqual([symmetry.fold for symmetry in rotation].count(2), 3)
 
     def test_brute_force_reflection_symmetry_returns_a_list_of_six_reflection_planes(self):
         nuclei_array = MoleculeFactory.center_molecule(self.nuclei_array_ch4)
-        rotation_symmetry_list = MoleculeFactory.brute_force_rotation_symmetry(nuclei_array)
-        reflection_symmetry_list = MoleculeFactory.brute_force_reflection_symmetry(nuclei_array, rotation_symmetry_list)
-        self.assertEqual(len(reflection_symmetry_list), 6)
+        nuclei_array, rotation, reflection = MoleculeFactory.standard_orientation(nuclei_array)
+        self.assertEqual(len(reflection), 6)
 
     def test_check_linear_returns_false(self):
         nuclei_array = MoleculeFactory.center_molecule(self.nuclei_array_ch4)
@@ -196,8 +220,8 @@ class TestSymmetryCH4(TestCase):
 
     def test_check_high_symmetry_returns_true(self):
         nuclei_array = MoleculeFactory.center_molecule(self.nuclei_array_ch4)
-        symmetry_list = MoleculeFactory.brute_force_rotation_symmetry(nuclei_array)
-        boolean = MoleculeFactory.check_high_symmetry(symmetry_list)
+        nuclei_array, rotation, reflection = MoleculeFactory.standard_orientation(nuclei_array)
+        boolean = MoleculeFactory.check_high_symmetry(rotation)
         self.assertEqual(boolean, True)
 
     def test_check_inversion_symmetry_returns_false(self):

@@ -29,8 +29,7 @@ class Symmetry:
                 return False
             else:
                 return True
-        else:
-            return True
+        return True
 
     @staticmethod
     def even_odd(num):
