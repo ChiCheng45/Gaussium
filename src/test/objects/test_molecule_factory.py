@@ -4,7 +4,7 @@ from numpy import testing
 from src.main.objects import MoleculeFactory
 
 
-class TestSymmetryChangeCoordinatesHe(TestCase):
+class TestSymmetryHe(TestCase):
 
     def setUp(self):
         helium_1 = MagicMock(element='HELIUM', charge=2, mass=4, coordinates=(-0.98781, 0.41551, 0.00000))
@@ -116,6 +116,36 @@ class TestSymmetryH2O(TestCase):
     def test_point_group_returns_c_2v_symmetry_for_water(self):
         symmetry = MoleculeFactory.point_group(self.nuclei_array_h2o).symmetry_group
         testing.assert_equal(symmetry, 'C_{2v}')
+
+
+class TestSymmetryNH3(TestCase):
+    pass
+
+
+class TestSymmetryC2H4(TestCase):
+
+    def setUp(self):
+        carbon_1 = MagicMock(element='CARBON', charge=6, mass=12, coordinates=(0.0000000000, 1.2594652672, 0.0000000000))
+        carbon_2 = MagicMock(element='CARBON', charge=6, mass=12, coordinates=(0.0000000000, -1.2594652672, 0.0000000000))
+        hydrogen_1 = MagicMock(element='HYDROGEN', charge=1, mass=1, coordinates=(1.7400646600, 2.3216269636, 0.0000000000))
+        hydrogen_2 = MagicMock(element='HYDROGEN', charge=1, mass=1, coordinates=(-1.7400646600, 2.3216269636, 0.0000000000))
+        hydrogen_3 = MagicMock(element='HYDROGEN', charge=1, mass=1, coordinates=(1.7400646600, -2.3216269636, 0.0000000000))
+        hydrogen_4 = MagicMock(element='HYDROGEN', charge=1, mass=1, coordinates=(-1.7400646600, -2.3216269636, 0.0000000000))
+        self.nuclei_array_c2h4 = [carbon_1, carbon_2, hydrogen_1, hydrogen_2, hydrogen_3, hydrogen_4]
+
+    def test_brute_force_rotation_symmetry_returns_list_of_three_axis_of_rotations(self):
+        nuclei_array = MoleculeFactory.center_molecule(self.nuclei_array_c2h4)
+        nuclei_array, rotation, reflection = MoleculeFactory.standard_orientation(nuclei_array)
+        self.assertEqual(len(rotation), 3)
+
+    def test_brute_force_reflection_symmetry_returns_list_of_three_reflection_planes(self):
+        nuclei_array = MoleculeFactory.center_molecule(self.nuclei_array_c2h4)
+        nuclei_array, rotation, reflection = MoleculeFactory.standard_orientation(nuclei_array)
+        self.assertEqual(len(reflection), 3)
+
+    def test_point_group_returns_d_2_h_symmetry_for_nitrous_oxide(self):
+        symmetry = MoleculeFactory.point_group(self.nuclei_array_c2h4).symmetry_group
+        testing.assert_equal(symmetry, 'D_{2h}')
 
 
 class TestSymmetryN2O(TestCase):

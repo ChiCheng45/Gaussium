@@ -108,7 +108,7 @@ class MoleculeFactory:
     def check_sigma_h(reflection_symmetry):
 
         for reflection in reflection_symmetry:
-            if Vector.theta(reflection.vector) <= 1e-3:
+            if Vector.theta(reflection.vector) % pi <= 1e-3:
                 return True
 
         return False
@@ -336,7 +336,6 @@ class MoleculeFactory:
                         n_fold_symmetry_i[j] = i + 2
 
             # create the rotation symmetry object and return them if the symmetry if > 1-fold
-
             for i, symmetry in enumerate(n_fold_symmetry_i):
                 if symmetry != 1:
                     rotation_symmetry = RotationSymmetry(n_fold_symmetry_i[i], axis_of_rotations_i[i])
