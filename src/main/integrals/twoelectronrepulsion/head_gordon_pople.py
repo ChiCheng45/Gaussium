@@ -18,16 +18,14 @@ class HeadGordonPople:
         l_2 = g2.integral_exponents
         l_3 = g3.integral_exponents
         l_4 = g4.integral_exponents
-        if sum(l_1) >= sum(l_2):
-            if sum(l_3) >= sum(l_4):
-                return self.hgp_begin_horizontal(g1, g2, g3, g4)
-            else:
-                return self.hgp_begin_horizontal(g1, g2, g4, g3)
+        if sum(l_1) >= sum(l_2) and sum(l_3) >= sum(l_4):
+            return self.hgp_begin_horizontal(g1, g2, g3, g4)
+        elif sum(l_1) >= sum(l_2):
+            return self.hgp_begin_horizontal(g1, g2, g4, g3)
+        elif sum(l_3) >= sum(l_4):
+            return self.hgp_begin_horizontal(g2, g1, g3, g4)
         else:
-            if sum(l_3) >= sum(l_4):
-                return self.hgp_begin_horizontal(g2, g1, g3, g4)
-            else:
-                return self.hgp_begin_horizontal(g2, g1, g4, g3)
+            return self.hgp_begin_horizontal(g2, g1, g4, g3)
 
     def hgp_begin_horizontal(self, g1, g2, g3, g4):
         l_2 = g2.integral_exponents
