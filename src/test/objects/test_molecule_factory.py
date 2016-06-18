@@ -101,7 +101,7 @@ class TestSymmetryH2O(TestCase):
         nuclei_array = center_molecule(self.nuclei_array_h2o)
         rotation, reflection = brute_force_symmetry(nuclei_array)
         nuclei_array, rotation, reflection = standard_orientation(nuclei_array, rotation, reflection)
-        n = get_n_fold(rotation)
+        n = return_principal_axis(rotation).fold
         self.assertEqual(n, 2)
 
     def test_check_n_two_fold_rotation_perpendicular_to_n_fold_returns_false(self):
@@ -350,5 +350,6 @@ class TestSymmetryC8H8(TestCase):
         self.assertEqual(boolean, True)
 
     def test_point_group_returns_i_h_symmetry_for_cubane(self):
+        print('Oh')
         symmetry = point_group(self.nuclei_array_c8h8).symmetry_group
         testing.assert_equal(symmetry, 'O_{h}')

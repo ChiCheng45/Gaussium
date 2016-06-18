@@ -41,89 +41,28 @@ def point_group(nuclei_array):
         else:
             return Molecule(nuclei_array, rotation, reflection, 'C_{1}')
 
-    n = str(get_n_fold(rotation))
+    n = return_principal_axis(rotation).fold
     if check_n_two_fold_perpendicular_to_n_fold(rotation):  # Dihedral
         if check_sigma_h(reflection):
-            return Molecule(nuclei_array, rotation, reflection, 'D_{' + n + 'h}')
+            return Molecule(nuclei_array, rotation, reflection, 'D_{' + str(n) + 'h}')
         elif check_n_sigma_v(n, reflection):
-            return Molecule(nuclei_array, rotation, reflection, 'D_{' + n + 'v}')
+            return Molecule(nuclei_array, rotation, reflection, 'D_{' + str(n) + 'v}')
         else:
-            return Molecule(nuclei_array, rotation, reflection, 'D_{' + n + '}')
+            return Molecule(nuclei_array, rotation, reflection, 'D_{' + str(n) + '}')
 
     else:                                                       # Cyclic
         if check_sigma_h(reflection):
-            return Molecule(nuclei_array, rotation, reflection, 'C_{' + n + 'h}')
+            return Molecule(nuclei_array, rotation, reflection, 'C_{' + str(n) + 'h}')
         elif check_n_sigma_v(n, reflection):
-            return Molecule(nuclei_array, rotation, reflection, 'C_{' + n + 'v}')
-
-
-def standard_orientation(nuclei_array, rotation_symmetry, reflection_symmetry):
-
-    if len(rotation_symmetry) > 1:
-        first_highest_symmetry = None
-        second_highest_symmetry = None
-
-        highest_n_folds = heapq.nlargest(2, [rotation.fold for rotation in rotation_symmetry])
-
-        for rotation in rotation_symmetry:
-            if rotation.fold == highest_n_folds[0]:
-                first_highest_symmetry = rotation
-                break
-
-        for rotation in rotation_symmetry:
-            if rotation.fold == highest_n_folds[1] and rotation != first_highest_symmetry:
-                second_highest_symmetry = rotation
-                break
-
-        quaternion = quaternion_rotate_from_phi(first_highest_symmetry.vector, 0.0)
-        rotate_all_vectors(quaternion, rotation_symmetry, reflection_symmetry, nuclei_array)
-
-        quaternion = quaternion_to_z_axis(second_highest_symmetry.vector)
-        rotate_all_vectors(quaternion, rotation_symmetry, reflection_symmetry, nuclei_array)
-
-    elif len(rotation_symmetry) == 1 and len(reflection_symmetry) >= 1:
-        first_highest_symmetry = rotation_symmetry[0]
-        reflection_d = None
-        sigma_d = False
-
-        quaternion = quaternion_to_z_axis(first_highest_symmetry.vector)
-        rotate_all_vectors(quaternion, rotation_symmetry, reflection_symmetry, nuclei_array)
-
-        for reflection in reflection_symmetry:
-            if Vector.phi(reflection.vector) > 1e-3:
-                reflection_d = reflection
-                sigma_d = True
-                break
-
-        if sigma_d:
-            quaternion = quaternion_rotate_from_phi(reflection_d.vector, pi / 2)
-            rotate_all_vectors(quaternion, rotation_symmetry, reflection_symmetry, nuclei_array)
-
-    elif len(rotation_symmetry) == 0 and len(reflection_symmetry) > 1:
-        reflection_h = reflection_symmetry[0]
-        reflection_d = reflection_symmetry[1]
-
-        quaternion = quaternion_to_z_axis(reflection_h.vector)
-        rotate_all_vectors(quaternion, rotation_symmetry, reflection_symmetry, nuclei_array)
-
-        quaternion = quaternion_rotate_from_phi(reflection_d.vector, pi / 2)
-        rotate_all_vectors(quaternion, rotation_symmetry, reflection_symmetry, nuclei_array)
-
-    elif len(rotation_symmetry) == 0 and len(reflection_symmetry) == 1:
-        quaternion = quaternion_to_z_axis(reflection_symmetry[0].vector)
-        rotate_all_vectors(quaternion, rotation_symmetry, reflection_symmetry, nuclei_array)
-
-    return nuclei_array, rotation_symmetry, reflection_symmetry
+            return Molecule(nuclei_array, rotation, reflection, 'C_{' + str(n) + 'v}')
 
 
 def check_n_sigma_v(n, reflection_symmetry):
-    n = int(n)
     i = 0
     for reflection in reflection_symmetry:
         coordinates = Vector.cartesian_to_spherical(reflection.vector)
         if coordinates[1] - pi / 2 <= 1e-3:
             i += 1
-
     if n == i:
         return True
     else:
@@ -131,7 +70,7 @@ def check_n_sigma_v(n, reflection_symmetry):
 
 
 def check_n_two_fold_perpendicular_to_n_fold(rotation_symmetry):
-    principal_axis = get_principal_axis(rotation_symmetry)
+    principal_axis = return_principal_axis(rotation_symmetry)
 
     axis_of_rotation = []
     for rotation in rotation_symmetry:
@@ -154,23 +93,14 @@ def check_n_two_fold_perpendicular_to_n_fold(rotation_symmetry):
     return False
 
 
-def get_principal_axis(rotation_symmetry):
-    for rotation in rotation_symmetry:
-        if Vector.theta(rotation.vector) % pi <= 1e-3:
-            return rotation
-
-
 def check_sigma_h(reflection_symmetry):
-
     for reflection in reflection_symmetry:
         if Vector.theta(reflection.vector) % pi <= 1e-3:
             return True
-
     return False
 
 
 def check_icosahedron(rotation_symmetry):
-
     if any([vector.fold == 5 for vector in rotation_symmetry]):
         return True
     else:
@@ -190,14 +120,19 @@ def check_high_symmetry(rotation_symmetry):
 
 def check_inversion_symmetry(nuclei_array):
 
-    for i, nuclei in enumerate(nuclei_array):
-        coordinate_inverse = (- nuclei.coordinates[0], - nuclei.coordinates[1], - nuclei.coordinates[2])
-        nuclei_array.pop(i)
+    nuclei_array_inverse = []
+    for nuclei in nuclei_array:
+        coordinate_inverse = (-nuclei.coordinates[0], -nuclei.coordinates[1], -nuclei.coordinates[2])
+        nuclei_inverse = Nuclei(nuclei.element, nuclei.charge, nuclei.mass, coordinate_inverse)
+        nuclei_array_inverse.append(nuclei_inverse)
 
-        if not any(nucleus.element == nuclei.element for nucleus in nuclei_array) \
-        or not any(nucleus.coordinates == coordinate_inverse for nucleus in nuclei_array):
-            return False
-
+    for nuclei in nuclei_array:
+        for i, nuclei_inverse in enumerate(nuclei_array_inverse):
+            if Vector.distance(nuclei.coordinates, nuclei_inverse.coordinates) <= 1e-3 \
+            and (nuclei.charge - nuclei_inverse.charge) == 0.0:
+                break
+            if i == len(nuclei_array_inverse) - 1:
+                return False
     return True
 
 
@@ -216,9 +151,79 @@ def check_linear(nuclei_array):
         return False
 
 
-def get_n_fold(rotation_symmetry):
-    principal_axis = get_principal_axis(rotation_symmetry)
-    return principal_axis.fold
+def return_principal_axis(rotation_symmetry):
+    for rotation in rotation_symmetry:
+        if Vector.theta(rotation.vector) % pi <= 1e-3:
+            return rotation
+
+
+def standard_orientation(nuclei_array, rotation_symmetry, reflection_symmetry):
+
+    def rotate_all_vectors(quaternion_i, rotation_symmetry_list_i, reflection_symmetry_list_i, nuclei_array_i):
+        for rotation_i in rotation_symmetry_list_i:
+            rotation_i.vector = Vector.quaternion_rotation(quaternion_i, rotation_i.vector)
+
+        for reflection_i in reflection_symmetry_list_i:
+            reflection_i.vector = Vector.quaternion_rotation(quaternion_i, reflection_i.vector)
+
+        for nuclei_i in nuclei_array_i:
+            nuclei_i.coordinates = Vector.quaternion_rotation(quaternion_i, nuclei_i.coordinates)
+
+    if len(rotation_symmetry) > 1:
+        first_highest_symmetry = None
+        second_highest_symmetry = None
+
+        highest_n_folds = heapq.nlargest(2, [rotation.fold for rotation in rotation_symmetry])
+
+        for rotation in rotation_symmetry:
+            if rotation.fold == highest_n_folds[0]:
+                first_highest_symmetry = rotation
+                break
+
+        for rotation in rotation_symmetry:
+            if rotation.fold == highest_n_folds[1] and rotation != first_highest_symmetry:
+                second_highest_symmetry = rotation
+                break
+
+        quaternion = quaternion_rotate_from_phi(first_highest_symmetry.vector, 0.0)
+        rotate_all_vectors(quaternion, rotation_symmetry, reflection_symmetry, nuclei_array)
+
+        quaternion = quaternion_rotate_to_z_axis(second_highest_symmetry.vector)
+        rotate_all_vectors(quaternion, rotation_symmetry, reflection_symmetry, nuclei_array)
+
+    elif len(rotation_symmetry) == 1 and len(reflection_symmetry) >= 1:
+        first_highest_symmetry = rotation_symmetry[0]
+        reflection_d = None
+        sigma_d = False
+
+        quaternion = quaternion_rotate_to_z_axis(first_highest_symmetry.vector)
+        rotate_all_vectors(quaternion, rotation_symmetry, reflection_symmetry, nuclei_array)
+
+        for reflection in reflection_symmetry:
+            if Vector.phi(reflection.vector) > 1e-3:
+                reflection_d = reflection
+                sigma_d = True
+                break
+
+        if sigma_d:
+            quaternion = quaternion_rotate_from_phi(reflection_d.vector, pi / 2)
+            rotate_all_vectors(quaternion, rotation_symmetry, reflection_symmetry, nuclei_array)
+
+    elif len(rotation_symmetry) == 0 and len(reflection_symmetry) > 1:
+        reflection_h = reflection_symmetry[0]
+        reflection_d = reflection_symmetry[1]
+
+        quaternion = quaternion_rotate_to_z_axis(reflection_h.vector)
+        rotate_all_vectors(quaternion, rotation_symmetry, reflection_symmetry, nuclei_array)
+
+        quaternion = quaternion_rotate_from_phi(reflection_d.vector, pi / 2)
+        rotate_all_vectors(quaternion, rotation_symmetry, reflection_symmetry, nuclei_array)
+
+    elif len(rotation_symmetry) == 0 and len(reflection_symmetry) == 1:
+        quaternion = quaternion_rotate_to_z_axis(reflection_symmetry[0].vector)
+        rotate_all_vectors(quaternion, rotation_symmetry, reflection_symmetry, nuclei_array)
+
+    return nuclei_array, rotation_symmetry, reflection_symmetry
 
 
 def quaternion_rotate_from_phi(symmetry_vector, angle):
@@ -228,162 +233,34 @@ def quaternion_rotate_from_phi(symmetry_vector, angle):
     return quaternion
 
 
-def quaternion_to_z_axis(symmetry_vector):
+def quaternion_rotate_to_z_axis(symmetry_vector):
     vector = (- symmetry_vector[1], symmetry_vector[0], 0.0)
     theta = - Vector.theta(symmetry_vector)
     quaternion = Vector.create_quaternion(vector, theta)
     return quaternion
 
 
-def rotate_all_vectors(quaternion, rotation_symmetry_list, reflection_symmetry_list, nuclei_array):
-    for rotation in rotation_symmetry_list:
-        rotation.vector = Vector.quaternion_rotation(quaternion, rotation.vector)
-
-    for reflection in reflection_symmetry_list:
-        reflection.vector = Vector.quaternion_rotation(quaternion, reflection.vector)
-
-    for nuclei in nuclei_array:
-        nuclei.coordinates = Vector.quaternion_rotation(quaternion, nuclei.coordinates)
-
-
 def brute_force_symmetry(nuclei_array):
     nuclei_array = remove_center_nuclei(nuclei_array)
-    corner = vertices(nuclei_array)
+    corners = vertices(nuclei_array)
     edge_center = center_two_vertices(nuclei_array)
     faces_center = center_three_vertices(nuclei_array)
-    cross_vertices_vertices = cross_products_vertices_vertices(corner)
-    cross_edge_center_vertices = cross_product_center_edge_vertices(corner)
+    cross_corners_corners = cross_products_vertices_vertices(corners)
+    cross_edge_center_corners = cross_product_center_edge_vertices(corners)
 
-    rotation_symmetry = brute_force_rotation_symmetry(nuclei_array, corner, edge_center, faces_center,
-    cross_vertices_vertices, cross_edge_center_vertices)
+    rotation_symmetry = brute_force_rotation_symmetry(nuclei_array, corners, edge_center, faces_center,
+    cross_corners_corners, cross_edge_center_corners)
     reflection_symmetry = brute_force_reflection_symmetry(nuclei_array, rotation_symmetry,
-    cross_vertices_vertices, cross_edge_center_vertices)
+    cross_corners_corners, cross_edge_center_corners)
 
     return rotation_symmetry, reflection_symmetry
 
 
-def brute_force_reflection_symmetry(nuclei_array, rotation_symmetry, cross_vertices_vertices,
-    cross_edge_center_vertices):
-
-    vector_cross = remove_duplicate(cross_vertices_vertices + cross_edge_center_vertices)
-
-    # rotate all orthogonal vectors by principal axis by twice it's n-fold
-    vectors_cross_rotated = []
-    if len(rotation_symmetry) > 0:
-
-        highest_symmetries = []
-        highest_n_fold = heapq.nlargest(1, [rotation.fold for rotation in rotation_symmetry])[0]
-        for rotation in rotation_symmetry:
-            if rotation.fold == highest_n_fold:
-                highest_symmetries.append(rotation)
-
-        for highest_symmetry in highest_symmetries:
-
-            quaternion_list = []
-            vector = highest_symmetry.vector
-            for i in range(1, highest_symmetry.fold):
-                theta = pi * i / highest_symmetry.fold
-                quaternion = Vector.create_quaternion(vector, theta)
-                quaternion_list.append(quaternion)
-
-            for quaternion in quaternion_list:
-                for orthogonal_vector_i in vector_cross:
-                    orthogonal_vector_j = Vector.quaternion_rotation(quaternion, orthogonal_vector_i)
-                    vectors_cross_rotated.append(orthogonal_vector_j)
-
-    reflection_planes = []
-    if len(vector_cross) > 0:
-
-        total_vectors_cross = cross_vertices_vertices + vectors_cross_rotated
-        vectors_reflection_plane = remove_duplicate(total_vectors_cross)
-
-        # create householder matrices
-        householder_matrices = []
-        for planes in vectors_reflection_plane:
-            planes = np.matrix(planes)
-            householder_matrices.append(np.identity(3) - 2 * planes.T * planes)
-
-        # check each reflection
-        for i, matrix in enumerate(householder_matrices):
-            if check_reflection(nuclei_array, matrix):
-                planes_of_reflection = ReflectionSymmetry(vectors_reflection_plane[i])
-                reflection_planes.append(planes_of_reflection)
-
-    return reflection_planes
-
-
-def brute_force_rotation_symmetry(nuclei_array, corner, edge_center, faces_center, cross_vertices_vertices,
-                                  cross_edge_center_vertices):
-
-    axis_of_rotations_i = remove_duplicate(corner + edge_center + faces_center + cross_vertices_vertices
-    + cross_edge_center_vertices)
-
-    axis_of_rotations_j = []
-    if len(axis_of_rotations_i) > 0:
-
-        # create quaternion for angle for pi to pi / 4 around the axis of rotation
-        quaternion_matrix = np.empty((7, len(axis_of_rotations_i)), dtype=tuple)
-        for i in range(7):
-            angle = 2 * pi / (i + 2)
-            for j, axis in enumerate(axis_of_rotations_i):
-                quaternion_matrix[i, j] = Vector.create_quaternion(axis, angle)
-
-        # test all quaternions and create a list of the highest fold symmetry for a given axis
-        n_fold_symmetry_i = [1] * len(axis_of_rotations_i)
-        for i in range(7):
-            for j in range(len(axis_of_rotations_i)):
-                if check_quaternion(nuclei_array, quaternion_matrix[i, j]):
-                    n_fold_symmetry_i[j] = i + 2
-
-        # create the rotation symmetry object and return them if the symmetry if > 1-fold
-        for i, symmetry in enumerate(n_fold_symmetry_i):
-            if symmetry != 1:
-                rotation_symmetry = RotationSymmetry(n_fold_symmetry_i[i], axis_of_rotations_i[i])
-                axis_of_rotations_j.append(rotation_symmetry)
-
-    return axis_of_rotations_j
-
-
-def check_reflection(nuclei_array, householder_matrix):
-
-    nuclei_array_copy = []
-    for nuclei in nuclei_array:
-        coordinates = householder_matrix * np.matrix(nuclei.coordinates).T
-        coordinates = tuple(coordinates.T.tolist()[0])
-        nuclei_copy = Nuclei(nuclei.element, nuclei.charge, nuclei.mass, coordinates)
-        nuclei_array_copy.append(nuclei_copy)
-
-    for i, nuclei_i in enumerate(nuclei_array):
-        for j, nuclei_j in enumerate(nuclei_array_copy):
-
-            if Vector.distance(nuclei_i.coordinates, nuclei_j.coordinates) <= 1e-3 \
-            and (nuclei_i.charge - nuclei_j.charge) == 0.0:
-                break
-
-            if j == len(nuclei_array_copy) - 1:
-                return False
-
-    return True
-
-
-def check_quaternion(nuclei_array, quaternion):
-    nuclei_array_copy = []
-    for nuclei in nuclei_array:
-        coordinates = Vector.quaternion_rotation(quaternion, nuclei.coordinates)
-        nuclei_copy = Nuclei(nuclei.element, nuclei.charge, nuclei.mass, coordinates)
-        nuclei_array_copy.append(nuclei_copy)
-
-    for i, nuclei_i in enumerate(nuclei_array):
-        for j, nuclei_j in enumerate(nuclei_array_copy):
-
-            if Vector.distance(nuclei_i.coordinates, nuclei_j.coordinates) <= 1e-3 \
-            and (nuclei_i.charge - nuclei_j.charge) == 0.0:
-                break
-
-            if j == len(nuclei_array_copy) - 1:
-                return False
-
-    return True
+def remove_center_nuclei(nuclei_array):
+    for i, nuclei in enumerate(nuclei_array):
+        if Vector.rho(nuclei.coordinates) <= 1e-3:
+            nuclei_array.pop(i)
+    return nuclei_array
 
 
 def vertices(nuclei_array):
@@ -452,26 +329,129 @@ def cross_product_center_edge_vertices(corner):
     return cross_products
 
 
+def brute_force_reflection_symmetry(nuclei_array, rotation_symmetry, cross_corners_corners,
+    cross_edge_center_corners):
+
+    def check_reflection(nuclei_array_i, householder_matrix):
+        nuclei_array_copy = []
+        for nuclei in nuclei_array_i:
+            coordinates = householder_matrix * np.matrix(nuclei.coordinates).T
+            coordinates = tuple(coordinates.T.tolist()[0])
+            nuclei_copy = Nuclei(nuclei.element, nuclei.charge, nuclei.mass, coordinates)
+            nuclei_array_copy.append(nuclei_copy)
+        for nuclei_i in nuclei_array_i:
+            for j, nuclei_j in enumerate(nuclei_array_copy):
+                if Vector.distance(nuclei_i.coordinates, nuclei_j.coordinates) <= 1e-3 \
+                and (nuclei_i.charge - nuclei_j.charge) == 0.0:
+                    break
+                if j == len(nuclei_array_copy) - 1:
+                    return False
+        return True
+
+    # rotate all orthogonal vectors by principal axis by twice it's n-fold
+    vector_cross = remove_duplicate(cross_corners_corners + cross_edge_center_corners)
+    vectors_cross_rotated = []
+    if len(rotation_symmetry) > 0:
+
+        highest_symmetries = []
+        highest_n_fold = heapq.nlargest(1, [rotation.fold for rotation in rotation_symmetry])[0]
+        for rotation in rotation_symmetry:
+            if rotation.fold == highest_n_fold:
+                highest_symmetries.append(rotation)
+
+        for highest_symmetry in highest_symmetries:
+            quaternion_list = []
+            vector = highest_symmetry.vector
+            for i in range(1, highest_symmetry.fold):
+                theta = pi * i / highest_symmetry.fold
+                quaternion = Vector.create_quaternion(vector, theta)
+                quaternion_list.append(quaternion)
+
+            for quaternion in quaternion_list:
+                for orthogonal_vector_i in vector_cross:
+                    orthogonal_vector_j = Vector.quaternion_rotation(quaternion, orthogonal_vector_i)
+                    vectors_cross_rotated.append(orthogonal_vector_j)
+
+    reflection_planes = []
+    if len(vector_cross) > 0:
+
+        total_vectors_cross = cross_corners_corners + vectors_cross_rotated
+        vectors_reflection_plane = remove_duplicate(total_vectors_cross)
+
+        # create householder matrices
+        householder_matrices = []
+        for planes in vectors_reflection_plane:
+            planes = np.matrix(planes)
+            householder_matrices.append(np.identity(3) - 2 * planes.T * planes)
+
+        # check each reflection
+        for i, matrix in enumerate(householder_matrices):
+            if check_reflection(nuclei_array, matrix):
+                planes_of_reflection = ReflectionSymmetry(vectors_reflection_plane[i])
+                reflection_planes.append(planes_of_reflection)
+
+    return reflection_planes
+
+
+def brute_force_rotation_symmetry(nuclei_array, corner, edge_center, faces_center, cross_corners_corners,
+    cross_edge_corners_vertices):
+
+    def check_quaternion(nuclei_array_i, quaternion):
+        nuclei_array_copy = []
+        for nuclei in nuclei_array_i:
+            coordinates = Vector.quaternion_rotation(quaternion, nuclei.coordinates)
+            nuclei_copy = Nuclei(nuclei.element, nuclei.charge, nuclei.mass, coordinates)
+            nuclei_array_copy.append(nuclei_copy)
+        for nuclei_i in nuclei_array_i:
+            for k, nuclei_k in enumerate(nuclei_array_copy):
+                if Vector.distance(nuclei_i.coordinates, nuclei_k.coordinates) <= 1e-3 \
+                and (nuclei_i.charge - nuclei_k.charge) == 0.0:
+                    break
+                if k == len(nuclei_array_copy) - 1:
+                    return False
+        return True
+
+    axis_of_rotations_i = remove_duplicate(corner + edge_center + faces_center + cross_corners_corners
+    + cross_edge_corners_vertices)
+    axis_of_rotations_j = []
+    if len(axis_of_rotations_i) > 0:
+
+        # create quaternion for angle for pi to pi / 4 around the axis of rotation
+        quaternion_matrix = np.empty((7, len(axis_of_rotations_i)), dtype=tuple)
+        for i in range(7):
+            angle = 2 * pi / (i + 2)
+            for j, axis in enumerate(axis_of_rotations_i):
+                quaternion_matrix[i, j] = Vector.create_quaternion(axis, angle)
+
+        # test all quaternions and create a list of the highest fold symmetry for a given axis
+        n_fold_symmetry_i = [1] * len(axis_of_rotations_i)
+        for i in range(7):
+            for j in range(len(axis_of_rotations_i)):
+                if check_quaternion(nuclei_array, quaternion_matrix[i, j]):
+                    n_fold_symmetry_i[j] = i + 2
+
+        # create the rotation symmetry object and return them if the symmetry if > 1-fold
+        for i, symmetry in enumerate(n_fold_symmetry_i):
+            if symmetry != 1:
+                rotation_symmetry = RotationSymmetry(n_fold_symmetry_i[i], axis_of_rotations_i[i])
+                axis_of_rotations_j.append(rotation_symmetry)
+
+    return axis_of_rotations_j
+
+
 def remove_duplicate(axis_of_rotations):
-    axis_of_rotations_i = []
-    for i, axis_i in enumerate(axis_of_rotations):
-        if check_array(axis_i, axis_of_rotations_i):
-            axis_of_rotations_i.append(axis_i)
-    return axis_of_rotations_i
 
+    def check_array(axis, axis_of_rotations_i):
+        for axis_i in axis_of_rotations_i:
+            if Vector.rho(Vector.cross(axis, axis_i)) <= 1e-3:
+                return False
+        return True
 
-def check_array(axis, axis_of_rotations_i):
-    for axis_i in axis_of_rotations_i:
-        if Vector.rho(Vector.cross(axis, axis_i)) <= 1e-3:
-            return False
-    return True
-
-
-def remove_center_nuclei(nuclei_array):
-    for i, nuclei in enumerate(nuclei_array):
-        if Vector.rho(nuclei.coordinates) <= 1e-3:
-            nuclei_array.pop(i)
-    return nuclei_array
+    axis_of_rotations_j = []
+    for axis_j in axis_of_rotations:
+        if check_array(axis_j, axis_of_rotations_j):
+            axis_of_rotations_j.append(axis_j)
+    return axis_of_rotations_j
 
 
 def center_molecule(nuclei_array):
