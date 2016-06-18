@@ -350,6 +350,5 @@ class TestSymmetryC8H8(TestCase):
         self.assertEqual(boolean, True)
 
     def test_point_group_returns_i_h_symmetry_for_cubane(self):
-        print('Oh')
         symmetry = point_group(self.nuclei_array_c8h8).symmetry_group
         testing.assert_equal(symmetry, 'O_{h}')
