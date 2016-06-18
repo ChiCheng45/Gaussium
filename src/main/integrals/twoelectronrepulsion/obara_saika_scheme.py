@@ -1,4 +1,5 @@
-from src.main.common import Vector
+from src.main.common import coordinate_distance
+from src.main.common import gaussian_product_coordinate
 from src.main.integrals import BoysFunction
 from src.main.objects import PrimitiveBasis
 from math import sqrt, pi, exp
@@ -30,13 +31,13 @@ class ObaraSaika:
         r_2 = g2.coordinates
         r_3 = g3.coordinates
         r_4 = g4.coordinates
-        r_5 = Vector.gaussian(a_1, r_1, a_2, r_2)
-        r_6 = Vector.gaussian(a_3, r_3, a_4, r_4)
-        self.r_7 = Vector.gaussian(a_5, r_5, a_6, r_6)
+        r_5 = gaussian_product_coordinate(a_1, r_1, a_2, r_2)
+        r_6 = gaussian_product_coordinate(a_3, r_3, a_4, r_4)
+        self.r_7 = gaussian_product_coordinate(a_5, r_5, a_6, r_6)
 
-        r_12 = Vector.distance(r_1, r_2)
-        r_34 = Vector.distance(r_3, r_4)
-        r_56 = Vector.distance(r_5, r_6)
+        r_12 = coordinate_distance(r_1, r_2)
+        r_34 = coordinate_distance(r_3, r_4)
+        r_56 = coordinate_distance(r_5, r_6)
 
         boys_x = (a_5 * a_6 * r_56**2) / (a_5 + a_6)
         boys_out1 = (2 * pi**(5/2)) / (a_5 * a_6 * sqrt(a_5 + a_6))
@@ -97,7 +98,7 @@ class ObaraSaika:
 
         r_1 = g1.coordinates
         r_2 = g2.coordinates
-        r_5 = Vector.gaussian(a_1, r_1, a_2, r_2)
+        r_5 = gaussian_product_coordinate(a_1, r_1, a_2, r_2)
 
         out1 = (r_5[r] - r_1[r]) * self.os_begin(m, g1, g2, g3, g4)
         out2 = (self.r_7[r] - r_5[r]) * self.os_begin((m+1), g1, g2, g3, g4)

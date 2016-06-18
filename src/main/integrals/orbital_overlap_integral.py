@@ -1,4 +1,6 @@
-from src.main.common import Vector
+from src.main.common import gaussian_product_coordinate
+from src.main.common import coordinate_distance
+from src.main.common import vector_minus
 from src.main.integrals import Binomial
 from scipy.misc import factorial2
 from math import exp, pi
@@ -22,11 +24,11 @@ class OrbitalOverlap:
 
         r_a = gaussian_1.coordinates
         r_b = gaussian_2.coordinates
-        r_ab = Vector.distance(r_a, r_b)
+        r_ab = coordinate_distance(r_a, r_b)
 
-        r_p = Vector.gaussian(a_1, r_a, a_2, r_b)
-        r_p_a = Vector.minus(r_p, r_a)
-        r_p_b = Vector.minus(r_p, r_b)
+        r_p = gaussian_product_coordinate(a_1, r_a, a_2, r_b)
+        r_p_a = vector_minus(r_p, r_a)
+        r_p_b = vector_minus(r_p, r_b)
 
         g = a_1 + a_2
 

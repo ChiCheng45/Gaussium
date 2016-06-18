@@ -11,12 +11,12 @@ import time
 
 
 def menu():
-    # start('HeH+.mol', 'STO-3G.gbs', 'RHF')
-    # start('HeH+.mol', '6-311+GPP.gbs', 'RHF')
+    start('HeH+.mol', 'STO-3G.gbs', 'RHF')
+    start('HeH+.mol', '6-311+GPP.gbs', 'RHF')
     start('C2H4.mol', '3-21G.gbs', 'RHF')
-    # start('O2.mol', 'STO-3G.gbs', 'GHF')
-    # start('CO.mol', 'STO-3G.gbs', 'MP2')
-    # start('CH4.mol', '3-21G.gbs', 'RHF')
+    start('O2.mol', 'STO-3G.gbs', 'GHF')
+    start('CO.mol', 'STO-3G.gbs', 'MP2')
+    start('CH4.mol', '3-21G.gbs', 'RHF')
 
 
 def start(mol, basis, method):

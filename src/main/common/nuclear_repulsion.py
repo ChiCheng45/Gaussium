@@ -1,4 +1,4 @@
-from src.main.common import Vector
+from src.main.common import coordinate_distance
 import numpy as np
 
 
@@ -13,6 +13,6 @@ def coulomb_matrix(nuclei_array):
 
 
 def coulombs_law(nuc1, nuc2):
-    r_12 = Vector.distance(nuc1.coordinates, nuc2.coordinates)
+    r_12 = coordinate_distance(nuc1.coordinates, nuc2.coordinates)
     ans = (nuc1.charge * nuc2.charge) / r_12
     return ans

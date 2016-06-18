@@ -1,4 +1,4 @@
-from src.main.common import Vector
+from src.main.common import coordinate_distance
 from src.main.integrals import BoysFunction
 from src.main.integrals import Binomial
 from src.main.objects import gaussian_product
@@ -31,9 +31,9 @@ class ElectronRepulsion:
         r_4 = g4.coordinates
         r_5 = g5.coordinates
         r_6 = g6.coordinates
-        r_12 = Vector.distance(r_1, r_2)
-        r_34 = Vector.distance(r_3, r_4)
-        r_56 = Vector.distance(r_5, r_6)
+        r_12 = coordinate_distance(r_1, r_2)
+        r_34 = coordinate_distance(r_3, r_4)
+        r_56 = coordinate_distance(r_5, r_6)
 
         l_1 = g1.integral_exponents
         l_2 = g2.integral_exponents
