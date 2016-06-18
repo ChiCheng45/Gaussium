@@ -1,6 +1,6 @@
-from src.main.fileinput import FileInputBasis
-from src.main.fileinput import FileInputNuclei
-from src.main.common import CoulombsLawMatrix
+from src.main.common import read_basis_set_file
+from src.main.common import read_mol_file
+from src.main.common import coulomb_matrix
 from src.main.hartreefock import RestrictedHF
 from src.main.hartreefock import DODSUnrestricted
 from src.main.hartreefock import ConstrainedUnrestricted
@@ -24,10 +24,10 @@ def start(mol, basis, method):
     start_time = time.clock()
     electron_energy = correlation = 0.0
 
-    nuclei_array, electrons, multiplicity = FileInputNuclei.read(mol)
-    basis_set_array = FileInputBasis.read(basis, nuclei_array)
+    nuclei_array, electrons, multiplicity = read_mol_file(mol)
+    basis_set_array = read_basis_set_file(basis, nuclei_array)
 
-    coulomb_law_matrix = CoulombsLawMatrix.create(nuclei_array)
+    coulomb_law_matrix = coulomb_matrix(nuclei_array)
     nuclear_repulsion = coulomb_law_matrix.sum() / 2
 
     print('*******************************************************************************************************')

@@ -9,16 +9,13 @@ import copy, heapq
 
 
 def point_group(nuclei_array):
+    # run molecule through the flow diagram
     nuclei_array = center_molecule(nuclei_array)
-
-    # if only one nucleus then skip symmetry checks
-    if len(nuclei_array) == 1:
+    if len(nuclei_array) == 1:                              # one nuclei
         return Molecule(nuclei_array, [], [], 'C_{1}')
 
     rotation, reflection = brute_force_symmetry(nuclei_array)
     nuclei_array, rotation, reflection = standard_orientation(nuclei_array, rotation, reflection)
-
-    # run molecule through the flow diagram
     if check_linear(nuclei_array):                          # Linear
         if check_inversion_symmetry(nuclei_array):
             return Molecule(nuclei_array, rotation, reflection, 'D_{inf h}')
@@ -159,16 +156,6 @@ def return_principal_axis(rotation_symmetry):
 
 def standard_orientation(nuclei_array, rotation_symmetry, reflection_symmetry):
 
-    def rotate_all_vectors(quaternion_i, rotation_symmetry_list_i, reflection_symmetry_list_i, nuclei_array_i):
-        for rotation_i in rotation_symmetry_list_i:
-            rotation_i.vector = Vector.quaternion_rotation(quaternion_i, rotation_i.vector)
-
-        for reflection_i in reflection_symmetry_list_i:
-            reflection_i.vector = Vector.quaternion_rotation(quaternion_i, reflection_i.vector)
-
-        for nuclei_i in nuclei_array_i:
-            nuclei_i.coordinates = Vector.quaternion_rotation(quaternion_i, nuclei_i.coordinates)
-
     if len(rotation_symmetry) > 1:
         first_highest_symmetry = None
         second_highest_symmetry = None
@@ -224,6 +211,15 @@ def standard_orientation(nuclei_array, rotation_symmetry, reflection_symmetry):
         rotate_all_vectors(quaternion, rotation_symmetry, reflection_symmetry, nuclei_array)
 
     return nuclei_array, rotation_symmetry, reflection_symmetry
+
+
+def rotate_all_vectors(quaternion_i, rotation_symmetry_list_i, reflection_symmetry_list_i, nuclei_array_i):
+    for rotation_i in rotation_symmetry_list_i:
+        rotation_i.vector = Vector.quaternion_rotation(quaternion_i, rotation_i.vector)
+    for reflection_i in reflection_symmetry_list_i:
+        reflection_i.vector = Vector.quaternion_rotation(quaternion_i, reflection_i.vector)
+    for nuclei_i in nuclei_array_i:
+        nuclei_i.coordinates = Vector.quaternion_rotation(quaternion_i, nuclei_i.coordinates)
 
 
 def quaternion_rotate_from_phi(symmetry_vector, angle):
@@ -332,22 +328,6 @@ def cross_product_center_edge_vertices(corner):
 def brute_force_reflection_symmetry(nuclei_array, rotation_symmetry, cross_corners_corners,
     cross_edge_center_corners):
 
-    def check_reflection(nuclei_array_i, householder_matrix):
-        nuclei_array_copy = []
-        for nuclei in nuclei_array_i:
-            coordinates = householder_matrix * np.matrix(nuclei.coordinates).T
-            coordinates = tuple(coordinates.T.tolist()[0])
-            nuclei_copy = Nuclei(nuclei.element, nuclei.charge, nuclei.mass, coordinates)
-            nuclei_array_copy.append(nuclei_copy)
-        for nuclei_i in nuclei_array_i:
-            for j, nuclei_j in enumerate(nuclei_array_copy):
-                if Vector.distance(nuclei_i.coordinates, nuclei_j.coordinates) <= 1e-3 \
-                and (nuclei_i.charge - nuclei_j.charge) == 0.0:
-                    break
-                if j == len(nuclei_array_copy) - 1:
-                    return False
-        return True
-
     # rotate all orthogonal vectors by principal axis by twice it's n-fold
     vector_cross = remove_duplicate(cross_corners_corners + cross_edge_center_corners)
     vectors_cross_rotated = []
@@ -393,23 +373,25 @@ def brute_force_reflection_symmetry(nuclei_array, rotation_symmetry, cross_corne
     return reflection_planes
 
 
+def check_reflection(nuclei_array_i, householder_matrix):
+    nuclei_array_copy = []
+    for nuclei in nuclei_array_i:
+        coordinates = householder_matrix * np.matrix(nuclei.coordinates).T
+        coordinates = tuple(coordinates.T.tolist()[0])
+        nuclei_copy = Nuclei(nuclei.element, nuclei.charge, nuclei.mass, coordinates)
+        nuclei_array_copy.append(nuclei_copy)
+    for nuclei_i in nuclei_array_i:
+        for j, nuclei_j in enumerate(nuclei_array_copy):
+            if Vector.distance(nuclei_i.coordinates, nuclei_j.coordinates) <= 1e-3 \
+            and (nuclei_i.charge - nuclei_j.charge) == 0.0:
+                break
+            if j == len(nuclei_array_copy) - 1:
+                return False
+    return True
+
+
 def brute_force_rotation_symmetry(nuclei_array, corner, edge_center, faces_center, cross_corners_corners,
     cross_edge_corners_vertices):
-
-    def check_quaternion(nuclei_array_i, quaternion):
-        nuclei_array_copy = []
-        for nuclei in nuclei_array_i:
-            coordinates = Vector.quaternion_rotation(quaternion, nuclei.coordinates)
-            nuclei_copy = Nuclei(nuclei.element, nuclei.charge, nuclei.mass, coordinates)
-            nuclei_array_copy.append(nuclei_copy)
-        for nuclei_i in nuclei_array_i:
-            for k, nuclei_k in enumerate(nuclei_array_copy):
-                if Vector.distance(nuclei_i.coordinates, nuclei_k.coordinates) <= 1e-3 \
-                and (nuclei_i.charge - nuclei_k.charge) == 0.0:
-                    break
-                if k == len(nuclei_array_copy) - 1:
-                    return False
-        return True
 
     axis_of_rotations_i = remove_duplicate(corner + edge_center + faces_center + cross_corners_corners
     + cross_edge_corners_vertices)
@@ -439,19 +421,35 @@ def brute_force_rotation_symmetry(nuclei_array, corner, edge_center, faces_cente
     return axis_of_rotations_j
 
 
-def remove_duplicate(axis_of_rotations):
-
-    def check_array(axis, axis_of_rotations_i):
-        for axis_i in axis_of_rotations_i:
-            if Vector.rho(Vector.cross(axis, axis_i)) <= 1e-3:
+def check_quaternion(nuclei_array_i, quaternion):
+    nuclei_array_copy = []
+    for nuclei in nuclei_array_i:
+        coordinates = Vector.quaternion_rotation(quaternion, nuclei.coordinates)
+        nuclei_copy = Nuclei(nuclei.element, nuclei.charge, nuclei.mass, coordinates)
+        nuclei_array_copy.append(nuclei_copy)
+    for nuclei_i in nuclei_array_i:
+        for k, nuclei_k in enumerate(nuclei_array_copy):
+            if Vector.distance(nuclei_i.coordinates, nuclei_k.coordinates) <= 1e-3 \
+            and (nuclei_i.charge - nuclei_k.charge) == 0.0:
+                break
+            if k == len(nuclei_array_copy) - 1:
                 return False
-        return True
+    return True
 
+
+def remove_duplicate(axis_of_rotations):
     axis_of_rotations_j = []
     for axis_j in axis_of_rotations:
         if check_array(axis_j, axis_of_rotations_j):
             axis_of_rotations_j.append(axis_j)
     return axis_of_rotations_j
+
+
+def check_array(axis, axis_of_rotations_i):
+    for axis_i in axis_of_rotations_i:
+        if Vector.rho(Vector.cross(axis, axis_i)) <= 1e-3:
+            return False
+    return True
 
 
 def center_molecule(nuclei_array):

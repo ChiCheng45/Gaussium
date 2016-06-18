@@ -1,4 +1,5 @@
-from src.main.common import Symmetry
+from src.main.common import sort_index
+from src.main.common import check_symmetry
 from src.main.integrals.twoelectronrepulsion import ElectronRepulsion
 from src.main.integrals.twoelectronrepulsion import ObaraSaika
 from src.main.integrals.twoelectronrepulsion import HeadGordonPople
@@ -14,7 +15,7 @@ class TwoElectronRepulsionElement:
         self.integral = integral
 
     def calculate(self, i, j, k, l):
-        if Symmetry.check_sym(self.basis_set_array[i], self.basis_set_array[j], self.basis_set_array[k], self.basis_set_array[l]):
+        if check_symmetry(self.basis_set_array[i], self.basis_set_array[j], self.basis_set_array[k], self.basis_set_array[l]):
             f_mn = 0
             primitive_array_i = self.basis_set_array[i].primitive_gaussian_array
             primitive_array_j = self.basis_set_array[j].primitive_gaussian_array
@@ -56,7 +57,7 @@ class TwoElectronRepulsionElement:
             for b in range(self.matrix_size):
                 for c in range(self.matrix_size):
                     for d in range(self.matrix_size):
-                        repulsion_matrix.itemset((a, b, c, d), repulsion_dictionary[Symmetry.sort(a, b, c, d)])
+                        repulsion_matrix.itemset((a, b, c, d), repulsion_dictionary[sort_index(a, b, c, d)])
 
         return repulsion_matrix
 

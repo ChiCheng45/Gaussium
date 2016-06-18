@@ -13,8 +13,7 @@ class Vector:
 
     @staticmethod
     def distance(r_1, r_2):
-        r_12 = sqrt((r_1[0] - r_2[0])**2 + (r_1[1] - r_2[1])**2 + (r_1[2] - r_2[2])**2)
-        return r_12
+        return sqrt((r_1[0] - r_2[0])**2 + (r_1[1] - r_2[1])**2 + (r_1[2] - r_2[2])**2)
 
     @staticmethod
     def cross(r_1, r_2):
