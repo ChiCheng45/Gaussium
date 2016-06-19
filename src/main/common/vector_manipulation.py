@@ -9,6 +9,14 @@ def vector_minus(r_1, r_2):
     return r_1[0] - r_2[0], r_1[1] - r_2[1], r_1[2] - r_2[2]
 
 
+def vector_multi(r, x):
+    return r[0] * x, r[1] * x, r[2] * x
+
+
+def vector_divide(r, x):
+    return r[0] / x, r[1] / x, r[2] / x
+
+
 def coordinate_distance(r_1, r_2):
     return sqrt((r_1[0] - r_2[0])**2 + (r_1[1] - r_2[1])**2 + (r_1[2] - r_2[2])**2)
 
@@ -56,7 +64,7 @@ def quaternion_conjugate(q):
 
 
 def normalize(r):
-    magnitude = sqrt(r[0]**2 + r[1]**2 + r[2]**2)
+    magnitude = rho(r)
     r_x = r[0] / magnitude
     r_y = r[1] / magnitude
     r_z = r[2] / magnitude
@@ -68,11 +76,11 @@ def cartesian_to_spherical(r):
 
 
 def rho(r):
-    return sqrt(r[0] ** 2 + r[1] ** 2 + r[2] ** 2)
+    return sqrt(r[0]**2 + r[1]**2 + r[2]**2)
 
 
 def theta(r):
-    rho_i = sqrt(r[0] ** 2 + r[1] ** 2 + r[2] ** 2)
+    rho_i = rho(r)
     if rho_i <= 1e-3:
         return 0.0
     else:

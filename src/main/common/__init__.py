@@ -1,5 +1,7 @@
 from src.main.common.vector_manipulation import vector_add
 from src.main.common.vector_manipulation import vector_minus
+from src.main.common.vector_manipulation import vector_multi
+from src.main.common.vector_manipulation import vector_divide
 from src.main.common.vector_manipulation import coordinate_distance
 from src.main.common.vector_manipulation import cross_product
 from src.main.common.vector_manipulation import create_quaternion

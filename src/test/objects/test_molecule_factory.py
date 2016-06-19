@@ -5,6 +5,7 @@ from src.main.objects import MoleculeFactory
 
 
 class TestSymmetryHe(TestCase):
+
     def setUp(self):
         helium_1 = MagicMock(element='HELIUM', charge=2, mass=4, coordinates=(-0.98781, 0.41551, 0.00000))
         self.nuclei_array_he = [helium_1]
@@ -20,6 +21,7 @@ class TestSymmetryHe(TestCase):
 
 
 class TestSymmetryHOF(TestCase):
+
     def setUp(self):
         oxygen_1 = MagicMock(element='OXYGEN', charge=8, mass=16, coordinates=(-1.4186923158, 0.1090030362, 0.0000000000))
         hydrogen_1 = MagicMock(element='HYDROGEN', charge=1, mass=1, coordinates=(-1.7313653816, -1.6895740638, 0.0000000000))
@@ -64,6 +66,7 @@ class TestSymmetryHOF(TestCase):
 
 
 class TestSymmetryH2O(TestCase):
+
     def setUp(self):
         oxygen_1 = MagicMock(element='OXYGEN', charge=8, mass=16, coordinates=(0.0000000000, 0.0000000000, -0.1363928482))
         hydrogen_1 = MagicMock(element='HYDROGEN', charge=1, mass=1, coordinates=(0.0000000000, 1.4236595095, 0.9813433754))
@@ -138,6 +141,7 @@ class TestSymmetryNH3(TestCase):
 
 
 class TestSymmetryC2H4(TestCase):
+
     def setUp(self):
         carbon_1 = MagicMock(element='CARBON', charge=6, mass=12, coordinates=(0.0000000000, 1.2594652672, 0.0000000000))
         carbon_2 = MagicMock(element='CARBON', charge=6, mass=12, coordinates=(0.0000000000, -1.2594652672, 0.0000000000))
@@ -199,6 +203,7 @@ class TestSymmetryC2H4(TestCase):
 
 
 class TestSymmetryN2O(TestCase):
+
     def setUp(self):
         nitrogen_1 = MagicMock(element='NITROGEN', charge=7, mass=14, coordinates=(0.0000000000, 0.0000000000, -2.2684205883))
         nitrogen_2 = MagicMock(element='NITROGEN', charge=7, mass=14, coordinates=(0.0000000000, 0.0000000000, -0.1349300877))
@@ -226,6 +231,7 @@ class TestSymmetryN2O(TestCase):
 
 
 class TestSymmetryN2(TestCase):
+
     def setUp(self):
         nitrogen_1 = MagicMock(element='NITROGEN', charge=7, mass=14, coordinates=(0.0000000000, 0.0000000000, 1.0399092291))
         nitrogen_2 = MagicMock(element='NITROGEN', charge=7, mass=14, coordinates=(0.0000000000, 0.0000000000, -1.0399092291))
@@ -252,6 +258,7 @@ class TestSymmetryN2(TestCase):
 
 
 class TestSymmetryCH4(TestCase):
+
     def setUp(self):
         carbon_1 = MagicMock(element='CARBON', charge=6, mass=12, coordinates=(-0.98781, 0.41551, 0.00000))
         hydrogen_1 = MagicMock(element='HYDROGEN', charge=1, mass=1, coordinates=(0.08219, 0.41551, 0.00000))
@@ -328,6 +335,7 @@ class TestSymmetryCH4(TestCase):
 
 
 class TestSymmetryC8H8(TestCase):
+
     def setUp(self):
         carbon_1 = MagicMock(element='CARBON', charge=6, mass=12, coordinates=(1.2455, 0.5367, -0.0729))
         carbon_2 = MagicMock(element='CARBON', charge=6, mass=12, coordinates=(0.9239, -0.9952, 0.0237))
@@ -376,6 +384,7 @@ class TestSymmetryC8H8(TestCase):
 
 
 class TestSymmetryC2H6(TestCase):
+
     def setUp(self):
         carbon_1 = MagicMock(element='CARBON', charge=6, mass=12, coordinates=(0.7516, -0.0225, -0.0209))
         carbon_2 = MagicMock(element='CARBON', charge=6, mass=12, coordinates=(-0.7516, 0.0225, 0.0209))
@@ -427,3 +436,44 @@ class TestSymmetryC2H6(TestCase):
     def test_point_group_returns_d_3d_symmetry_for_cubane(self):
         symmetry = self.molecule_factory.point_group(self.nuclei_array_c2h6).symmetry_group
         testing.assert_equal(symmetry, 'D_{3d}')
+
+
+class TestSymmetryFerrocene(TestCase):
+
+    def setUp(self):
+        carbon_1 = MagicMock(element='CARBON', charge=6, mass=12, coordinates=(0.99234, 0.72098, -1.73785))
+        carbon_2 = MagicMock(element='CARBON', charge=6, mass=12, coordinates=(0.99234, -0.72098, -1.73785))
+        carbon_3 = MagicMock(element='CARBON', charge=6, mass=12, coordinates=(-0.37904, -1.16657, -1.73785))
+        carbon_4 = MagicMock(element='CARBON', charge=6, mass=12, coordinates=(-1.22660, 0.00000, -1.73785))
+        carbon_5 = MagicMock(element='CARBON', charge=6, mass=12, coordinates=(-0.37904, 1.16657, -1.73785))
+        hydrogen_1 = MagicMock(element='HYDROGEN', charge=1, mass=1, coordinates=(1.86677, 1.35629, -1.73016))
+        hydrogen_2 = MagicMock(element='HYDROGEN', charge=1, mass=1, coordinates=(1.86677, -1.35629, -1.73016))
+        hydrogen_3 = MagicMock(element='HYDROGEN', charge=1, mass=1, coordinates=(-0.71304, -2.19452, -1.73016))
+        hydrogen_4 = MagicMock(element='HYDROGEN', charge=1, mass=1, coordinates=(-2.30745, 0.00000, -1.73016))
+        hydrogen_5 = MagicMock(element='HYDROGEN', charge=1, mass=1, coordinates=(-0.71304, 2.19452, -1.73016))
+        iron_1 = MagicMock(element='IRON', charge=26, mass=56, coordinates=(-0.00000, -0.00000, -0.00000))
+        carbon_6 = MagicMock(element='CARBON', charge=6, mass=12, coordinates=(-0.99234, -0.72098, 1.73785))
+        carbon_7 = MagicMock(element='CARBON', charge=6, mass=12, coordinates=(-0.99234, 0.72098, 1.73785))
+        carbon_8 = MagicMock(element='CARBON', charge=6, mass=12, coordinates=(0.37904, 1.16657, 1.73785))
+        carbon_9 = MagicMock(element='CARBON', charge=6, mass=12, coordinates=(1.22660, -0.00000, 1.73785))
+        carbon_10 = MagicMock(element='CARBON', charge=6, mass=12, coordinates=(0.37904, -1.16657, 1.73785))
+        hydrogen_6 = MagicMock(element='HYDROGEN', charge=1, mass=1, coordinates=(-1.86677, -1.35629, 1.73016))
+        hydrogen_7 = MagicMock(element='HYDROGEN', charge=1, mass=1, coordinates=(-1.86677, 1.35629, 1.73016))
+        hydrogen_8 = MagicMock(element='HYDROGEN', charge=1, mass=1, coordinates=(0.71304, 2.19452, 1.73016))
+        hydrogen_9 = MagicMock(element='HYDROGEN', charge=1, mass=1, coordinates=(2.30745, -0.00000, 1.73016))
+        hydrogen_10 = MagicMock(element='HYDROGEN', charge=1, mass=1, coordinates=(0.71304, -2.19452, 1.73016))
+        self.nuclei_array_ferrocene = [carbon_1, carbon_2, carbon_3, carbon_4, carbon_5, carbon_6, carbon_7, carbon_8,
+        carbon_9, carbon_10, hydrogen_1, hydrogen_2, hydrogen_3, hydrogen_4, hydrogen_5, hydrogen_6, hydrogen_7,
+        hydrogen_8, hydrogen_9, hydrogen_10, iron_1]
+        self.molecule_factory = MoleculeFactory(error=1e-1)
+
+    def test_check_linear_returns_false(self):
+        nuclei_array = self.molecule_factory.center_molecule(self.nuclei_array_ferrocene)
+        rotation, reflection = self.molecule_factory.brute_force_symmetry(nuclei_array)
+        nuclei_array, rotation, reflection = self.molecule_factory.standard_orientation(nuclei_array, rotation, reflection)
+        boolean = self.molecule_factory.check_linear(nuclei_array)
+        self.assertEqual(boolean, False)
+
+    def test_point_group_returns_d_5d_symmetry_for_cubane(self):
+        symmetry = self.molecule_factory.point_group(self.nuclei_array_ferrocene).symmetry_group
+        testing.assert_equal(symmetry, 'D_{5d}')

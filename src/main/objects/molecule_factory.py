@@ -1,5 +1,6 @@
 from src.main.common import rho, theta, phi
 from src.main.common import vector_add
+from src.main.common import vector_divide
 from src.main.common import normalize
 from src.main.common import cross_product
 from src.main.common import coordinate_distance
@@ -23,7 +24,7 @@ class MoleculeFactory:
     def point_group(self, nuclei_array):
         # run molecule through the flow diagram
         nuclei_array = self.center_molecule(nuclei_array)
-        if len(nuclei_array) == 1:                              # one nuclei
+        if len(nuclei_array) == 1:                                  # one nuclei
             return Molecule(nuclei_array, [], [], 'C_{1}')
 
         rotation, reflection = self.brute_force_symmetry(nuclei_array)
@@ -235,14 +236,14 @@ class MoleculeFactory:
         nuclei_array = self.remove_center_nuclei(nuclei_array)
         vertices = self.vertices(nuclei_array)
         edge_center = self.center_two_vertices(nuclei_array)
-        faces_center = self.center_three_vertices(nuclei_array)
-        cross_corners_corners = self.cross_products_vertices_vertices(vertices)
-        cross_edge_center_corners = self.cross_product_center_edge_vertices(vertices)
+        cross_vertices_vertices = self.cross_products_vertices_vertices(vertices)
+        cross_edge_vertices = self.cross_product_edge_vertices(vertices, edge_center)
+        cross_edge_edge = self.cross_product_edge_edge(edge_center)
 
-        rotation_symmetry = self.brute_force_rotation_symmetry(nuclei_array, vertices, edge_center, faces_center,
-        cross_corners_corners, cross_edge_center_corners)
+        rotation_symmetry = self.brute_force_rotation_symmetry(nuclei_array, vertices, edge_center,
+        cross_vertices_vertices, cross_edge_vertices, cross_edge_edge)
         reflection_symmetry = self.brute_force_reflection_symmetry(nuclei_array, rotation_symmetry,
-        cross_corners_corners, cross_edge_center_corners)
+        cross_vertices_vertices, cross_edge_vertices)
 
         return rotation_symmetry, reflection_symmetry
 
@@ -272,21 +273,6 @@ class MoleculeFactory:
                         center_of_edge.append(axis_edge)
         return center_of_edge
 
-    def center_three_vertices(self, nuclei_array):
-        center_of_faces = []
-        for nuclei_i in nuclei_array:
-            for nuclei_j in nuclei_array:
-                for nuclei_k in nuclei_array:
-                    if (nuclei_i is not nuclei_j) and (nuclei_i is not nuclei_k) and (nuclei_j is not nuclei_k):
-                        axis_i = nuclei_i.coordinates
-                        axis_j = nuclei_j.coordinates
-                        axis_k = nuclei_k.coordinates
-                        axis_face = vector_add(vector_add(axis_i, axis_j), axis_k)
-                        if rho(axis_face) > self.error:
-                            axis_face = normalize(axis_face)
-                            center_of_faces.append(axis_face)
-        return center_of_faces
-
     def cross_products_vertices_vertices(self, vertices):
         vertices = self.remove_duplicate(vertices)
         cross_products = []
@@ -299,25 +285,35 @@ class MoleculeFactory:
                         cross_products.append(axis_cross)
         return cross_products
 
-    def cross_product_center_edge_vertices(self, vertices):
+    def cross_product_edge_vertices(self, vertices, center_of_edge):
         vertices = self.remove_duplicate(vertices)
+        center_of_edge = self.remove_duplicate(center_of_edge)
         cross_products = []
         for axis_i in vertices:
-            for axis_j in vertices:
-                for axis_k in vertices:
-                    if (axis_i is not axis_j) and (axis_i is not axis_k) and (axis_j is not axis_k):
-                        axis_l = vector_add(axis_i, axis_j)
-                        axis_cross = cross_product(axis_l, axis_k)
-                        if rho(axis_cross) > self.error:
-                            axis_cross = normalize(axis_cross)
-                            cross_products.append(axis_cross)
+            for axis_j in center_of_edge:
+                    axis_cross = cross_product(axis_i, axis_j)
+                    if rho(axis_cross) > self.error:
+                        axis_cross = normalize(axis_cross)
+                        cross_products.append(axis_cross)
         return cross_products
 
-    def brute_force_reflection_symmetry(self, nuclei_array, rotation_symmetry, cross_corners_corners,
-        cross_edge_center_corners):
+    def cross_product_edge_edge(self, center_of_edge):
+        center_of_edge = self.remove_duplicate(center_of_edge)
+        cross_products = []
+        for axis_i in center_of_edge:
+            for axis_j in center_of_edge:
+                if axis_i is not axis_j:
+                    axis_cross = cross_product(axis_i, axis_j)
+                    if rho(axis_cross) > self.error:
+                        axis_cross = normalize(axis_cross)
+                        cross_products.append(axis_cross)
+        return cross_products
+
+    def brute_force_reflection_symmetry(self, nuclei_array, rotation_symmetry, cross_vertices_vertices,
+        cross_edge_vertices):
 
         # rotate all orthogonal vectors by principal axis by twice it's n-fold
-        vector_cross = self.remove_duplicate(cross_corners_corners + cross_edge_center_corners)
+        vector_cross = self.remove_duplicate(cross_vertices_vertices + cross_edge_vertices)
         vectors_cross_rotated = []
         if len(rotation_symmetry) > 0:
 
@@ -343,7 +339,7 @@ class MoleculeFactory:
         reflection_planes = []
         if len(vector_cross) > 0:
 
-            total_vectors_cross = cross_corners_corners + vectors_cross_rotated
+            total_vectors_cross = cross_vertices_vertices + vectors_cross_rotated
             vectors_reflection_plane = self.remove_duplicate(total_vectors_cross)
 
             # create householder matrices
@@ -376,11 +372,11 @@ class MoleculeFactory:
                     return False
         return True
 
-    def brute_force_rotation_symmetry(self, nuclei_array, corner, edge_center, faces_center, cross_corners_corners,
-        cross_edge_corners_vertices):
+    def brute_force_rotation_symmetry(self, nuclei_array, corner, edge_center, cross_vertices_vertices,
+        cross_edge_vertices, cross_edge_edge):
 
-        axis_of_rotations_i = self.remove_duplicate(corner + edge_center + faces_center + cross_corners_corners
-        + cross_edge_corners_vertices)
+        axis_of_rotations_i = self.remove_duplicate(corner + edge_center + cross_vertices_vertices
+        + cross_edge_vertices + cross_edge_edge)
         axis_of_rotations_j = []
         if len(axis_of_rotations_i) > 0:
 
