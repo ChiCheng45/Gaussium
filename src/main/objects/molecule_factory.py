@@ -1,6 +1,5 @@
 from src.main.common import rho, theta, phi
 from src.main.common import vector_add
-from src.main.common import vector_divide
 from src.main.common import normalize
 from src.main.common import cross_product
 from src.main.common import coordinate_distance
@@ -18,7 +17,7 @@ import copy, heapq
 
 class MoleculeFactory:
 
-    def __init__(self, error=1e-3):
+    def __init__(self, error=1e-2):
         self.error = error
 
     def point_group(self, nuclei_array):
@@ -228,14 +227,16 @@ class MoleculeFactory:
 
     def quaternion_rotate_to_z_axis(self, symmetry_vector):
         vector = (-symmetry_vector[1], symmetry_vector[0], 0.0)
+        if rho(vector) <= self.error:
+            vector = (1.0, 0.0, 0.0)
         theta_i = - theta(symmetry_vector)
         quaternion = create_quaternion(vector, theta_i)
         return quaternion
 
     def brute_force_symmetry(self, nuclei_array):
         nuclei_array = self.remove_center_nuclei(nuclei_array)
-        vertices = self.vertices(nuclei_array)
-        edge_center = self.center_two_vertices(nuclei_array)
+        vertices = self.remove_duplicate(self.vertices(nuclei_array))
+        edge_center = self.remove_duplicate(self.center_two_vertices(nuclei_array))
         cross_vertices_vertices = self.cross_products_vertices_vertices(vertices)
         cross_edge_vertices = self.cross_product_edge_vertices(vertices, edge_center)
         cross_edge_edge = self.cross_product_edge_edge(edge_center)
@@ -274,7 +275,6 @@ class MoleculeFactory:
         return center_of_edge
 
     def cross_products_vertices_vertices(self, vertices):
-        vertices = self.remove_duplicate(vertices)
         cross_products = []
         for axis_i in vertices:
             for axis_j in vertices:
@@ -286,8 +286,6 @@ class MoleculeFactory:
         return cross_products
 
     def cross_product_edge_vertices(self, vertices, center_of_edge):
-        vertices = self.remove_duplicate(vertices)
-        center_of_edge = self.remove_duplicate(center_of_edge)
         cross_products = []
         for axis_i in vertices:
             for axis_j in center_of_edge:
@@ -298,7 +296,6 @@ class MoleculeFactory:
         return cross_products
 
     def cross_product_edge_edge(self, center_of_edge):
-        center_of_edge = self.remove_duplicate(center_of_edge)
         cross_products = []
         for axis_i in center_of_edge:
             for axis_j in center_of_edge:

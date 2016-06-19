@@ -1,6 +1,7 @@
 from src.main.common import read_basis_set_file
 from src.main.common import read_mol_file
 from src.main.common import coulomb_matrix
+from src.main.objects import MoleculeFactory
 from src.main.hartreefock import RestrictedHF
 from src.main.hartreefock import DODSUnrestricted
 from src.main.hartreefock import ConstrainedUnrestricted
@@ -11,12 +12,13 @@ import time
 
 
 def menu():
-    start('HeH+.mol', 'STO-3G.gbs', 'RHF')
-    start('HeH+.mol', '6-311+GPP.gbs', 'RHF')
-    start('C2H4.mol', '3-21G.gbs', 'RHF')
-    start('O2.mol', 'STO-3G.gbs', 'GHF')
-    start('CO.mol', 'STO-3G.gbs', 'MP2')
-    start('CH4.mol', '3-21G.gbs', 'RHF')
+    # start('HeH+.mol', 'STO-3G.gbs', 'RHF')
+    # start('HeH+.mol', '6-311+GPP.gbs', 'RHF')
+    # start('C2H4.mol', '3-21G.gbs', 'RHF')
+    # start('O2.mol', 'STO-3G.gbs', 'GHF')
+    # start('CO.mol', 'STO-3G.gbs', 'MP2')
+    # start('CH4.mol', '3-21G.gbs', 'RHF')
+    start('H2O.mol', 'STO-3G.gbs', 'RHF')
 
 
 def start(mol, basis, method):
