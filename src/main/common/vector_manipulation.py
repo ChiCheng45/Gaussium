@@ -1,4 +1,5 @@
 from math import sqrt, cos, sin, acos, atan2
+import numpy as np
 
 
 def vector_add(r_1, r_2):
@@ -19,6 +20,13 @@ def vector_divide(r, x):
 
 def coordinate_distance(r_1, r_2):
     return sqrt((r_1[0] - r_2[0])**2 + (r_1[1] - r_2[1])**2 + (r_1[2] - r_2[2])**2)
+
+
+def dot_product(r_1, r_2):
+    i = r_1[0] * r_2[0]
+    j = r_1[1] * r_2[1]
+    k = r_1[2] * r_2[2]
+    return i + j + k
 
 
 def cross_product(r_1, r_2):
@@ -56,6 +64,17 @@ def quaternion_multi(q_1, q_2):
     d = (a_1 * d_2) + (b_1 * c_2) - (c_1 * b_2) + (d_1 * a_2)
 
     return a, b, c, d
+
+
+def create_householder_matrix(vector):
+    planes = np.matrix(vector)
+    return np.identity(3) - 2 * planes.T * planes
+
+
+def householder_matrix_reflection(coordinates, householder_matrix):
+    coordinates = householder_matrix * np.matrix(coordinates).T
+    coordinates = tuple(coordinates.T.tolist()[0])
+    return coordinates
 
 
 def quaternion_conjugate(q):

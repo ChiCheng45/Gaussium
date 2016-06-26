@@ -4,8 +4,11 @@ from src.main.common.vector_manipulation import vector_multi
 from src.main.common.vector_manipulation import vector_divide
 from src.main.common.vector_manipulation import coordinate_distance
 from src.main.common.vector_manipulation import cross_product
+from src.main.common.vector_manipulation import dot_product
 from src.main.common.vector_manipulation import create_quaternion
 from src.main.common.vector_manipulation import quaternion_rotation
+from src.main.common.vector_manipulation import create_householder_matrix
+from src.main.common.vector_manipulation import householder_matrix_reflection
 from src.main.common.vector_manipulation import normalize
 from src.main.common.vector_manipulation import cartesian_to_spherical
 from src.main.common.vector_manipulation import rho
@@ -17,3 +20,4 @@ from src.main.common.file_input import read_mol_file
 from src.main.common.nuclear_repulsion import coulomb_matrix
 from src.main.common.symmetry import check_symmetry
 from src.main.common.symmetry import sort_index
+from src.main.common.symmetry import basis_set_symmetry_matrix

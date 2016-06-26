@@ -6,6 +6,8 @@ from src.main.common import coordinate_distance
 from src.main.common import cartesian_to_spherical
 from src.main.common import create_quaternion
 from src.main.common import quaternion_rotation
+from src.main.common import create_householder_matrix
+from src.main.common import householder_matrix_reflection
 from src.main.objects import RotationSymmetry
 from src.main.objects import ReflectionSymmetry
 from src.main.objects import Molecule
@@ -211,13 +213,13 @@ class MoleculeFactory:
 
         return nuclei_array, rotation_symmetry, reflection_symmetry
 
-    def rotate_all_vectors(self, quaternion_i, rotation_symmetry_list_i, reflection_symmetry_list_i, nuclei_array_i):
-        for rotation_i in rotation_symmetry_list_i:
-            rotation_i.vector = quaternion_rotation(quaternion_i, rotation_i.vector)
-        for reflection_i in reflection_symmetry_list_i:
-            reflection_i.vector = quaternion_rotation(quaternion_i, reflection_i.vector)
-        for nuclei_i in nuclei_array_i:
-            nuclei_i.coordinates = quaternion_rotation(quaternion_i, nuclei_i.coordinates)
+    def rotate_all_vectors(self, quaternion, rotation_symmetry_list, reflection_symmetry_list, nuclei_array):
+        for rotation in rotation_symmetry_list:
+            rotation.vector = quaternion_rotation(quaternion, rotation.vector)
+        for reflection in reflection_symmetry_list:
+            reflection.vector = quaternion_rotation(quaternion, reflection.vector)
+        for nuclei in nuclei_array:
+            nuclei.coordinates = quaternion_rotation(quaternion, nuclei.coordinates)
 
     def quaternion_rotate_from_phi(self, symmetry_vector, angle):
         vector = (0.0, 0.0, 1.0)
@@ -249,10 +251,11 @@ class MoleculeFactory:
         return rotation_symmetry, reflection_symmetry
 
     def remove_center_nuclei(self, nuclei_array):
-        for i, nuclei in enumerate(nuclei_array):
+        nuclei_array_copy = copy.deepcopy(nuclei_array)
+        for i, nuclei in enumerate(nuclei_array_copy):
             if rho(nuclei.coordinates) <= self.error:
-                nuclei_array.pop(i)
-        return nuclei_array
+                nuclei_array_copy.pop(i)
+        return nuclei_array_copy
 
     def vertices(self, nuclei_array):
         corner = []
@@ -342,8 +345,8 @@ class MoleculeFactory:
             # create householder matrices
             householder_matrices = []
             for planes in vectors_reflection_plane:
-                planes = np.matrix(planes)
-                householder_matrices.append(np.identity(3) - 2 * planes.T * planes)
+                householder_matrix = create_householder_matrix(planes)
+                householder_matrices.append(householder_matrix)
 
             # check each reflection
             for i, matrix in enumerate(householder_matrices):
@@ -356,8 +359,7 @@ class MoleculeFactory:
     def check_reflection(self, nuclei_array, householder_matrix):
         nuclei_array_copy = []
         for nuclei in nuclei_array:
-            coordinates = householder_matrix * np.matrix(nuclei.coordinates).T
-            coordinates = tuple(coordinates.T.tolist()[0])
+            coordinates = householder_matrix_reflection(nuclei.coordinates, householder_matrix)
             nuclei_copy = Nuclei(nuclei.element, nuclei.charge, nuclei.mass, coordinates)
             nuclei_array_copy.append(nuclei_copy)
         for nuclei_i in nuclei_array:
