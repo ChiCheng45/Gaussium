@@ -29,7 +29,6 @@ def start(mol, basis, method):
 
     nuclei_array, electrons, multiplicity = read_mol_file(mol)
     molecule = MoleculeFactory().point_group(nuclei_array)
-
     basis_set_array = read_basis_set_file(basis, molecule.nuclei_array)
 
     symmetry_matrix = basis_set_symmetry_matrix(molecule, basis_set_array)
