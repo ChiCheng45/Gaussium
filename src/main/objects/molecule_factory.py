@@ -31,6 +31,7 @@ class MoleculeFactory:
         rotation, reflection = self.brute_force_symmetry(nuclei_array)
         nuclei_array, rotation, reflection = self.standard_orientation(nuclei_array, rotation, reflection)
         if self.check_linear(nuclei_array):                          # Linear
+            rotation = []
             if self.check_inversion_symmetry(nuclei_array):
                 return Molecule(nuclei_array, rotation, reflection, 'D_{inf h}')
             else:
