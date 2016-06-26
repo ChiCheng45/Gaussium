@@ -1,12 +1,5 @@
 from src.main.objects import RotationSymmetry
 from src.main.common import coordinate_distance
-from src.main.common import rho
-from src.main.common import vector_add
-from src.main.common import vector_minus
-from src.main.common import vector_divide
-from src.main.common import dot_product
-from src.main.common import coordinate_distance
-from src.main.common import cross_product
 import numpy as np
 import copy
 
