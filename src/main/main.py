@@ -13,13 +13,13 @@ import time
 
 
 def menu():
-    # start('HeH+.mol', 'STO-3G.gbs', 'RHF')
-    # start('HeH+.mol', '6-311+GPP.gbs', 'RHF')
-    # start('C2H4.mol', '3-21G.gbs', 'RHF')
-    # start('O2.mol', 'STO-3G.gbs', 'GHF')
-    # start('CO.mol', 'STO-3G.gbs', 'MP2')
+    # start('HeH+.mol', 'STO-3G.gbs', 'RHF')  # -2.84183608212 a.u.
+    # start('HeH+.mol', '6-311+GPP.gbs', 'RHF')  # -2.92922773384 a.u.
+    # start('C2H4.mol', '3-21G.gbs', 'RHF')  # -77.600460844 a.u. 21.433107707279746s
+    # start('O2.mol', 'STO-3G.gbs', 'UHF')  # -147.634028141 a.u.
+    # start('CO.mol', 'STO-3G.gbs', 'MP2')  # -111.354512528 a.u.
     # start('CH4.mol', '3-21G.gbs', 'RHF')
-    start('H2O.mol', 'STO-3G.gbs', 'RHF')
+    start('C2H4.mol', '3-21G.gbs', 'RHF')
 
 
 def start(mol, basis, method):
@@ -44,15 +44,15 @@ def start(mol, basis, method):
     print(coulomb_law_matrix)
 
     if method == 'RHF':
-        electron_energy = RestrictedHF(molecule.nuclei_array, basis_set_array, electrons).begin()[0]
+        electron_energy = RestrictedHF(molecule.nuclei_array, basis_set_array, electrons, symmetry_matrix).begin()[0]
     if method == 'UHF':
-        electron_energy = DODSUnrestricted(molecule.nuclei_array, basis_set_array, electrons, multiplicity).begin()[0]
+        electron_energy = DODSUnrestricted(molecule.nuclei_array, basis_set_array, electrons, multiplicity, symmetry_matrix).begin()[0]
     if method == 'CUHF':
-        electron_energy = ConstrainedUnrestricted(molecule.nuclei_array, basis_set_array, electrons, multiplicity).begin()[0]
+        electron_energy = ConstrainedUnrestricted(molecule.nuclei_array, basis_set_array, electrons, multiplicity, symmetry_matrix).begin()[0]
     if method == 'GHF':
-        electron_energy = BlockedHartreeFock(molecule.nuclei_array, basis_set_array, electrons, multiplicity).begin()[0]
+        electron_energy = BlockedHartreeFock(molecule.nuclei_array, basis_set_array, electrons, multiplicity, symmetry_matrix).begin()[0]
     if method == 'MP2':
-        electron_energy, correlation = MoellerPlesset.second_order(molecule.nuclei_array, basis_set_array, electrons)
+        electron_energy, correlation = MoellerPlesset.second_order(molecule.nuclei_array, basis_set_array, electrons, symmetry_matrix)
 
     print('NUCLEAR REPULSION ENERGY:    ' + str(nuclear_repulsion) + ' a.u.')
     print('SCF ENERGY:                  ' + str(electron_energy) + ' a.u.')

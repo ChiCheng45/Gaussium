@@ -23,21 +23,22 @@ class MoleculeFactory:
         self.error = error
 
     def point_group(self, nuclei_array):
-        # run molecule through the flow diagram
         nuclei_array = self.center_molecule(nuclei_array)
-        if len(nuclei_array) == 1:                                  # one nuclei
+
+        if len(nuclei_array) == 1:                                      # Point
             return Molecule(nuclei_array, [], [], 'C_{1}')
 
-        rotation, reflection = self.brute_force_symmetry(nuclei_array)
-        nuclei_array, rotation, reflection = self.standard_orientation(nuclei_array, rotation, reflection)
-        if self.check_linear(nuclei_array):                          # Linear
-            rotation = []
+        if self.check_linear(nuclei_array):                             # Linear
+            rotation = reflection = []
             if self.check_inversion_symmetry(nuclei_array):
                 return Molecule(nuclei_array, rotation, reflection, 'D_{inf h}')
             else:
                 return Molecule(nuclei_array, rotation, reflection, 'C_{inf v}')
 
-        if self.check_high_symmetry(rotation):                       # Polyhedral
+        rotation, reflection = self.brute_force_symmetry(nuclei_array)
+        self.standard_orientation(nuclei_array, rotation, reflection)
+
+        if self.check_high_symmetry(rotation):                           # Polyhedral
             if not self.check_inversion_symmetry(nuclei_array):
                 return Molecule(nuclei_array, rotation, reflection, 'T_{d}')
             elif any([vector.fold == 5 for vector in rotation]):
@@ -45,7 +46,7 @@ class MoleculeFactory:
             else:
                 return Molecule(nuclei_array, rotation, reflection, 'O_{h}')
 
-        if len(rotation) == 0:                                      # Nonaxial
+        if len(rotation) == 0:                                          # Nonaxial
             if self.check_sigma_h(reflection):
                 return Molecule(nuclei_array, rotation, reflection, 'C_{s}')
             elif self.check_inversion_symmetry(nuclei_array):
@@ -54,7 +55,8 @@ class MoleculeFactory:
                 return Molecule(nuclei_array, rotation, reflection, 'C_{1}')
 
         n = self.return_principal_axis(rotation).fold
-        if self.check_n_two_fold_perpendicular_to_n_fold(rotation):  # Dihedral
+
+        if self.check_n_two_fold_perpendicular_to_n_fold(rotation):     # Dihedral
             if self.check_sigma_h(reflection):
                 return Molecule(nuclei_array, rotation, reflection, 'D_{' + str(n) + 'h}')
             elif self.check_n_sigma_v(n, reflection):
@@ -62,7 +64,7 @@ class MoleculeFactory:
             else:
                 return Molecule(nuclei_array, rotation, reflection, 'D_{' + str(n) + '}')
 
-        else:                                                       # Cyclic
+        else:                                                           # Cyclic
             if self.check_sigma_h(reflection):
                 return Molecule(nuclei_array, rotation, reflection, 'C_{' + str(n) + 'h}')
             elif self.check_n_sigma_v(n, reflection):
@@ -89,7 +91,8 @@ class MoleculeFactory:
             if principal_axis != rotation and rotation.fold == 2:
                 axis_of_rotation.append(rotation.vector)
 
-        vectors = self.remove_duplicate(self.cross_products_vertices_vertices(axis_of_rotation)) + [principal_axis.vector]
+        vectors = self.remove_duplicate(self.cross_products_vertices_vertices(axis_of_rotation)) \
+        + [principal_axis.vector]
 
         spherical_coordinates = []
         for vector in vectors:
@@ -212,7 +215,15 @@ class MoleculeFactory:
             quaternion = self.quaternion_rotate_to_z_axis(reflection_symmetry[0].vector)
             self.rotate_all_vectors(quaternion, rotation_symmetry, reflection_symmetry, nuclei_array)
 
-        return nuclei_array, rotation_symmetry, reflection_symmetry
+            quaternion = self.quaternion_rotate_from_phi(nuclei_array[0].coordinates, 0.0)
+            self.rotate_all_vectors(quaternion, rotation_symmetry, reflection_symmetry, nuclei_array)
+
+        elif len(rotation_symmetry) == 0 and len(reflection_symmetry) == 0:
+            quaternion = self.quaternion_rotate_to_z_axis(nuclei_array[0].coordinates)
+            self.rotate_all_vectors(quaternion, rotation_symmetry, reflection_symmetry, nuclei_array)
+
+            quaternion = self.quaternion_rotate_from_phi(nuclei_array[1].coordinates, 0.0)
+            self.rotate_all_vectors(quaternion, rotation_symmetry, reflection_symmetry, nuclei_array)
 
     def rotate_all_vectors(self, quaternion, rotation_symmetry_list, reflection_symmetry_list, nuclei_array):
         for rotation in rotation_symmetry_list:
@@ -247,7 +258,7 @@ class MoleculeFactory:
         rotation_symmetry = self.brute_force_rotation_symmetry(nuclei_array, vertices, edge_center,
         cross_vertices_vertices, cross_edge_vertices, cross_edge_edge)
         reflection_symmetry = self.brute_force_reflection_symmetry(nuclei_array, rotation_symmetry,
-        cross_vertices_vertices, cross_edge_vertices)
+        vertices, cross_vertices_vertices, cross_edge_vertices)
 
         return rotation_symmetry, reflection_symmetry
 
@@ -310,11 +321,11 @@ class MoleculeFactory:
                         cross_products.append(axis_cross)
         return cross_products
 
-    def brute_force_reflection_symmetry(self, nuclei_array, rotation_symmetry, cross_vertices_vertices,
+    def brute_force_reflection_symmetry(self, nuclei_array, rotation_symmetry, vertices, cross_vertices_vertices,
         cross_edge_vertices):
 
         # rotate all orthogonal vectors by principal axis by twice it's n-fold
-        vector_cross = self.remove_duplicate(cross_vertices_vertices + cross_edge_vertices)
+        vector_cross = self.remove_duplicate(vertices + cross_vertices_vertices + cross_edge_vertices)
         vectors_cross_rotated = []
         if len(rotation_symmetry) > 0:
 

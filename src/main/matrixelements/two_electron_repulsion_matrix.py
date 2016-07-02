@@ -1,5 +1,5 @@
 from src.main.common import sort_index
-from src.main.common import check_symmetry
+from src.main.common import non_zero_integral
 from src.main.integrals.twoelectronrepulsion import ElectronRepulsion
 from src.main.integrals.twoelectronrepulsion import ObaraSaika
 from src.main.integrals.twoelectronrepulsion import HeadGordonPople
@@ -9,13 +9,14 @@ import numpy as np
 
 class TwoElectronRepulsionElement:
 
-    def __init__(self, basis_set_array, integral):
+    def __init__(self, basis_set_array, integral, symmetry_matrix):
         self.basis_set_array = basis_set_array
         self.matrix_size = len(basis_set_array)
         self.integral = integral
+        self.symmetry_matrix = symmetry_matrix
 
     def calculate(self, i, j, k, l):
-        if check_symmetry(self.basis_set_array[i], self.basis_set_array[j], self.basis_set_array[k], self.basis_set_array[l]):
+        if non_zero_integral(self.symmetry_matrix, self.basis_set_array, (i, j, k, l)):
             f_mn = 0
             primitive_array_i = self.basis_set_array[i].primitive_gaussian_array
             primitive_array_j = self.basis_set_array[j].primitive_gaussian_array
@@ -37,7 +38,7 @@ class TwoElectronRepulsionElement:
                             f_mn += c_1 * c_2 * c_3 * c_4 * n_1 * n_2 * n_3 * n_4 * integral
             return f_mn
         else:
-            return 0
+            return 0.0
 
     def store_parallel(self, processes):
         keys = []
@@ -64,17 +65,17 @@ class TwoElectronRepulsionElement:
 
 class TwoElectronRepulsionMatrixOS(TwoElectronRepulsionElement):
 
-    def __init__(self, basis_set_array):
-        super().__init__(basis_set_array, ObaraSaika().os_set)
+    def __init__(self, basis_set_array, symmetry_matrix):
+        super().__init__(basis_set_array, ObaraSaika().os_set, symmetry_matrix)
 
 
 class TwoElectronRepulsionMatrixCook(TwoElectronRepulsionElement):
 
-    def __init__(self, basis_set_array):
-        super().__init__(basis_set_array, ElectronRepulsion().integral)
+    def __init__(self, basis_set_array, symmetry_matrix):
+        super().__init__(basis_set_array, ElectronRepulsion().integral, symmetry_matrix)
 
 
 class TwoElectronRepulsionMatrixHGP(TwoElectronRepulsionElement):
 
-    def __init__(self, basis_set_array):
-        super().__init__(basis_set_array, HeadGordonPople().hgp_set)
+    def __init__(self, basis_set_array, symmetry_matrix):
+        super().__init__(basis_set_array, HeadGordonPople().hgp_set, symmetry_matrix)

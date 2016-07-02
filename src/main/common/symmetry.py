@@ -4,41 +4,6 @@ import numpy as np
 import copy
 
 
-def check_symmetry(basis1, basis2, basis3, basis4):
-    r_1 = basis1.coordinates
-    r_2 = basis2.coordinates
-    r_3 = basis3.coordinates
-    r_4 = basis4.coordinates
-    l_1 = basis1.integral_exponents
-    l_2 = basis2.integral_exponents
-    l_3 = basis3.integral_exponents
-    l_4 = basis4.integral_exponents
-
-    if parity(l_1[0]) * parity(l_2[0]) * parity(l_3[0]) * parity(l_4[0]) == -1:
-        if r_1[0] == r_2[0] == r_3[0] == r_4[0]:
-            return False
-        else:
-            return True
-    elif parity(l_1[1]) * parity(l_2[1]) * parity(l_3[1]) * parity(l_4[1]) == -1:
-        if r_1[1] == r_2[1] == r_3[1] == r_4[1]:
-            return False
-        else:
-            return True
-    elif parity(l_1[2]) * parity(l_2[2]) * parity(l_3[2]) * parity(l_4[2]) == -1:
-        if r_1[2] == r_2[2] == r_3[2] == r_4[2]:
-            return False
-        else:
-            return True
-    return True
-
-
-def parity(num):
-    if num % 2 == 0:
-        return 1
-    else:
-        return -1
-
-
 def sort_index(i, j, k, l):
     a = i
     b = j
@@ -58,34 +23,144 @@ def sort_index(i, j, k, l):
     return a, b, c, d
 
 
-def basis_set_symmetry_matrix(molecule, basis_set):
-    symmetry_objects = [None]
+def non_zero_integral(symmetry_matrix, basis_set, index):
+    i, j, k, l = index
+    basis_i = basis_set[i]
+    basis_j = basis_set[j]
+    basis_k = basis_set[k]
+    basis_l = basis_set[l]
 
-    for rotation in molecule.rotation_symmetry:
-        rotations = expand_rotation_symmetry(rotation)
-        symmetry_objects += rotations
-    for reflection in molecule.reflection_symmetry:
-        symmetry_objects.append(reflection)
+    symmetry_exponents_i = symmetry_exponents(basis_i.integral_exponents)
+    symmetry_exponents_j = symmetry_exponents(basis_j.integral_exponents)
+    symmetry_exponents_k = symmetry_exponents(basis_k.integral_exponents)
+    symmetry_exponents_l = symmetry_exponents(basis_l.integral_exponents)
 
-    basis_set_size = len(basis_set)
-    symmetry_operation_size = len(symmetry_objects)
+    exponents = [symmetry_exponents_i, symmetry_exponents_j, symmetry_exponents_k, symmetry_exponents_l]
+    if basis_i.coordinates == basis_j.coordinates == basis_k.coordinates == basis_l.coordinates:
 
-    symmetry_matrix = np.empty((basis_set_size + 1, symmetry_operation_size), dtype=object)
-    for j in range(len(symmetry_objects)):
-        if j == 0:
-            symmetry_matrix.itemset((0, j), 'E')
+        x = y = z = 0
+        for exponent in exponents:
+            x += exponent[0]
+            y += exponent[1]
+            z += exponent[2]
+
+        if x % 2 != 0:
+            return False
+        if y % 2 != 0:
+            return False
+        if z % 2 != 0:
+            return False
         else:
-            symmetry_matrix.itemset((0, j), symmetry_objects[j].symmetry_operation)
+            return True
 
-    for i in range(1, basis_set_size + 1):
-        for j in range(symmetry_operation_size):
+    if symmetry_matrix is not None:
+
+        i += 1
+        j += 1
+        k += 1
+        l += 1
+
+        symmetry_operations = symmetry_matrix.shape[1]
+        for m in range(1, symmetry_operations):
+            a = symmetry_matrix.item(i, m)
+            b = symmetry_matrix.item(j, m)
+            c = symmetry_matrix.item(k, m)
+            d = symmetry_matrix.item(l, m)
+
+            if a > 0 and b > 0 and ((a == i and b == j) or (a == j and b == i)):
+                if c < 0 and d < 0 and not phase(symmetry_exponents_k, symmetry_exponents_l) and ((c == -k and d == -l)
+                or (c == -l and d == -k)):
+                    return False
+                elif c < 0 < d == l or k == c > 0 > d:
+                    return False
+            if c > 0 and d > 0 and ((c == k and d == l) or (c == l and d == k)):
+                if a < 0 and b < 0 and not phase(symmetry_exponents_i, symmetry_exponents_j) and ((a == -i and b == -j)
+                or (a == -j and b == -i)):
+                    return False
+                elif a < 0 < b == j or i == a > 0 > b:
+                    return False
+            if a < 0 and b < 0 and phase(symmetry_exponents_i, symmetry_exponents_j):
+                if c < 0 < d == l or k == c > 0 > d:
+                    return False
+                elif c < 0 and d < 0 and not phase(symmetry_exponents_l, symmetry_exponents_k):
+                    return False
+            if c < 0 and d < 0 and phase(symmetry_exponents_k, symmetry_exponents_l):
+                if a < 0 < b == j or i == a > 0 > b:
+                    return False
+                elif a < 0 and b < 0 and not phase(symmetry_exponents_i, symmetry_exponents_j):
+                    return False
+            if a < 0 < b == j and c < 0 < d == l:
+                if not phase(symmetry_exponents_i, symmetry_exponents_k):
+                    return False
+            if i == a > 0 > b and c < 0 < d == l:
+                if not phase(symmetry_exponents_j, symmetry_exponents_k):
+                    return False
+            if a < 0 < b == j and k == c > 0 > d:
+                if not phase(symmetry_exponents_i, symmetry_exponents_l):
+                    return False
+            if i == a > 0 > b and k == c > 0 > d:
+                if not phase(symmetry_exponents_j, symmetry_exponents_l):
+                    return False
+
+    return True
+
+
+def phase(exponents_i, exponents_j):
+
+    if exponents_i[0] == exponents_j[0] != 0:
+        return True
+    if exponents_i[1] == exponents_j[1] != 0:
+        return True
+    if exponents_i[2] == exponents_j[2] != 0:
+        return True
+
+    return False
+
+
+def symmetry_exponents(integral_exponents):
+    i = j = k = 1
+    if integral_exponents[0] % 2 == 0:
+        i = 0
+    if integral_exponents[1] % 2 == 0:
+        j = 0
+    if integral_exponents[2] % 2 == 0:
+        k = 0
+    return i, j, k
+
+
+def basis_set_symmetry_matrix(molecule, basis_set):
+
+    if molecule.point_group == 'C_{2v}' or 'D_{2h}':
+        symmetry_objects = [None]
+
+        for rotation in molecule.rotation_symmetry:
+            rotations = expand_rotation_symmetry(rotation)
+            symmetry_objects += rotations
+        for reflection in molecule.reflection_symmetry:
+            symmetry_objects.append(reflection)
+
+        basis_set_size = len(basis_set)
+        symmetry_operation_size = len(symmetry_objects)
+
+        symmetry_matrix = np.empty((basis_set_size + 1, symmetry_operation_size), dtype=object)
+        for j in range(len(symmetry_objects)):
             if j == 0:
-                symmetry_matrix.itemset((i, j), i)
+                symmetry_matrix.itemset((0, j), 'E')
             else:
-                symmetry_matrix.itemset((i, j), symmetry_operation_index(symmetry_objects[j], basis_set,
-                basis_set[i - 1]))
+                symmetry_matrix.itemset((0, j), symmetry_objects[j].symmetry_operation)
 
-    return symmetry_matrix
+        for i in range(1, basis_set_size + 1):
+            for j in range(symmetry_operation_size):
+                if j == 0:
+                    symmetry_matrix.itemset((i, j), i)
+                else:
+                    symmetry_matrix.itemset((i, j), symmetry_operation_index(symmetry_objects[j], basis_set,
+                    basis_set[i - 1]))
+
+        return symmetry_matrix
+
+    else:
+        return None
 
 
 def expand_rotation_symmetry(rotation_symmetry):
@@ -116,6 +191,8 @@ def symmetry_operation_index(symmetry_operation, basis_set, basis):
             k = check_sign(basis_i, basis_j)
             i = j
             break
+        if j == len(basis_set) - 1:
+            return 0
 
     return (i + 1) * k
 

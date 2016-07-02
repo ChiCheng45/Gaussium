@@ -31,42 +31,42 @@ class TestSymmetryH2O(TestCase):
     def test_check_linear_returns_false(self):
         nuclei_array = self.molecule_factory.center_molecule(self.nuclei_array_h2o)
         rotation, reflection = self.molecule_factory.brute_force_symmetry(nuclei_array)
-        nuclei_array, rotation, reflection = self.molecule_factory.standard_orientation(nuclei_array, rotation, reflection)
+        self.molecule_factory.standard_orientation(nuclei_array, rotation, reflection)
         boolean = self.molecule_factory.check_linear(nuclei_array)
         self.assertEqual(boolean, False)
 
     def test_check_high_symmetry_returns_false(self):
         nuclei_array = self.molecule_factory.center_molecule(self.nuclei_array_h2o)
         rotation, reflection = self.molecule_factory.brute_force_symmetry(nuclei_array)
-        nuclei_array, rotation, reflection = self.molecule_factory.standard_orientation(nuclei_array, rotation, reflection)
+        self.molecule_factory.standard_orientation(nuclei_array, rotation, reflection)
         boolean = self.molecule_factory.check_high_symmetry(rotation)
         self.assertEqual(boolean, False)
 
     def test_get_n_fold_returns_two(self):
         nuclei_array = self.molecule_factory.center_molecule(self.nuclei_array_h2o)
         rotation, reflection = self.molecule_factory.brute_force_symmetry(nuclei_array)
-        nuclei_array, rotation, reflection = self.molecule_factory.standard_orientation(nuclei_array, rotation, reflection)
+        self.molecule_factory.standard_orientation(nuclei_array, rotation, reflection)
         n = self.molecule_factory.return_principal_axis(rotation).fold
         self.assertEqual(n, 2)
 
     def test_check_n_two_fold_rotation_perpendicular_to_n_fold_returns_false(self):
         nuclei_array = self.molecule_factory.center_molecule(self.nuclei_array_h2o)
         rotation, reflection = self.molecule_factory.brute_force_symmetry(nuclei_array)
-        nuclei_array, rotation, reflection = self.molecule_factory.standard_orientation(nuclei_array, rotation, reflection)
+        self.molecule_factory.standard_orientation(nuclei_array, rotation, reflection)
         boolean = self.molecule_factory.check_n_two_fold_perpendicular_to_n_fold(rotation)
         self.assertEqual(boolean, False)
 
     def test_check_sigma_h_returns_false(self):
         nuclei_array = self.molecule_factory.center_molecule(self.nuclei_array_h2o)
         rotation, reflection = self.molecule_factory.brute_force_symmetry(nuclei_array)
-        nuclei_array, rotation, reflection = self.molecule_factory.standard_orientation(nuclei_array, rotation, reflection)
+        self.molecule_factory.standard_orientation(nuclei_array, rotation, reflection)
         boolean = self.molecule_factory.check_sigma_h(reflection)
         self.assertEqual(boolean, False)
 
     def test_check_n_sigma_v_returns_true(self):
         nuclei_array = self.molecule_factory.center_molecule(self.nuclei_array_h2o)
         rotation, reflection = self.molecule_factory.brute_force_symmetry(nuclei_array)
-        nuclei_array, rotation, reflection = self.molecule_factory.standard_orientation(nuclei_array, rotation, reflection)
+        self.molecule_factory.standard_orientation(nuclei_array, rotation, reflection)
         boolean = self.molecule_factory.check_n_sigma_v(2, reflection)
         self.assertEqual(boolean, True)
 
