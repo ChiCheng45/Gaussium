@@ -15,7 +15,7 @@ import time
 
 class HartreeFock:
 
-    def __init__(self, nuclei_array, basis_set_array, electrons, scf_method, symmetry_matrix):
+    def __init__(self, nuclei_array, basis_set_array, electrons, scf_method, symmetry):
         self.nuclei_array = nuclei_array
         self.basis_set_array = basis_set_array
         self.electrons = electrons
@@ -23,12 +23,12 @@ class HartreeFock:
         self.orbital_overlap_matrix = OrbitalOverlapMatrix(basis_set_array)
         self.kinetic_energy_matrix = KineticEnergyMatrix(basis_set_array)
         self.nuclear_attraction_matrix = NuclearAttractionMatrix(basis_set_array, nuclei_array)
-        self.repulsion_elements = TwoElectronRepulsionMatrixOS(basis_set_array, symmetry_matrix)
+        self.repulsion_elements = TwoElectronRepulsionMatrixOS(basis_set_array, symmetry)
         self.linear_algebra = LinearAlgebra
         self.core_hamiltonian = np.matrix([])
         self.orbital_overlap = np.matrix([])
         self.repulsion = np.matrix([])
-        self.symmetry_matrix = symmetry_matrix
+        self.symmetry = symmetry
 
     def start(self):
         print('\n*****************************************************************************************************')
@@ -68,8 +68,8 @@ class HartreeFock:
 
 class RestrictedHF(HartreeFock):
 
-    def __init__(self, nuclei_array, basis_set_array, electrons, symmetry_matrix):
-        super().__init__(nuclei_array, basis_set_array, electrons, RestrictedSCF, symmetry_matrix)
+    def __init__(self, nuclei_array, basis_set_array, electrons, symmetry):
+        super().__init__(nuclei_array, basis_set_array, electrons, RestrictedSCF, symmetry)
 
     def begin(self):
         initial_coefficients = self.start()
@@ -90,8 +90,8 @@ class RestrictedHF(HartreeFock):
 
 class UnrestrictedHF(HartreeFock):
 
-    def __init__(self, nuclei_array, basis_set_array, electrons, multiplicity, scf_method, symmetry_matrix):
-        super().__init__(nuclei_array, basis_set_array, electrons, scf_method, symmetry_matrix)
+    def __init__(self, nuclei_array, basis_set_array, electrons, multiplicity, scf_method, symmetry):
+        super().__init__(nuclei_array, basis_set_array, electrons, scf_method, symmetry)
         self.multiplicity = multiplicity
 
     def begin(self):
@@ -118,22 +118,22 @@ class UnrestrictedHF(HartreeFock):
 
 class DODSUnrestricted(UnrestrictedHF):
 
-    def __init__(self, nuclei_array, basis_set_array, electrons, multiplicity, symmetry_matrix):
+    def __init__(self, nuclei_array, basis_set_array, electrons, multiplicity, symmetry):
         super().__init__(nuclei_array, basis_set_array, electrons, multiplicity, DifferentOrbitalsDifferentSpins,
-        symmetry_matrix)
+                         symmetry)
 
 
 class ConstrainedUnrestricted(UnrestrictedHF):
 
-    def __init__(self, nuclei_array, basis_set_array, electrons, multiplicity, symmetry_matrix):
+    def __init__(self, nuclei_array, basis_set_array, electrons, multiplicity, symmetry):
         super().__init__(nuclei_array, basis_set_array, electrons, multiplicity, ConstrainedUnrestrictedSCF,
-        symmetry_matrix)
+                         symmetry)
 
 
 class BlockedHartreeFock(HartreeFock):
 
-    def __init__(self, nuclei_array, basis_set_array, electrons, multiplicity, symmetry_matrix):
-        super().__init__(nuclei_array, basis_set_array, electrons, BlockedUnrestrictedSCF, symmetry_matrix)
+    def __init__(self, nuclei_array, basis_set_array, electrons, multiplicity, symmetry):
+        super().__init__(nuclei_array, basis_set_array, electrons, BlockedUnrestrictedSCF, symmetry)
         self.multiplicity = multiplicity
         self.block_linear_algebra = BlockedLinearAlgebra
 
@@ -142,16 +142,19 @@ class BlockedHartreeFock(HartreeFock):
         zeros = np.zeros((self.orbital_overlap.shape[0], self.orbital_overlap.shape[0]))
 
         self.orbital_overlap = np.bmat([
-                [self.orbital_overlap, zeros],
-                [zeros, self.orbital_overlap]])
+            [self.orbital_overlap, zeros],
+            [zeros, self.orbital_overlap]
+        ])
 
         self.core_hamiltonian = np.bmat([
-                [self.core_hamiltonian, zeros],
-                [zeros, self.core_hamiltonian]])
+            [self.core_hamiltonian, zeros],
+            [zeros, self.core_hamiltonian]
+        ])
 
         initial_coefficients = np.bmat([
-                [initial_coefficients, zeros],
-                [zeros, initial_coefficients]])
+            [initial_coefficients, zeros],
+            [zeros, initial_coefficients]
+        ])
 
         self.repulsion = IntegralTransformations.spin_basis_set(self.repulsion)
         self.block_linear_algebra = self.block_linear_algebra(self.orbital_overlap)

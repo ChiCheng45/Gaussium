@@ -16,5 +16,5 @@ class TestSymmetryHe(TestCase):
         testing.assert_array_equal(helium.coordinates, (0.0, 0.0, 0.0))
 
     def test_point_group_returns_c_1_symmetry_for_helium(self):
-        symmetry = self.molecule_factory.point_group(self.nuclei_array_he).point_group
+        symmetry = self.molecule_factory.point_group(self.nuclei_array_he).point_group.label
         testing.assert_equal(symmetry, 'C_{1}')

@@ -1,6 +1,8 @@
 from unittest import TestCase
 from unittest.mock import MagicMock
-from src.main.matrixelements import TwoElectronRepulsionMatrixCook, TwoElectronRepulsionMatrixOS, TwoElectronRepulsionMatrixHGP
+from src.main.matrixelements import TwoElectronRepulsionMatrixCook
+from src.main.matrixelements import TwoElectronRepulsionMatrixOS
+from src.main.matrixelements import TwoElectronRepulsionMatrixHGP
 from numpy import testing
 
 
@@ -17,7 +19,10 @@ class TestTwoElectronRepulsionElementCook(TestCase):
         hydrogen = MagicMock(primitive_gaussian_array=[hydrogen_basis_1, hydrogen_basis_2, hydrogen_basis_3], coordinates=(0, 0, -0.7316), integral_exponents=(0, 0, 0))
         basis_set_array = [helium, hydrogen]
 
-        self.two_electron_repulsion = TwoElectronRepulsionMatrixCook(basis_set_array, None)
+        mock_symmetry = MagicMock(nuclei_array=None, point_group=None, symmetry_matrix=None)
+        mock_symmetry.non_zero_integral = MagicMock(return_value=True)
+
+        self.two_electron_repulsion = TwoElectronRepulsionMatrixCook(basis_set_array, mock_symmetry)
 
     def test_method_calculate_returns_element_for_0000(self):
         element = self.two_electron_repulsion.calculate(0, 0, 0, 0)
@@ -57,7 +62,10 @@ class TestTwoElectronRepulsionElementOS(TestCase):
         hydrogen = MagicMock(primitive_gaussian_array=[hydrogen_basis_1, hydrogen_basis_2, hydrogen_basis_3], coordinates=(0, 0, -0.7316), integral_exponents=(0, 0, 0))
         basis_set_array = [helium, hydrogen]
 
-        self.two_electron_repulsion = TwoElectronRepulsionMatrixOS(basis_set_array, None)
+        mock_symmetry = MagicMock(nuclei_array=None, point_group=None, symmetry_matrix=None)
+        mock_symmetry.non_zero_integral = MagicMock(return_value=True)
+
+        self.two_electron_repulsion = TwoElectronRepulsionMatrixOS(basis_set_array, mock_symmetry)
 
     def test_method_calculate_returns_element_for_0000(self):
         element = self.two_electron_repulsion.calculate(0, 0, 0, 0)
@@ -96,7 +104,11 @@ class TestTwoElectronRepulsionElementHGP(TestCase):
         helium = MagicMock(primitive_gaussian_array=[helium_basis_1, helium_basis_2, helium_basis_3], coordinates=(0, 0, 0.7316), integral_exponents=(0, 0, 0))
         hydrogen = MagicMock(primitive_gaussian_array=[hydrogen_basis_1, hydrogen_basis_2, hydrogen_basis_3], coordinates=(0, 0, -0.7316), integral_exponents=(0, 0, 0))
         basis_set_array = [helium, hydrogen]
-        self.two_electron_repulsion = TwoElectronRepulsionMatrixHGP(basis_set_array, None)
+
+        mock_symmetry = MagicMock(nuclei_array=None, point_group=None, symmetry_matrix=None)
+        mock_symmetry.non_zero_integral = MagicMock(return_value=True)
+
+        self.two_electron_repulsion = TwoElectronRepulsionMatrixHGP(basis_set_array, mock_symmetry)
 
     def test_method_calculate_returns_element_for_0000(self):
         element = self.two_electron_repulsion.calculate(0, 0, 0, 0)

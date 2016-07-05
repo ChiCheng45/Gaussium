@@ -14,18 +14,19 @@ class TestSymmetryN2(TestCase):
 
     def test_check_linear_returns_true(self):
         nuclei_array = self.molecule_factory.center_molecule(self.nuclei_array_n2)
-        rotation, reflection = self.molecule_factory.brute_force_symmetry(nuclei_array)
+        rotation, reflection, inversion = self.molecule_factory.brute_force_symmetry(nuclei_array)
         self.molecule_factory.standard_orientation(nuclei_array, rotation, reflection)
         boolean = self.molecule_factory.check_linear(nuclei_array)
         self.assertEqual(boolean, True)
 
     def test_check_inversion_symmetry_returns_true(self):
         nuclei_array = self.molecule_factory.center_molecule(self.nuclei_array_n2)
-        rotation, reflection = self.molecule_factory.brute_force_symmetry(nuclei_array)
+        rotation, reflection, inversion = self.molecule_factory.brute_force_symmetry(nuclei_array)
         self.molecule_factory.standard_orientation(nuclei_array, rotation, reflection)
         boolean = self.molecule_factory.check_inversion_symmetry(nuclei_array)
         self.assertEqual(boolean, True)
 
-    def test_point_group_returns_d_inf_h_symmetry_for_nitrogen(self):
-        symmetry = self.molecule_factory.point_group(self.nuclei_array_n2).point_group
-        testing.assert_equal(symmetry, 'D_{inf h}')
+    # D_{4h} because D_{inf h} is not useful for reducing integrals
+    def test_point_group_returns_d_4_h_symmetry_for_nitrogen(self):
+        symmetry = self.molecule_factory.point_group(self.nuclei_array_n2).point_group.label
+        testing.assert_equal(symmetry, 'D_{4h}')

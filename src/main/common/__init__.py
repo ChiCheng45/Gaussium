@@ -18,6 +18,4 @@ from src.main.common.vector_manipulation import gaussian_product_coordinate
 from src.main.common.file_input import read_basis_set_file
 from src.main.common.file_input import read_mol_file
 from src.main.common.nuclear_repulsion import coulomb_matrix
-from src.main.common.symmetry import sort_index
-from src.main.common.symmetry import basis_set_symmetry_matrix
-from src.main.common.symmetry import non_zero_integral
+from src.main.common.symmetry import Symmetry

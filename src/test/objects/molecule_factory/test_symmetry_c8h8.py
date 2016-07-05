@@ -29,25 +29,25 @@ class TestSymmetryC8H8(TestCase):
 
     def test_check_linear_returns_false(self):
         nuclei_array = self.molecule_factory.center_molecule(self.nuclei_array_c8h8)
-        rotation, reflection = self.molecule_factory.brute_force_symmetry(nuclei_array)
+        rotation, reflection, inversion = self.molecule_factory.brute_force_symmetry(nuclei_array)
         self.molecule_factory.standard_orientation(nuclei_array, rotation, reflection)
         boolean = self.molecule_factory.check_linear(nuclei_array)
         self.assertEqual(boolean, False)
 
     def test_check_high_symmetry_returns_true(self):
         nuclei_array = self.molecule_factory.center_molecule(self.nuclei_array_c8h8)
-        rotation, reflection = self.molecule_factory.brute_force_symmetry(nuclei_array)
+        rotation, reflection, inversion = self.molecule_factory.brute_force_symmetry(nuclei_array)
         self.molecule_factory.standard_orientation(nuclei_array, rotation, reflection)
         boolean = self.molecule_factory.check_high_symmetry(rotation)
         self.assertEqual(boolean, True)
 
     def test_check_inversion_symmetry_returns_true(self):
         nuclei_array = self.molecule_factory.center_molecule(self.nuclei_array_c8h8)
-        rotation, reflection = self.molecule_factory.brute_force_symmetry(nuclei_array)
+        rotation, reflection, inversion = self.molecule_factory.brute_force_symmetry(nuclei_array)
         self.molecule_factory.standard_orientation(nuclei_array, rotation, reflection)
         boolean = self.molecule_factory.check_inversion_symmetry(nuclei_array)
         self.assertEqual(boolean, True)
 
     def test_point_group_returns_o_h_symmetry_for_cubane(self):
-        symmetry = self.molecule_factory.point_group(self.nuclei_array_c8h8).point_group
+        symmetry = self.molecule_factory.point_group(self.nuclei_array_c8h8).point_group.label
         testing.assert_equal(symmetry, 'O_{h}')
