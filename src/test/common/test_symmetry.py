@@ -7,8 +7,9 @@ from src.main.common import Symmetry
 class TestSymmetrySort(TestCase):
 
     def setUp(self):
-        molecule = MagicMock(nuclei_array=None, point_group=None)
-        self.symmetry = Symmetry(molecule, None)
+        point_group = MagicMock(rotation_symmetry=[], reflection_symmetry=[], inversion_symmetry=[], label='C_{1}')
+        molecule = MagicMock(nuclei_array=None, point_group=point_group)
+        self.symmetry = Symmetry(molecule, [])
 
     def test_sort_indices_1(self):
         out = self.symmetry.sort_index(6, 2, 1, 0)
