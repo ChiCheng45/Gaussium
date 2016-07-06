@@ -26,16 +26,7 @@ class Symmetry:
         symmetry_exponents_l = self.symmetry_exponents(basis_l.integral_exponents)
 
         symmetry_exponents_kl = self.symmetry_exponents(vector_add(symmetry_exponents_k, symmetry_exponents_l))
-        symmetry_exponents_jl = self.symmetry_exponents(vector_add(symmetry_exponents_j, symmetry_exponents_l))
-        symmetry_exponents_il = self.symmetry_exponents(vector_add(symmetry_exponents_i, symmetry_exponents_l))
-        symmetry_exponents_jk = self.symmetry_exponents(vector_add(symmetry_exponents_j, symmetry_exponents_k))
-        symmetry_exponents_ik = self.symmetry_exponents(vector_add(symmetry_exponents_i, symmetry_exponents_k))
         symmetry_exponents_ij = self.symmetry_exponents(vector_add(symmetry_exponents_i, symmetry_exponents_j))
-
-        symmetry_exponents_jkl = self.symmetry_exponents(vector_add(symmetry_exponents_j, symmetry_exponents_kl))
-        symmetry_exponents_ikl = self.symmetry_exponents(vector_add(symmetry_exponents_i, symmetry_exponents_kl))
-        symmetry_exponents_ijl = self.symmetry_exponents(vector_add(symmetry_exponents_ij, symmetry_exponents_l))
-        symmetry_exponents_ijk = self.symmetry_exponents(vector_add(symmetry_exponents_ij, symmetry_exponents_k))
 
         symmetry_exponents_ijkl = self.symmetry_exponents(vector_add(symmetry_exponents_ij, symmetry_exponents_kl))
 
@@ -72,53 +63,10 @@ class Symmetry:
             y = abs(c)
             z = abs(d)
 
-            if ((i == w and j == x) or (i == x and j == w)) and ((k == y and l == z) or (k == z and l == w)) \
-            and a != 0 and b != 0 and c != 0 and d != 0:
-
-                if a < 0 and b > 0 and c > 0 and d > 0:
-                    return False
-                if a > 0 and b < 0 and c > 0 and d > 0:
-                    return False
-                if a > 0 and b > 0 and c < 0 and d > 0:
-                    return False
-                if a > 0 and b > 0 and c > 0 and d < 0:
-                    return False
-
-                if a > 0 and b > 0 and c < 0 and d < 0 \
-                and symmetry_exponents_kl != self.symmetry_objects[m].int_operate(symmetry_exponents_kl):
-                    return False
-                if a > 0 and b < 0 and c > 0 and d < 0 \
-                and symmetry_exponents_jl != self.symmetry_objects[m].int_operate(symmetry_exponents_jl):
-                    return False
-                if a < 0 and b > 0 and c > 0 and d < 0 \
-                and symmetry_exponents_il != self.symmetry_objects[m].int_operate(symmetry_exponents_il):
-                    return False
-                if a > 0 and b < 0 and c < 0 and d > 0 \
-                and symmetry_exponents_jk != self.symmetry_objects[m].int_operate(symmetry_exponents_jk):
-                    return False
-                if a < 0 and b > 0 and c < 0 and d > 0 \
-                and symmetry_exponents_ik != self.symmetry_objects[m].int_operate(symmetry_exponents_ik):
-                    return False
-                if a < 0 and b < 0 and c > 0 and d > 0 \
-                and symmetry_exponents_ij != self.symmetry_objects[m].int_operate(symmetry_exponents_ij):
-                    return False
-
-                if a > 0 and b < 0 and c < 0 and d < 0 \
-                and symmetry_exponents_jkl != self.symmetry_objects[m].int_operate(symmetry_exponents_jkl):
-                    return False
-                if a < 0 and b > 0 and c < 0 and d < 0 \
-                and symmetry_exponents_ikl != self.symmetry_objects[m].int_operate(symmetry_exponents_ikl):
-                    return False
-                if a < 0 and b < 0 and c > 0 and d < 0 \
-                and symmetry_exponents_ijl != self.symmetry_objects[m].int_operate(symmetry_exponents_ijl):
-                    return False
-                if a < 0 and b < 0 and c < 0 and d > 0 \
-                and symmetry_exponents_ijk != self.symmetry_objects[m].int_operate(symmetry_exponents_ijk):
-                    return False
-
-                if a < 0 and b < 0 and c < 0 and d < 0 \
-                and symmetry_exponents_ijkl != self.symmetry_objects[m].int_operate(symmetry_exponents_ijkl):
-                    return False
+            if a != 0 and b != 0 and c != 0 and d != 0 and ((i == w and j == x) or (i == x and j == w)) \
+            and ((k == y and l == z) or (k == z and l == w)) \
+            and symmetry_exponents_ijkl != self.symmetry_objects[m].int_operate(symmetry_exponents_ijkl):
+                return False
 
         return True
 

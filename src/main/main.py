@@ -16,7 +16,7 @@ import time
 def menu():
     # start('HeH+.mol', 'STO-3G.gbs', 'RHF')  # -2.84183608212 a.u.
     # start('HeH+.mol', '6-311+GPP.gbs', 'RHF')  # -2.92922773384 a.u.
-    start('C2H4.mol', '3-21G.gbs', 'RHF')  # -77.600460844 a.u. 30.747198048700866s
+    # start('C2H4.mol', '3-21G.gbs', 'RHF')  # -77.600460844 a.u. 30.747198048700866s
     # start('O2.mol', 'STO-3G.gbs', 'GHF')  # -147.634028141 a.u.
     # start('CO.mol', 'STO-3G.gbs', 'MP2')  # -111.354512528 a.u.
     # start('H2O.mol', 'STO-3G.gbs', 'RHF', True)
