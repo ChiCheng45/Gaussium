@@ -1,16 +1,17 @@
-from src.main.hartreefock import RestrictedHF
 from src.main.matrixelements import molecular_orbitals
 
 
 class MoellerPlesset:
 
-    @staticmethod
-    def second_order(nuclei_array, basis_set_array, electrons, symmetry_matrix):
-        electron_energy, orbital_energies, orbital_coefficients, repulsion = RestrictedHF(nuclei_array, basis_set_array,
-        electrons, symmetry_matrix).begin()
+    def __init__(self, hartree_fock):
+        self.hartree_fock = hartree_fock
+        self.electrons = self.hartree_fock.electrons
+
+    def second_order(self):
+        electron_energy, orbital_energies, orbital_coefficients, repulsion = self.hartree_fock.begin_scf()
 
         correlation = 0
-        occupied_orbitals = electrons // 2
+        occupied_orbitals = self.electrons // 2
         molecular_integral_matrix = molecular_orbitals(repulsion, orbital_coefficients)
 
         print('BEGIN MP2 CALCULATION', end='\n\n')
@@ -25,4 +26,5 @@ class MoellerPlesset:
                         out3 = (molecular_integral_matrix.item(i, a, j, b)
                         * molecular_integral_matrix.item(i, b, j, a)) / out1
                         correlation += out2 - out3
+
         return electron_energy, correlation
