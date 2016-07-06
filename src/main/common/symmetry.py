@@ -11,6 +11,7 @@ class Symmetry:
         self.point_group = molecule.point_group
         self.basis_set = basis_set_array
         self.symmetry_objects = self.symmetry_object_list()
+        self.int_operate_dict = self.symmetry_exponent_dict()
         self.symmetry_matrix = self.basis_set_symmetry_matrix()
 
     def non_zero_integral(self, index):
@@ -24,10 +25,8 @@ class Symmetry:
         symmetry_exponents_j = self.symmetry_exponents(basis_j.integral_exponents)
         symmetry_exponents_k = self.symmetry_exponents(basis_k.integral_exponents)
         symmetry_exponents_l = self.symmetry_exponents(basis_l.integral_exponents)
-
         symmetry_exponents_kl = self.symmetry_exponents(vector_add(symmetry_exponents_k, symmetry_exponents_l))
         symmetry_exponents_ij = self.symmetry_exponents(vector_add(symmetry_exponents_i, symmetry_exponents_j))
-
         symmetry_exponents_ijkl = self.symmetry_exponents(vector_add(symmetry_exponents_ij, symmetry_exponents_kl))
 
         if basis_i.coordinates == basis_j.coordinates == basis_k.coordinates == basis_l.coordinates:
@@ -64,11 +63,24 @@ class Symmetry:
             z = abs(d)
 
             if a != 0 and b != 0 and c != 0 and d != 0 and ((i == w and j == x) or (i == x and j == w)) \
-            and ((k == y and l == z) or (k == z and l == w)) \
-            and symmetry_exponents_ijkl != self.symmetry_objects[m].int_operate(symmetry_exponents_ijkl):
+            and ((k == y and l == z) or (k == z and l == y)) \
+            and symmetry_exponents_ijkl != self.int_operate_dict[(m, symmetry_exponents_ijkl)]:
                 return False
 
         return True
+
+    def symmetry_exponent_dict(self):
+        operate_dict = {}
+        for i in range(1, len(self.symmetry_objects)):
+            operate_dict[(i, (0, 0, 0))] = (0, 0, 0)
+            operate_dict[(i, (1, 0, 0))] = self.symmetry_objects[i].int_operate((1, 0, 0))
+            operate_dict[(i, (0, 1, 0))] = self.symmetry_objects[i].int_operate((0, 1, 0))
+            operate_dict[(i, (0, 0, 1))] = self.symmetry_objects[i].int_operate((0, 0, 1))
+            operate_dict[(i, (1, 1, 0))] = self.symmetry_objects[i].int_operate((1, 1, 0))
+            operate_dict[(i, (1, 0, 1))] = self.symmetry_objects[i].int_operate((1, 0, 1))
+            operate_dict[(i, (0, 1, 1))] = self.symmetry_objects[i].int_operate((0, 1, 1))
+            operate_dict[(i, (1, 1, 1))] = self.symmetry_objects[i].int_operate((1, 1, 1))
+        return operate_dict
 
     def symmetry_exponents(self, integral_exponents):
         i = j = k = 1
