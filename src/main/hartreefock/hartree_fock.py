@@ -43,13 +43,11 @@ class HartreeFock:
         print('\nKINETIC ENERGY MATRIX\n{}'.format(kinetic_energy))
         print('\nNUCLEAR POTENTIAL ENERGY MATRIX\n{}'.format(nuclear_potential))
         print('\nCORE HAMILTONIAN MATRIX\n{}'.format(self.core_hamiltonian))
-
         initial_orbital_energies, initial_orbital_coefficients = self.linear_algebra.diagonalize(self.core_hamiltonian)
         print('\n*************************************************************************************************')
         print('\nINITIAL GUESS\n')
         print('\nORBITAL ENERGY EIGENVALUES\n{}'.format(initial_orbital_energies))
         print('\nORBITAL COEFFICIENTS\n{}'.format(initial_orbital_coefficients))
-
         print('\n*************************************************************************************************')
         print('\nBEGIN TWO ELECTRON REPULSION CALCULATION')
         start_repulsion = time.clock()
@@ -73,7 +71,6 @@ class RestrictedHF(HartreeFock):
         start = time.clock()
         electron_energy, orbital_energies, orbital_coefficients = self.scf_method.begin_iterations(initial_coefficients)
         print('TIME TAKEN: ' + str(time.clock() - start) + 's\n')
-
         print('\nORBITAL ENERGY EIGENVALUES\n{}'.format(orbital_energies))
         print('\nORBITAL COEFFICIENTS\n{}'.format(orbital_coefficients), end='\n\n\n')
 
@@ -94,9 +91,8 @@ class UnrestrictedHF(HartreeFock):
         print('\nBEGIN SCF PROCEDURE')
         start = time.clock()
         electron_energy, energies_alpha, energies_beta, coefficients_alpha, coefficients_beta \
-        = self.scf_method.begin_iterations(initial_coefficients)
+            = self.scf_method.begin_iterations(initial_coefficients)
         print('TIME TAKEN: ' + str(time.clock() - start) + 's\n')
-
         print('\nALPHA ORBITAL ENERGY EIGENVALUES\n{}'.format(energies_alpha))
         print('\nBETA ORBITAL ENERGY EIGENVALUES\n{}'.format(energies_beta))
         print('\nALPHA ORBITAL COEFFICIENTS\n{}'.format(coefficients_alpha), end='\n')
@@ -155,7 +151,6 @@ class BlockedHartreeFock(HartreeFock):
         start = time.clock()
         electron_energy, orbital_energies, orbital_coefficients = self.scf_method.begin_iterations(initial_coefficients)
         print('TIME TAKEN: ' + str(time.clock() - start) + 's\n')
-
         print('\nORBITAL ENERGY EIGENVALUES\n{}'.format(orbital_energies))
         print('\nORBITAL COEFFICIENTS\n{}'.format(orbital_coefficients), end='\n\n\n')
 
