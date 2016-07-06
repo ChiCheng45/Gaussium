@@ -16,11 +16,11 @@ import time
 def menu():
     # start('HeH+.mol', 'STO-3G.gbs', 'RHF')  # -2.84183608212 a.u.
     # start('HeH+.mol', '6-311+GPP.gbs', 'RHF')  # -2.92922773384 a.u.
-    # start('C2H4.mol', '3-21G.gbs', 'RHF')  # -77.600460844 a.u. 36.75803782951848s
+    start('C2H4.mol', '3-21G.gbs', 'RHF')  # -77.600460844 a.u. 30.747198048700866s
     # start('O2.mol', 'STO-3G.gbs', 'GHF')  # -147.634028141 a.u.
     # start('CO.mol', 'STO-3G.gbs', 'MP2')  # -111.354512528 a.u.
-    # start('CH4.mol', '3-21G.gbs', 'RHF')
-    start('C2H4.mol', '3-21G.gbs', 'RHF', True)  # -77.600460844 a.u 25.52736469137153s
+    # start('H2O.mol', 'STO-3G.gbs', 'RHF', True)
+    start('C2H4.mol', '3-21G.gbs', 'RHF', True)  # -77.600460844 a.u 20.19939799526804s
 
 
 def start(mol, basis, method, symmetry=False):
@@ -37,7 +37,7 @@ def start(mol, basis, method, symmetry=False):
 
     basis_set_array = read_basis_set_file(basis, molecule.nuclei_array)
     symmetry_object = Symmetry(molecule, basis_set_array)
-    print(symmetry_object.symmetry_matrix if symmetry else '', end='\n')
+    print(symmetry_object.symmetry_matrix if symmetry else '', end='\n\n')
 
     coulomb_law_matrix = coulomb_matrix(nuclei_array)
     nuclear_repulsion = coulomb_law_matrix.sum() / 2

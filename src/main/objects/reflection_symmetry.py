@@ -11,6 +11,11 @@ class ReflectionSymmetry:
         householder_matrix = create_householder_matrix(self.vector)
         return householder_matrix_reflection(coordinate, householder_matrix)
 
+    def int_operate(self, coordinate):
+        householder_matrix = create_householder_matrix(self.vector)
+        x, y, z = householder_matrix_reflection(coordinate, householder_matrix)
+        return int(round(x, 1)), int(round(y, 1)), int(round(z, 1))
+
     @property
     def symmetry_operation(self):
         if -1e-3 <= self.vector[0] <= 1e-3:

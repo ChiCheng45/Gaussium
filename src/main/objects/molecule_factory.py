@@ -91,20 +91,10 @@ class MoleculeFactory:
 
         axis_of_rotation = []
         for rotation in rotation_symmetry:
-            if principal_axis != rotation and rotation.fold == 2:
+            if principal_axis != rotation and rotation.fold == 2 and (theta(rotation.vector) - pi/2 <= self.error):
                 axis_of_rotation.append(rotation.vector)
 
-        vectors = self.remove_duplicate(self.cross_products_vertices_vertices(axis_of_rotation)) \
-        + [principal_axis.vector]
-
-        spherical_coordinates = []
-        for vector in vectors:
-            coordinates = cartesian_to_spherical(vector)
-            spherical_coordinates.append(coordinates)
-
-        if all(coordinates[1] % pi <= self.error for coordinates in spherical_coordinates) \
-        and all(coordinates[2] <= self.error for coordinates in spherical_coordinates) \
-        and len(axis_of_rotation) == principal_axis.fold:
+        if len(axis_of_rotation) == principal_axis.fold:
             return True
         else:
             return False
@@ -126,7 +116,6 @@ class MoleculeFactory:
             return False
 
     def check_inversion_symmetry(self, nuclei_array):
-
         nuclei_array_inverse = []
         for nuclei in nuclei_array:
             coordinate_inverse = (-nuclei.coordinates[0], -nuclei.coordinates[1], -nuclei.coordinates[2])
@@ -143,18 +132,10 @@ class MoleculeFactory:
         return True
 
     def check_linear(self, nuclei_array):
-        nuclei_array_copy = copy.deepcopy(nuclei_array)
-        spherical_coordinates = []
-
-        for nuclei in nuclei_array_copy:
-            nuclei.coordinates = cartesian_to_spherical(nuclei.coordinates)
-            spherical_coordinates.append(nuclei)
-
-        if all(nuclei.coordinates[1] % pi <= self.error for nuclei in spherical_coordinates) \
-        and all(nuclei.coordinates[2] <= self.error for nuclei in spherical_coordinates):
-            return True
-        else:
-            return False
+        for nuclei in nuclei_array:
+            if theta(nuclei.coordinates) % pi > self.error:
+                return False
+        return True
 
     def return_principal_axis(self, rotation_symmetry):
         for rotation in rotation_symmetry:

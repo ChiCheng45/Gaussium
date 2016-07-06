@@ -1,5 +1,6 @@
 from src.main.objects import RotationSymmetry
 from src.main.common import coordinate_distance
+from src.main.common import vector_add
 import numpy as np
 import copy
 
@@ -9,6 +10,7 @@ class Symmetry:
     def __init__(self, molecule, basis_set_array):
         self.point_group = molecule.point_group
         self.basis_set = basis_set_array
+        self.symmetry_objects = self.symmetry_object_list()
         self.symmetry_matrix = self.basis_set_symmetry_matrix()
 
     def non_zero_integral(self, index):
@@ -18,24 +20,34 @@ class Symmetry:
         basis_k = self.basis_set[k]
         basis_l = self.basis_set[l]
 
+        symmetry_exponents_i = self.symmetry_exponents(basis_i.integral_exponents)
+        symmetry_exponents_j = self.symmetry_exponents(basis_j.integral_exponents)
+        symmetry_exponents_k = self.symmetry_exponents(basis_k.integral_exponents)
+        symmetry_exponents_l = self.symmetry_exponents(basis_l.integral_exponents)
+
+        symmetry_exponents_kl = self.symmetry_exponents(vector_add(symmetry_exponents_k, symmetry_exponents_l))
+        symmetry_exponents_jl = self.symmetry_exponents(vector_add(symmetry_exponents_j, symmetry_exponents_l))
+        symmetry_exponents_il = self.symmetry_exponents(vector_add(symmetry_exponents_i, symmetry_exponents_l))
+        symmetry_exponents_jk = self.symmetry_exponents(vector_add(symmetry_exponents_j, symmetry_exponents_k))
+        symmetry_exponents_ik = self.symmetry_exponents(vector_add(symmetry_exponents_i, symmetry_exponents_k))
+        symmetry_exponents_ij = self.symmetry_exponents(vector_add(symmetry_exponents_i, symmetry_exponents_j))
+
+        symmetry_exponents_jkl = self.symmetry_exponents(vector_add(symmetry_exponents_j, symmetry_exponents_kl))
+        symmetry_exponents_ikl = self.symmetry_exponents(vector_add(symmetry_exponents_i, symmetry_exponents_kl))
+        symmetry_exponents_ijl = self.symmetry_exponents(vector_add(symmetry_exponents_ij, symmetry_exponents_l))
+        symmetry_exponents_ijk = self.symmetry_exponents(vector_add(symmetry_exponents_ij, symmetry_exponents_k))
+
+        symmetry_exponents_ijkl = self.symmetry_exponents(vector_add(symmetry_exponents_ij, symmetry_exponents_kl))
+
         if basis_i.coordinates == basis_j.coordinates == basis_k.coordinates == basis_l.coordinates:
-            symmetry_exponents_i = self.symmetry_exponents(basis_i.integral_exponents)
-            symmetry_exponents_j = self.symmetry_exponents(basis_j.integral_exponents)
-            symmetry_exponents_k = self.symmetry_exponents(basis_k.integral_exponents)
-            symmetry_exponents_l = self.symmetry_exponents(basis_l.integral_exponents)
-            exponents = [symmetry_exponents_i, symmetry_exponents_j, symmetry_exponents_k, symmetry_exponents_l]
 
-            x = y = z = 0
-            for exponent in exponents:
-                x += exponent[0]
-                y += exponent[1]
-                z += exponent[2]
+            x, y, z = symmetry_exponents_ijkl
 
-            if x % 2 != 0:
+            if x != 0:
                 return False
-            if y % 2 != 0:
+            if y != 0:
                 return False
-            if z % 2 != 0:
+            if z != 0:
                 return False
             else:
                 return True
@@ -55,8 +67,13 @@ class Symmetry:
             c = self.symmetry_matrix.item(k, m)
             d = self.symmetry_matrix.item(l, m)
 
-            if ((i == abs(a) and j == abs(b)) or (i == abs(b) and j == abs(a))) and ((k == abs(c) and l == abs(d))
-            or (k == abs(d) and l == abs(c))):
+            w = abs(a)
+            x = abs(b)
+            y = abs(c)
+            z = abs(d)
+
+            if ((i == w and j == x) or (i == x and j == w)) and ((k == y and l == z) or (k == z and l == w)) \
+            and a != 0 and b != 0 and c != 0 and d != 0:
 
                 if a < 0 and b > 0 and c > 0 and d > 0:
                     return False
@@ -65,6 +82,42 @@ class Symmetry:
                 if a > 0 and b > 0 and c < 0 and d > 0:
                     return False
                 if a > 0 and b > 0 and c > 0 and d < 0:
+                    return False
+
+                if a > 0 and b > 0 and c < 0 and d < 0 \
+                and symmetry_exponents_kl != self.symmetry_objects[m].int_operate(symmetry_exponents_kl):
+                    return False
+                if a > 0 and b < 0 and c > 0 and d < 0 \
+                and symmetry_exponents_jl != self.symmetry_objects[m].int_operate(symmetry_exponents_jl):
+                    return False
+                if a < 0 and b > 0 and c > 0 and d < 0 \
+                and symmetry_exponents_il != self.symmetry_objects[m].int_operate(symmetry_exponents_il):
+                    return False
+                if a > 0 and b < 0 and c < 0 and d > 0 \
+                and symmetry_exponents_jk != self.symmetry_objects[m].int_operate(symmetry_exponents_jk):
+                    return False
+                if a < 0 and b > 0 and c < 0 and d > 0 \
+                and symmetry_exponents_ik != self.symmetry_objects[m].int_operate(symmetry_exponents_ik):
+                    return False
+                if a < 0 and b < 0 and c > 0 and d > 0 \
+                and symmetry_exponents_ij != self.symmetry_objects[m].int_operate(symmetry_exponents_ij):
+                    return False
+
+                if a > 0 and b < 0 and c < 0 and d < 0 \
+                and symmetry_exponents_jkl != self.symmetry_objects[m].int_operate(symmetry_exponents_jkl):
+                    return False
+                if a < 0 and b > 0 and c < 0 and d < 0 \
+                and symmetry_exponents_ikl != self.symmetry_objects[m].int_operate(symmetry_exponents_ikl):
+                    return False
+                if a < 0 and b < 0 and c > 0 and d < 0 \
+                and symmetry_exponents_ijl != self.symmetry_objects[m].int_operate(symmetry_exponents_ijl):
+                    return False
+                if a < 0 and b < 0 and c < 0 and d > 0 \
+                and symmetry_exponents_ijk != self.symmetry_objects[m].int_operate(symmetry_exponents_ijk):
+                    return False
+
+                if a < 0 and b < 0 and c < 0 and d < 0 \
+                and symmetry_exponents_ijkl != self.symmetry_objects[m].int_operate(symmetry_exponents_ijkl):
                     return False
 
         return True
@@ -79,13 +132,12 @@ class Symmetry:
             k = 0
         return i, j, k
 
-    def basis_set_symmetry_matrix(self):
+    def symmetry_object_list(self):
 
         if self.point_group is None:
             return None
 
         symmetry_objects = [None]
-
         for rotation in self.point_group.rotation_symmetry:
             rotations = self.expand_rotation_symmetry(rotation)
             symmetry_objects += rotations
@@ -93,22 +145,29 @@ class Symmetry:
             symmetry_objects.append(reflection)
         symmetry_objects += self.point_group.inversion_symmetry
 
+        return symmetry_objects
+
+    def basis_set_symmetry_matrix(self):
+
+        if self.point_group is None:
+            return None
+
         basis_set_size = len(self.basis_set)
-        symmetry_operation_size = len(symmetry_objects)
+        symmetry_operation_size = len(self.symmetry_objects)
 
         symmetry_matrix = np.empty((basis_set_size + 1, symmetry_operation_size), dtype=object)
-        for j in range(len(symmetry_objects)):
+        for j in range(len(self.symmetry_objects)):
             if j == 0:
                 symmetry_matrix.itemset((0, j), 'E')
             else:
-                symmetry_matrix.itemset((0, j), symmetry_objects[j].symmetry_operation)
+                symmetry_matrix.itemset((0, j), self.symmetry_objects[j].symmetry_operation)
 
         for i in range(1, basis_set_size + 1):
             for j in range(symmetry_operation_size):
                 if j == 0:
                     symmetry_matrix.itemset((i, j), i)
                 else:
-                    symmetry_matrix.itemset((i, j), self.symmetry_operation_index(symmetry_objects[j],
+                    symmetry_matrix.itemset((i, j), self.symmetry_operation_index(self.symmetry_objects[j],
                     self.basis_set[i - 1]))
 
         return symmetry_matrix
@@ -130,11 +189,9 @@ class Symmetry:
     def symmetry_operation_index(self, symmetry_operation, basis):
         basis_i = copy.deepcopy(basis)
         basis_i.coordinates = symmetry_operation.operate(basis.coordinates)
-        x, y, z = symmetry_operation.operate(basis_i.integral_exponents)
-        basis_i.integral_exponents = (int(round(x, 1)), int(round(y, 1)), int(round(z, 1)))
+        basis_i.integral_exponents = symmetry_operation.int_operate(basis_i.integral_exponents)
 
-        i = 0
-        k = 1
+        i = k = 0
         for j, basis_j in enumerate(self.basis_set):
             if self.check_basis_functions(basis_i, basis_j):
                 k = self.check_sign(basis_i, basis_j)

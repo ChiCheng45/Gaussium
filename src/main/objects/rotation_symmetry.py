@@ -14,6 +14,12 @@ class RotationSymmetry:
         quaternion = create_quaternion(self.vector, angle)
         return quaternion_rotation(quaternion, coordinate)
 
+    def int_operate(self, coordinate):
+        angle = 2 * pi / self.fold
+        quaternion = create_quaternion(self.vector, angle)
+        x, y, z = quaternion_rotation(quaternion, coordinate)
+        return int(round(x, 1)), int(round(y, 1)), int(round(z, 1))
+
     @property
     def symmetry_operation(self):
         if -1e-3 <= self.vector[0] <= 1e-3:
@@ -28,4 +34,4 @@ class RotationSymmetry:
             k = 0.0
         else:
             k = round(self.vector[2], 3)
-        return 'C_{' + str(self.fold) + '}' + str((i, j, k))
+        return 'C_{' + str(round(self.fold, 3)) + '}' + str((i, j, k))
