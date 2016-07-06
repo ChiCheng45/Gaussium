@@ -1,6 +1,7 @@
 from src.main.common import coordinate_distance
 from src.main.common import gaussian_product_coordinate
-from src.main.integrals import BoysFunction
+from src.main.integrals import boys_function
+from src.main.integrals import boys_function_recursion
 from src.main.objects import PrimitiveBasis
 from math import sqrt, pi, exp
 
@@ -42,12 +43,12 @@ class ObaraSaika:
         boys_x = (a_5 * a_6 * r_56**2) / (a_5 + a_6)
         boys_out1 = (2 * pi**(5/2)) / (a_5 * a_6 * sqrt(a_5 + a_6))
         boys_out2 = exp(((- a_1 * a_2 * r_12**2) / a_5) - ((a_3 * a_4 * r_34**2) / a_6))
-        boys_out3 = BoysFunction.calculate(l_total, boys_x)
+        boys_out3 = boys_function(l_total, boys_x)
 
         self.end_dict = {l_total: boys_out1 * boys_out2 * boys_out3}
 
         while l_total >= 1:
-            boys_out3 = BoysFunction.recursion(l_total, boys_x, boys_out3)
+            boys_out3 = boys_function_recursion(l_total, boys_x, boys_out3)
             l_total -= 1
             self.end_dict[l_total] = boys_out1 * boys_out2 * boys_out3
 

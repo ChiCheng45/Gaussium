@@ -1,5 +1,5 @@
 from src.main.hartreefock import RestrictedHF
-from src.main.matrixelements import IntegralTransformations
+from src.main.matrixelements import molecular_orbitals
 
 
 class MoellerPlesset:
@@ -11,7 +11,7 @@ class MoellerPlesset:
 
         correlation = 0
         occupied_orbitals = electrons // 2
-        molecular_integral_matrix = IntegralTransformations.molecular_orbitals(repulsion, orbital_coefficients)
+        molecular_integral_matrix = molecular_orbitals(repulsion, orbital_coefficients)
 
         print('BEGIN MP2 CALCULATION', end='\n\n')
 

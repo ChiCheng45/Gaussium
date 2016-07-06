@@ -42,9 +42,6 @@ class Symmetry:
             else:
                 return True
 
-        if self.symmetry_matrix is None:
-            return True
-
         i += 1
         j += 1
         k += 1
@@ -94,9 +91,6 @@ class Symmetry:
 
     def symmetry_object_list(self):
 
-        if self.point_group is None:
-            return None
-
         symmetry_objects = [None]
         for rotation in self.point_group.rotation_symmetry:
             rotations = self.expand_rotation_symmetry(rotation)
@@ -108,9 +102,6 @@ class Symmetry:
         return symmetry_objects
 
     def basis_set_symmetry_matrix(self):
-
-        if self.point_group is None:
-            return None
 
         basis_set_size = len(self.basis_set)
         symmetry_operation_size = len(self.symmetry_objects)

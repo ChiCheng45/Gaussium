@@ -1,4 +1,4 @@
-from src.main.integrals import NuclearAttraction
+from src.main.integrals import nuclear_attraction
 from src.main.matrixelements import Matrix
 
 
@@ -24,5 +24,5 @@ class NuclearAttractionMatrix(Matrix):
                 n_1 = primitive_a.normalisation
                 n_2 = primitive_b.normalisation
                 for nuclei in self.nuclei_array:
-                    v_ij += - nuclei.charge * n_1 * n_2 * c_1 * c_2 * NuclearAttraction.integral(primitive_a, primitive_b, nuclei)
+                    v_ij += - nuclei.charge * n_1 * n_2 * c_1 * c_2 * nuclear_attraction(primitive_a, primitive_b, nuclei)
         return v_ij

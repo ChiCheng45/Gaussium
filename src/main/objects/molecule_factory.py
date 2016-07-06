@@ -29,7 +29,7 @@ class MoleculeFactory:
         nuclei_array = self.center_molecule(nuclei_array)
 
         if len(nuclei_array) == 1:                                      # Point
-            return Molecule(nuclei_array, PointGroup([], [], [], 'C_{1}'))
+            return Molecule(nuclei_array, D4h())
 
         rotation, reflection, inversion = self.brute_force_symmetry(nuclei_array)
         self.standard_orientation(nuclei_array, rotation, reflection)

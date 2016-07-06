@@ -8,7 +8,7 @@ from src.main.hartreefock import RestrictedSCF
 from src.main.hartreefock import DifferentOrbitalsDifferentSpins
 from src.main.hartreefock import ConstrainedUnrestrictedSCF
 from src.main.hartreefock import BlockedUnrestrictedSCF
-from src.main.matrixelements import IntegralTransformations
+from src.main.matrixelements import spin_basis_set
 import numpy as np
 import time
 
@@ -156,7 +156,7 @@ class BlockedHartreeFock(HartreeFock):
             [zeros, initial_coefficients]
         ])
 
-        self.repulsion = IntegralTransformations.spin_basis_set(self.repulsion)
+        self.repulsion = spin_basis_set(self.repulsion)
         self.block_linear_algebra = self.block_linear_algebra(self.orbital_overlap)
 
         self.scf_method = self.scf_method(self.core_hamiltonian, self.block_linear_algebra, self.repulsion,

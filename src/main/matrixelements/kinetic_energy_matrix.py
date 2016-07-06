@@ -1,5 +1,5 @@
 from src.main.objects import del_operator
-from src.main.integrals import OrbitalOverlap
+from src.main.integrals import orbital_overlap
 from src.main.matrixelements import Matrix
 
 
@@ -27,6 +27,6 @@ class KineticEnergyMatrix(Matrix):
                 s_ij = 0
                 for primitive_c in primitive_gaussian_array_k:
                     c_3 = primitive_c.contraction
-                    s_ij += n_1 * n_2 * c_1 * c_2 * c_3 * OrbitalOverlap.integral(primitive_a, primitive_c)
+                    s_ij += n_1 * n_2 * c_1 * c_2 * c_3 * orbital_overlap(primitive_a, primitive_c)
                 t_ij += s_ij
         return t_ij
