@@ -175,10 +175,8 @@ class MoleculeFactory:
 
         if rho(nuclei_array[0].coordinates) > 1e-3:
             i = 0
-            j = 1
         else:
             i = 1
-            j = 2
 
         if len(rotation_symmetry) == 0 and len(reflection_symmetry) == 1:
             quaternion = self.quaternion_rotate_to_z_axis(reflection_symmetry[0].vector)
@@ -189,7 +187,7 @@ class MoleculeFactory:
         if len(rotation_symmetry) == 0 and len(reflection_symmetry) == 0:
             quaternion = self.quaternion_rotate_to_z_axis(nuclei_array[i].coordinates)
             self.rotate_all_vectors(quaternion, rotation_symmetry, reflection_symmetry, nuclei_array)
-            quaternion = self.quaternion_rotate_from_phi(nuclei_array[j].coordinates, 0.0)
+            quaternion = self.quaternion_rotate_from_phi(nuclei_array[i + 1].coordinates, 0.0)
             self.rotate_all_vectors(quaternion, rotation_symmetry, reflection_symmetry, nuclei_array)
 
     def rotate_all_vectors(self, quaternion, rotation_symmetry_list, reflection_symmetry_list, nuclei_array):
