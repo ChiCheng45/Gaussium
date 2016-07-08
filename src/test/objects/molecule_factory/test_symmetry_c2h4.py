@@ -26,13 +26,6 @@ class TestSymmetryC2H4(TestCase):
         rotation, reflection, inversion = self.molecule_factory.brute_force_symmetry(nuclei_array)
         self.assertEqual(len(reflection), 3)
 
-    def test_check_inversion_symmetry_returns_true(self):
-        nuclei_array = self.molecule_factory.center_molecule(self.nuclei_array_c2h4)
-        rotation, reflection, inversion = self.molecule_factory.brute_force_symmetry(nuclei_array)
-        self.molecule_factory.standard_orientation(nuclei_array, rotation, reflection)
-        boolean = self.molecule_factory.check_inversion_symmetry(nuclei_array)
-        self.assertEqual(boolean, True)
-
     def test_check_linear_returns_false(self):
         nuclei_array = self.molecule_factory.center_molecule(self.nuclei_array_c2h4)
         rotation, reflection, inversion = self.molecule_factory.brute_force_symmetry(nuclei_array)

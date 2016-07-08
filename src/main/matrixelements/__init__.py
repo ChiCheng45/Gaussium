@@ -2,9 +2,9 @@ from src.main.matrixelements.two_electron_repulsion_matrix import TwoElectronRep
 from src.main.matrixelements.two_electron_repulsion_matrix import TwoElectronRepulsionMatrixOS
 from src.main.matrixelements.two_electron_repulsion_matrix import TwoElectronRepulsionMatrixHGP
 from src.main.matrixelements.create_matrix import Matrix
-from src.main.matrixelements.density_matrix import DensityMatrixRestricted
-from src.main.matrixelements.density_matrix import DensityMatrixUnrestricted
-from src.main.matrixelements.density_matrix import BlockedDensityMatrixUnrestricted
+from src.main.matrixelements.density_matrix import density_matrix_restricted
+from src.main.matrixelements.density_matrix import density_matrix_unrestricted
+from src.main.matrixelements.density_matrix import blocked_density_matrix
 from src.main.matrixelements.fock_matrix import FockMatrixRestricted
 from src.main.matrixelements.fock_matrix import FockMatrixUnrestricted
 from src.main.matrixelements.fock_matrix import FockMatrixConstrained

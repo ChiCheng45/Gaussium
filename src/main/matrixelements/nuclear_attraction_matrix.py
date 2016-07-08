@@ -5,12 +5,11 @@ from src.main.matrixelements import Matrix
 class NuclearAttractionMatrix(Matrix):
 
     def __init__(self, basis_set_array, nuclei_array):
-        super().__init__()
+        super().__init__(len(basis_set_array))
         self.basis_set_array = basis_set_array
         self.nuclei_array = nuclei_array
 
     def create(self):
-        self.matrix_size = len(self.basis_set_array)
         return self.create_matrix(self.calculate)
 
     def calculate(self, i, j):
@@ -24,5 +23,6 @@ class NuclearAttractionMatrix(Matrix):
                 n_1 = primitive_a.normalisation
                 n_2 = primitive_b.normalisation
                 for nuclei in self.nuclei_array:
-                    v_ij += - nuclei.charge * n_1 * n_2 * c_1 * c_2 * nuclear_attraction(primitive_a, primitive_b, nuclei)
+                    v_ij += - nuclei.charge * n_1 * n_2 * c_1 * c_2 * nuclear_attraction(primitive_a, primitive_b,
+                    nuclei)
         return v_ij

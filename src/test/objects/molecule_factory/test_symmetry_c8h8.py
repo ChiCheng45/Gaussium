@@ -2,6 +2,7 @@ from unittest import TestCase
 from unittest.mock import MagicMock
 from numpy import testing
 from src.main.objects import MoleculeFactory
+from src.main.objects import InversionSymmetry
 
 
 class TestSymmetryC8H8(TestCase):
@@ -26,6 +27,7 @@ class TestSymmetryC8H8(TestCase):
         self.nuclei_array_c8h8 = [carbon_1, carbon_2, carbon_3, carbon_4, carbon_5, carbon_6, carbon_7, carbon_8,
         hydrogen_1, hydrogen_2, hydrogen_3, hydrogen_4, hydrogen_5, hydrogen_6, hydrogen_7, hydrogen_8]
         self.molecule_factory = MoleculeFactory()
+        self.inversion_symmetry = InversionSymmetry()
 
     def test_check_linear_returns_false(self):
         nuclei_array = self.molecule_factory.center_molecule(self.nuclei_array_c8h8)
@@ -39,13 +41,6 @@ class TestSymmetryC8H8(TestCase):
         rotation, reflection, inversion = self.molecule_factory.brute_force_symmetry(nuclei_array)
         self.molecule_factory.standard_orientation(nuclei_array, rotation, reflection)
         boolean = self.molecule_factory.check_high_symmetry(rotation)
-        self.assertEqual(boolean, True)
-
-    def test_check_inversion_symmetry_returns_true(self):
-        nuclei_array = self.molecule_factory.center_molecule(self.nuclei_array_c8h8)
-        rotation, reflection, inversion = self.molecule_factory.brute_force_symmetry(nuclei_array)
-        self.molecule_factory.standard_orientation(nuclei_array, rotation, reflection)
-        boolean = self.molecule_factory.check_inversion_symmetry(nuclei_array)
         self.assertEqual(boolean, True)
 
     def test_point_group_returns_o_h_symmetry_for_cubane(self):

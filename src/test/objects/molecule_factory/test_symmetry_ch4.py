@@ -69,13 +69,6 @@ class TestSymmetryCH4(TestCase):
         boolean = self.molecule_factory.check_high_symmetry(rotation)
         self.assertEqual(boolean, True)
 
-    def test_check_inversion_symmetry_returns_false(self):
-        nuclei_array = self.molecule_factory.center_molecule(self.nuclei_array_ch4)
-        rotation, reflection, inversion = self.molecule_factory.brute_force_symmetry(nuclei_array)
-        self.molecule_factory.standard_orientation(nuclei_array, rotation, reflection)
-        boolean = self.molecule_factory.check_inversion_symmetry(nuclei_array)
-        self.assertEqual(boolean, False)
-
     def test_point_group_returns_t_d_symmetry_for_methane(self):
         symmetry = self.molecule_factory.point_group(self.nuclei_array_ch4).point_group.label
         testing.assert_equal(symmetry, 'T_{d}')

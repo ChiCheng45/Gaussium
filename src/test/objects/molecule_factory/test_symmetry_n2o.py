@@ -2,6 +2,7 @@ from unittest import TestCase
 from unittest.mock import MagicMock
 from numpy import testing
 from src.main.objects import MoleculeFactory
+from src.main.objects import InversionSymmetry
 
 
 class TestSymmetryN2O(TestCase):
@@ -19,13 +20,6 @@ class TestSymmetryN2O(TestCase):
         self.molecule_factory.standard_orientation(nuclei_array, rotation, reflection)
         boolean = self.molecule_factory.check_linear(nuclei_array)
         self.assertEqual(boolean, True)
-
-    def test_check_inversion_symmetry_returns_true(self):
-        nuclei_array = self.molecule_factory.center_molecule(self.nuclei_array_n2o)
-        rotation, reflection, inversion = self.molecule_factory.brute_force_symmetry(nuclei_array)
-        self.molecule_factory.standard_orientation(nuclei_array, rotation, reflection)
-        boolean = self.molecule_factory.check_inversion_symmetry(nuclei_array)
-        self.assertEqual(boolean, False)
 
     def test_point_group_returns_c_inf_v_symmetry_for_nitrous_oxide(self):
         symmetry = self.molecule_factory.point_group(self.nuclei_array_n2o).point_group.label

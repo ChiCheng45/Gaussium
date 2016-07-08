@@ -86,7 +86,7 @@ class UnrestrictedHF(HartreeFock):
     def begin_scf(self):
         initial_coefficients = self.start()
         self.scf_method = self.scf_method(self.core_hamiltonian, self.linear_algebra, self.repulsion, self.electrons,
-        self.multiplicity, self.orbital_overlap)
+        self.multiplicity)
 
         print('\nBEGIN SCF PROCEDURE')
         start = time.clock()
@@ -127,19 +127,16 @@ class BlockedHartreeFock(HartreeFock):
         zeros = np.zeros((self.orbital_overlap.shape[0], self.orbital_overlap.shape[0]))
 
         self.orbital_overlap = np.bmat([
-            [self.orbital_overlap, zeros],
-            [zeros, self.orbital_overlap]
-        ])
+                [self.orbital_overlap, zeros],
+                [zeros, self.orbital_overlap]])
 
         self.core_hamiltonian = np.bmat([
-            [self.core_hamiltonian, zeros],
-            [zeros, self.core_hamiltonian]
-        ])
+                [self.core_hamiltonian, zeros],
+                [zeros, self.core_hamiltonian]])
 
         initial_coefficients = np.bmat([
-            [initial_coefficients, zeros],
-            [zeros, initial_coefficients]
-        ])
+                [initial_coefficients, zeros],
+                [zeros, initial_coefficients]])
 
         self.repulsion = spin_basis_set(self.repulsion)
         self.block_linear_algebra = self.block_linear_algebra(self.orbital_overlap)
