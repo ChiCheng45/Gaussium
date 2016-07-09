@@ -86,12 +86,10 @@ class MoleculeFactory:
 
     def check_n_two_fold_perpendicular_to_n_fold(self, rotation_symmetry):
         principal_axis = self.return_principal_axis(rotation_symmetry)
-
         axis_of_rotation = []
         for rotation in rotation_symmetry:
             if principal_axis != rotation and rotation.fold == 2 and (theta(rotation.vector) - pi/2 <= self.error):
                 axis_of_rotation.append(rotation.vector)
-
         if len(axis_of_rotation) == principal_axis.fold:
             return True
         else:
@@ -214,9 +212,9 @@ class MoleculeFactory:
         nuclei_array = self.remove_center_nuclei(nuclei_array)
         vertices = self.remove_duplicate(self.vertices(nuclei_array))
         edge_center = self.remove_duplicate(self.center_two_vertices(nuclei_array))
-        cross_vertices_vertices = self.cross_products_vertices_vertices(vertices)
-        cross_edge_vertices = self.cross_product_edge_vertices(vertices, edge_center)
-        cross_edge_edge = self.cross_product_edge_edge(edge_center)
+        cross_vertices_vertices = self.cross_products(vertices, vertices)
+        cross_edge_vertices = self.cross_products(vertices, edge_center)
+        cross_edge_edge = self.cross_products(edge_center, edge_center)
 
         rotation_symmetry = self.brute_force_rotation_symmetry(nuclei_array, vertices, edge_center,
         cross_vertices_vertices, cross_edge_vertices, cross_edge_edge)
@@ -259,31 +257,10 @@ class MoleculeFactory:
                         center_of_edge.append(axis_edge)
         return center_of_edge
 
-    def cross_products_vertices_vertices(self, vertices):
+    def cross_products(self, vector_i, vector_j):
         cross_products = []
-        for axis_i in vertices:
-            for axis_j in vertices:
-                if axis_i is not axis_j:
-                    axis_cross = cross_product(axis_i, axis_j)
-                    if rho(axis_cross) > self.error:
-                        axis_cross = normalize(axis_cross)
-                        cross_products.append(axis_cross)
-        return cross_products
-
-    def cross_product_edge_vertices(self, vertices, center_of_edge):
-        cross_products = []
-        for axis_i in vertices:
-            for axis_j in center_of_edge:
-                    axis_cross = cross_product(axis_i, axis_j)
-                    if rho(axis_cross) > self.error:
-                        axis_cross = normalize(axis_cross)
-                        cross_products.append(axis_cross)
-        return cross_products
-
-    def cross_product_edge_edge(self, center_of_edge):
-        cross_products = []
-        for axis_i in center_of_edge:
-            for axis_j in center_of_edge:
+        for axis_i in vector_i:
+            for axis_j in vector_j:
                 if axis_i is not axis_j:
                     axis_cross = cross_product(axis_i, axis_j)
                     if rho(axis_cross) > self.error:
