@@ -6,8 +6,6 @@ from src.main.common import coordinate_distance
 from src.main.common import cartesian_to_spherical
 from src.main.common import create_quaternion
 from src.main.common import quaternion_rotation
-from src.main.common import create_householder_matrix
-from src.main.common import householder_matrix_reflection
 from src.main.objects import PointGroup
 from src.main.objects import D4h
 from src.main.objects import RotationSymmetry
@@ -41,7 +39,7 @@ class MoleculeFactory:
             else:
                 return Molecule(nuclei_array, PointGroup(rotation, reflection, inversion, 'C_{inf v}'))
 
-        if self.check_high_symmetry(rotation):                           # Polyhedral
+        if self.check_high_symmetry(rotation):                          # Polyhedral
             if not len(inversion) == 1:
                 return Molecule(nuclei_array, PointGroup(rotation, reflection, inversion, 'T_{d}'))
             elif any([vector.fold == 5 for vector in rotation]):
