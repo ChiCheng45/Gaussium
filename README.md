@@ -5,6 +5,4 @@ The basic HF part is complete, calculations can be carried out on all molecules 
 
 I'm basing this work on Attlia Szabo and Neil S. Ostlunds "Modern Quantum Chemistry: Introduction to Advanced Electronic Structure Theory" and David B. Cooks "Handbook of Computational Chemistry".
 
-The tests section is very poor at the moment because it isn't worth my time will start adding more later.
-
 Please see my GitHub pages http://chicheng45.github.io/Quantum_Chemistry/ for documentation and comparisons against other Qunatum Chemical Software Packages. 
