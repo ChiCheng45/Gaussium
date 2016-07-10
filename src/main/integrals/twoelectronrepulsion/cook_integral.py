@@ -11,7 +11,7 @@ class ElectronRepulsion:
     def __init__(self):
         self.end_dict = {}
 
-    def integral(self, g1, g2, g3, g4):
+    def integrate(self, g1, g2, g3, g4):
         self.end_dict = {}
 
         g5 = gaussian_product(g1, g2)

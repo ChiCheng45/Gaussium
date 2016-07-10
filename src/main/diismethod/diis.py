@@ -3,12 +3,13 @@ import numpy as np
 
 class DIIS:
 
-    def __init__(self, overlap, linear_algebra):
+    def __init__(self, overlap, linear_algebra, diis_subspace=12):
         self.overlap = overlap
         self.linear_algebra = linear_algebra
         self.matrix_size = overlap.shape[0]
         self.fock_array = []
         self.error_array = []
+        self.diis_subspace = diis_subspace
         self.begin = False
 
     def fock_matrix(self, fock, density):
@@ -24,7 +25,7 @@ class DIIS:
             self.error_array.append(error)
             self.fock_array.append(fock)
 
-            if len(self.fock_array) <= 12:  # DIIS subspace reset
+            if len(self.fock_array) <= self.diis_subspace:  # DIIS subspace reset
 
                 if len(self.fock_array) > 1:
                     diis_fock_matrix = np.matrix(np.zeros((self.matrix_size, self.matrix_size)))

@@ -10,7 +10,7 @@ class HeadGordonPople:
     def __init__(self):
         self.end_dict = {}
 
-    def hgp_set(self, g1, g2, g3, g4):
+    def integrate(self, g1, g2, g3, g4):
         self.end_dict = {}
         return self.hgp_sort(g1, g2, g3, g4)
 

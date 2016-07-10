@@ -32,7 +32,7 @@ class TwoElectronRepulsionElement:
                             n_2 = primitive_b.normalisation
                             n_3 = primitive_c.normalisation
                             n_4 = primitive_d.normalisation
-                            integral = self.integral(primitive_a, primitive_b, primitive_c, primitive_d)
+                            integral = self.integral.integrate(primitive_a, primitive_b, primitive_c, primitive_d)
                             f_mn += c_1 * c_2 * c_3 * c_4 * n_1 * n_2 * n_3 * n_4 * integral
             return f_mn
         else:
@@ -65,16 +65,16 @@ class TwoElectronRepulsionElement:
 class TwoElectronRepulsionMatrixOS(TwoElectronRepulsionElement):
 
     def __init__(self, basis_set_array, symmetry_matrix):
-        super().__init__(basis_set_array, ObaraSaika().os_set, symmetry_matrix)
+        super().__init__(basis_set_array, ObaraSaika(), symmetry_matrix)
 
 
 class TwoElectronRepulsionMatrixCook(TwoElectronRepulsionElement):
 
     def __init__(self, basis_set_array, symmetry_matrix):
-        super().__init__(basis_set_array, ElectronRepulsion().integral, symmetry_matrix)
+        super().__init__(basis_set_array, ElectronRepulsion(), symmetry_matrix)
 
 
 class TwoElectronRepulsionMatrixHGP(TwoElectronRepulsionElement):
 
     def __init__(self, basis_set_array, symmetry_matrix):
-        super().__init__(basis_set_array, HeadGordonPople().hgp_set, symmetry_matrix)
+        super().__init__(basis_set_array, HeadGordonPople(), symmetry_matrix)

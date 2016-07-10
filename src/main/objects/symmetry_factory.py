@@ -21,6 +21,7 @@ class SymmetryFactory:
 
     def brute_force_symmetry(self, nuclei_array):
         nuclei_array = self.remove_center_nuclei(nuclei_array)
+
         vertices = self.remove_duplicate(self.vertices(nuclei_array))
         edge_center = self.remove_duplicate(self.center_two_vertices(nuclei_array))
         cross_vertices_vertices = self.cross_products(vertices, vertices)
@@ -33,11 +34,10 @@ class SymmetryFactory:
         reflection_symmetry = self.brute_force_reflection_symmetry(nuclei_array, rotation_symmetry,
         vertices, cross_vertices_vertices, cross_edge_vertices)
 
-        inversion_symmetry = InversionSymmetry()
-        if self.check_symmetry_operation(nuclei_array, inversion_symmetry):
-            inversion_symmetry = [inversion_symmetry]
-        else:
-            inversion_symmetry = []
+        inversion = InversionSymmetry()
+        inversion_symmetry = []
+        if self.check_symmetry_operation(nuclei_array, inversion):
+            inversion_symmetry = [inversion]
 
         return rotation_symmetry, reflection_symmetry, inversion_symmetry
 

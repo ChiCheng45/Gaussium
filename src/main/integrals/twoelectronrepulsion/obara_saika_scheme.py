@@ -13,7 +13,7 @@ class ObaraSaika:
         self.r_7 = ()
         self.end_dict = {}
 
-    def os_set(self, g1, g2, g3, g4):
+    def integrate(self, g1, g2, g3, g4):
         l_1 = g1.integral_exponents
         l_2 = g2.integral_exponents
         l_3 = g3.integral_exponents

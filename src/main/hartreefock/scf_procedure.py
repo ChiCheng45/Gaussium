@@ -11,11 +11,12 @@ from src.main.diismethod import DIIS
 
 class SelfConsistentField:
 
-    def __init__(self, core_hamiltonian, linear_algebra, electrons, fock_matrix_factory):
+    def __init__(self, core_hamiltonian, linear_algebra, electrons, fock_matrix_factory, threshold=1e-12):
         self.linear_algebra = linear_algebra
         self.electrons = electrons
         self.fock_matrix_factory = fock_matrix_factory
         self.calculate = TotalEnergy(core_hamiltonian)
+        self.threshold = threshold
         self.total_energy = 0
         self.previous_total_energy = 0
         self.delta_energy = 10
@@ -28,9 +29,10 @@ class RestrictedSCF(SelfConsistentField):
         self.diis = DIIS(overlap, linear_algebra)
 
     def begin_iterations(self, orbital_coefficients):
-
         orbital_energies = []
+
         while True:
+
             density_matrix = density_matrix_restricted(orbital_coefficients, self.electrons)
             fock_matrix = self.fock_matrix_factory.create(density_matrix)
             self.total_energy = self.calculate.restricted(density_matrix, fock_matrix)
@@ -38,7 +40,7 @@ class RestrictedSCF(SelfConsistentField):
             self.previous_total_energy = self.total_energy
             print('SCF ENERGY: ' + str(self.total_energy) + ' a.u.')
 
-            if abs(self.delta_energy) < 1e-12:
+            if abs(self.delta_energy) < self.threshold:
                 break
 
             fock_matrix = self.diis.fock_matrix(fock_matrix, density_matrix)
@@ -78,7 +80,7 @@ class PopleNesbetBerthier(SelfConsistentField):
             self.previous_total_energy = self.total_energy
             print('SCF ENERGY: ' + str(self.total_energy) + ' a.u.')
 
-            if abs(self.delta_energy) < 1e-12:
+            if abs(self.delta_energy) < self.threshold:
                 break
 
             energies_alph, coefficients_alph = self.linear_algebra.diagonalize(fock_matrix_alph)
@@ -111,8 +113,8 @@ class BlockedUnrestrictedSCF(SelfConsistentField):
         self.diis = DIIS(overlap, linear_algebra)
 
     def begin_iterations(self, orbital_coefficients):
-
         orbital_energies = []
+
         while True:
 
             if self.total_energy == 0:
@@ -126,7 +128,7 @@ class BlockedUnrestrictedSCF(SelfConsistentField):
             self.previous_total_energy = self.total_energy
             print('SCF ENERGY: ' + str(self.total_energy) + ' a.u.')
 
-            if abs(self.delta_energy) < 1e-12:
+            if abs(self.delta_energy) < self.threshold:
                 break
 
             fock_matrix = self.diis.fock_matrix(fock_matrix, density_matrix)
