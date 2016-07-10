@@ -15,17 +15,17 @@ import time
 
 
 def menu():
-    # start('HeH+.mol', 'STO-3G.gbs', 'RHF')  # -2.84183608212 a.u.
-    # start('HeH+.mol', '6-311+GPP.gbs', 'RHF')  # -2.92922773384 a.u.
-    # start('C2H4.mol', '3-21G.gbs', 'RHF')  # -77.600460844 a.u. 30.747198048700866s
-    # start('O2.mol', 'STO-3G.gbs', 'UHF')  # -147.634028141 a.u.
-    # start('O2.mol', 'STO-3G.gbs', 'GHF')  # -147.634028141 a.u.
-    # start('CO.mol', 'STO-3G.gbs', 'MP2')  # -111.354512528 a.u.
-    # start('H2O.mol', '3-21G.gbs', 'RHF', True)
-    start('C2H4.mol', '3-21G.gbs', 'RHF', True)  # -77.600460844 a.u 19.0269839632222s
+    # start('HeH+.mol', 'STO-3G.gbs', 'RHF', 4)  # -2.84183608212 a.u.
+    # start('HeH+.mol', '6-311+GPP.gbs', 'RHF', 4)  # -2.92922773384 a.u.
+    # start('C2H4.mol', '3-21G.gbs', 'RHF', 4)  # -77.600460844 a.u. 30.747198048700866s
+    # start('O2.mol', 'STO-3G.gbs', 'UHF', 4)  # -147.634028141 a.u.
+    # start('O2.mol', 'STO-3G.gbs', 'GHF', 4)  # -147.634028141 a.u.
+    # start('CO.mol', 'STO-3G.gbs', 'MP2', 4)  # -111.354512528 a.u.
+    # start('H2O.mol', '3-21G.gbs', 'RHF', 4, True)
+    start('C2H4.mol', '3-21G.gbs', 'RHF', 4, True)  # -77.600460844 a.u 19.0269839632222s
 
 
-def start(mol, basis, method, symmetry=False):
+def start(mol, basis, method, processes, symmetry=False):
     np.set_printoptions(linewidth=100000, threshold=np.inf)
     start_time = time.clock()
     electron_energy = correlation = 0.0
@@ -50,19 +50,19 @@ def start(mol, basis, method, symmetry=False):
 
     if method == 'RHF':
         electron_energy = RestrictedHF(molecule.nuclei_array, basis_set_array, electrons,
-        symmetry_object).begin_scf()[0]
+        symmetry_object, processes).begin_scf()[0]
     if method == 'UHF':
         electron_energy = DODSUnrestricted(molecule.nuclei_array, basis_set_array, electrons, multiplicity,
-        symmetry_object).begin_scf()[0]
+        symmetry_object, processes).begin_scf()[0]
     if method == 'CUHF':
         electron_energy = ConstrainedUnrestricted(molecule.nuclei_array, basis_set_array, electrons, multiplicity,
-        symmetry_object).begin_scf()[0]
+        symmetry_object, processes).begin_scf()[0]
     if method == 'GHF':
         electron_energy = BlockedHartreeFock(molecule.nuclei_array, basis_set_array, electrons, multiplicity,
-        symmetry_object).begin_scf()[0]
+        symmetry_object, processes).begin_scf()[0]
     if method == 'MP2':
         electron_energy, correlation = MoellerPlesset(
-        RestrictedHF(molecule.nuclei_array, basis_set_array, electrons, symmetry_object)).second_order()
+        RestrictedHF(molecule.nuclei_array, basis_set_array, electrons, symmetry_object, processes)).second_order()
 
     print('NUCLEAR REPULSION ENERGY:    ' + str(nuclear_repulsion) + ' a.u.')
     print('SCF ENERGY:                  ' + str(electron_energy) + ' a.u.')

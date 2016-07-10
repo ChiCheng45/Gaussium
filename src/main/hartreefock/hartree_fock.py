@@ -15,7 +15,7 @@ import time
 
 class HartreeFock:
 
-    def __init__(self, nuclei_array, basis_set_array, electrons, scf_method, symmetry):
+    def __init__(self, nuclei_array, basis_set_array, electrons, scf_method, symmetry, processes):
         self.nuclei_array = nuclei_array
         self.basis_set_array = basis_set_array
         self.electrons = electrons
@@ -23,7 +23,7 @@ class HartreeFock:
         self.orbital_overlap_matrix = OrbitalOverlapMatrix(basis_set_array)
         self.kinetic_energy_matrix = KineticEnergyMatrix(basis_set_array)
         self.nuclear_attraction_matrix = NuclearAttractionMatrix(basis_set_array, nuclei_array)
-        self.repulsion_elements = TwoElectronRepulsionMatrixOS(basis_set_array, symmetry)
+        self.repulsion_elements = TwoElectronRepulsionMatrixOS(basis_set_array, symmetry, processes)
         self.linear_algebra = LinearAlgebra
         self.core_hamiltonian = np.matrix([])
         self.orbital_overlap = np.matrix([])
@@ -51,7 +51,7 @@ class HartreeFock:
         print('\n*************************************************************************************************')
         print('\nBEGIN TWO ELECTRON REPULSION CALCULATION')
         start_repulsion = time.clock()
-        self.repulsion = self.repulsion_elements.store_parallel(4)
+        self.repulsion = self.repulsion_elements.store()
         print('TIME TAKEN: ' + str(time.clock() - start_repulsion) + 's\n')
 
         return initial_orbital_coefficients
@@ -59,8 +59,8 @@ class HartreeFock:
 
 class RestrictedHF(HartreeFock):
 
-    def __init__(self, nuclei_array, basis_set_array, electrons, symmetry):
-        super().__init__(nuclei_array, basis_set_array, electrons, RestrictedSCF, symmetry)
+    def __init__(self, nuclei_array, basis_set_array, electrons, symmetry, processes):
+        super().__init__(nuclei_array, basis_set_array, electrons, RestrictedSCF, symmetry, processes)
 
     def begin_scf(self):
         initial_coefficients = self.start()
@@ -79,8 +79,8 @@ class RestrictedHF(HartreeFock):
 
 class UnrestrictedHF(HartreeFock):
 
-    def __init__(self, nuclei_array, basis_set_array, electrons, multiplicity, scf_method, symmetry):
-        super().__init__(nuclei_array, basis_set_array, electrons, scf_method, symmetry)
+    def __init__(self, nuclei_array, basis_set_array, electrons, multiplicity, scf_method, symmetry, processes):
+        super().__init__(nuclei_array, basis_set_array, electrons, scf_method, symmetry, processes)
         self.multiplicity = multiplicity
 
     def begin_scf(self):
@@ -103,22 +103,22 @@ class UnrestrictedHF(HartreeFock):
 
 class DODSUnrestricted(UnrestrictedHF):
 
-    def __init__(self, nuclei_array, basis_set_array, electrons, multiplicity, symmetry):
+    def __init__(self, nuclei_array, basis_set_array, electrons, multiplicity, symmetry, processes):
         super().__init__(nuclei_array, basis_set_array, electrons, multiplicity, DifferentOrbitalsDifferentSpins,
-        symmetry)
+        symmetry, processes)
 
 
 class ConstrainedUnrestricted(UnrestrictedHF):
 
-    def __init__(self, nuclei_array, basis_set_array, electrons, multiplicity, symmetry):
+    def __init__(self, nuclei_array, basis_set_array, electrons, multiplicity, symmetry, processes):
         super().__init__(nuclei_array, basis_set_array, electrons, multiplicity, ConstrainedUnrestrictedSCF,
-        symmetry)
+        symmetry, processes)
 
 
 class BlockedHartreeFock(HartreeFock):
 
-    def __init__(self, nuclei_array, basis_set_array, electrons, multiplicity, symmetry):
-        super().__init__(nuclei_array, basis_set_array, electrons, BlockedUnrestrictedSCF, symmetry)
+    def __init__(self, nuclei_array, basis_set_array, electrons, multiplicity, symmetry, processes):
+        super().__init__(nuclei_array, basis_set_array, electrons, BlockedUnrestrictedSCF, symmetry, processes)
         self.multiplicity = multiplicity
         self.block_linear_algebra = BlockedLinearAlgebra
 

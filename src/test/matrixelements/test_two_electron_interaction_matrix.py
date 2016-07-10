@@ -22,7 +22,7 @@ class TestTwoElectronRepulsionElementCook(TestCase):
         mock_symmetry = MagicMock(nuclei_array=None, point_group=None, symmetry_matrix=None)
         mock_symmetry.non_zero_integral = MagicMock(return_value=True)
 
-        self.two_electron_repulsion = TwoElectronRepulsionMatrixCook(basis_set_array, mock_symmetry)
+        self.two_electron_repulsion = TwoElectronRepulsionMatrixCook(basis_set_array, mock_symmetry, 4)
 
     def test_method_calculate_returns_element_for_0000(self):
         element = self.two_electron_repulsion.calculate(0, 0, 0, 0)
@@ -65,7 +65,7 @@ class TestTwoElectronRepulsionElementOS(TestCase):
         mock_symmetry = MagicMock(nuclei_array=None, point_group=None, symmetry_matrix=None)
         mock_symmetry.non_zero_integral = MagicMock(return_value=True)
 
-        self.two_electron_repulsion = TwoElectronRepulsionMatrixOS(basis_set_array, mock_symmetry)
+        self.two_electron_repulsion = TwoElectronRepulsionMatrixOS(basis_set_array, mock_symmetry, 4)
 
     def test_method_calculate_returns_element_for_0000(self):
         element = self.two_electron_repulsion.calculate(0, 0, 0, 0)
@@ -108,7 +108,7 @@ class TestTwoElectronRepulsionElementHGP(TestCase):
         mock_symmetry = MagicMock(nuclei_array=None, point_group=None, symmetry_matrix=None)
         mock_symmetry.non_zero_integral = MagicMock(return_value=True)
 
-        self.two_electron_repulsion = TwoElectronRepulsionMatrixHGP(basis_set_array, mock_symmetry)
+        self.two_electron_repulsion = TwoElectronRepulsionMatrixHGP(basis_set_array, mock_symmetry, 4)
 
     def test_method_calculate_returns_element_for_0000(self):
         element = self.two_electron_repulsion.calculate(0, 0, 0, 0)
