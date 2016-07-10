@@ -2,6 +2,7 @@ from unittest import TestCase
 from unittest.mock import MagicMock
 from numpy import testing
 from src.main.objects import MoleculeFactory
+from src.main.objects import SymmetryFactory
 
 
 class TestSymmetryHOF(TestCase):
@@ -12,34 +13,35 @@ class TestSymmetryHOF(TestCase):
         fluorine_1 = MagicMock(element='FLUORINE', charge=9, mass=19, coordinates=(1.2899273141, 0.0031592817, 0.0000000000))
         self.nuclei_array_hof = [oxygen_1, hydrogen_1, fluorine_1]
         self.molecule_factory = MoleculeFactory()
+        self.symmetry_factory = SymmetryFactory()
 
     def test_brute_force_rotation_symmetry_returns_list_of_zero_axis_of_rotations(self):
         nuclei_array = self.molecule_factory.center_molecule(self.nuclei_array_hof)
-        rotation, reflection, inversion = self.molecule_factory.brute_force_symmetry(nuclei_array)
+        rotation, reflection, inversion = self.symmetry_factory.brute_force_symmetry(nuclei_array)
         self.assertEqual(len(rotation), 0)
 
     def test_brute_force_reflection_symmetry_returns_list_of_one_reflection_planes(self):
         nuclei_array = self.molecule_factory.center_molecule(self.nuclei_array_hof)
-        rotation, reflection, inversion = self.molecule_factory.brute_force_symmetry(nuclei_array)
+        rotation, reflection, inversion = self.symmetry_factory.brute_force_symmetry(nuclei_array)
         self.assertEqual(len(reflection), 1)
 
     def test_check_linear_returns_false(self):
         nuclei_array = self.molecule_factory.center_molecule(self.nuclei_array_hof)
-        rotation, reflection, inversion = self.molecule_factory.brute_force_symmetry(nuclei_array)
+        rotation, reflection, inversion = self.symmetry_factory.brute_force_symmetry(nuclei_array)
         self.molecule_factory.standard_orientation(nuclei_array, rotation, reflection)
         boolean = self.molecule_factory.check_linear(nuclei_array)
         self.assertEqual(boolean, False)
 
     def test_check_high_symmetry_returns_false(self):
         nuclei_array = self.molecule_factory.center_molecule(self.nuclei_array_hof)
-        rotation, reflection, inversion = self.molecule_factory.brute_force_symmetry(nuclei_array)
+        rotation, reflection, inversion = self.symmetry_factory.brute_force_symmetry(nuclei_array)
         self.molecule_factory.standard_orientation(nuclei_array, rotation, reflection)
         boolean = self.molecule_factory.check_high_symmetry(rotation)
         self.assertEqual(boolean, False)
 
     def test_check_sigma_h_returns_true(self):
         nuclei_array = self.molecule_factory.center_molecule(self.nuclei_array_hof)
-        rotation, reflection, inversion = self.molecule_factory.brute_force_symmetry(nuclei_array)
+        rotation, reflection, inversion = self.symmetry_factory.brute_force_symmetry(nuclei_array)
         self.molecule_factory.standard_orientation(nuclei_array, rotation, reflection)
         boolean = self.molecule_factory.check_sigma_h(reflection)
         self.assertEqual(boolean, True)

@@ -201,8 +201,7 @@ class Symmetry:
         if a > c:
             a, c = c, a
             b, d = d, b
-        if a == c:
-            if b > d:
-                a, c = c, a
-                b, d = d, b
+        if a == c and b > d:
+            a, c = c, a
+            b, d = d, b
         return a, b, c, d

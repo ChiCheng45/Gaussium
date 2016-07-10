@@ -2,7 +2,7 @@ from unittest import TestCase
 from unittest.mock import MagicMock
 from numpy import testing
 from src.main.objects import MoleculeFactory
-from src.main.objects import InversionSymmetry
+from src.main.objects import SymmetryFactory
 
 
 class TestSymmetryN2O(TestCase):
@@ -13,10 +13,11 @@ class TestSymmetryN2O(TestCase):
         oxygen_1 = MagicMock(element='OXYGEN', charge=8, mass=16, coordinates=(0.0000000000, 0.0000000000, 2.1042369647))
         self.nuclei_array_n2o = [nitrogen_1, nitrogen_2, oxygen_1]
         self.molecule_factory = MoleculeFactory()
+        self.symmetry_factory = SymmetryFactory()
 
     def test_check_linear_returns_true(self):
         nuclei_array = self.molecule_factory.center_molecule(self.nuclei_array_n2o)
-        rotation, reflection, inversion = self.molecule_factory.brute_force_symmetry(nuclei_array)
+        rotation, reflection, inversion = self.symmetry_factory.brute_force_symmetry(nuclei_array)
         self.molecule_factory.standard_orientation(nuclei_array, rotation, reflection)
         boolean = self.molecule_factory.check_linear(nuclei_array)
         self.assertEqual(boolean, True)
