@@ -48,8 +48,8 @@ class TwoElectronRepulsionElement:
                         if not (a > b or c > d or a > c or (a == c and b > d)):
                             keys.append((a, b, c, d))
 
-        repulsion_dictionary = {}
         if self.processes == 1:
+            repulsion_dictionary = {}
             for index in keys:
                 repulsion_dictionary[index] = self.calculate(*index)
         else:

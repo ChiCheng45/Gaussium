@@ -30,9 +30,7 @@ class Symmetry:
         symmetry_exponents_ijkl = self.symmetry_exponents(vector_add(symmetry_exponents_ij, symmetry_exponents_kl))
 
         if basis_i.coordinates == basis_j.coordinates == basis_k.coordinates == basis_l.coordinates:
-
             x, y, z = symmetry_exponents_ijkl
-
             if x != 0:
                 return False
             if y != 0:
@@ -90,7 +88,6 @@ class Symmetry:
         return i, j, k
 
     def symmetry_object_list(self):
-
         symmetry_objects = [None]
         for rotation in self.point_group.rotation_symmetry:
             rotations = self.expand_rotation_symmetry(rotation)
@@ -98,7 +95,6 @@ class Symmetry:
         for reflection in self.point_group.reflection_symmetry:
             symmetry_objects.append(reflection)
         symmetry_objects += self.point_group.inversion_symmetry
-
         return symmetry_objects
 
     def basis_set_symmetry_matrix(self):
@@ -189,11 +185,7 @@ class Symmetry:
                 return False
         return True
 
-    def sort_index(self, i, j, k, l):
-        a = i
-        b = j
-        c = k
-        d = l
+    def sort_index(self, a, b, c, d):
         if a > b:
             a, b = b, a
         if c > d:

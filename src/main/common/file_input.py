@@ -4,6 +4,22 @@ import os, re
 
 
 def read_basis_set_file(file_input_basis, nuclei_array):
+    """Reads a GAMESS-UK formatted gaussian basis set file using a list of nuclei objects.
+
+    Parameters
+    ----------
+    file_input_basis : str
+    nuclei_array : List[Nuclei]
+
+    Returns
+    -------
+    basis_array : List[Basis]
+
+    See Also
+    --------
+    expand_basis_set : function for expanding L, P, D and higher functions
+
+    """
     file_input_basis = os.path.join('..\\..\\', 'basissets\\' + file_input_basis)
     basis_array = []
     for a in range(len(nuclei_array)):
@@ -11,11 +27,10 @@ def read_basis_set_file(file_input_basis, nuclei_array):
         lines = file.read().replace('\n', ':')
         file.close()
 
-        regex = nuclei_array[a].element + '.*?#'
-        lines = ' '.join(lines.split())
-        lines += '#'
-        lines = re.search(regex, lines).group(0)
-        lines = re.split(':', lines.replace(': ', ':'))
+        regex = nuclei_array[a].element + '.*?#'  # e.g. regex = CARBON.*?#
+        lines = ' '.join(lines.split()) + '#'  # remove whitespace and add '#' for last element
+        lines = re.search(regex, lines).group(0)  # return string from regex
+        lines = re.split(':', lines.replace(': ', ':'))  # create list from colon separated string
         lines = lines[1:len(lines) - 2]
 
         i = 0
@@ -31,6 +46,8 @@ def read_basis_set_file(file_input_basis, nuclei_array):
             else:
                 input2.append([float(b) for b in line.split()])
         input1.append(input2)
+
+        # basis set file data is now in a more convenient form for expand_basis_set to process
         basis_array_from_fact = expand_basis_set(input1, nuclei_array[a].coordinates)
         basis_array += basis_array_from_fact
 
@@ -38,6 +55,19 @@ def read_basis_set_file(file_input_basis, nuclei_array):
 
 
 def read_mol_file(file_input_mol):
+    """Reads a basic xyz mol file and returns a list of nuclei objects, the electron count and multiplicity.
+
+    Parameters
+    ----------
+    file_input_mol : str
+
+    Returns
+    -------
+    nuclei_array : List[Nuclei]
+    electron_count : int
+    multiplicity : int
+
+    """
     file_input_mol = os.path.join('..\\..\\', 'molfiles\\' + file_input_mol)
     nuclei_array = []
     total_nuclei_charge = 0

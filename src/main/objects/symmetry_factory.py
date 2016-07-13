@@ -73,7 +73,7 @@ class SymmetryFactory:
     def brute_force_reflection_symmetry(self, nuclei_array, rotation_symmetry, vertices, cross_vertices_vertices,
         cross_edge_vertices):
 
-        # rotate all orthogonal vectors by principal axis by twice it's n-fold
+        # rotate all orthogonal vectors by principal axis by half it's n-fold angle
         vector_cross = self.remove_duplicate(vertices + cross_vertices_vertices + cross_edge_vertices)
         vectors_cross_rotated = []
         if len(rotation_symmetry) > 0:
