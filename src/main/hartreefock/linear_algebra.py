@@ -53,8 +53,8 @@ class BlockedLinearAlgebra(LinearAlgebra):
 
 
         orbital_coefficients = np.bmat([
-            [orbital_coefficients_alph, zeros],
-            [zeros, orbital_coefficients_beta]
+                [orbital_coefficients_alph, zeros],
+                [zeros, orbital_coefficients_beta]
         ])
 
         orbital_energies = np.append(orbital_energies_alph, orbital_energies_beta)
@@ -79,8 +79,8 @@ class BlockedLinearAlgebra(LinearAlgebra):
         s_matrix_unitary_bot = s_matrix_unitary_bot[:, sort]
 
         s_matrix_unitary = np.bmat([
-            [s_matrix_unitary_top, zeros],
-            [zeros, s_matrix_unitary_bot]
+                [s_matrix_unitary_top, zeros],
+                [zeros, s_matrix_unitary_bot]
         ])
 
         s_matrix_eigenvalues = np.append(s_matrix_eigenvalues_top, s_matrix_eigenvalues_bot)
