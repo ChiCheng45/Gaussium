@@ -25,7 +25,6 @@ class Matrix:
         : np.matrix
 
         """
-        print(type(function))
         matrix = np.matrix(np.zeros((self.matrix_size, self.matrix_size)))
         for i in range(self.matrix_size):
             for j in range(self.matrix_size):
