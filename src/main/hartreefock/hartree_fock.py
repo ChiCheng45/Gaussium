@@ -105,27 +105,23 @@ class BlockedHartreeFock(HartreeFock):
         super().__init__(nuclei_array, basis_set_array, electrons, symmetry, processes)
         self.zeros = np.zeros((self.orbital_overlap.shape[0], self.orbital_overlap.shape[0]))
 
-        self.blocked_orbital_overlap = np.bmat([
+        self.orbital_overlap = np.bmat([
                 [self.orbital_overlap, self.zeros],
                 [self.zeros, self.orbital_overlap]
         ])
 
-        self.blocked_core_hamiltonian = np.bmat([
+        self.core_hamiltonian = np.bmat([
                 [self.core_hamiltonian, self.zeros],
                 [self.zeros, self.core_hamiltonian]
         ])
 
-        self.blocked_repulsion = spin_basis_set(self.repulsion)
-        self.block_linear_algebra = BlockedLinearAlgebra(self.blocked_orbital_overlap)
-        self.scf_method = BlockedUnrestrictedSCF(self.blocked_core_hamiltonian, self.block_linear_algebra,
-        self.blocked_repulsion, self.electrons, multiplicity, self.blocked_orbital_overlap)
+        self.repulsion = spin_basis_set(self.repulsion)
+        self.linear_algebra = BlockedLinearAlgebra(self.orbital_overlap)
+        self.scf_method = BlockedUnrestrictedSCF(self.core_hamiltonian, self.linear_algebra,
+        self.repulsion, self.electrons, multiplicity, self.orbital_overlap)
 
     def begin_scf(self):
         initial_coefficients = self.initial_guess()
-        initial_coefficients = np.bmat([
-                [initial_coefficients, self.zeros],
-                [self.zeros, initial_coefficients]
-        ])
 
         print('\nBEGIN SCF PROCEDURE')
         start = time.clock()
