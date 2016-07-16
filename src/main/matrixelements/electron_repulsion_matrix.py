@@ -49,8 +49,7 @@ class TwoElectronRepulsionElement:
                 keys.append(index)
 
         if self.processes > 1:
-            pool = Pool(self.processes)
-            values = pool.starmap(self.calculate, keys)
+            values = Pool(self.processes).starmap(self.calculate, keys)
             repulsion_dictionary = dict(zip(keys, values))
         else:
             repulsion_dictionary = {index: self.calculate(*index) for index in keys}
