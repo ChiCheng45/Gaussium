@@ -34,8 +34,8 @@ class SymmetryFactory:
         reflection_symmetry = self.brute_force_reflection_symmetry(nuclei_array, rotation_symmetry,
         vertices, cross_vertices_vertices, cross_edge_vertices)
 
-        inversion = InversionSymmetry()
         inversion_symmetry = []
+        inversion = InversionSymmetry()
         if self.check_symmetry_operation(nuclei_array, inversion):
             inversion_symmetry = [inversion]
 

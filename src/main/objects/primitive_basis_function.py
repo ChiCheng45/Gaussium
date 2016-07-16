@@ -3,7 +3,18 @@ from math import factorial as fac
 
 
 class PrimitiveBasis:
+    """Primitive Gaussian basis function.
 
+    Attributes
+    ----------
+    contraction : float
+    exponent : float
+    coordinates : Tuple[float, float, float]
+    integral_exponents : Tuple[int, int, int]
+    normalisation_memo : {None, float}
+        Stores the normalisation constant once calculated.
+
+    """
     def __init__(self, contraction, exponent, coordinates, integral_exponents):
         self.contraction = contraction
         self.exponent = exponent
@@ -13,6 +24,13 @@ class PrimitiveBasis:
 
     @property
     def normalisation(self):
+        """Calculates normalisation constant and stores in self.normalisation once called.
+
+        Returns
+        -------
+        self.normalisation_memo : float
+
+        """
         if self.normalisation_memo is None:
             x, y, z = self.integral_exponents
             out1 = ((2 * self.exponent) / pi) ** (3 / 4)

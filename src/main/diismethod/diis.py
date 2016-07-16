@@ -24,7 +24,6 @@ class DIIS:
     P. Pulay, J. Comput. Chem. 3, 556 (1982).
 
     """
-
     def __init__(self, overlap, linear_algebra, diis_subspace=12):
         self.matrix_size = overlap.shape[0]
         self.overlap = overlap
@@ -35,7 +34,7 @@ class DIIS:
         self.begin = False
 
     def fock_matrix(self, fock, density):
-        """Runs DIIS and return a the Fock matrix or DIIS optimized Fock matrix
+        """Runs DIIS and return a the Fock matrix or a DIIS optimized Fock matrix.
 
         Parameters
         ----------

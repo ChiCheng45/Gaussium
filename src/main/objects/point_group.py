@@ -12,10 +12,10 @@ class PointGroup:
         self.label = label
 
 
-class D4h:
+class D4h(PointGroup):
 
     def __init__(self):
-        self.rotation_symmetry = [
+        rotation_symmetry = [
             RotationSymmetry(4, (0.0, 0.0, 1.0)),
             RotationSymmetry(2, (0.0, 1.0, 0.0)),
             RotationSymmetry(2, (1.0, 0.0, 0.0)),
@@ -23,7 +23,7 @@ class D4h:
             RotationSymmetry(2, (-0.707107, 0.707107, 0.0))
         ]
 
-        self.reflection_symmetry = [
+        reflection_symmetry = [
             ReflectionSymmetry((1.0, 0.0, 0.0)),
             ReflectionSymmetry((0.0, 1.0, 0.0)),
             ReflectionSymmetry((1.0, 0.0, 0.0)),
@@ -31,8 +31,10 @@ class D4h:
             ReflectionSymmetry((-0.707107, 0.707107, 0.0))
         ]
 
-        self.inversion_symmetry = [
+        inversion_symmetry = [
             InversionSymmetry()
         ]
 
-        self.label = 'D_{4h}'
+        label = 'D_{4h}'
+
+        super().__init__(rotation_symmetry, reflection_symmetry, inversion_symmetry, label)
