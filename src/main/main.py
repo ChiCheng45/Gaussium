@@ -21,7 +21,7 @@ def menu():
     # start('O2.mol', 'STO-3G.gbs', 'UHF', 4)  # -147.634028141 a.u.
     # start('O2.mol', 'STO-3G.gbs', 'GHF', 4)  # -147.634028141 a.u.
     # start('CO.mol', 'STO-3G.gbs', 'MP2', 4)  # -111.354512528 a.u.
-    # start('H2O.mol', '3-21G.gbs', 'RHF', 4, True)
+    # start('H2O.mol', 'STO-3G.gbs', 'RHF', 4, True)
     start('C2H4.mol', '3-21G.gbs', 'RHF', 4, True)  # -77.600460844 a.u 19.0269839632222s
 
 

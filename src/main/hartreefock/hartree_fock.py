@@ -34,7 +34,7 @@ class HartreeFock:
         print('\n*************************************************************************************************')
         print('\nBEGIN TWO ELECTRON REPULSION CALCULATION')
         start_repulsion = time.clock()
-        self.repulsion = TwoElectronRepulsionMatrixOS(self.basis_set_array, self.symmetry, processes).store()
+        self.repulsion = TwoElectronRepulsionMatrixOS(self.basis_set_array, self.symmetry, processes).create()
         print('TIME TAKEN: ' + str(time.clock() - start_repulsion) + 's\n')
 
     def initial_guess(self):

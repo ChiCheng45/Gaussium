@@ -2,6 +2,7 @@ from src.main.integrals.twoelectronrepulsion import ElectronRepulsion
 from src.main.integrals.twoelectronrepulsion import ObaraSaika
 from src.main.integrals.twoelectronrepulsion import HeadGordonPople
 from multiprocessing import Pool
+import itertools
 import numpy as np
 
 
@@ -15,7 +16,7 @@ class TwoElectronRepulsionElement:
         self.processes = processes
 
     def calculate(self, i, j, k, l):
-        if self.symmetry.non_zero_integral((i, j, k, l)):
+        if self.symmetry.none_zero_integral((i, j, k, l)):
             f_mn = 0
             primitive_array_i = self.basis_set_array[i].primitive_gaussian_array
             primitive_array_j = self.basis_set_array[j].primitive_gaussian_array
@@ -39,31 +40,24 @@ class TwoElectronRepulsionElement:
         else:
             return 0.0
 
-    def store(self):
-        keys = []
-        for a in range(self.matrix_size):
-            for b in range(self.matrix_size):
-                for c in range(self.matrix_size):
-                    for d in range(self.matrix_size):
-                        if not (a > b or c > d or a > c or (a == c and b > d)):
-                            keys.append((a, b, c, d))
+    def create(self):
 
-        if self.processes == 1:
-            repulsion_dictionary = {}
-            for index in keys:
-                repulsion_dictionary[index] = self.calculate(*index)
-        else:
+        keys = []
+        for index in itertools.product(range(self.matrix_size), repeat=4):
+            a, b, c, d = index
+            if not (a > b or c > d or a > c or (a == c and b > d)):
+                keys.append(index)
+
+        if self.processes > 1:
             pool = Pool(self.processes)
             values = pool.starmap(self.calculate, keys)
             repulsion_dictionary = dict(zip(keys, values))
+        else:
+            repulsion_dictionary = {index: self.calculate(*index) for index in keys}
 
         repulsion_matrix = np.zeros((self.matrix_size, self.matrix_size, self.matrix_size, self.matrix_size))
-        for a in range(self.matrix_size):
-            for b in range(self.matrix_size):
-                for c in range(self.matrix_size):
-                    for d in range(self.matrix_size):
-                        repulsion_matrix.itemset((a, b, c, d), repulsion_dictionary[
-                        self.symmetry.sort_index(a, b, c, d)])
+        for index in itertools.product(range(self.matrix_size), repeat=4):
+            repulsion_matrix.itemset(index, repulsion_dictionary[self.symmetry.sort_index(*index)])
 
         return repulsion_matrix
 

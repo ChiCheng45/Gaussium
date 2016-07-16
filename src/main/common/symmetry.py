@@ -14,7 +14,7 @@ class Symmetry:
         self.int_operate_dict = self.symmetry_exponent_dict()
         self.symmetry_matrix = self.basis_set_symmetry_matrix()
 
-    def non_zero_integral(self, index):
+    def none_zero_integral(self, index):
         i, j, k, l = index
         basis_i = self.basis_set[i]
         basis_j = self.basis_set[j]
@@ -30,12 +30,7 @@ class Symmetry:
         symmetry_exponents_ijkl = self.symmetry_exponents(vector_add(symmetry_exponents_ij, symmetry_exponents_kl))
 
         if basis_i.coordinates == basis_j.coordinates == basis_k.coordinates == basis_l.coordinates:
-            x, y, z = symmetry_exponents_ijkl
-            if x != 0:
-                return False
-            if y != 0:
-                return False
-            if z != 0:
+            if symmetry_exponents_ijkl.count(0) != 3:
                 return False
             else:
                 return True
@@ -57,9 +52,8 @@ class Symmetry:
             y = abs(c)
             z = abs(d)
 
-            if a != 0 and b != 0 and c != 0 and d != 0 and ((i == w and j == x) or (i == x and j == w)) \
-            and ((k == y and l == z) or (k == z and l == y)) \
-            and symmetry_exponents_ijkl != self.int_operate_dict[(m, symmetry_exponents_ijkl)]:
+            if (a, b, c, d).count(0) == 0 and ((i == w and j == x) or (i == x and j == w)) and ((k == y and l == z)
+            or (k == z and l == y)) and symmetry_exponents_ijkl != self.int_operate_dict[(m, symmetry_exponents_ijkl)]:
                 return False
 
         return True

@@ -4,7 +4,7 @@ from src.main.common import create_quaternion
 from src.main.common import quaternion_rotation
 from src.main.objects import SymmetryFactory
 from src.main.objects import PointGroup
-from src.main.objects import D4h
+from src.main.objects import Oh, D4h, C4v
 from src.main.objects import Molecule
 from math import pi
 import heapq
@@ -20,17 +20,16 @@ class MoleculeFactory:
         nuclei_array = self.center_molecule(nuclei_array)
 
         if len(nuclei_array) == 1:                                      # Point
-            return Molecule(nuclei_array, D4h())
+            return Molecule(nuclei_array, Oh())
 
         rotation, reflection, inversion = self.symmetry_factory.brute_force_symmetry(nuclei_array)
         self.standard_orientation(nuclei_array, rotation, reflection)
 
         if self.check_linear(nuclei_array):                             # Linear
-            rotation = reflection = []
             if len(inversion) == 1:
                 return Molecule(nuclei_array, D4h())
             else:
-                return Molecule(nuclei_array, PointGroup(rotation, reflection, inversion, 'C_{inf v}'))
+                return Molecule(nuclei_array, C4v())
 
         if self.check_high_symmetry(rotation):                          # Polyhedral
             if not len(inversion) == 1:

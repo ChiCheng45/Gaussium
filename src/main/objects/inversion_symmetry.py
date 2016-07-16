@@ -41,4 +41,4 @@ class InversionSymmetry:
 
         """
         x, y, z = coordinate
-        return int(round(x, 1)), int(round(y, 1)), int(round(z, 1))
+        return -int(round(x, 1)), -int(round(y, 1)), -int(round(z, 1))
