@@ -31,22 +31,17 @@ class Symmetry:
             else:
                 return True
 
-        i += 1
-        j += 1
-        k += 1
-        l += 1
-
         symmetry_operations = self.symmetry_matrix.shape[1]
         for m in range(1, symmetry_operations):
-            a = self.symmetry_matrix.item(i, m)
-            b = self.symmetry_matrix.item(j, m)
-            c = self.symmetry_matrix.item(k, m)
-            d = self.symmetry_matrix.item(l, m)
+            a = self.symmetry_matrix.item(i + 1, m)
+            b = self.symmetry_matrix.item(j + 1, m)
+            c = self.symmetry_matrix.item(k + 1, m)
+            d = self.symmetry_matrix.item(l + 1, m)
 
-            w = abs(a)
-            x = abs(b)
-            y = abs(c)
-            z = abs(d)
+            w = abs(a) - 1
+            x = abs(b) - 1
+            y = abs(c) - 1
+            z = abs(d) - 1
 
             if (a, b, c, d).count(0) == 0 and ((i == w and j == x) or (i == x and j == w)) and ((k == y and l == z)
             or (k == z and l == y)) and symmetry_exponents_ijkl != self.int_operate_dict[(m, symmetry_exponents_ijkl)]:
