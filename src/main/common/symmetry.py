@@ -21,13 +21,9 @@ class Symmetry:
         basis_k = self.basis_set[k]
         basis_l = self.basis_set[l]
 
-        symmetry_exponents_i = self.symmetry_exponents(basis_i.integral_exponents)
-        symmetry_exponents_j = self.symmetry_exponents(basis_j.integral_exponents)
-        symmetry_exponents_k = self.symmetry_exponents(basis_k.integral_exponents)
-        symmetry_exponents_l = self.symmetry_exponents(basis_l.integral_exponents)
-        symmetry_exponents_kl = self.symmetry_exponents(vector_add(symmetry_exponents_k, symmetry_exponents_l))
-        symmetry_exponents_ij = self.symmetry_exponents(vector_add(symmetry_exponents_i, symmetry_exponents_j))
-        symmetry_exponents_ijkl = self.symmetry_exponents(vector_add(symmetry_exponents_ij, symmetry_exponents_kl))
+        exponents_kl = vector_add(basis_k.integral_exponents, basis_l.integral_exponents)
+        exponents_ij = vector_add(basis_i.integral_exponents, basis_j.integral_exponents)
+        symmetry_exponents_ijkl = self.symmetry_exponents(vector_add(exponents_ij, exponents_kl))
 
         if basis_i.coordinates == basis_j.coordinates == basis_k.coordinates == basis_l.coordinates:
             if symmetry_exponents_ijkl.count(0) != 3:

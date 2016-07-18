@@ -1,3 +1,4 @@
+from numpy import matlib
 import numpy as np
 
 
@@ -25,9 +26,9 @@ class Matrix:
         : np.matrix
 
         """
-        matrix = np.matrix(np.zeros((self.matrix_size, self.matrix_size)))
+        matrix = matlib.zeros((self.matrix_size, self.matrix_size))
         for i in range(self.matrix_size):
             for j in range(self.matrix_size):
                 if i <= j:
                     matrix.itemset((i, j), function(i, j))
-        return matrix + np.transpose(matrix) - np.diag(np.diag(matrix))
+        return matrix + matrix.T - np.diag(np.diag(matrix))
