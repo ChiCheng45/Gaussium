@@ -7,8 +7,8 @@ import copy
 
 class Symmetry:
 
-    def __init__(self, molecule, basis_set_array):
-        self.point_group = molecule.point_group
+    def __init__(self, point_group, basis_set_array):
+        self.point_group = point_group
         self.basis_set = basis_set_array
         self.symmetry_objects = self.symmetry_object_list()
         self.int_operate_dict = self.symmetry_exponent_dict()

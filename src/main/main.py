@@ -38,7 +38,7 @@ def start(mol, basis, method, processes, symmetry=False):
         molecule = Molecule(nuclei_array, PointGroup([], [], [], 'C_{1}'))
 
     basis_set_array = read_basis_set_file(basis, molecule.nuclei_array)
-    symmetry_object = Symmetry(molecule, basis_set_array)
+    symmetry_object = Symmetry(molecule.point_group, basis_set_array)
     print(symmetry_object.symmetry_matrix if symmetry else 'SYMMETRY: FALSE', end='\n\n')
 
     coulomb_law_matrix = coulomb_matrix(nuclei_array)
