@@ -17,7 +17,7 @@ class TwoElectronRepulsionElement:
 
     def calculate(self, i, j, k, l):
         if self.symmetry.none_zero_integral((i, j, k, l)):
-            f_mn = 0
+            f_mn = 0.0
             primitive_array_i = self.basis_set_array[i].primitive_gaussian_array
             primitive_array_j = self.basis_set_array[j].primitive_gaussian_array
             primitive_array_k = self.basis_set_array[k].primitive_gaussian_array
@@ -43,10 +43,9 @@ class TwoElectronRepulsionElement:
     def create(self):
 
         keys = []
-        for index in itertools.product(range(self.matrix_size), repeat=4):
-            a, b, c, d = index
+        for a, b, c, d in itertools.product(range(self.matrix_size), repeat=4):
             if not (a > b or c > d or a > c or (a == c and b > d)):
-                keys.append(index)
+                keys.append((a, b, c, d))
 
         if self.processes > 1:
             values = Pool(self.processes).starmap(self.calculate, keys)
@@ -55,8 +54,8 @@ class TwoElectronRepulsionElement:
             repulsion_dictionary = {index: self.calculate(*index) for index in keys}
 
         repulsion_matrix = np.zeros((self.matrix_size, self.matrix_size, self.matrix_size, self.matrix_size))
-        for index in itertools.product(range(self.matrix_size), repeat=4):
-            repulsion_matrix.itemset(index, repulsion_dictionary[self.symmetry.sort_index(*index)])
+        for a, b, c, d in itertools.product(range(self.matrix_size), repeat=4):
+            repulsion_matrix.itemset((a, b, c, d), repulsion_dictionary[self.symmetry.sort_index(a, b, c, d)])
 
         return repulsion_matrix
 
