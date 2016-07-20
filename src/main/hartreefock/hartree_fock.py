@@ -59,7 +59,7 @@ class RestrictedHF(HartreeFock):
         print('\nORBITAL ENERGY EIGENVALUES\n{}'.format(orbital_energies))
         print('\nORBITAL COEFFICIENTS\n{}'.format(orbital_coefficients), end='\n\n\n')
 
-        return electron_energy, orbital_energies, orbital_coefficients, self.repulsion
+        return electron_energy, orbital_energies, orbital_coefficients
 
 
 class UnrestrictedHF(HartreeFock):
@@ -82,7 +82,7 @@ class UnrestrictedHF(HartreeFock):
         print('\nALPHA ORBITAL COEFFICIENTS\n{}'.format(coefficients_alpha), end='\n')
         print('\nBETA ORBITAL COEFFICIENTS\n{}'.format(coefficients_beta), end='\n\n\n')
 
-        return electron_energy, energies_alpha, energies_beta, coefficients_alpha, coefficients_beta, self.repulsion
+        return electron_energy, energies_alpha, energies_beta, coefficients_alpha, coefficients_beta
 
 
 class DODSUnrestricted(UnrestrictedHF):
@@ -130,4 +130,4 @@ class BlockedHartreeFock(HartreeFock):
         print('\nORBITAL ENERGY EIGENVALUES\n{}'.format(orbital_energies))
         print('\nORBITAL COEFFICIENTS\n{}'.format(orbital_coefficients), end='\n\n\n')
 
-        return electron_energy, orbital_energies, orbital_coefficients, self.repulsion
+        return electron_energy, orbital_energies, orbital_coefficients

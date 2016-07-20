@@ -5,14 +5,13 @@ class MoellerPlesset:
 
     def __init__(self, hartree_fock):
         self.hartree_fock = hartree_fock
-        self.electrons = self.hartree_fock.electrons
 
     def second_order(self):
-        electron_energy, orbital_energies, orbital_coefficients, repulsion = self.hartree_fock.begin_scf()
+        electron_energy, orbital_energies, orbital_coefficients = self.hartree_fock.begin_scf()
 
         correlation = 0
-        occupied_orbitals = self.electrons // 2
-        molecular_integral = molecular_orbitals(repulsion, orbital_coefficients)
+        occupied_orbitals = self.hartree_fock.electrons // 2
+        molecular_integral = molecular_orbitals(self.hartree_fock.repulsion, orbital_coefficients)
 
         print('BEGIN MP2 CALCULATION', end='\n\n')
 
