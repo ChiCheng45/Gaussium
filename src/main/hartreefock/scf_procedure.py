@@ -17,9 +17,6 @@ class SelfConsistentField:
         self.fock_matrix_factory = fock_matrix_factory
         self.calculate = TotalEnergy(core_hamiltonian)
         self.threshold = threshold
-        self.total_energy = 0
-        self.previous_total_energy = 0
-        self.delta_energy = 10
 
 
 class RestrictedSCF(SelfConsistentField):
@@ -30,23 +27,24 @@ class RestrictedSCF(SelfConsistentField):
 
     def begin_iterations(self, orbital_coefficients):
         orbital_energies = []
+        total_energy = previous_total_energy = 0
 
         while True:
 
             density_matrix = density_matrix_restricted(orbital_coefficients, self.electrons)
             fock_matrix = self.fock_matrix_factory.create(density_matrix)
-            self.total_energy = self.calculate.restricted(density_matrix, fock_matrix)
-            self.delta_energy = self.previous_total_energy - self.total_energy
-            self.previous_total_energy = self.total_energy
-            print('SCF ENERGY: ' + str(self.total_energy) + ' a.u.')
+            total_energy = self.calculate.restricted(density_matrix, fock_matrix)
+            delta_energy = previous_total_energy - total_energy
+            previous_total_energy = total_energy
+            print('SCF ENERGY: ' + str(total_energy) + ' a.u.')
 
-            if abs(self.delta_energy) < self.threshold:
+            if abs(delta_energy) < self.threshold:
                 break
 
             fock_matrix = self.diis.fock_matrix(fock_matrix, density_matrix)
             orbital_energies, orbital_coefficients = self.linear_algebra.diagonalize(fock_matrix)
 
-        return self.total_energy, orbital_energies, orbital_coefficients
+        return total_energy, orbital_energies, orbital_coefficients
 
 
 class PopleNesbetBerthier(SelfConsistentField):
@@ -61,10 +59,11 @@ class PopleNesbetBerthier(SelfConsistentField):
         coefficients_beta = orbital_coefficients
         energies_alph = []
         energies_beta = []
+        total_energy = previous_total_energy = 0
 
         while True:
 
-            if self.total_energy == 0:
+            if total_energy == 0:
                 density_matrix_alph = density_matrix_unrestricted(coefficients_alph, coefficients_alph.shape[0])
                 density_matrix_beta = density_matrix_unrestricted(coefficients_beta, 0)
             else:
@@ -74,19 +73,19 @@ class PopleNesbetBerthier(SelfConsistentField):
             fock_matrix_alph, fock_matrix_beta = self.fock_matrix_factory.create(density_matrix_alph,
             density_matrix_beta)
 
-            self.total_energy = self.calculate.unrestricted(density_matrix_alph, density_matrix_beta,
-            fock_matrix_alph, fock_matrix_beta)
-            self.delta_energy = self.previous_total_energy - self.total_energy
-            self.previous_total_energy = self.total_energy
-            print('SCF ENERGY: ' + str(self.total_energy) + ' a.u.')
+            total_energy = self.calculate.unrestricted(density_matrix_alph, density_matrix_beta, fock_matrix_alph,
+            fock_matrix_beta)
+            delta_energy = previous_total_energy - total_energy
+            previous_total_energy = total_energy
+            print('SCF ENERGY: ' + str(total_energy) + ' a.u.')
 
-            if abs(self.delta_energy) < self.threshold:
+            if abs(delta_energy) < self.threshold:
                 break
 
             energies_alph, coefficients_alph = self.linear_algebra.diagonalize(fock_matrix_alph)
             energies_beta, coefficients_beta = self.linear_algebra.diagonalize(fock_matrix_beta)
 
-        return self.total_energy, energies_alph, energies_beta, coefficients_alph, coefficients_beta
+        return total_energy, energies_alph, energies_beta, coefficients_alph, coefficients_beta
 
 
 class DifferentOrbitalsDifferentSpins(PopleNesbetBerthier):
@@ -114,24 +113,25 @@ class BlockedUnrestrictedSCF(SelfConsistentField):
 
     def begin_iterations(self, orbital_coefficients):
         orbital_energies = []
+        total_energy = previous_total_energy = 0
 
         while True:
 
-            if self.total_energy == 0:
+            if total_energy == 0:
                 density_matrix = blocked_density_matrix(orbital_coefficients, orbital_coefficients.shape[0] // 2, 0)
             else:
                 density_matrix = blocked_density_matrix(orbital_coefficients, self.electrons_alph, self.electrons_beta)
 
             fock_matrix = self.fock_matrix_factory.create(density_matrix)
-            self.total_energy = self.calculate.restricted(density_matrix, fock_matrix)
-            self.delta_energy = self.previous_total_energy - self.total_energy
-            self.previous_total_energy = self.total_energy
-            print('SCF ENERGY: ' + str(self.total_energy) + ' a.u.')
+            total_energy = self.calculate.restricted(density_matrix, fock_matrix)
+            delta_energy = previous_total_energy - total_energy
+            previous_total_energy = total_energy
+            print('SCF ENERGY: ' + str(total_energy) + ' a.u.')
 
-            if abs(self.delta_energy) < self.threshold:
+            if abs(delta_energy) < self.threshold:
                 break
 
             fock_matrix = self.diis.fock_matrix(fock_matrix, density_matrix)
             orbital_energies, orbital_coefficients = self.linear_algebra.diagonalize(fock_matrix)
 
-        return self.total_energy, orbital_energies, orbital_coefficients
+        return total_energy, orbital_energies, orbital_coefficients

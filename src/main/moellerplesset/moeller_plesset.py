@@ -1,4 +1,5 @@
 from src.main.matrixelements import molecular_orbitals
+import itertools
 
 
 class MoellerPlesset:
@@ -7,22 +8,18 @@ class MoellerPlesset:
         self.hartree_fock = hartree_fock
 
     def second_order(self):
-        electron_energy, orbital_energies, orbital_coefficients = self.hartree_fock.begin_scf()
+        electron_energy, orb_energies, orbital_coefficients = self.hartree_fock.begin_scf()
+
+        print('BEGIN MP2 CALCULATION\n')
+        occupied_orbitals = self.hartree_fock.electrons // 2
+        total_orbitals = len(orb_energies)
+        integrals = molecular_orbitals(self.hartree_fock.repulsion, orbital_coefficients)
 
         correlation = 0
-        occupied_orbitals = self.hartree_fock.electrons // 2
-        molecular_integral = molecular_orbitals(self.hartree_fock.repulsion, orbital_coefficients)
-
-        print('BEGIN MP2 CALCULATION', end='\n\n')
-
-        for i in range(occupied_orbitals):
-            for j in range(occupied_orbitals):
-                for a in range(occupied_orbitals, len(orbital_energies)):
-                    for b in range(occupied_orbitals, len(orbital_energies)):
-                        out1 = (orbital_energies.item(i) + orbital_energies.item(j) - orbital_energies.item(a)
-                        - orbital_energies.item(b))
-                        out2 = 2 * (molecular_integral.item(i, a, j, b))**2 / out1
-                        out3 = (molecular_integral.item(i, a, j, b) * molecular_integral.item(i, b, j, a)) / out1
-                        correlation += out2 - out3
+        for i, j in itertools.product(range(occupied_orbitals), repeat=2):
+            for a, b in itertools.product(range(occupied_orbitals, total_orbitals), repeat=2):
+                out = (orb_energies.item(i) + orb_energies.item(j) - orb_energies.item(a) - orb_energies.item(b))
+                correlation += 2 * (integrals.item(i, a, j, b))**2 / out
+                correlation -= (integrals.item(i, a, j, b) * integrals.item(i, b, j, a)) / out
 
         return electron_energy, correlation

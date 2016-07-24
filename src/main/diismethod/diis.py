@@ -24,7 +24,7 @@ class DIIS:
     P. Pulay, J. Comput. Chem. 3, 556 (1982).
 
     """
-    def __init__(self, overlap, linear_algebra, diis_subspace=12):
+    def __init__(self, overlap, linear_algebra, diis_subspace=8):
         self.matrix_size = overlap.shape[0]
         self.overlap = overlap
         self.linear_algebra = linear_algebra

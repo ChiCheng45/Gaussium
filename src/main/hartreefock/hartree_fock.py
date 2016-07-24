@@ -8,7 +8,7 @@ from src.main.hartreefock import RestrictedSCF
 from src.main.hartreefock import DifferentOrbitalsDifferentSpins
 from src.main.hartreefock import ConstrainedUnrestrictedSCF
 from src.main.hartreefock import BlockedUnrestrictedSCF
-from src.main.matrixelements import spin_basis_set
+from src.main.matrixelements import blocked_spin_basis_set
 import numpy as np
 import time
 
@@ -31,11 +31,11 @@ class HartreeFock:
         print('\nKINETIC ENERGY MATRIX\n{}'.format(self.kinetic_energy))
         print('\nNUCLEAR POTENTIAL ENERGY MATRIX\n{}'.format(self.nuclear_attraction))
         print('\nCORE HAMILTONIAN MATRIX\n{}'.format(self.core_hamiltonian))
-        print('\n*************************************************************************************************')
         print('\nBEGIN TWO ELECTRON REPULSION CALCULATION')
         start_repulsion = time.clock()
         self.repulsion = TwoElectronRepulsionMatrixOS(self.basis_set_array, self.symmetry, processes).create()
         print('TIME TAKEN: ' + str(time.clock() - start_repulsion) + 's\n')
+        print('\n*************************************************************************************************')
 
     def initial_guess(self):
         initial_orbital_energies, initial_orbital_coefficients = self.linear_algebra.diagonalize(self.core_hamiltonian)
@@ -50,9 +50,10 @@ class RestrictedHF(HartreeFock):
         self.orbital_overlap)
 
     def begin_scf(self):
+        print('\n\nBEGIN RESTRICTED HARTREE FOCK\n')
         initial_coefficients = self.initial_guess()
-
-        print('\nBEGIN SCF PROCEDURE')
+        print('COEFFICIENTS INITIAL GUESS\n{}'.format(initial_coefficients))
+        print('\n\nBEGIN SCF PROCEDURE')
         start = time.clock()
         electron_energy, orbital_energies, orbital_coefficients = self.scf_method.begin_iterations(initial_coefficients)
         print('TIME TAKEN: ' + str(time.clock() - start) + 's\n')
@@ -70,9 +71,10 @@ class UnrestrictedHF(HartreeFock):
         multiplicity)
 
     def begin_scf(self):
+        print('\n\nBEGIN UNRESTRICTED HARTREE FOCK\n')
         initial_coefficients = self.initial_guess()
-
-        print('\nBEGIN SCF PROCEDURE')
+        print('COEFFICIENTS INITIAL GUESS\n{}'.format(initial_coefficients))
+        print('\n\nBEGIN SCF PROCEDURE')
         start = time.clock()
         electron_energy, energies_alpha, energies_beta, coefficients_alpha, coefficients_beta \
             = self.scf_method.begin_iterations(initial_coefficients)
@@ -115,15 +117,16 @@ class BlockedHartreeFock(HartreeFock):
                 [self.zeros, self.core_hamiltonian]
         ])
 
-        self.repulsion = spin_basis_set(self.repulsion)
+        self.repulsion = blocked_spin_basis_set(self.repulsion)
         self.linear_algebra = BlockedLinearAlgebra(self.orbital_overlap)
         self.scf_method = BlockedUnrestrictedSCF(self.core_hamiltonian, self.linear_algebra,
         self.repulsion, self.electrons, multiplicity, self.orbital_overlap)
 
     def begin_scf(self):
+        print('\n\nBEGIN BLOCKED UNRESTRICTED HARTREE FOCK\n')
         initial_coefficients = self.initial_guess()
-
-        print('\nBEGIN SCF PROCEDURE')
+        print('COEFFICIENTS INITIAL GUESS\n{}'.format(initial_coefficients))
+        print('\n\nBEGIN SCF PROCEDURE')
         start = time.clock()
         electron_energy, orbital_energies, orbital_coefficients = self.scf_method.begin_iterations(initial_coefficients)
         print('TIME TAKEN: ' + str(time.clock() - start) + 's\n')

@@ -10,6 +10,7 @@ from src.main.hartreefock import DODSUnrestricted
 from src.main.hartreefock import ConstrainedUnrestricted
 from src.main.hartreefock import BlockedHartreeFock
 from src.main.moellerplesset import MoellerPlesset
+from src.main.tdhartreefock import TimeDependentHartreeFock
 import numpy as np
 import time
 
@@ -23,6 +24,7 @@ def menu():
     # start('CO.mol', 'STO-3G.gbs', 'MP2', 4)  # -111.354512528 a.u.
     # start('H2O.mol', 'STO-3G.gbs', 'RHF', 4, True)
     start('C2H4.mol', '3-21G.gbs', 'RHF', 4, True)  # -77.600460844 a.u 19.0269839632222s
+    # start('H2O.mol', 'STO-3G.gbs', 'CIS', 4)
 
 
 def start(mol, basis, method, processes, symmetry=False):
@@ -44,7 +46,7 @@ def start(mol, basis, method, processes, symmetry=False):
     coulomb_law_matrix = coulomb_matrix(nuclei_array)
     nuclear_repulsion = coulomb_law_matrix.sum() / 2
 
-    print('*******************************************************************************************************')
+    print('\n*************************************************************************************************')
     print('\nA BASIC QUANTUM CHEMICAL PROGRAM IN PYTHON\n\n\n{}'.format([x.element for x in nuclei_array]))
     print('\nNUCLEAR REPULSION ARRAY\n{}'.format(coulomb_law_matrix))
 
@@ -63,12 +65,18 @@ def start(mol, basis, method, processes, symmetry=False):
     if method == 'MP2':
         electron_energy, correlation = MoellerPlesset(
         RestrictedHF(molecule.nuclei_array, basis_set_array, electrons, symmetry_object, processes)).second_order()
+    if method == 'TDHF':
+        electron_energy = TimeDependentHartreeFock(
+        RestrictedHF(molecule.nuclei_array, basis_set_array, electrons, symmetry_object, processes)).calculate()[0]
+    if method == 'CIS':
+        electron_energy = TimeDependentHartreeFock(
+        RestrictedHF(molecule.nuclei_array, basis_set_array, electrons, symmetry_object, processes)).calculate(True)[0]
 
     print('NUCLEAR REPULSION ENERGY:    ' + str(nuclear_repulsion) + ' a.u.')
     print('SCF ENERGY:                  ' + str(electron_energy) + ' a.u.')
     print('CORRELATION ENERGY:          ' + str(correlation) + ' a.u.')
     print('TOTAL ENERGY:                ' + str(electron_energy + nuclear_repulsion + correlation) + ' a.u.')
-    print('\n*****************************************************************************************************')
+    print('\n*************************************************************************************************')
     print('\nTIME TAKEN: ' + str(time.clock() - start_time) + 's')
     print("\nWhat I cannot create I cannot understand - Richard Feynman\n")
 
