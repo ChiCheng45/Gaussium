@@ -4,7 +4,7 @@ from src.main.common import coulomb_matrix
 from src.main.common import Symmetry
 from src.main.objects import Molecule
 from src.main.objects import PointGroup
-from src.main.objects import MoleculeFactory
+from src.main.factory import MoleculeFactory
 from src.main.hartreefock import RestrictedHF
 from src.main.hartreefock import DODSUnrestricted
 from src.main.hartreefock import ConstrainedUnrestricted
@@ -24,7 +24,7 @@ def menu():
     # start('CO.mol', 'STO-3G.gbs', 'MP2', 4)  # -111.354512528 a.u.
     # start('H2O.mol', 'STO-3G.gbs', 'RHF', 4, True)
     start('C2H4.mol', '3-21G.gbs', 'RHF', 4, True)  # -77.600460844 a.u 19.0269839632222s
-    # start('H2O.mol', 'STO-3G.gbs', 'CIS', 4)
+    start('H2O.mol', 'STO-3G.gbs', 'CIS', 4)
 
 
 def start(mol, basis, method, processes, symmetry=False):

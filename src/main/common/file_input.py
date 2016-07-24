@@ -1,4 +1,4 @@
-from src.main.objects import expand_basis_set
+from src.main.factory import expand_basis_set
 from src.main.objects import Nuclei
 import os, re
 

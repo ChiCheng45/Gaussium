@@ -1,7 +1,7 @@
 from unittest import TestCase
 from unittest.mock import MagicMock
 from numpy import testing
-from src.main.objects import MoleculeFactory
+from src.main.factory import MoleculeFactory
 
 
 class TestSymmetryFerrocene(TestCase):

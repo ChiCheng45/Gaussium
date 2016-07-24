@@ -1,6 +1,6 @@
 from unittest import TestCase
-from src.main.objects import expand_basis_set
-from src.main.objects import del_operator
+from src.main.factory import expand_basis_set
+from src.main.factory import del_operator
 from src.main.objects import PrimitiveBasis
 from numpy import testing
 

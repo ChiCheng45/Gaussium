@@ -1,4 +1,4 @@
-from src.main.objects import del_operator
+from src.main.factory import del_operator
 from src.main.integrals import orbital_overlap
 from src.main.matrixelements import Matrix
 

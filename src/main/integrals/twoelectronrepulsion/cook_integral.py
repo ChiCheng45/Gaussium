@@ -1,7 +1,7 @@
 from src.main.common import coordinate_distance
 from src.main.integrals import boys_function
 from src.main.integrals import binomial_coefficient
-from src.main.objects import gaussian_product
+from src.main.factory import gaussian_product
 from math import factorial as fac
 from math import sqrt, pi, exp
 

@@ -3,7 +3,7 @@ from src.main.common import cartesian_to_spherical
 from src.main.common import create_quaternion
 from src.main.common import quaternion_rotation
 from src.main.common import quaternion_multi
-from src.main.objects import SymmetryFactory
+from src.main.factory import SymmetryFactory
 from src.main.objects import PointGroup
 from src.main.objects import Oh, D4h, C4v
 from src.main.objects import Molecule
