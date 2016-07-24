@@ -11,7 +11,7 @@ from src.main.common import quaternion_rotation
 from src.main.common import rho
 from math import pi
 import numpy as np
-import heapq, copy
+import heapq, copy, itertools
 
 
 class SymmetryFactory:
@@ -146,26 +146,23 @@ class SymmetryFactory:
 
     def center_two_vertices(self, nuclei_array):
         center_of_edge = []
-        for nuclei_i in nuclei_array:
-            for nuclei_j in nuclei_array:
-                if nuclei_i is not nuclei_j:
-                    axis_i = nuclei_i.coordinates
-                    axis_j = nuclei_j.coordinates
-                    axis_edge = vector_add(axis_i, axis_j)
-                    if rho(axis_edge) > self.error:
-                        axis_edge = normalize(axis_edge)
-                        center_of_edge.append(axis_edge)
+        for nuclei_i, nuclei_j in itertools.combinations(nuclei_array, 2):
+            axis_i = nuclei_i.coordinates
+            axis_j = nuclei_j.coordinates
+            axis_edge = vector_add(axis_i, axis_j)
+            if rho(axis_edge) > self.error:
+                axis_edge = normalize(axis_edge)
+                center_of_edge.append(axis_edge)
         return center_of_edge
 
     def cross_products(self, vector_i, vector_j):
         cross_products = []
-        for axis_i in vector_i:
-            for axis_j in vector_j:
-                if axis_i is not axis_j:
-                    axis_cross = cross_product(axis_i, axis_j)
-                    if rho(axis_cross) > self.error:
-                        axis_cross = normalize(axis_cross)
-                        cross_products.append(axis_cross)
+        for axis_i, axis_j in itertools.product(vector_i, vector_j):
+            if axis_i is not axis_j:
+                axis_cross = cross_product(axis_i, axis_j)
+                if rho(axis_cross) > self.error:
+                    axis_cross = normalize(axis_cross)
+                    cross_products.append(axis_cross)
         return cross_products
 
     def remove_duplicate(self, axis_of_rotations):

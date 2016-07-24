@@ -2,6 +2,7 @@ from src.main.common import rho, theta, phi
 from src.main.common import cartesian_to_spherical
 from src.main.common import create_quaternion
 from src.main.common import quaternion_rotation
+from src.main.common import quaternion_multi
 from src.main.objects import SymmetryFactory
 from src.main.objects import PointGroup
 from src.main.objects import Oh, D4h, C4v
@@ -142,13 +143,10 @@ class MoleculeFactory:
 
         quaternion_i = create_quaternion((-vector_i[1], vector_i[0], 0.0), -theta(vector_i))
         quaternion_j = create_quaternion((0.0, 0.0, 1.0), -phi(vector_j))
-        self.rotate_all_vectors(quaternion_i, rotation_symmetry, reflection_symmetry, nuclei_array)
-        self.rotate_all_vectors(quaternion_j, rotation_symmetry, reflection_symmetry, nuclei_array)
-
-    def rotate_all_vectors(self, quaternion, rotation_symmetry_list, reflection_symmetry_list, nuclei_array):
-        for rotation in rotation_symmetry_list:
+        quaternion = quaternion_multi(quaternion_j, quaternion_i)
+        for rotation in rotation_symmetry:
             rotation.vector = quaternion_rotation(quaternion, rotation.vector)
-        for reflection in reflection_symmetry_list:
+        for reflection in reflection_symmetry:
             reflection.vector = quaternion_rotation(quaternion, reflection.vector)
         for nuclei in nuclei_array:
             nuclei.coordinates = quaternion_rotation(quaternion, nuclei.coordinates)

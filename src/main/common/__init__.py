@@ -7,6 +7,7 @@ from src.main.common.vector_manipulation import cross_product
 from src.main.common.vector_manipulation import dot_product
 from src.main.common.vector_manipulation import create_quaternion
 from src.main.common.vector_manipulation import quaternion_rotation
+from src.main.common.vector_manipulation import quaternion_multi
 from src.main.common.vector_manipulation import create_householder_matrix
 from src.main.common.vector_manipulation import householder_matrix_reflection
 from src.main.common.vector_manipulation import normalize
