@@ -37,7 +37,7 @@ def start(mol, basis, method, processes, symmetry=False):
     if symmetry:
         molecule = MoleculeFactory().point_group(nuclei_array)
     else:
-        molecule = Molecule(nuclei_array, PointGroup([], [], [], 'C_{1}'))
+        molecule = Molecule(nuclei_array, PointGroup([], [], [], [], 'C_{1}'))
 
     basis_set_array = read_basis_set_file(basis, molecule.nuclei_array)
     symmetry_object = Symmetry(molecule.point_group, basis_set_array)
