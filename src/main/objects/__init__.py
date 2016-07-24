@@ -4,6 +4,7 @@ from src.main.objects.basis_function import Basis
 from src.main.objects.molecule import Molecule
 from src.main.objects.rotation_symmetry import RotationSymmetry
 from src.main.objects.reflection_symmetry import ReflectionSymmetry
+from src.main.objects.improper_rotation_symmetry import ImproperRotationSymmetry
 from src.main.objects.inversion_symmetry import InversionSymmetry
 from src.main.objects.point_group import PointGroup
 from src.main.objects.point_group import Oh

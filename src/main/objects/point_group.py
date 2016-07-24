@@ -1,13 +1,15 @@
 from src.main.objects import RotationSymmetry
 from src.main.objects import ReflectionSymmetry
+from src.main.objects import ImproperRotationSymmetry
 from src.main.objects import InversionSymmetry
 
 
 class PointGroup:
 
-    def __init__(self, rotation_symmetry, reflection_symmetry, inversion_symmetry, label):
+    def __init__(self, rotation_symmetry, reflection_symmetry, improper_rotation, inversion_symmetry, label):
         self.rotation_symmetry = rotation_symmetry
         self.reflection_symmetry = reflection_symmetry
+        self.improper_rotation = improper_rotation
         self.inversion_symmetry = inversion_symmetry
         self.label = label
 
@@ -43,13 +45,23 @@ class Oh(PointGroup):
             ReflectionSymmetry((-0.707107, 0.707107, 0.0))
         ]
 
+        improper_rotation = [
+            ImproperRotationSymmetry(6, (0.557735, 0.557735, 0.557735)),
+            ImproperRotationSymmetry(6, (-0.557735, 0.557735, 0.557735)),
+            ImproperRotationSymmetry(6, (0.557735, -0.557735, 0.557735)),
+            ImproperRotationSymmetry(6, (-0.557735, -0.557735, 0.557735)),
+            ImproperRotationSymmetry(4, (0.0, 0.0, 1.0)),
+            ImproperRotationSymmetry(4, (0.0, 1.0, 0.0)),
+            ImproperRotationSymmetry(4, (1.0, 0.0, 0.0))
+        ]
+
         inversion_symmetry = [
             InversionSymmetry()
         ]
 
         label = 'O_{h}'
 
-        super().__init__(rotation_symmetry, reflection_symmetry, inversion_symmetry, label)
+        super().__init__(rotation_symmetry, reflection_symmetry, improper_rotation, inversion_symmetry, label)
 
 
 class D4h(PointGroup):
@@ -71,13 +83,17 @@ class D4h(PointGroup):
             ReflectionSymmetry((-0.707107, 0.707107, 0.0))
         ]
 
+        improper_rotation = [
+            ImproperRotationSymmetry(4, (0.0, 0.0, 1.0))
+        ]
+
         inversion_symmetry = [
             InversionSymmetry()
         ]
 
         label = 'D_{4h}'
 
-        super().__init__(rotation_symmetry, reflection_symmetry, inversion_symmetry, label)
+        super().__init__(rotation_symmetry, reflection_symmetry, improper_rotation, inversion_symmetry, label)
 
 
 class C4v(PointGroup):
@@ -94,6 +110,10 @@ class C4v(PointGroup):
             ReflectionSymmetry((-0.707107, 0.707107, 0.0))
         ]
 
+        improper_rotation = []
+
+        inversion_symmetry = []
+
         label = 'C_{4v}'
 
-        super().__init__(rotation_symmetry, reflection_symmetry, [], label)
+        super().__init__(rotation_symmetry, reflection_symmetry, improper_rotation, inversion_symmetry, label)

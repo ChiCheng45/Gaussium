@@ -1,5 +1,6 @@
 from src.main.objects import RotationSymmetry
 from src.main.objects import ReflectionSymmetry
+from src.main.objects import ImproperRotationSymmetry
 from src.main.objects import InversionSymmetry
 from src.main.objects import Nuclei
 from src.main.common import cross_product
@@ -34,12 +35,14 @@ class SymmetryFactory:
         reflection_symmetry = self.brute_force_reflection_symmetry(nuclei_array, rotation_symmetry,
         vertices, cross_vertices_vertices, cross_edge_vertices)
 
+        improper_rotation = self.brute_force_improper_rotation(nuclei_array, rotation_symmetry)
+
         inversion_symmetry = []
         inversion = InversionSymmetry()
         if self.check_symmetry_operation(nuclei_array, inversion):
-            inversion_symmetry = [inversion]
+            inversion_symmetry.append(inversion)
 
-        return rotation_symmetry, reflection_symmetry, inversion_symmetry
+        return rotation_symmetry, reflection_symmetry, improper_rotation, inversion_symmetry
 
     def brute_force_rotation_symmetry(self, nuclei_array, corner, edge_center, cross_vertices_vertices,
         cross_edge_vertices, cross_edge_edge):
@@ -114,6 +117,23 @@ class SymmetryFactory:
                     reflection_planes.append(plane_of_reflection)
 
         return reflection_planes
+
+    def brute_force_improper_rotation(self, nuclei_array, rotation_symmetry):
+        improper_rotation_list_i = []
+        for rotation in rotation_symmetry:
+            improper_rotation = ImproperRotationSymmetry(2 * rotation.fold, rotation.vector)
+            improper_rotation_list_i.append(improper_rotation)
+
+        improper_rotation_list_j = []
+        for improper_rotation in improper_rotation_list_i:
+            if self.check_symmetry_operation(nuclei_array, improper_rotation):
+                improper_rotation_list_j.append(improper_rotation)
+                continue
+            improper_rotation.fold //= 2
+            if improper_rotation.fold > 2 and self.check_symmetry_operation(nuclei_array, improper_rotation):
+                improper_rotation_list_j.append(improper_rotation)
+
+        return improper_rotation_list_j
 
     def check_symmetry_operation(self, nuclei_array, symmetry):
         nuclei_array_copy = []

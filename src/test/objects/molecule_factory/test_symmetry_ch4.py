@@ -39,34 +39,34 @@ class TestSymmetryCH4(TestCase):
 
     def test_brute_force_rotation_symmetry_returns_list_of_seven_axis_of_rotations(self):
         nuclei_array = self.molecule_factory.center_molecule(self.nuclei_array_ch4)
-        rotation, reflection, inversion = self.symmetry_factory.brute_force_symmetry(nuclei_array)
+        rotation, reflection, improper, inversion = self.symmetry_factory.brute_force_symmetry(nuclei_array)
         self.assertEqual(len(rotation), 7)
 
     def test_brute_force_rotation_symmetry_returns_list_of_four_axis_of_rotations_with_n_three(self):
         nuclei_array = self.molecule_factory.center_molecule(self.nuclei_array_ch4)
-        rotation, reflection, inversion = self.symmetry_factory.brute_force_symmetry(nuclei_array)
+        rotation, reflection, improper, inversion = self.symmetry_factory.brute_force_symmetry(nuclei_array)
         self.assertEqual([symmetry.fold for symmetry in rotation].count(3), 4)
 
     def test_brute_force_rotation_symmetry_returns_list_of_four_axis_of_rotations_with_n_two(self):
         nuclei_array = self.molecule_factory.center_molecule(self.nuclei_array_ch4)
-        rotation, reflection, inversion = self.symmetry_factory.brute_force_symmetry(nuclei_array)
+        rotation, reflection, improper, inversion = self.symmetry_factory.brute_force_symmetry(nuclei_array)
         self.assertEqual([symmetry.fold for symmetry in rotation].count(2), 3)
 
     def test_brute_force_reflection_symmetry_returns_a_list_of_six_reflection_planes(self):
         nuclei_array = self.molecule_factory.center_molecule(self.nuclei_array_ch4)
-        rotation, reflection, inversion = self.symmetry_factory.brute_force_symmetry(nuclei_array)
+        rotation, reflection, improper, inversion = self.symmetry_factory.brute_force_symmetry(nuclei_array)
         self.assertEqual(len(reflection), 6)
 
     def test_check_linear_returns_false(self):
         nuclei_array = self.molecule_factory.center_molecule(self.nuclei_array_ch4)
-        rotation, reflection, inversion = self.symmetry_factory.brute_force_symmetry(nuclei_array)
+        rotation, reflection, improper, inversion = self.symmetry_factory.brute_force_symmetry(nuclei_array)
         self.molecule_factory.standard_orientation(nuclei_array, rotation, reflection)
         boolean = self.molecule_factory.check_linear(nuclei_array)
         self.assertEqual(boolean, False)
 
     def test_check_high_symmetry_returns_true(self):
         nuclei_array = self.molecule_factory.center_molecule(self.nuclei_array_ch4)
-        rotation, reflection, inversion = self.symmetry_factory.brute_force_symmetry(nuclei_array)
+        rotation, reflection, improper, inversion = self.symmetry_factory.brute_force_symmetry(nuclei_array)
         self.molecule_factory.standard_orientation(nuclei_array, rotation, reflection)
         boolean = self.molecule_factory.check_high_symmetry(rotation)
         self.assertEqual(boolean, True)

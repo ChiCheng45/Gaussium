@@ -17,7 +17,7 @@ class TestSymmetryN2O(TestCase):
 
     def test_check_linear_returns_true(self):
         nuclei_array = self.molecule_factory.center_molecule(self.nuclei_array_n2o)
-        rotation, reflection, inversion = self.symmetry_factory.brute_force_symmetry(nuclei_array)
+        rotation, reflection, improper, inversion = self.symmetry_factory.brute_force_symmetry(nuclei_array)
         self.molecule_factory.standard_orientation(nuclei_array, rotation, reflection)
         boolean = self.molecule_factory.check_linear(nuclei_array)
         self.assertEqual(boolean, True)

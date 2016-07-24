@@ -1,5 +1,7 @@
 from src.main.common import create_quaternion
 from src.main.common import quaternion_rotation
+from src.main.common import create_householder_matrix
+from src.main.common import householder_matrix_reflection
 from math import pi
 
 
@@ -37,8 +39,9 @@ class ImproperRotationSymmetry:
         """
         angle = 2 * pi / self.fold
         quaternion = create_quaternion(self.vector, angle)
-        x, y, z = quaternion_rotation(quaternion, coordinate)
-        return -x, -y, -z
+        householder_matrix = create_householder_matrix(self.vector)
+        x, y, z = householder_matrix_reflection(quaternion_rotation(quaternion, coordinate), householder_matrix)
+        return x, y, z
 
     def int_operate(self, coordinate):
         """Returns the rotation symmetry operation on a coordinate but returns a tuple of ints.
@@ -57,7 +60,8 @@ class ImproperRotationSymmetry:
         """
         angle = 2 * pi / self.fold
         quaternion = create_quaternion(self.vector, angle)
-        x, y, z = quaternion_rotation(quaternion, coordinate)
+        householder_matrix = create_householder_matrix(self.vector)
+        x, y, z = householder_matrix_reflection(quaternion_rotation(quaternion, coordinate), householder_matrix)
         return -int(round(x, 1)), -int(round(y, 1)), -int(round(z, 1))
 
     @property

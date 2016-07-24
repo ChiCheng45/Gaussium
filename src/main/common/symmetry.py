@@ -1,4 +1,5 @@
 from src.main.objects import RotationSymmetry
+from src.main.objects import ImproperRotationSymmetry
 from src.main.common import coordinate_distance
 from src.main.common import vector_add
 import numpy as np
@@ -79,6 +80,9 @@ class Symmetry:
             symmetry_objects += rotations
         for reflection in self.point_group.reflection_symmetry:
             symmetry_objects.append(reflection)
+        for improper_rotation in self.point_group.improper_rotation:
+            improper_rotations = self.expand_improper_rotation_symmetry(improper_rotation)
+            symmetry_objects += improper_rotations
         symmetry_objects += self.point_group.inversion_symmetry
         return symmetry_objects
 
@@ -107,15 +111,20 @@ class Symmetry:
     def expand_rotation_symmetry(self, rotation_symmetry):
         vector = rotation_symmetry.vector
         fold = rotation_symmetry.fold
-
-        if rotation_symmetry.fold == 2:
-            return [rotation_symmetry]
-
         rotation_operations = []
         for i in range(1, fold):
             rotation_symmetry = RotationSymmetry(fold / i, vector)
             rotation_operations.append(rotation_symmetry)
+        return rotation_operations
 
+    def expand_improper_rotation_symmetry(self, improper_rotation):
+        vector = improper_rotation.vector
+        fold = improper_rotation.fold
+        rotation_operations = []
+        for i in range(1, fold):
+            if abs((fold / i) - 2) > 1e-3 and i % 2 != 0:
+                rotation_symmetry = ImproperRotationSymmetry(fold / i, vector)
+                rotation_operations.append(rotation_symmetry)
         return rotation_operations
 
     def symmetry_operation_index(self, symmetry_operation, basis):
