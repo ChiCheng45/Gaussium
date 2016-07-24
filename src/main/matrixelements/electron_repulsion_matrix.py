@@ -1,6 +1,6 @@
-from src.main.integrals.twoelectronrepulsion import ElectronRepulsion
-from src.main.integrals.twoelectronrepulsion import ObaraSaika
-from src.main.integrals.twoelectronrepulsion import HeadGordonPople
+from src.main.integrals import ElectronRepulsion
+from src.main.integrals import ObaraSaika
+from src.main.integrals import HeadGordonPople
 from multiprocessing import Pool
 import itertools
 import numpy as np
