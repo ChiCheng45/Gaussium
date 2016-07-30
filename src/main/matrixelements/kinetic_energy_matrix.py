@@ -1,6 +1,7 @@
 from src.main.factory import del_operator
 from src.main.integrals import orbital_overlap
 from src.main.matrixelements import Matrix
+import itertools
 
 
 class KineticEnergyMatrix(Matrix):
@@ -14,18 +15,17 @@ class KineticEnergyMatrix(Matrix):
 
     def calculate(self, i, j):
         t_ij = 0
-        primitive_array_i = self.basis_set_array[i].primitive_gaussian_array
-        primitive_array_j = self.basis_set_array[j].primitive_gaussian_array
-        for primitive_a in primitive_array_i:
-            for primitive_b in primitive_array_j:
-                c_1 = primitive_a.contraction
-                c_2 = primitive_b.contraction
-                n_1 = primitive_a.normalisation
-                n_2 = primitive_b.normalisation
-                primitive_gaussian_array_k = del_operator(primitive_b)
-                s_ij = 0
-                for primitive_c in primitive_gaussian_array_k:
-                    c_3 = primitive_c.contraction
-                    s_ij += n_1 * n_2 * c_1 * c_2 * c_3 * orbital_overlap(primitive_a, primitive_c)
-                t_ij += s_ij
+        primitives_i = self.basis_set_array[i].primitive_gaussian_array
+        primitives_j = self.basis_set_array[j].primitive_gaussian_array
+        for primitive_a, primitive_b in itertools.product(primitives_i, primitives_j):
+            c_1 = primitive_a.contraction
+            c_2 = primitive_b.contraction
+            n_1 = primitive_a.normalisation
+            n_2 = primitive_b.normalisation
+            primitives_k = del_operator(primitive_b)
+            s_ij = 0
+            for primitive_c in primitives_k:
+                c_3 = primitive_c.contraction
+                s_ij += n_1 * n_2 * c_1 * c_2 * c_3 * orbital_overlap(primitive_a, primitive_c)
+            t_ij += s_ij
         return t_ij

@@ -1,4 +1,5 @@
 from src.main.matrixelements import Matrix
+import itertools
 
 
 class FockMatrixRestricted(Matrix):
@@ -12,11 +13,10 @@ class FockMatrixRestricted(Matrix):
 
         def calculate_restricted(i, j):
             g_ij = 0
-            for a in range(self.matrix_size):
-                for b in range(self.matrix_size):
-                    coulomb_integral = self.repulsion_matrix.item(i, j, a, b)
-                    exchange_integral = self.repulsion_matrix.item(i, b, a, j)
-                    g_ij += density_matrix.item(a, b) * (coulomb_integral - 1/2 * exchange_integral)
+            for a, b in itertools.product(range(self.matrix_size), repeat=2):
+                coulomb_integral = self.repulsion_matrix.item(i, j, a, b)
+                exchange_integral = self.repulsion_matrix.item(i, b, a, j)
+                g_ij += density_matrix.item(a, b) * (coulomb_integral - 1/2 * exchange_integral)
             return g_ij
 
         return self.core_hamiltonian + self.create_matrix(calculate_restricted)
@@ -34,20 +34,18 @@ class FockMatrixUnrestricted(Matrix):
 
         def unrestricted_alph(i, j):
             g_ij = 0
-            for a in range(self.matrix_size):
-                for b in range(self.matrix_size):
-                    coulomb = density_matrix_total.item(a, b) * self.repulsion_matrix.item(i, j, a, b)
-                    exchange = density_matrix_alph.item(a, b) * self.repulsion_matrix.item(i, b, a, j)
-                    g_ij += coulomb - exchange
+            for a, b in itertools.product(range(self.matrix_size), repeat=2):
+                coulomb = density_matrix_total.item(a, b) * self.repulsion_matrix.item(i, j, a, b)
+                exchange = density_matrix_alph.item(a, b) * self.repulsion_matrix.item(i, b, a, j)
+                g_ij += coulomb - exchange
             return g_ij
 
         def unrestricted_beta(i, j):
             g_ij = 0
-            for a in range(self.matrix_size):
-                for b in range(self.matrix_size):
-                    coulomb = density_matrix_total.item(a, b) * self.repulsion_matrix.item(i, j, a, b)
-                    exchange = density_matrix_beta.item(a, b) * self.repulsion_matrix.item(i, b, a, j)
-                    g_ij += coulomb - exchange
+            for a, b in itertools.product(range(self.matrix_size), repeat=2):
+                coulomb = density_matrix_total.item(a, b) * self.repulsion_matrix.item(i, j, a, b)
+                exchange = density_matrix_beta.item(a, b) * self.repulsion_matrix.item(i, b, a, j)
+                g_ij += coulomb - exchange
             return g_ij
 
         fock_matrix_alph = self.core_hamiltonian + self.create_matrix(unrestricted_alph)
@@ -103,18 +101,16 @@ class BlockedFockMatrixUnrestricted(Matrix):
 
         def coulomb(i, j):
             j_ij = 0
-            for a in range(self.matrix_size):
-                for b in range(self.matrix_size):
-                    coulomb_integral = self.repulsion_matrix.item(i, j, a, b)
-                    j_ij += density_matrix.item(a, b) * coulomb_integral
+            for a, b in itertools.product(range(self.matrix_size), repeat=2):
+                coulomb_integral = self.repulsion_matrix.item(i, j, a, b)
+                j_ij += density_matrix.item(a, b) * coulomb_integral
             return j_ij
 
         def exchange(i, j):
             j_ij = 0
-            for a in range(self.matrix_size):
-                for b in range(self.matrix_size):
-                    exchange_integral = self.repulsion_matrix.item(i, b, a, j)
-                    j_ij += density_matrix.item(a, b) * exchange_integral
+            for a, b in itertools.product(range(self.matrix_size), repeat=2):
+                exchange_integral = self.repulsion_matrix.item(i, b, a, j)
+                j_ij += density_matrix.item(a, b) * exchange_integral
             return j_ij
 
         coulomb = self.create_matrix(coulomb)

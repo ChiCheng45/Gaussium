@@ -5,9 +5,12 @@ from src.main.matrixelements import TwoElectronRepulsionMatrixOS
 from src.main.hartreefock import LinearAlgebra
 from src.main.hartreefock import BlockedLinearAlgebra
 from src.main.hartreefock import RestrictedSCF
-from src.main.hartreefock import DifferentOrbitalsDifferentSpins
-from src.main.hartreefock import ConstrainedUnrestrictedSCF
+from src.main.hartreefock import PopleNesbetBerthier
 from src.main.hartreefock import BlockedUnrestrictedSCF
+from src.main.hartreefock import FockMatrixRestricted
+from src.main.hartreefock import FockMatrixUnrestricted
+from src.main.hartreefock import FockMatrixConstrained
+from src.main.hartreefock import BlockedFockMatrixUnrestricted
 from src.main.matrixelements import blocked_spin_basis_set
 import numpy as np
 import time
@@ -16,6 +19,7 @@ import time
 class HartreeFock:
 
     def __init__(self, nuclei_array, basis_set_array, electrons, symmetry, processes):
+        self.scf_method = None
         self.nuclei_array = nuclei_array
         self.basis_set_array = basis_set_array
         self.electrons = electrons
@@ -42,15 +46,12 @@ class HartreeFock:
         return initial_orbital_coefficients
 
 
-class RestrictedHF(HartreeFock):
+class Restricted(HartreeFock):
 
     def __init__(self, nuclei_array, basis_set_array, electrons, symmetry, processes):
         super().__init__(nuclei_array, basis_set_array, electrons, symmetry, processes)
-        self.scf_method = RestrictedSCF(self.core_hamiltonian, self.linear_algebra, self.repulsion, self.electrons,
-        self.orbital_overlap)
 
     def begin_scf(self):
-        print('\n\nBEGIN RESTRICTED HARTREE FOCK\n')
         initial_coefficients = self.initial_guess()
         print('COEFFICIENTS INITIAL GUESS\n{}'.format(initial_coefficients))
         print('\n\nBEGIN SCF PROCEDURE')
@@ -63,15 +64,21 @@ class RestrictedHF(HartreeFock):
         return electron_energy, orbital_energies, orbital_coefficients
 
 
-class UnrestrictedHF(HartreeFock):
+class RestrictedHF(Restricted):
 
-    def __init__(self, nuclei_array, basis_set_array, electrons, multiplicity, scf_method, symmetry, processes):
+    def __init__(self, nuclei_array, basis_set_array, electrons, symmetry, processes):
         super().__init__(nuclei_array, basis_set_array, electrons, symmetry, processes)
-        self.scf_method = scf_method(self.core_hamiltonian, self.linear_algebra, self.repulsion, self.electrons,
-        multiplicity)
+        self.scf_method = RestrictedSCF(self.linear_algebra, self.electrons, self.orbital_overlap,
+        FockMatrixRestricted(self.core_hamiltonian, self.repulsion))
+        print('\n\nBEGIN RESTRICTED HARTREE FOCK\n')
+
+
+class Unrestricted(HartreeFock):
+
+    def __init__(self, nuclei_array, basis_set_array, electrons, symmetry, processes):
+        super().__init__(nuclei_array, basis_set_array, electrons, symmetry, processes)
 
     def begin_scf(self):
-        print('\n\nBEGIN UNRESTRICTED HARTREE FOCK\n')
         initial_coefficients = self.initial_guess()
         print('COEFFICIENTS INITIAL GUESS\n{}'.format(initial_coefficients))
         print('\n\nBEGIN SCF PROCEDURE')
@@ -87,21 +94,25 @@ class UnrestrictedHF(HartreeFock):
         return electron_energy, energies_alpha, energies_beta, coefficients_alpha, coefficients_beta
 
 
-class DODSUnrestricted(UnrestrictedHF):
+class UnrestrictedHF(Unrestricted):
 
     def __init__(self, nuclei_array, basis_set_array, electrons, multiplicity, symmetry, processes):
-        super().__init__(nuclei_array, basis_set_array, electrons, multiplicity, DifferentOrbitalsDifferentSpins,
-        symmetry, processes)
+        super().__init__(nuclei_array, basis_set_array, electrons, symmetry, processes)
+        self.scf_method = PopleNesbetBerthier(self.linear_algebra, self.electrons, multiplicity,
+        FockMatrixUnrestricted(self.core_hamiltonian, self.repulsion))
+        print('\n\nBEGIN UNRESTRICTED HARTREE FOCK\n')
 
 
-class ConstrainedUnrestricted(UnrestrictedHF):
+class ConstrainedUnrestricted(Unrestricted):
 
     def __init__(self, nuclei_array, basis_set_array, electrons, multiplicity, symmetry, processes):
-        super().__init__(nuclei_array, basis_set_array, electrons, multiplicity, ConstrainedUnrestrictedSCF,
-        symmetry, processes)
+        super().__init__(nuclei_array, basis_set_array, electrons,  symmetry, processes)
+        self.scf_method = PopleNesbetBerthier(self.linear_algebra, self.electrons, multiplicity,
+        FockMatrixConstrained(self.core_hamiltonian, self.repulsion, electrons, multiplicity, self.linear_algebra))
+        print('\n\nBEGIN CONSTRAINED UNRESTRICTED HARTREE FOCK\n')
 
 
-class BlockedHartreeFock(HartreeFock):
+class BlockedHartreeFock(Restricted):
 
     def __init__(self, nuclei_array, basis_set_array, electrons, multiplicity, symmetry, processes):
         super().__init__(nuclei_array, basis_set_array, electrons, symmetry, processes)
@@ -119,18 +130,6 @@ class BlockedHartreeFock(HartreeFock):
 
         self.repulsion = blocked_spin_basis_set(self.repulsion)
         self.linear_algebra = BlockedLinearAlgebra(self.orbital_overlap)
-        self.scf_method = BlockedUnrestrictedSCF(self.core_hamiltonian, self.linear_algebra,
-        self.repulsion, self.electrons, multiplicity, self.orbital_overlap)
-
-    def begin_scf(self):
+        self.scf_method = BlockedUnrestrictedSCF(self.linear_algebra, self.electrons, multiplicity,
+        self.orbital_overlap, BlockedFockMatrixUnrestricted(self.core_hamiltonian, self.repulsion))
         print('\n\nBEGIN BLOCKED UNRESTRICTED HARTREE FOCK\n')
-        initial_coefficients = self.initial_guess()
-        print('COEFFICIENTS INITIAL GUESS\n{}'.format(initial_coefficients))
-        print('\n\nBEGIN SCF PROCEDURE')
-        start = time.clock()
-        electron_energy, orbital_energies, orbital_coefficients = self.scf_method.begin_iterations(initial_coefficients)
-        print('TIME TAKEN: ' + str(time.clock() - start) + 's\n')
-        print('\nORBITAL ENERGY EIGENVALUES\n{}'.format(orbital_energies))
-        print('\nORBITAL COEFFICIENTS\n{}'.format(orbital_coefficients), end='\n\n\n')
-
-        return electron_energy, orbital_energies, orbital_coefficients

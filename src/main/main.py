@@ -6,9 +6,10 @@ from src.main.objects import Molecule
 from src.main.objects import PointGroup
 from src.main.factory import MoleculeFactory
 from src.main.hartreefock import RestrictedHF
-from src.main.hartreefock import DODSUnrestricted
+from src.main.hartreefock import UnrestrictedHF
 from src.main.hartreefock import ConstrainedUnrestricted
 from src.main.hartreefock import BlockedHartreeFock
+from src.main.kohnsham import RestrictedKohnSham
 from src.main.moellerplesset import MoellerPlesset
 from src.main.tdhartreefock import TimeDependentHartreeFock
 import numpy as np
@@ -23,8 +24,9 @@ def menu():
     # start('O2.mol', 'STO-3G.gbs', 'GUHF', 4)  # -147.634028141 a.u.
     # start('CO.mol', 'STO-3G.gbs', 'MP2', 4)  # -111.354512528 a.u.
     # start('H2O.mol', 'STO-3G.gbs', 'RHF', 4, True)
-    start('C2H4.mol', '3-21G.gbs', 'RHF', 4, True)  # -77.600460844 a.u 19.0269839632222s
-    start('H2O.mol', 'STO-3G.gbs', 'CIS', 4)
+    # start('C2H4.mol', '3-21G.gbs', 'RHF', 4, True)  # -77.600460844 a.u 19.0269839632222s
+    # start('H2O.mol', 'STO-3G.gbs', 'CIS', 4)
+    start('He.mol', 'STO-3G.gbs', ('DFT', 'Slater', ''), 4)
 
 
 def start(mol, basis, method, processes, symmetry=False):
@@ -52,10 +54,10 @@ def start(mol, basis, method, processes, symmetry=False):
 
     if method == 'RHF':
         electron_energy = RestrictedHF(molecule.nuclei_array, basis_set_array, electrons,
-        symmetry_object, processes).begin_scf()[0]
+                                     symmetry_object, processes).begin_scf()[0]
     if method == 'UHF':
-        electron_energy = DODSUnrestricted(molecule.nuclei_array, basis_set_array, electrons, multiplicity,
-        symmetry_object, processes).begin_scf()[0]
+        electron_energy = UnrestrictedHF(molecule.nuclei_array, basis_set_array, electrons, multiplicity,
+                                         symmetry_object, processes).begin_scf()[0]
     if method == 'CUHF':
         electron_energy = ConstrainedUnrestricted(molecule.nuclei_array, basis_set_array, electrons, multiplicity,
         symmetry_object, processes).begin_scf()[0]
@@ -67,10 +69,13 @@ def start(mol, basis, method, processes, symmetry=False):
         RestrictedHF(molecule.nuclei_array, basis_set_array, electrons, symmetry_object, processes)).second_order()
     if method == 'TDHF':
         electron_energy = TimeDependentHartreeFock(
-        RestrictedHF(molecule.nuclei_array, basis_set_array, electrons, symmetry_object, processes)).calculate()[0]
+        RestrictedHF(molecule.nuclei_array, basis_set_array, electrons, symmetry_object, processes)).calculate(False)[0]
     if method == 'CIS':
         electron_energy = TimeDependentHartreeFock(
         RestrictedHF(molecule.nuclei_array, basis_set_array, electrons, symmetry_object, processes)).calculate(True)[0]
+    if method[0] == 'DFT':
+        electron_energy = RestrictedKohnSham(molecule.nuclei_array, basis_set_array, electrons,
+        symmetry_object, processes, method[1]).begin_scf()[0]
 
     print('NUCLEAR REPULSION ENERGY:    ' + str(nuclear_repulsion) + ' a.u.')
     print('SCF ENERGY:                  ' + str(electron_energy) + ' a.u.')

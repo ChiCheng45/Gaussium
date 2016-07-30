@@ -12,3 +12,21 @@ class Basis:
         self.primitive_gaussian_array = primitive_gaussian_array
         self.coordinates = coordinates
         self.integral_exponents = integral_exponents
+
+    def value(self, x, y, z):
+        """Returns the value at point x, y, z.
+
+        Parameters
+        ----------
+        x : float
+        y : float
+        z : float
+
+        Returns
+        -------
+        ans : float
+        """
+        ans = 0
+        for primitive in self.primitive_gaussian_array:
+            ans += primitive.value(x, y, z)
+        return ans

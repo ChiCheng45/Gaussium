@@ -1,5 +1,6 @@
 from numpy import matlib
 import numpy as np
+import itertools
 
 
 class Matrix:
@@ -27,8 +28,7 @@ class Matrix:
 
         """
         matrix = matlib.zeros((self.matrix_size, self.matrix_size))
-        for i in range(self.matrix_size):
-            for j in range(self.matrix_size):
-                if i <= j:
-                    matrix.itemset((i, j), function(i, j))
+        for i, j in itertools.product(range(self.matrix_size), repeat=2):
+            if i <= j:
+                matrix.itemset((i, j), function(i, j))
         return matrix + matrix.T - np.diag(np.diag(matrix))
