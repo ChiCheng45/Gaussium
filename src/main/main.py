@@ -26,7 +26,8 @@ def menu():
     # start('H2O.mol', 'STO-3G.gbs', 'RHF', 4, True)
     # start('C2H4.mol', '3-21G.gbs', 'RHF', 4, True)  # -77.600460844 a.u 19.0269839632222s
     # start('H2O.mol', 'STO-3G.gbs', 'CIS', 4)
-    start('He.mol', 'STO-3G.gbs', ('DFT', 'Slater', ''), 4)
+    start('He.mol', 'STO-3G.gbs', ('DFT', 'Slater', ''), 4)  # ~ -2.6606
+    # start('H2.mol', 'STO-3G.gbs', ('DFT', 'Slater', ''), 4)  # ~ -1.02356
 
 
 def start(mol, basis, method, processes, symmetry=False):
@@ -53,11 +54,11 @@ def start(mol, basis, method, processes, symmetry=False):
     print('\nNUCLEAR REPULSION ARRAY\n{}'.format(coulomb_law_matrix))
 
     if method == 'RHF':
-        electron_energy = RestrictedHF(molecule.nuclei_array, basis_set_array, electrons,
-                                     symmetry_object, processes).begin_scf()[0]
+        electron_energy = RestrictedHF(molecule.nuclei_array, basis_set_array, electrons, symmetry_object,
+        processes).begin_scf()[0]
     if method == 'UHF':
         electron_energy = UnrestrictedHF(molecule.nuclei_array, basis_set_array, electrons, multiplicity,
-                                         symmetry_object, processes).begin_scf()[0]
+        symmetry_object, processes).begin_scf()[0]
     if method == 'CUHF':
         electron_energy = ConstrainedUnrestricted(molecule.nuclei_array, basis_set_array, electrons, multiplicity,
         symmetry_object, processes).begin_scf()[0]
