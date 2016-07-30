@@ -29,10 +29,10 @@ class SlaterExchange:
             return g_i.value(x, y, z) * (electron_density(x, y, z))**(1/3) * g_j.value(x, y, z)
 
         if i == j:
-            integral, error = integrate.nquad(integrand_ii, [[-3, 3], [-3, 3], [-3, 3]],
+            integral, error = integrate.nquad(integrand_ii, [[-5, 5], [-5, 5], [-5, 5]],
             opts=[{'epsabs': 0, 'epsrel': 1e-3}, {'epsabs': 0, 'epsrel': 1e-3}, {'epsabs': 0, 'epsrel': 1e-3}])
         else:
-            integral, error = integrate.nquad(integrand_ij, [[-3, 3], [-3, 3], [-3, 3]],
+            integral, error = integrate.nquad(integrand_ij, [[-5, 5], [-5, 5], [-5, 5]],
             opts=[{'epsabs': 0, 'epsrel': 1e-3}, {'epsabs': 0, 'epsrel': 1e-3}, {'epsabs': 0, 'epsrel': 1e-3}])
 
         return - (3/2) * (3/np.pi)**(1/3) * integral

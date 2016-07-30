@@ -9,7 +9,7 @@ class RestrictedKohnSham(Restricted):
     def __init__(self, nuclei_array, basis_set_array, electrons, symmetry, processes, exchange_functional):
         super().__init__(nuclei_array, basis_set_array, electrons, symmetry, processes)
 
-        if exchange_functional == 'Slater':
+        if exchange_functional == 'SLATER':
             exchange_functional = SlaterExchange(basis_set_array)
 
         self.scf_method = RestrictedSCF(self.linear_algebra, self.electrons, self.orbital_overlap,
