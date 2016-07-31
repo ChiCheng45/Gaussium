@@ -57,5 +57,4 @@ class PrimitiveBasis:
         r_x, r_y, r_z = self.coordinates
         l_x, l_y, l_z = self.integral_exponents
         return self.normalisation * self.contraction * (x - r_x)**l_x * (y - r_y)**l_y * (z - r_z)**l_z \
-        * np.exp(-self.exponent * (x - r_x)**2) * np.exp(-self.exponent * (y - r_y)**2) \
-        * np.exp(-self.exponent * (z - r_z)**2)
+        * np.exp(-self.exponent * ((x - r_x)**2 + (y - r_y)**2 + (z - r_z)**2))

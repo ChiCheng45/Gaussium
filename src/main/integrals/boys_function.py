@@ -1,8 +1,6 @@
 from math import exp, gamma
-from numba import jit
 
 
-@jit
 def boys_function(v, x):
     """Computes the boys function used for calculating the two electron and nuclear attraction integrals.
 
@@ -17,8 +15,7 @@ def boys_function(v, x):
 
     Notes
     -----
-    Added @jit decorator to give a small speed up. There are also no checks for if the series diverges and causes an
-    infinite loop.
+    There are also no checks for if the series diverges and causes an infinite loop.
 
     References
     ----------
@@ -29,8 +26,9 @@ def boys_function(v, x):
     if x <= 25:
         i = 0
         ans = 0
-        while 1 > 0:
-            seq = (gamma(v + 0.5) / gamma(v + i + 1.5)) * x**i
+        g_v = gamma(v + 0.5)
+        while True:
+            seq = (g_v / gamma(v + i + 1.5)) * x**i
             if seq < 1e-10:
                 break
             ans += seq
@@ -42,14 +40,15 @@ def boys_function(v, x):
     elif x > 25:
         i = 0
         ans = 0
-        while 1 > 0:
-            seq = (gamma(v + 0.5) / gamma(v - i + 1.5)) * x**(-i)
+        g_v = gamma(v + 0.5)
+        while True:
+            seq = (g_v / gamma(v - i + 1.5)) * x**(-i)
             if seq < 1e-10:
                 break
             ans += seq
             i += 1
         ans *= (1/2) * exp(-x)
-        ans = (gamma(v + 0.5) / (2*x**(v + 0.5))) - ans
+        ans = (g_v / (2*x**(v + 0.5))) - ans
         return ans
 
 
