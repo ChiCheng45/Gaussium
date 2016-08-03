@@ -1,1 +1,0 @@
-from src.main.kohnsham.exchange_functionals.slater_exchange import SlaterExchange

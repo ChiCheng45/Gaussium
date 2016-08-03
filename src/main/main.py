@@ -26,8 +26,8 @@ def menu():
     # start('H2O.mol', 'STO-3G.gbs', 'RHF', 4, True)
     # start('C2H4.mol', '3-21G.gbs', 'RHF', 4, True)  # -77.600460844 a.u 19.0269839632222s
     # start('H2O.mol', 'STO-3G.gbs', 'CIS', 4)
-    # start('He.mol', 'STO-3G.gbs', ('DFT', 'SLATER', ''), 4)  # -2.6573112 a.u
-    start('H2.mol', 'STO-3G.gbs', ('DFT', 'SLATER', ''), 4)  # -1.023436 a.u
+    start('He.mol', 'STO-3G.gbs', ('DFT', 'SLATER', 'CHACHIYO'), 4)  # -2.6573112 a.u
+    # start('H2.mol', 'STO-3G.gbs', ('DFT', 'SLATER', 'CHACHIYO'), 4)  # -1.023436 a.u
 
 
 def start(mol, basis, method, processes, symmetry=False):
@@ -76,7 +76,7 @@ def start(mol, basis, method, processes, symmetry=False):
         RestrictedHF(molecule.nuclei_array, basis_set_array, electrons, symmetry_object, processes)).calculate(True)[0]
     if method[0] == 'DFT':
         electron_energy = RestrictedKohnSham(molecule.nuclei_array, basis_set_array, electrons,
-        symmetry_object, processes, method[1]).begin_scf()[0]
+        symmetry_object, processes, method[1], method[2]).begin_scf()[0]
 
     print('NUCLEAR REPULSION ENERGY:    ' + str(nuclear_repulsion) + ' a.u.')
     print('SCF ENERGY:                  ' + str(electron_energy) + ' a.u.')
