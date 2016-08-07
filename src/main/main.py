@@ -26,8 +26,10 @@ def menu():
     # start('H2O.mol', 'STO-3G.gbs', 'RHF', 4, True)
     # start('C2H4.mol', '3-21G.gbs', 'RHF', 4, True)  # -77.600460844 a.u 19.0269839632222s
     # start('H2O.mol', 'STO-3G.gbs', 'CIS', 4)
-    start('He.mol', 'STO-3G.gbs', ('DFT', 'SLATER', 'CHACHIYO'), 4)  # -2.6573112 a.u
-    # start('H2.mol', 'STO-3G.gbs', ('DFT', 'SLATER', 'CHACHIYO'), 4)  # -1.023436 a.u
+    # start('He.mol', 'STO-3G.gbs', ('DFT', 'S', ''), 4)  # -2.657311972 a.u
+    # start('H2.mol', 'STO-3G.gbs', ('DFT', 'S', ''), 4)  # -1.023435817 a.u
+    # start('He.mol', 'STO-3G.gbs', ('DFT', 'S', 'VWN3'), 4)  # -2.809598595 a.u
+    start('H2.mol', 'STO-3G.gbs', ('DFT', 'S', 'VWN3'), 4)  # -1.155821075 a.u
 
 
 def start(mol, basis, method, processes, symmetry=False):
