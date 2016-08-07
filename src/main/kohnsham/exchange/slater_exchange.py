@@ -3,7 +3,13 @@ import numpy as np
 
 
 class SlaterExchange(ExchangePotential):
+    """Slater exchange potential for a given value alpha.
 
+    Attributes
+    ----------
+    alpha : float
+
+    """
     def __init__(self, alpha):
         super().__init__()
         self.alpha = alpha

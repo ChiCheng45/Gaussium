@@ -25,7 +25,7 @@ def menu():
     # start('CO.mol', 'STO-3G.gbs', 'MP2', 4)  # -111.354512528 a.u.
     # start('H2O.mol', 'STO-3G.gbs', 'RHF', 4, True)
     # start('C2H4.mol', '3-21G.gbs', 'RHF', 4, True)  # -77.600460844 a.u. 19.0269839632222s
-    # start('H2O.mol', 'STO-3G.gbs', 'CIS', 4)
+    # start('H2O.mol', 'STO-3G.gbs', 'CIS', 4)  # 0.2872554996 a.u. 0.3564617587 a.u.
     # start('He.mol', 'STO-3G.gbs', ('DFT', 'S', ''), 4)  # -2.657311972 a.u.
     # start('H2.mol', 'STO-3G.gbs', ('DFT', 'S', ''), 4)  # -1.023435817 a.u.
     start('He.mol', 'STO-3G.gbs', ('DFT', 'S', 'VWN3'), 4)  # -2.809598595 a.u.
@@ -47,7 +47,6 @@ def start(mol, basis, method, processes, symmetry=False):
 
     basis_set_array = read_basis_set_file(basis, molecule.nuclei_array)
     symmetry_object = Symmetry(molecule.point_group, basis_set_array)
-    print(symmetry_object.symmetry_matrix if symmetry else 'SYMMETRY: FALSE', end='\n\n')
 
     coulomb_law_matrix = coulomb_matrix(nuclei_array)
     nuclear_repulsion = coulomb_law_matrix.sum() / 2
@@ -73,23 +72,26 @@ def start(mol, basis, method, processes, symmetry=False):
         RestrictedHF(molecule.nuclei_array, basis_set_array, electrons, symmetry_object, processes)).second_order()
     if method == 'TDHF':
         electron_energy = TimeDependentHartreeFock(
-        RestrictedHF(molecule.nuclei_array, basis_set_array, electrons, symmetry_object, processes)).calculate(False)[0]
+        RestrictedHF(molecule.nuclei_array, basis_set_array, electrons, symmetry_object, processes)
+        ).calculate(tda=False)[0]
     if method == 'CIS':
         electron_energy = TimeDependentHartreeFock(
-        RestrictedHF(molecule.nuclei_array, basis_set_array, electrons, symmetry_object, processes)).calculate(True)[0]
+        RestrictedHF(molecule.nuclei_array, basis_set_array, electrons, symmetry_object, processes)
+        ).calculate(tda=True)[0]
     if method[0] == 'DFT':
         electron_energy = RestrictedKohnSham(molecule.nuclei_array, basis_set_array, electrons,
         symmetry_object, processes, method[1], method[2]).begin_scf()[0]
 
+    total_energy = electron_energy + nuclear_repulsion + correlation
     print('NUCLEAR REPULSION ENERGY:    ' + str(nuclear_repulsion) + ' a.u.')
     print('SCF ENERGY:                  ' + str(electron_energy) + ' a.u.')
     print('CORRELATION ENERGY:          ' + str(correlation) + ' a.u.')
-    print('TOTAL ENERGY:                ' + str(electron_energy + nuclear_repulsion + correlation) + ' a.u.')
+    print('TOTAL ENERGY:                ' + str(total_energy) + ' a.u.')
     print('\n*************************************************************************************************')
     print('\nTIME TAKEN: ' + str(time.clock() - start_time) + 's')
     print("\nWhat I cannot create I cannot understand - Richard Feynman\n")
 
-    return electron_energy + nuclear_repulsion + correlation
+    return total_energy
 
 if __name__ == "__main__":
     menu()
