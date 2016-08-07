@@ -9,7 +9,8 @@ class TestDensityMatrixRestricted(TestCase):
     def setUp(self):
         self.orbital_coefficients = np.matrix([
                 [0.9291, -0.6259],
-                [0.1398,  1.1115]])
+                [0.1398,  1.1115]
+        ])
 
     def test_method_calculate_returns_density_matrix_element_for_0_0(self):
         element = density_matrix_restricted(self.orbital_coefficients, 2).item(0, 0)

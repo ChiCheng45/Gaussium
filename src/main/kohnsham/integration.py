@@ -52,7 +52,7 @@ class ExchangeCorrelation:
                 return g_i.value(x, y, z) * (self.exchange_potential.calculate(electron_density(x, y, z))
                 + self.correlation_potential.calculate(electron_density(x, y, z))) * g_j.value(x, y, z)
 
-        integral, error = integrate.nquad(integrand, [[-5, 5], [-5, 5], [-5, 5]],
+        integral, error = integrate.nquad(integrand, [[-7, 7], [-7, 7], [-7, 7]],
         opts=[{'epsabs': 1e-3, 'epsrel': 0, 'points': self.points_x},
               {'epsabs': 1e-3, 'epsrel': 0, 'points': self.points_y},
               {'epsabs': 1e-3, 'epsrel': 0, 'points': self.points_z}])
