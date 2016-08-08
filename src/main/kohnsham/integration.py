@@ -4,24 +4,13 @@ import numpy as np
 
 class ExchangeCorrelation:
 
-    def __init__(self, basis_set, exchange_potential, correlation_potential):
+    def __init__(self, basis_set, exchange_potential, correlation_potential, int_space=10):
         self.basis_set = basis_set
         self.exchange_potential = exchange_potential
         self.correlation_potential = correlation_potential
+        self.int_space = int_space
         self.electron_density_memo = {}
         self.density_matrix_memo = np.matrix([])
-        self.points_x, self.points_y, self.points_z = self.integral_points()
-
-    def integral_points(self):
-        integral_points_x = []
-        integral_points_y = []
-        integral_points_z = []
-        for basis in self.basis_set:
-            x, y, z = basis.coordinates
-            integral_points_x.append(x)
-            integral_points_y.append(y)
-            integral_points_z.append(z)
-        return integral_points_x, integral_points_y, integral_points_z
 
     def integrate(self, density_matrix, i, j):
 
@@ -45,16 +34,19 @@ class ExchangeCorrelation:
             return self.electron_density_memo[(x, y, z)]
 
         def integrand(x, y, z):
+            x_0 = 2 * self.int_space * x - self.int_space
+            y_0 = 2 * self.int_space * y - self.int_space
+            z_0 = 2 * self.int_space * z - self.int_space
             if i == j:
-                return g_i.value(x, y, z)**2 * (self.exchange_potential.calculate(electron_density(x, y, z))
-                + self.correlation_potential.calculate(electron_density(x, y, z)))
+                return g_i.value(x_0, y_0, z_0)**2 * (self.exchange_potential.calculate(electron_density(x_0, y_0, z_0))
+                + self.correlation_potential.calculate(electron_density(x_0, y_0, z_0)))
             else:
-                return g_i.value(x, y, z) * (self.exchange_potential.calculate(electron_density(x, y, z))
-                + self.correlation_potential.calculate(electron_density(x, y, z))) * g_j.value(x, y, z)
+                return g_i.value(x_0, y_0, z_0) * (self.exchange_potential.calculate(electron_density(x_0, y_0, z_0))
+                + self.correlation_potential.calculate(electron_density(x_0, y_0, z_0))) * g_j.value(x_0, y_0, z_0)
 
-        integral, error = integrate.nquad(integrand, [[-7, 7], [-7, 7], [-7, 7]],
-        opts=[{'epsabs': 1e-3, 'epsrel': 0, 'points': self.points_x},
-              {'epsabs': 1e-3, 'epsrel': 0, 'points': self.points_y},
-              {'epsabs': 1e-3, 'epsrel': 0, 'points': self.points_z}])
+        integral, error = integrate.nquad(integrand, [[0, 1], [0, 1], [0, 1]],
+        opts=[{'epsabs': 1e-3, 'epsrel': 0},
+              {'epsabs': 1e-3, 'epsrel': 0},
+              {'epsabs': 1e-3, 'epsrel': 0}])
 
-        return integral
+        return (2 * self.int_space)**3 * integral
