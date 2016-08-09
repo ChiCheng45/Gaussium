@@ -84,7 +84,7 @@ def spin_basis_set(repulsion):
 
     for r, s, t, u in itertools.product(range(matrix_size), repeat=4):
         if r % 2 == s % 2 and t % 2 == u % 2:
-            spin_orbital_repulsion[r, s, t, u] = repulsion[r // 2, s // 2, t // 2, u // 2]
+            spin_orbital_repulsion.itemset((r, s, t, u), repulsion.itemget(r // 2, s // 2, t // 2, u // 2))
 
     return spin_orbital_repulsion
 
