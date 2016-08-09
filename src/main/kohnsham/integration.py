@@ -4,23 +4,13 @@ import numpy as np
 
 class ExchangeCorrelation:
 
-    def __init__(self, basis_set, exchange_potential, correlation_potential, int_space=8):
+    def __init__(self, basis_set, exchange_potential, correlation_potential, int_space=5):
         self.basis_set = basis_set
         self.exchange_potential = exchange_potential
         self.correlation_potential = correlation_potential
         self.int_space = int_space
-        self.points_x, self.points_y, self.points_z = self.integral_points()
         self.density_matrix = np.matrix([])
         self.electron_density_memo = {}
-
-    def integral_points(self):
-        points_x = points_y = points_z = []
-        for basis in self.basis_set:
-            x, y, z = basis.coordinates
-            points_x.append(x)
-            points_y.append(y)
-            points_z.append(z)
-        return points_x, points_y, points_z
 
     def integrate(self, density_matrix, i, j):
 
@@ -53,8 +43,8 @@ class ExchangeCorrelation:
 
         integral, error = integrate.nquad(integrand, [[-self.int_space, self.int_space],
         [-self.int_space, self.int_space], [-self.int_space, self.int_space]],
-        opts=[{'epsabs': 1e-3, 'epsrel': 0, 'points': self.points_x},
-              {'epsabs': 1e-3, 'epsrel': 0, 'points': self.points_y},
-              {'epsabs': 1e-3, 'epsrel': 0, 'points': self.points_z}])
+        opts=[{'epsabs': 1e-3, 'epsrel': 0},
+              {'epsabs': 1e-3, 'epsrel': 0},
+              {'epsabs': 1e-3, 'epsrel': 0}])
 
         return integral
