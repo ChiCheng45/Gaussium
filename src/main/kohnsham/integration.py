@@ -30,7 +30,7 @@ class ExchangeCorrelation:
                     for b, basis_b in enumerate(self.basis_set):
                         if a == b:
                             density += density_matrix.item(a, b) * basis_a.value(x, y, z)**2
-                        elif a <= b:
+                        elif a < b:
                             density += 2 * basis_a.value(x, y, z) * density_matrix.item(a, b) * basis_b.value(x, y, z)
                 self.electron_density[(x, y, z)] = density
             return self.electron_density[(x, y, z)]
