@@ -10,8 +10,8 @@ class ExchangeCorrelation:
         self.correlation_potential = correlation_potential
         self.int_space = int_space
         self.points_x, self.points_y, self.points_z = self.integral_points()
+        self.density_matrix = np.matrix([])
         self.electron_density_memo = {}
-        self.density_matrix_memo = np.matrix([])
 
     def integral_points(self):
         points_x = points_y = points_z = []
@@ -24,8 +24,8 @@ class ExchangeCorrelation:
 
     def integrate(self, density_matrix, i, j):
 
-        if density_matrix is not self.density_matrix_memo:
-            self.density_matrix_memo = density_matrix
+        if density_matrix is not self.density_matrix:
+            self.density_matrix = density_matrix
             self.electron_density_memo = {}
 
         g_i = self.basis_set[i]
