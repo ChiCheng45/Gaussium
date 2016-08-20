@@ -70,7 +70,7 @@ class RestrictedHF(Restricted):
         super().__init__(nuclei_array, basis_set_array, electrons, symmetry, processes)
         self.scf_method = RestrictedSCF(self.linear_algebra, self.electrons, self.orbital_overlap,
         FockMatrixRestricted(self.core_hamiltonian, self.repulsion))
-        print('\n\nBEGIN RESTRICTED HARTREE FOCK\n')
+        print('\nBEGIN RESTRICTED HARTREE FOCK\n')
 
 
 class Unrestricted(HartreeFock):
@@ -100,7 +100,7 @@ class UnrestrictedHF(Unrestricted):
         super().__init__(nuclei_array, basis_set_array, electrons, symmetry, processes)
         self.scf_method = PopleNesbetBerthier(self.linear_algebra, self.electrons, multiplicity,
         FockMatrixUnrestricted(self.core_hamiltonian, self.repulsion))
-        print('\n\nBEGIN UNRESTRICTED HARTREE FOCK\n')
+        print('\nBEGIN UNRESTRICTED HARTREE FOCK\n')
 
 
 class ConstrainedUnrestricted(Unrestricted):
@@ -109,7 +109,7 @@ class ConstrainedUnrestricted(Unrestricted):
         super().__init__(nuclei_array, basis_set_array, electrons,  symmetry, processes)
         self.scf_method = PopleNesbetBerthier(self.linear_algebra, self.electrons, multiplicity,
         FockMatrixConstrained(self.core_hamiltonian, self.repulsion, electrons, multiplicity, self.linear_algebra))
-        print('\n\nBEGIN CONSTRAINED UNRESTRICTED HARTREE FOCK\n')
+        print('\nBEGIN CONSTRAINED UNRESTRICTED HARTREE FOCK\n')
 
 
 class BlockedHartreeFock(Restricted):
@@ -132,4 +132,4 @@ class BlockedHartreeFock(Restricted):
         self.linear_algebra = BlockedLinearAlgebra(self.orbital_overlap)
         self.scf_method = BlockedUnrestrictedSCF(self.linear_algebra, self.electrons, multiplicity,
         self.orbital_overlap, BlockedFockMatrixUnrestricted(self.core_hamiltonian, self.repulsion))
-        print('\n\nBEGIN BLOCKED UNRESTRICTED HARTREE FOCK\n')
+        print('\nBEGIN BLOCKED UNRESTRICTED HARTREE FOCK\n')
