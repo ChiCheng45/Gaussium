@@ -68,7 +68,7 @@ def blocked_spin_basis_set(repulsion):
 
 
 def spin_basis_set(repulsion):
-    """Converts the two electron repusion integrals to spatial orbitals to spin orbitals.
+    """Converts the two electron repusion integrals of spatial orbitals to spin orbitals.
 
     Parameters
     ----------
@@ -106,3 +106,27 @@ def spin_orbital_energies(orbital_energies):
         for j in range(2):
             energy_spin_orbital.append(orbital_energies[i])
     return energy_spin_orbital
+
+
+def spin_basis_anti_physicist(repulsion):
+    """Converts the two electron repusion integrals of spatial orbitals to antisymmetrized two electron integrals of
+    spin orbitals in the physicists notation.
+
+    Parameters
+    ----------
+    repulsion : np.array
+
+    Returns
+    -------
+    spin_orbital_repulsion : np.array
+
+    """
+    matrix_size = repulsion.shape[0] * 2
+    spin_orbital_repulsion = np.zeros((matrix_size, matrix_size, matrix_size, matrix_size))
+
+    for r, s, t, u in itertools.product(range(matrix_size), repeat=4):
+        out1 = (r % 2 == t % 2) * (s % 2 == u % 2) * repulsion.item(r // 2, t // 2, s // 2, u // 2)
+        out2 = (r % 2 == u % 2) * (s % 2 == t % 2) * repulsion.item(r // 2, u // 2, s // 2, t // 2)
+        spin_orbital_repulsion.itemset((r, s, t, u), out1 - out2)
+
+    return spin_orbital_repulsion

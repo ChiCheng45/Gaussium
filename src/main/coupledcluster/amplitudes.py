@@ -38,8 +38,7 @@ class SinglesDoublesAmplitudes:
             else:
                 i, j, a, b = self.index_dict_1[x]
 
-                t_ijab = (self.spin_molecular_integral.item(i, a, j, b)
-                - self.spin_molecular_integral.item(i, b, j, a)) / (self.orbital_energies[i]
+                t_ijab = self.spin_molecular_integral.item(i, j, a, b) / (self.orbital_energies[i]
                 + self.orbital_energies[j] - self.orbital_energies[a] - self.orbital_energies[b])
 
                 amplitudes.append(t_ijab)
@@ -55,8 +54,7 @@ class SinglesDoublesAmplitudes:
                 index_ia = self.index_dict_2[(i, a)]
                 index_jb = self.index_dict_2[(j, b)]
 
-                out1 = self.spin_molecular_integral.item(i, a, j, b) - self.spin_molecular_integral.item(i, b, j, a)
-                correlation += 0.25 * out1 * amplitudes[index_ijab] \
-                + 0.5 * out1 * amplitudes[index_ia] * amplitudes[index_jb]
+                correlation += self.spin_molecular_integral.item(i, j, a, b) * (0.25 * amplitudes[index_ijab]
+                + 0.5 * amplitudes[index_ia] * amplitudes[index_jb])
 
         return correlation
