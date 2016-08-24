@@ -25,8 +25,6 @@ class RestrictedKohnSham(Restricted):
             correlation = VoskoWilkNusair(a=0.0621814, x_0=-0.409286, b=13.0720, c=42.7198)
         elif correlation == 'VWN5':
             correlation = VoskoWilkNusair(a=0.0621814, x_0=-0.10498, b=3.72744, c=12.9352)
-        elif correlation == 'CHACHIYO':
-            correlation = ChachiyoCorrelation()
         else:
             correlation = CorrelationPotential()  # returns a potential of 0.0
 
