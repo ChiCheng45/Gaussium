@@ -9,6 +9,7 @@ class SinglesDoublesAmplitudes:
         self.occupied_orbitals = range(occupied_orbitals)
         self.unoccupied_orbitals = range(occupied_orbitals, occupied_orbitals + unoccupied_orbitals)
         self.singles, self.doubles = self.indexes()
+        self.denominator = self.denominator_arrays()
 
     def indexes(self):
         singles = []
@@ -29,12 +30,12 @@ class SinglesDoublesAmplitudes:
         return correlation
 
     def mp2_initial_guess(self):
+        d = self.denominator
         t = {}
         for i, a in self.singles:
             t[i, a] = 0
         for i, j, a, b in self.doubles:
-            t[i, j, a, b] = self.spin_molecular_integral.item(i, j, a, b) / (self.orbital_energies[i]
-            + self.orbital_energies[j] - self.orbital_energies[a] - self.orbital_energies[b])
+            t[i, j, a, b] = self.spin_molecular_integral.item(i, j, a, b) / d[i, j, a, b]
         return t
 
     def calculate_amplitudes(self, t_prev):
@@ -50,7 +51,13 @@ class SinglesDoublesAmplitudes:
         return t
 
     def denominator_arrays(self):
-        pass
+        denominator = {}
+        for i, a in self.singles:
+            denominator[i, a] = self.orbital_energies[i] - self.orbital_energies[a]
+        for i, j, a, b in self.doubles:
+            denominator[i, j, a, b] = self.orbital_energies[i] + self.orbital_energies[j] - self.orbital_energies[a] \
+            - self.orbital_energies[b]
+        return denominator
 
     def intermediates(self, t):
         intermediates = {}

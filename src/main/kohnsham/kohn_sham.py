@@ -4,7 +4,6 @@ from src.main.kohnsham.exchange import ExchangePotential
 from src.main.kohnsham.exchange import SlaterExchange
 from src.main.kohnsham.correlation import CorrelationPotential
 from src.main.kohnsham.correlation import VoskoWilkNusair
-from src.main.kohnsham.correlation import ChachiyoCorrelation
 from src.main.kohnsham import ExchangeCorrelation
 from src.main.kohnsham import RestrictedKohnShamHamiltonian
 
