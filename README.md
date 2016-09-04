@@ -6,8 +6,8 @@ Currently this program fully supports RHF, UHF, CIS, TDHF, DFT and CCSD, next pl
 I'm basing this work on Attlia Szabo and Neil S. Ostlunds "Modern Quantum Chemistry: Introduction to Advanced Electronic Structure Theory" and David B. Cooks "Handbook of Computational Chemistry".
 
 ##Instructions
-1. To run this program add the desired .mol and .gbs files to the molfiles and basisset directories.
-2. Next edit the main.py file menu() function to so that the desired calculation is made for example,
+* To run this program add the desired .mol and .gbs files to the molfiles and basisset directories.
+* Next edit the main.py file menu() function to so that the desired calculation is made for example,
 ```python
 def menu():
     start('H2O.mol', 'STO-3G.gbs', 'CCSD', 4, True)
@@ -17,7 +17,7 @@ for DFT calculation the functional are given inputted using a tuple,
 def menu():
     start('He.mol', 'STO-3G.gbs', ('DFT', 'S', 'VWN3'), 4)
 ```
-3. Now run the main.py.
+* Now run the main.py.
 
 ##Comparisons
 
