@@ -8,7 +8,7 @@ I'm basing this work on Attlia Szabo and Neil S. Ostlunds "Modern Quantum Chemis
 ##Comparisons
 
 ####RHF HeH+ STO-3G 
-Completed my first calculation of HeH+ with a bond-length of 1.4632 a.u. using the STO-3G basis set. Comparison with Spartan Student Edition v5,
+Completed my first calculation of HeH+ with a bond-length of 1.4632 a<sub>0</sub> using the STO-3G basis set. Comparison with Spartan Student Edition v5,
 ```
 SCF model:
  A restricted Hartree-Fock SCF calculation will be
@@ -84,7 +84,7 @@ Time Taken: 72.70841306778921s
 ```
 
 ####UHF O2 STO-3G
-Completed UHF calculation of O2 with a bond-length of 2.28541 a.u. using the STO-3G basis set. Comparison with Psi4,
+Completed UHF calculation of O2 with a bond-length of 2.28541 a<sub>0</sub> using the STO-3G basis set. Comparison with Psi4,
 ```
     Alpha Virtual:                                                        
 
@@ -146,7 +146,7 @@ TIME TAKEN: 7.575840318746571
 ```
 
 ####MP2 CO STO-3G
-Completed MP2 calculation of CO with a bond-length of 2.14005 a.u. using the STO-3G basis set. Comparison with Psi4,
+Completed MP2 calculation of CO with a bond-length of 2.14005 a<sub>0</sub> using the STO-3G basis set. Comparison with Psi4,
 ```
         Computing MP2 energy using SCF MOs (Canonical MP2)... 
         ============================================================================== 
