@@ -1,9 +1,23 @@
 ##Introduction
-A basic quantum chemical program written in python using the numpy and scipy libraries.
+A basic quantum chemical program written in Python 3 using the numpy and scipy libraries.
 
 Currently this program fully supports RHF, UHF, CIS, TDHF, DFT and CCSD, next plans are to reduce ERI time by taking advantage of molecule symmetry and then to implement more correlated methods such as CI. 
 
 I'm basing this work on Attlia Szabo and Neil S. Ostlunds "Modern Quantum Chemistry: Introduction to Advanced Electronic Structure Theory" and David B. Cooks "Handbook of Computational Chemistry".
+
+##Instructions
+1. To run this program add the desired .mol and .gbs files to the molfiles and basisset directories.
+2. Next edit the main.py file menu() function to so that the desired calculation is made for example,
+```python
+def menu():
+    start('H2O.mol', 'STO-3G.gbs', 'CCSD', 4, True)
+```
+for DFT calculation the functional are given inputted using a tuple,
+```python
+def menu():
+    start('He.mol', 'STO-3G.gbs', ('DFT', 'S', 'VWN3'), 4)
+```
+3. Now run the main.py.
 
 ##Comparisons
 

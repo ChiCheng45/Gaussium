@@ -32,7 +32,7 @@ def menu():
     # start('He.mol', 'STO-3G.gbs', ('DFT', 'S', 'VWN3'), 4)  # -2.809598595 a.u.
     # start('H2.mol', 'STO-3G.gbs', ('DFT', 'S', 'VWN3'), 4)  # -1.155821075 a.u.
     # start('Li-.mol', 'STO-3G.gbs', ('DFT', 'S', 'VWN3'), 4)  # -7.2228569820684534 a.u.
-    start('H2O.mol', 'STO-3G.gbs', 'CCSD', 4) # -0.0706800939192 a.u.
+    start('H2O.mol', 'STO-3G.gbs', 'CCSD', 4)  # -0.0706800939192 a.u.
 
 
 def start(mol, basis, method, processes, symmetry=False):
