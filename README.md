@@ -18,7 +18,7 @@ def menu():
     start('He.mol', 'STO-3G.gbs', ('DFT', 'S', 'VWN3'), 4)
 ```
 the start function contain more options such as the number of processes used during the multiprocessing sections of the code and whether symmetry is turned on. See `start()` for more details,
-```
+```python
 def start(mol, basis, method, processes, symmetry=False)
 ```
 * Now run the main.py.
