@@ -7,15 +7,19 @@ I'm basing this work on Attlia Szabo and Neil S. Ostlunds "Modern Quantum Chemis
 
 ##Instructions
 * To run this program add the desired .mol and .gbs files to the molfiles and basisset directories.
-* Next edit the main.py file menu() function to so that the desired calculation is made for example,
+* Next edit the Quantum_Chemistry/src/main/main.py menu() function to so that the desired calculation is made for example,
 ```python
 def menu():
-    start('H2O.mol', 'STO-3G.gbs', 'CCSD', 4, True)
+    start('H2O.mol', 'STO-3G.gbs', 'CCSD', 4)
 ```
 for DFT calculation the functional are given inputted using a tuple,
 ```python
 def menu():
     start('He.mol', 'STO-3G.gbs', ('DFT', 'S', 'VWN3'), 4)
+```
+the start function contain more options such as the number of processes used during the multiprocessing sections of the code and whether symmetry is turned on. See start() for more details,
+```
+def start(mol, basis, method, processes, symmetry=False)
 ```
 * Now run the main.py.
 
