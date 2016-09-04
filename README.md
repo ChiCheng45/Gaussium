@@ -7,7 +7,7 @@ I'm basing this work on Attlia Szabo and Neil S. Ostlunds "Modern Quantum Chemis
 
 ##Instructions
 * To run this program add the desired .mol and .gbs files to the molfiles and basisset directories.
-* Next edit the Quantum_Chemistry/src/main/main.py menu() function to so that the desired calculation is made for example,
+* Next edit the `Quantum_Chemistry/src/main/main.py` `menu()` function so that the desired calculation is made for example,
 ```python
 def menu():
     start('H2O.mol', 'STO-3G.gbs', 'CCSD', 4)
