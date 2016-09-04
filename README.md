@@ -12,7 +12,7 @@ I'm basing this work on Attlia Szabo and Neil S. Ostlunds "Modern Quantum Chemis
 def menu():
     start('H2O.mol', 'STO-3G.gbs', 'CCSD', 4)
 ```
-for DFT calculation the functional are given inputted using a tuple,
+for DFT calculation the functional are given inputted using a tuple for SVWN3,
 ```python
 def menu():
     start('He.mol', 'STO-3G.gbs', ('DFT', 'S', 'VWN3'), 4)
