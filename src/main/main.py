@@ -7,7 +7,6 @@ from src.main.objects import PointGroup
 from src.main.factory import MoleculeFactory
 from src.main.hartreefock import RestrictedHF
 from src.main.hartreefock import UnrestrictedHF
-from src.main.hartreefock import ConstrainedUnrestricted
 from src.main.hartreefock import BlockedHartreeFock
 from src.main.kohnsham import RestrictedKohnSham
 from src.main.moellerplesset import MoellerPlesset
@@ -62,9 +61,6 @@ def start(mol, basis, method, processes, symmetry=False):
         processes).begin_scf()[0]
     if method == 'UHF':
         electron_energy = UnrestrictedHF(molecule.nuclei_array, basis_set_array, electrons, multiplicity,
-        symmetry_object, processes).begin_scf()[0]
-    if method == 'CUHF':
-        electron_energy = ConstrainedUnrestricted(molecule.nuclei_array, basis_set_array, electrons, multiplicity,
         symmetry_object, processes).begin_scf()[0]
     if method == 'GUHF':
         electron_energy = BlockedHartreeFock(molecule.nuclei_array, basis_set_array, electrons, multiplicity,

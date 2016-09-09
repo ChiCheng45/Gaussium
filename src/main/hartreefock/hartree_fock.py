@@ -9,7 +9,6 @@ from src.main.hartreefock import PopleNesbetBerthier
 from src.main.hartreefock import BlockedUnrestrictedSCF
 from src.main.hartreefock import FockMatrixRestricted
 from src.main.hartreefock import FockMatrixUnrestricted
-from src.main.hartreefock import FockMatrixConstrained
 from src.main.hartreefock import BlockedFockMatrixUnrestricted
 from src.main.matrixelements import blocked_spin_basis_set
 import numpy as np
@@ -101,15 +100,6 @@ class UnrestrictedHF(Unrestricted):
         self.scf_method = PopleNesbetBerthier(self.linear_algebra, self.electrons, multiplicity,
         FockMatrixUnrestricted(self.core_hamiltonian, self.repulsion))
         print('\nBEGIN UNRESTRICTED HARTREE FOCK\n')
-
-
-class ConstrainedUnrestricted(Unrestricted):
-
-    def __init__(self, nuclei_array, basis_set_array, electrons, multiplicity, symmetry, processes):
-        super().__init__(nuclei_array, basis_set_array, electrons,  symmetry, processes)
-        self.scf_method = PopleNesbetBerthier(self.linear_algebra, self.electrons, multiplicity,
-        FockMatrixConstrained(self.core_hamiltonian, self.repulsion, electrons, multiplicity, self.linear_algebra))
-        print('\nBEGIN CONSTRAINED UNRESTRICTED HARTREE FOCK\n')
 
 
 class BlockedHartreeFock(Restricted):

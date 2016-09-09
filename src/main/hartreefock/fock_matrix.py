@@ -53,43 +53,6 @@ class FockMatrixUnrestricted(Matrix):
         return fock_matrix_alph, fock_matrix_beta
 
 
-class FockMatrixConstrained(FockMatrixUnrestricted):
-
-    def __init__(self, core_hamiltonian, repulsion_matrix, electrons, multiplicity, linear_algebra):
-        super().__init__(core_hamiltonian, repulsion_matrix)
-        self.linear_algebra = linear_algebra
-        self.electrons_alph = (electrons + multiplicity - 1) // 2
-        self.electrons_beta = (electrons - multiplicity + 1) // 2
-
-    def create(self, density_matrix_alph, density_matrix_beta):
-        fock_matrix_alph, fock_matrix_beta = self.create(density_matrix_alph, density_matrix_beta)
-        orthonormal_fock_alph = self.linear_algebra.orthonormalize(fock_matrix_alph)
-        orthonormal_fock_beta = self.linear_algebra.orthonormalize(fock_matrix_beta)
-        orthonormal_fock_closed = (orthonormal_fock_alph + orthonormal_fock_beta) / 2
-
-        def constrained_alph(i, j):
-            # (i is virtual and j is core) or (j is virtual and i is core)
-            if i > (self.electrons_alph + 1 and self.electrons_beta + 1) > j \
-            or j > (self.electrons_alph + 1 and self.electrons_beta + 1) > i:
-                return orthonormal_fock_closed.item(i, j)
-            else:
-                return orthonormal_fock_alph.item(i, j)
-
-        def constrained_beta(i, j):
-            # (i is virtual and j is core) or (j is virtual and i is core)
-            if i > (self.electrons_alph + 1 and self.electrons_beta + 1) > j \
-            or j > (self.electrons_alph + 1 and self.electrons_beta + 1) > i:
-                return orthonormal_fock_closed.item(i, j)
-            else:
-                return orthonormal_fock_beta.item(i, j)
-
-        orthonormal_constrained_alph = self.create_matrix(constrained_alph)
-        orthonormal_constrained_beta = self.create_matrix(constrained_beta)
-        constrained_fock_matrix_alph = self.linear_algebra.non_orthonormal(orthonormal_constrained_alph)
-        constrained_fock_matrix_beta = self.linear_algebra.non_orthonormal(orthonormal_constrained_beta)
-        return constrained_fock_matrix_alph, constrained_fock_matrix_beta
-
-
 class BlockedFockMatrixUnrestricted(Matrix):
 
     def __init__(self, core_hamiltonian, repulsion_matrix):

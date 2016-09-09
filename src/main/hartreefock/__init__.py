@@ -3,7 +3,6 @@ from src.main.hartreefock.linear_algebra import BlockedLinearAlgebra
 from src.main.hartreefock.total_energy import TotalEnergy
 from src.main.hartreefock.fock_matrix import FockMatrixRestricted
 from src.main.hartreefock.fock_matrix import FockMatrixUnrestricted
-from src.main.hartreefock.fock_matrix import FockMatrixConstrained
 from src.main.hartreefock.fock_matrix import BlockedFockMatrixUnrestricted
 from src.main.hartreefock.scf_procedure import SelfConsistentField
 from src.main.hartreefock.scf_procedure import RestrictedSCF
@@ -14,5 +13,4 @@ from src.main.hartreefock.hartree_fock import Restricted
 from src.main.hartreefock.hartree_fock import RestrictedHF
 from src.main.hartreefock.hartree_fock import Unrestricted
 from src.main.hartreefock.hartree_fock import UnrestrictedHF
-from src.main.hartreefock.hartree_fock import ConstrainedUnrestricted
 from src.main.hartreefock.hartree_fock import BlockedHartreeFock
