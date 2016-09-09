@@ -1,7 +1,7 @@
 ##Introduction
 A basic quantum chemical program written in Python 3 using the numpy and scipy libraries.
 
-Currently this program fully supports RHF, UHF, CIS, TDHF, DFT and CCSD, next plans are to reduce ERI time by taking advantage of molecule symmetry and then to implement more correlated methods such as CI. 
+Currently this program fully supports RHF, UHF, CIS, TDHF, DFT and CCSD, next plans are to reduce ERI time by taking advantage of molecule symmetry, implementing more CI based methods and to speed up CCSD iterations. 
 
 I've based this work on Attlia Szabo and Neil S. Ostlunds "Modern Quantum Chemistry: Introduction to Advanced Electronic Structure Theory" and David B. Cooks "Handbook of Computational Chemistry". The developers resources at http://www.psicode.org/developers.php were also invaluable and had a number of excellent tutorials and programming examples.
 
