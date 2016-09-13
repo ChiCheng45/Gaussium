@@ -23,9 +23,22 @@ def start(mol, basis, method, processes, symmetry=False)
 ```
 * Now run the main.py.
 
+##Supported Features and Methods
+* Restricted Hartree-Fock
+* Unrestricted Hartree-Fock
+* Density Functional Theory - SVWN and S_X
+* Møller–Plesset Second Order
+* Coupled Cluster Singles and Doubles
+* Configuration Interaction Singles
+* Time-Dependent Hartree-Fock
+* DIIS for SCF Calculations
+* Multiprocessing during ERI evaluations
+* Reduced ERI evaluations with Symmetry
+
 ##Comparisons
 
-####RHF HeH+ STO-3G 
+###Restricted Hartree-Fock
+#####HeH+ STO-3G 
 Completed my first calculation of HeH+ with a bond-length of 1.4632 a<sub>0</sub> using the STO-3G basis set. Comparison with Spartan Student Edition v5,
 ```
 SCF model:
@@ -49,7 +62,7 @@ TOTAL ENERGY: -2.841836483 a.u.
 Time Taken: 0.10287352007652968s
 ```
 
-####RHF HeH+ 6-311+G**
+#####HeH+ 6-311+G**
 
 ```
     SPARTAN STUDENT Quantum Mechanics Program:  (PC/x86)   Release  5.0.0v4
@@ -77,7 +90,7 @@ TOTAL ENERGY: -2.92922773418 a.u.
 Time Taken: 10.986138812057659s
 ```
 
-####RHF C2H4 3-21G
+#####C2H4 3-21G
 ```
 Job type: Single point.
 Method: RHF
@@ -101,8 +114,9 @@ TOTAL ENERGY: -77.6004608443 a.u.
 Time Taken: 72.70841306778921s
 ```
 
-####UHF O2 STO-3G
-Completed UHF calculation of O2 with a bond-length of 2.28541 a<sub>0</sub> using the STO-3G basis set. Comparison with Psi4,
+###Unrestricted Hartree-Fock
+#####O<sub>2</sub> STO-3G
+Completed UHF calculation of O<sub>2</sub> with a bond-length of 2.28541 a<sub>0</sub> using the STO-3G basis set. Comparison with Psi4,
 ```
     Alpha Virtual:                                                        
 
@@ -163,7 +177,63 @@ TOTAL ENERGY: -147.634028138 a.u.
 TIME TAKEN: 7.575840318746571
 ```
 
-####MP2 CO STO-3G
+###Density Functional Theory
+#####SVWN He STO-3G
+Completed DFT/SVWN calculation of He using the STO-3G basis set. Fairly close agreement to Psi4, differences are probably due to the different numerical integration techniques used.
+```
+  @RKS Final Energy:    -2.80959859524104
+
+   => Energetics <=
+
+    Nuclear Repulsion Energy =              0.0000000000000000
+    One-Electron Energy =                  -3.8634969002750466
+    Two-Electron Energy =                   2.1114258854701449
+    DFT Exchange-Correlation Energy =      -1.0575275804361373
+    Empirical Dispersion Energy =           0.0000000000000000
+    PCM Polarization Energy =               0.0000000000000000
+    EFP Energy =                            0.0000000000000000
+    Total Energy =                         -2.8095985952410389
+```
+```
+NUCLEAR REPULSION ENERGY:    0.0 a.u.
+SCF ENERGY:                  -2.809831281891216 a.u.
+CORRELATION ENERGY:          0.0 a.u.
+TOTAL ENERGY:                -2.80983128189 a.u.
+
+*************************************************************************************************
+
+TIME TAKEN: 48.94459470800236s
+```
+
+#####SVWN H<sub>2</sub> STO-3G
+Completed DFT/SVWN calculation of H<sub>2</sub> with a bond-length of 1.3228 a<sub>0</sub> using the STO-3G basis set. Comparison with Psi4,
+```
+  @RKS Final Energy:    -1.15582107524090
+
+   => Energetics <=
+
+    Nuclear Repulsion Energy =              0.7559674408428576
+    One-Electron Energy =                  -2.5557060084773302
+    Two-Electron Energy =                   1.3647790651283140
+    DFT Exchange-Correlation Energy =      -0.7208615727347415
+    Empirical Dispersion Energy =           0.0000000000000000
+    PCM Polarization Energy =               0.0000000000000000
+    EFP Energy =                            0.0000000000000000
+    Total Energy =                         -1.1558210752409002
+```
+```
+NUCLEAR REPULSION ENERGY:    0.755967561438 a.u.
+SCF ENERGY:                  -1.9118948955020598 a.u.
+CORRELATION ENERGY:          0.0 a.u.
+TOTAL ENERGY:                -1.15592733406 a.u.
+
+*************************************************************************************************
+
+TIME TAKEN: 46.66810950479239s
+```
+
+###Møller–Plesset Second Order
+#####CO STO-3G
 Completed MP2 calculation of CO with a bond-length of 2.14005 a<sub>0</sub> using the STO-3G basis set. Comparison with Psi4,
 ```
         Computing MP2 energy using SCF MOs (Canonical MP2)... 
@@ -194,6 +264,34 @@ TOTAL ENERGY:                -111.354517296 a.u.
 *****************************************************************************************************
 
 TIME TAKEN: 36.23057195376635s
+```
+
+### Coupled Cluster Singles and Doubles
+#####CH<sub>4</sub> STO-3G
+Completed CCSD calculation of CH<sub>4</sub> in the STO-3G basis set. comparison with Psi4,
+```
+        SCF energy       (wfn)                =  -39.726835850063679
+        Reference energy (file100)            =  -39.726835850063708
+
+        Opposite-spin MP2 correlation energy  =   -0.053165399377273
+        Same-spin MP2 correlation energy      =   -0.002972275669006
+        MP2 correlation energy                =   -0.056137675046280
+      * MP2 total energy                      =  -39.782973525109988
+
+        Opposite-spin CCSD correlation energy =   -0.076647951103079
+        Same-spin CCSD correlation energy     =   -0.001821943731474
+        CCSD correlation energy               =   -0.078469894846414
+      * CCSD total energy                     =  -39.805305744910122
+```
+```
+NUCLEAR REPULSION ENERGY:    13.486321423 a.u.
+SCF ENERGY:                  -53.21315722943018 a.u.
+CORRELATION ENERGY:          -0.0784698838517 a.u.
+TOTAL ENERGY:                -39.8053056903 a.u.
+
+*************************************************************************************************
+
+TIME TAKEN: 354.9196610947245s
 ```
 
 ## Citations
