@@ -63,7 +63,6 @@ Time Taken: 0.10287352007652968s
 ```
 
 #####HeH+ 6-311+G**
-
 ```
     SPARTAN STUDENT Quantum Mechanics Program:  (PC/x86)   Release  5.0.0v4
 
@@ -206,7 +205,6 @@ TIME TAKEN: 48.94459470800236s
 ```
 
 #####SVWN H<sub>2</sub> STO-3G
-Completed DFT/SVWN calculation of H<sub>2</sub> with a bond-length of 1.3228 a<sub>0</sub> using the STO-3G basis set. Comparison with Psi4,
 ```
   @RKS Final Energy:    -1.15582107524090
 
@@ -234,7 +232,7 @@ TIME TAKEN: 46.66810950479239s
 
 ###Møller–Plesset Second Order
 #####CO STO-3G
-Completed MP2 calculation of CO with a bond-length of 2.14005 a<sub>0</sub> using the STO-3G basis set. Comparison with Psi4,
+MP2 calculation of CO with a bond-length of 2.14005 a<sub>0</sub> using the STO-3G basis set. Comparison with Psi4,
 ```
         Computing MP2 energy using SCF MOs (Canonical MP2)... 
         ============================================================================== 
@@ -268,7 +266,7 @@ TIME TAKEN: 36.23057195376635s
 
 ### Coupled Cluster Singles and Doubles
 #####CH<sub>4</sub> STO-3G
-Completed CCSD calculation of CH<sub>4</sub> in the STO-3G basis set. comparison with Psi4,
+CCSD calculation of CH<sub>4</sub> in the STO-3G basis set. comparison with Psi4,
 ```
         SCF energy       (wfn)                =  -39.726835850063679
         Reference energy (file100)            =  -39.726835850063708
