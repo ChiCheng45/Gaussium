@@ -89,7 +89,7 @@ TOTAL ENERGY: -2.92922773418 a.u.
 Time Taken: 10.986138812057659s
 ```
 
-#####C2H4 3-21G
+#####C<sub>2</sub>H<sub>4</sub> 3-21G
 ```
 Job type: Single point.
 Method: RHF
