@@ -38,7 +38,7 @@ def start(mol, basis, method, processes, symmetry=False)
 ##Comparisons
 
 ###Restricted Hartree-Fock
-#####HeH+ STO-3G 
+#####HeH<sup>+</sup> STO-3G 
 Completed my first calculation of HeH+ with a bond-length of 1.4632 a<sub>0</sub> using the STO-3G basis set. Comparison with Spartan Student Edition v5,
 ```
 SCF model:
@@ -62,7 +62,7 @@ TOTAL ENERGY: -2.841836483 a.u.
 Time Taken: 0.10287352007652968s
 ```
 
-#####HeH+ 6-311+G**
+#####HeH<sup>+</sup> 6-311+G**
 ```
     SPARTAN STUDENT Quantum Mechanics Program:  (PC/x86)   Release  5.0.0v4
 
