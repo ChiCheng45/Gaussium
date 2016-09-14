@@ -20,7 +20,7 @@ def read_basis_set_file(file_input_basis, nuclei_array):
     expand_basis_set : function for expanding L, P, D and higher functions
 
     """
-    file_input_basis = os.path.join('..\\..\\', 'basissets\\' + file_input_basis)
+    file_input_basis = os.path.join('../../', 'basissets/' + file_input_basis)
     basis_array = []
     for a in range(len(nuclei_array)):
         file = open(file_input_basis, 'r')
@@ -68,7 +68,7 @@ def read_mol_file(file_input_mol):
     multiplicity : int
 
     """
-    file_input_mol = os.path.join('..\\..\\', 'molfiles\\' + file_input_mol)
+    file_input_mol = os.path.join('../../', 'molfiles/' + file_input_mol)
     nuclei_array = []
     total_nuclei_charge = 0
     with open(file_input_mol, 'r') as file:
