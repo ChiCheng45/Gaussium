@@ -34,6 +34,7 @@ def start(mol, basis, method, processes, symmetry=False)
 * DIIS for SCF Calculations
 * Multiprocessing during ERI evaluations
 * Reduced ERI evaluations with Symmetry
+* Obara-Saika recursion relation for ERI
 
 ##Comparisons
 
