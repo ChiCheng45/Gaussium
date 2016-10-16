@@ -36,8 +36,8 @@ class ExchangeCorrelation:
             return self.electron_density[(x, y, z)]
 
         def integrand(x, y, z):
-            return g_i.value(x, y, z) * (self.exchange_potential.calculate(electron_density(x, y, z))
-            + self.correlation_potential.calculate(electron_density(x, y, z))) * g_j.value(x, y, z)
+            return g_i.value(x, y, z) * (self.exchange_potential.calculate_singles_doubles(electron_density(x, y, z))
+                                         + self.correlation_potential.calculate_singles_doubles(electron_density(x, y, z))) * g_j.value(x, y, z)
 
         integral, error = integrate.nquad(integrand, [
                 [-self.int_space, self.int_space],

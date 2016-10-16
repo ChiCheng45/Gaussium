@@ -1,26 +1,63 @@
 import itertools
 
 
-class SinglesDoublesAmplitudes:
+class Amplitudes:
 
     def __init__(self, spin_molecular_integral, orbital_energies, occupied_orbitals, unoccupied_orbitals):
         self.integrals = spin_molecular_integral
         self.orbital_energies = orbital_energies
-        self.occupied = range(occupied_orbitals)
-        self.unoccupied = range(occupied_orbitals, occupied_orbitals + unoccupied_orbitals)
-        self.singles, self.doubles = self.indexes()
-        self.denominator = self.denominator_arrays()
+        self.occupied = occupied_orbitals
+        self.unoccupied = unoccupied_orbitals
+        self.denominator = {}
 
-    def indexes(self):
+    def singles_indexes(self):
         singles = []
-        doubles = []
         for i in self.occupied:
             for a in self.unoccupied:
                 singles.append((i, a))
+        return singles
+
+    def doubles_indexes(self):
+        doubles = []
         for i, j in itertools.permutations(self.occupied, 2):
             for a, b in itertools.permutations(self.unoccupied, 2):
                 doubles.append((i, j, a, b))
-        return singles, doubles
+        return doubles
+
+    def triples_indexes(self):
+        triples = []
+        for i, j, k in itertools.permutations(self.occupied, 3):
+            for a, b, c in itertools.permutations(self.unoccupied, 3):
+                triples.append((i, j, k, a, b, c))
+        return triples
+
+    def denominator_singles(self):
+        for i in self.occupied:
+            for a in self.unoccupied:
+                self.denominator[i, a] = self.orbital_energies[i] - self.orbital_energies[a]
+
+    def denominator_doubles(self):
+        for i, j in itertools.permutations(self.occupied, 2):
+            for a, b in itertools.permutations(self.unoccupied, 2):
+                self.denominator[i, j, a, b] = self.orbital_energies[i] + self.orbital_energies[j] \
+                - self.orbital_energies[a] - self.orbital_energies[b]
+
+    def denominator_triples(self):
+        for i, j, k in itertools.permutations(self.occupied, 3):
+            for a, b, c in itertools.permutations(self.unoccupied, 3):
+                self.denominator[i, j, a, b] = self.orbital_energies[i] + self.orbital_energies[j] \
+                + self.orbital_energies[k] - self.orbital_energies[a] - self.orbital_energies[b] \
+                - self.orbital_energies[c]
+
+
+class SinglesDoubles(Amplitudes):
+
+    def __init__(self, spin_molecular_integral, orbital_energies, occupied_orbitals, unoccupied_orbitals):
+        super().__init__(spin_molecular_integral, orbital_energies, occupied_orbitals, unoccupied_orbitals)
+        self.singles = self.singles_indexes()
+        self.doubles = self.doubles_indexes()
+        self.denominator_singles()
+        self.denominator_doubles()
 
     def mp2_initial_guess(self):
         t = {}
@@ -189,17 +226,10 @@ class SinglesDoublesAmplitudes:
             tau_2[i, j, a, b] = t[i, j, a, b] + 0.5 * (t[i, a] * t[j, b] - t[i, b] * t[j, a])
         return tau_1, tau_2
 
-    def denominator_arrays(self):
-        denominator = {}
-        for i, a in self.singles:
-            denominator[i, a] = self.orbital_energies[i] - self.orbital_energies[a]
-        for i, j, a, b in self.doubles:
-            denominator[i, j, a, b] = self.orbital_energies[i] + self.orbital_energies[j] - self.orbital_energies[a] \
-            - self.orbital_energies[b]
-        return denominator
 
-    def calculate_correlation(self, t):
-        correlation = 0
-        for i, j, a, b in self.doubles:
-            correlation += self.integrals.item(i, j, a, b) * (0.25 * t[i, j, a, b] + 0.5 * t[i, a] * t[j, b])
-        return correlation
+class PeturbativeTriples(Amplitudes):
+
+    def __init__(self, spin_molecular_integral, orbital_energies, occupied_orbitals, unoccupied_orbitals):
+        super().__init__(spin_molecular_integral, orbital_energies, occupied_orbitals, unoccupied_orbitals)
+        self.triples = self.triples_indexes()
+        self.denominator_triples()

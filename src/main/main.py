@@ -11,7 +11,7 @@ from src.main.hartreefock import BlockedHartreeFock
 from src.main.kohnsham import RestrictedKohnSham
 from src.main.moellerplesset import MoellerPlesset
 from src.main.tdhartreefock import TimeDependentHartreeFock
-from src.main.coupledcluster import CoupledCluster
+from src.main.coupledcluster import CoupledClusterSinglesDoubles
 import numpy as np
 import time
 
@@ -31,8 +31,8 @@ def menu():
     # start('He.mol', 'STO-3G.gbs', ('DFT', 'S', 'VWN3'), 4)  # -2.809598595 a.u.
     # start('H2.mol', 'STO-3G.gbs', ('DFT', 'S', 'VWN3'), 4)  # -1.155821075 a.u.
     # start('Li-.mol', 'STO-3G.gbs', ('DFT', 'S', 'VWN3'), 4)  # -7.2228569820684534 a.u.
-    # start('H2O.mol', 'STO-3G.gbs', 'CCSD', 4)  # -0.0706800939192 a.u.
-    start('CH4.mol', 'STO-3G.gbs', 'CCSD', 4)  # -0.078469894846414 a.u.
+    start('H2O.mol', 'STO-3G.gbs', 'CCSD', 4)  # -0.0706800939192 a.u.
+    # start('CH4.mol', 'STO-3G.gbs', 'CCSD', 4)  # -0.078469894846414 a.u.
 
 
 def start(mol, basis, method, processes, symmetry=False):
@@ -81,8 +81,9 @@ def start(mol, basis, method, processes, symmetry=False):
         electron_energy = RestrictedKohnSham(molecule.nuclei_array, basis_set_array, electrons,
         symmetry_object, processes, method[1], method[2]).begin_scf()[0]
     if method == 'CCSD':
-        electron_energy, correlation = CoupledCluster(
-        RestrictedHF(molecule.nuclei_array, basis_set_array, electrons, symmetry_object, processes)).singles_doubles()
+        electron_energy, correlation = CoupledClusterSinglesDoubles(
+        RestrictedHF(molecule.nuclei_array, basis_set_array, electrons, symmetry_object, processes)
+        ).calculate_singles_doubles()[:2]
 
     total_energy = electron_energy + nuclear_repulsion + correlation
     print('NUCLEAR REPULSION ENERGY:    ' + str(nuclear_repulsion) + ' a.u.')

@@ -1,30 +1,35 @@
 from src.main.matrixelements import molecular_orbitals
 from src.main.matrixelements import spin_basis_anti_physicist
 from src.main.matrixelements import spin_orbital_energies
-from src.main.coupledcluster import SinglesDoublesAmplitudes
-import time
+from src.main.coupledcluster import SinglesDoubles
+from src.main.coupledcluster import PeturbativeTriples
+import time, itertools
 
 
 class CoupledCluster:
 
-    def __init__(self, hartree_fock, threshold=1e-12):
-        self.hartree_fock = hartree_fock
+    def __init__(self, hartree_fock, threshold):
+        self.hartree_fock_energy, orbital_energies, orbital_coefficients = hartree_fock.begin_scf()
+        self.repulsion = spin_basis_anti_physicist(molecular_orbitals(hartree_fock.repulsion, orbital_coefficients))
+        self.orbital_energies = spin_orbital_energies(orbital_energies)
+        self.occupied = range(hartree_fock.electrons)
+        self.unoccupied = range(hartree_fock.electrons, hartree_fock.electrons + len(self.orbital_energies)
+        - hartree_fock.electrons)
         self.threshold = threshold
 
-    def singles_doubles(self):
-        electron_energy, orbital_energies, orbital_coefficients = self.hartree_fock.begin_scf()
 
-        repulsion = spin_basis_anti_physicist(molecular_orbitals(self.hartree_fock.repulsion, orbital_coefficients))
-        orbital_energies = spin_orbital_energies(orbital_energies)
-        occupied = self.hartree_fock.electrons
-        unoccupied = len(orbital_energies) - occupied
+class CoupledClusterSinglesDoubles(CoupledCluster):
 
+    def __init__(self, hartree_fock, threshold=1e-12):
+        super().__init__(hartree_fock, threshold)
+        self.amplitudes_factory = SinglesDoubles(self.repulsion, self.orbital_energies, self.occupied, self.unoccupied)
+
+    def calculate_singles_doubles(self):
         print('*************************************************************************************************')
         print('\nMP2 INITIAL GUESS')
         start = time.clock()
-        amplitudes_factory = SinglesDoublesAmplitudes(repulsion, orbital_energies, occupied, unoccupied)
-        amplitudes = amplitudes_factory.mp2_initial_guess()
-        correlation = amplitudes_factory.calculate_correlation(amplitudes)
+        amplitudes = self.amplitudes_factory.mp2_initial_guess()
+        correlation = self.correlation(amplitudes)
         print('MP2 CORRELATION ENERGY: ' + str(correlation) + ' a.u.')
         print('TIME TAKEN: ' + str(time.clock() - start) + 's')
 
@@ -35,8 +40,8 @@ class CoupledCluster:
 
         while True:
 
-            amplitudes = amplitudes_factory.calculate_amplitudes(amplitudes)
-            correlation = amplitudes_factory.calculate_correlation(amplitudes)
+            amplitudes = self.amplitudes_factory.calculate_amplitudes(amplitudes)
+            correlation = self.correlation(amplitudes)
             delta_energy = previous_correlation - correlation
             previous_correlation = correlation
             print('CCSD CORRELATION ENERGY: ' + str(correlation) + ' a.u.')
@@ -46,4 +51,23 @@ class CoupledCluster:
 
         print('TIME TAKEN: ' + str(time.clock() - start) + 's\n\n')
 
-        return electron_energy, correlation
+        return self.hartree_fock_energy, correlation, amplitudes
+
+    def correlation(self, t):
+        correlation = 0
+        for i, j in itertools.permutations(self.occupied, 2):
+            for a, b in itertools.permutations(self.unoccupied, 2):
+                correlation += self.repulsion.item(i, j, a, b) * (0.25 * t[i, j, a, b] + 0.5 * t[i, a] * t[j, b])
+        return correlation
+
+
+class CoupledClusterPerturbativeTriples(CoupledClusterSinglesDoubles):
+
+    def __init__(self, hartree_fock, threshold=1e-12):
+        super().__init__(hartree_fock, threshold)
+        self.hartree_fock_energy, self.singles_doubles_correlation, self.amplitudes = self.calculate_singles_doubles()
+        self.amplitudes_factory = PeturbativeTriples(self.repulsion, self.orbital_energies, self.occupied,
+        self.unoccupied)
+
+    def calculate_perturbative_triples(self):
+        pass
