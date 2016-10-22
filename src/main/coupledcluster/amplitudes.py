@@ -1,69 +1,42 @@
+from src.main.coupledcluster import Indices
 import itertools
 
 
-class Amplitudes:
+class Amplitudes(Indices):
 
     def __init__(self, spin_molecular_integral, orbital_energies, occupied_orbitals, unoccupied_orbitals):
+        super().__init__(occupied_orbitals, unoccupied_orbitals)
         self.integrals = spin_molecular_integral
         self.orbital_energies = orbital_energies
-        self.occupied = occupied_orbitals
-        self.unoccupied = unoccupied_orbitals
         self.denominator = {}
 
-    def singles_indexes(self):
-        singles = []
-        for i in self.occupied:
-            for a in self.unoccupied:
-                singles.append((i, a))
-        return singles
-
-    def doubles_indexes(self):
-        doubles = []
-        for i, j in itertools.permutations(self.occupied, 2):
-            for a, b in itertools.permutations(self.unoccupied, 2):
-                doubles.append((i, j, a, b))
-        return doubles
-
-    def triples_indexes(self):
-        triples = []
-        for i, j, k in itertools.permutations(self.occupied, 3):
-            for a, b, c in itertools.permutations(self.unoccupied, 3):
-                triples.append((i, j, k, a, b, c))
-        return triples
-
     def denominator_singles(self):
-        for i in self.occupied:
-            for a in self.unoccupied:
-                self.denominator[i, a] = self.orbital_energies[i] - self.orbital_energies[a]
+        for i, a in self.singles():
+            self.denominator[i, a] = self.orbital_energies[i] - self.orbital_energies[a]
 
     def denominator_doubles(self):
-        for i, j in itertools.permutations(self.occupied, 2):
-            for a, b in itertools.permutations(self.unoccupied, 2):
-                self.denominator[i, j, a, b] = self.orbital_energies[i] + self.orbital_energies[j] \
-                - self.orbital_energies[a] - self.orbital_energies[b]
+        for i, j, a, b in self.doubles():
+            self.denominator[i, j, a, b] = self.orbital_energies[i] + self.orbital_energies[j] \
+            - self.orbital_energies[a] - self.orbital_energies[b]
 
     def denominator_triples(self):
-        for i, j, k in itertools.permutations(self.occupied, 3):
-            for a, b, c in itertools.permutations(self.unoccupied, 3):
-                self.denominator[i, j, a, b] = self.orbital_energies[i] + self.orbital_energies[j] \
-                + self.orbital_energies[k] - self.orbital_energies[a] - self.orbital_energies[b] \
-                - self.orbital_energies[c]
+        for i, j, k, a, b, c in self.triples():
+            self.denominator[i, j, a, b] = self.orbital_energies[i] + self.orbital_energies[j] \
+            + self.orbital_energies[k] - self.orbital_energies[a] - self.orbital_energies[b] - self.orbital_energies[c]
 
 
 class SinglesDoubles(Amplitudes):
 
     def __init__(self, spin_molecular_integral, orbital_energies, occupied_orbitals, unoccupied_orbitals):
         super().__init__(spin_molecular_integral, orbital_energies, occupied_orbitals, unoccupied_orbitals)
-        self.singles = self.singles_indexes()
-        self.doubles = self.doubles_indexes()
         self.denominator_singles()
         self.denominator_doubles()
 
     def mp2_initial_guess(self):
         t = {}
-        for i, a in self.singles:
+        for i, a in self.singles():
             t[i, a] = 0
-        for i, j, a, b in self.doubles:
+        for i, j, a, b in self.doubles():
             t[i, j, a, b] = self.integrals.item(i, j, a, b) / self.denominator[i, j, a, b]
         return t
 
@@ -72,9 +45,9 @@ class SinglesDoubles(Amplitudes):
         tau_1, tau_2 = self.tau(t_prev)
         inter = self.intermediates(t_prev, tau_1, tau_2)
 
-        for i, a in self.singles:
+        for i, a in self.singles():
             t[i, a] = self.singles_amplitudes(i, a, t_prev, inter)
-        for i, j, a, b in self.doubles:
+        for i, j, a, b in self.doubles():
             t[i, j, a, b] = self.doubles_amplitudes(i, j, a, b, t_prev, tau_1, inter)
 
         return t
@@ -91,10 +64,10 @@ class SinglesDoubles(Amplitudes):
                 if i != m and a != e:
                     t_ia += t[i, m, a, e] * inter[m, e]
 
-        for n, f in self.singles:
+        for n, f in self.singles():
             t_ia -= t[n, f] * self.integrals.item(n, a, i, f)
 
-        for m, e in self.singles:
+        for m, e in self.singles():
             for f in self.unoccupied:
                 if i != m and e != f:
                     t_ia -= 0.5 * t[i, m, e, f] * self.integrals.item(m, a, e, f)
@@ -137,7 +110,7 @@ class SinglesDoubles(Amplitudes):
         for e, f in itertools.permutations(self.unoccupied, 2):
             t_ijab += 0.5 * tau[i, j, e, f] * inter[a, b, e, f]
 
-        for m, e in self.singles:
+        for m, e in self.singles():
             if i != m and a != e:
                 t_ijab += t[i, m, a, e] * inter[m, b, e, j]
             t_ijab -= t[i, e] * t[m, a] * self.integrals.item(m, b, e, j)
@@ -164,7 +137,7 @@ class SinglesDoubles(Amplitudes):
 
         for a, e in itertools.product(self.unoccupied, repeat=2):
             f_ae = 0
-            for m, f in self.singles:
+            for m, f in self.singles():
                 f_ae += t[m, f] * self.integrals.item(m, a, f, e)
                 for n in self.occupied:
                     if m != n and a != f:
@@ -173,7 +146,7 @@ class SinglesDoubles(Amplitudes):
 
         for m, i in itertools.product(self.occupied, repeat=2):
             f_mi = 0
-            for n, e in self.singles:
+            for n, e in self.singles():
                 f_mi += t[n, e] * self.integrals.item(m, n, i, e)
                 for f in self.unoccupied:
                     if i != n and e != f:
@@ -182,7 +155,7 @@ class SinglesDoubles(Amplitudes):
 
         for m, e in itertools.product(self.occupied, self.unoccupied):
             f_me = 0
-            for n, f in self.singles:
+            for n, f in self.singles():
                 f_me += t[n, f] * self.integrals.item(m, n, e, f)
             intermediates[m, e] = f_me
 
@@ -221,7 +194,7 @@ class SinglesDoubles(Amplitudes):
     def tau(self, t):
         tau_1 = {}
         tau_2 = {}
-        for i, j, a, b in self.doubles:
+        for i, j, a, b in self.doubles():
             tau_1[i, j, a, b] = t[i, j, a, b] + t[i, a] * t[j, b] - t[i, b] * t[j, a]
             tau_2[i, j, a, b] = t[i, j, a, b] + 0.5 * (t[i, a] * t[j, b] - t[i, b] * t[j, a])
         return tau_1, tau_2
@@ -231,5 +204,4 @@ class PeturbativeTriples(Amplitudes):
 
     def __init__(self, spin_molecular_integral, orbital_energies, occupied_orbitals, unoccupied_orbitals):
         super().__init__(spin_molecular_integral, orbital_energies, occupied_orbitals, unoccupied_orbitals)
-        self.triples = self.triples_indexes()
         self.denominator_triples()

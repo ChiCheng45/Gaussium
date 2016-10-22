@@ -1,20 +1,20 @@
 from src.main.matrixelements import molecular_orbitals
 from src.main.matrixelements import spin_basis_anti_physicist
 from src.main.matrixelements import spin_orbital_energies
+from src.main.coupledcluster import Indices
 from src.main.coupledcluster import SinglesDoubles
 from src.main.coupledcluster import PeturbativeTriples
-import time, itertools
+import time
 
 
-class CoupledCluster:
+class CoupledCluster(Indices):
 
     def __init__(self, hartree_fock, threshold):
         self.hartree_fock_energy, orbital_energies, orbital_coefficients = hartree_fock.begin_scf()
         self.repulsion = spin_basis_anti_physicist(molecular_orbitals(hartree_fock.repulsion, orbital_coefficients))
         self.orbital_energies = spin_orbital_energies(orbital_energies)
-        self.occupied = range(hartree_fock.electrons)
-        self.unoccupied = range(hartree_fock.electrons, hartree_fock.electrons + len(self.orbital_energies)
-        - hartree_fock.electrons)
+        super().__init__(range(hartree_fock.electrons), range(hartree_fock.electrons, hartree_fock.electrons
+        + len(self.orbital_energies) - hartree_fock.electrons))
         self.threshold = threshold
 
 
@@ -29,7 +29,7 @@ class CoupledClusterSinglesDoubles(CoupledCluster):
         print('\nMP2 INITIAL GUESS')
         start = time.clock()
         amplitudes = self.amplitudes_factory.mp2_initial_guess()
-        correlation = self.correlation(amplitudes)
+        correlation = self.singles_doubles_correlation(amplitudes)
         print('MP2 CORRELATION ENERGY: ' + str(correlation) + ' a.u.')
         print('TIME TAKEN: ' + str(time.clock() - start) + 's')
 
@@ -41,7 +41,7 @@ class CoupledClusterSinglesDoubles(CoupledCluster):
         while True:
 
             amplitudes = self.amplitudes_factory.calculate_amplitudes(amplitudes)
-            correlation = self.correlation(amplitudes)
+            correlation = self.singles_doubles_correlation(amplitudes)
             delta_energy = previous_correlation - correlation
             previous_correlation = correlation
             print('CCSD CORRELATION ENERGY: ' + str(correlation) + ' a.u.')
@@ -53,11 +53,10 @@ class CoupledClusterSinglesDoubles(CoupledCluster):
 
         return self.hartree_fock_energy, correlation, amplitudes
 
-    def correlation(self, t):
+    def singles_doubles_correlation(self, t):
         correlation = 0
-        for i, j in itertools.permutations(self.occupied, 2):
-            for a, b in itertools.permutations(self.unoccupied, 2):
-                correlation += self.repulsion.item(i, j, a, b) * (0.25 * t[i, j, a, b] + 0.5 * t[i, a] * t[j, b])
+        for i, j, a, b in self.doubles():
+            correlation += self.repulsion.item(i, j, a, b) * (0.25 * t[i, j, a, b] + 0.5 * t[i, a] * t[j, b])
         return correlation
 
 
