@@ -1,4 +1,4 @@
-from src.main.coupledcluster import Indices
+from src.main.common import Indices
 import itertools
 
 
@@ -55,12 +55,12 @@ class SinglesDoubles(Amplitudes):
     def singles_amplitudes(self, i, a, t, inter):
         t_ia = 0
 
-        for e in self.unoccupied:
+        for e in self.unoccupied_indices:
             t_ia += t[i, e] * inter[a, e]
 
-        for m in self.occupied:
+        for m in self.occupied_indices:
             t_ia -= t[m, a] * inter[m, i]
-            for e in self.unoccupied:
+            for e in self.unoccupied_indices:
                 if i != m and a != e:
                     t_ia += t[i, m, a, e] * inter[m, e]
 
@@ -68,10 +68,10 @@ class SinglesDoubles(Amplitudes):
             t_ia -= t[n, f] * self.integrals.item(n, a, i, f)
 
         for m, e in self.singles():
-            for f in self.unoccupied:
+            for f in self.unoccupied_indices:
                 if i != m and e != f:
                     t_ia -= 0.5 * t[i, m, e, f] * self.integrals.item(m, a, e, f)
-            for n in self.occupied:
+            for n in self.occupied_indices:
                 if m != n and a != e:
                     t_ia -= 0.5 * t[m, n, a, e] * self.integrals.item(n, m, e, i)
 
@@ -80,34 +80,34 @@ class SinglesDoubles(Amplitudes):
     def doubles_amplitudes(self, i, j, a, b, t, tau, inter):
         t_ijab = self.integrals.item(i, j, a, b)
 
-        for e in self.unoccupied:
+        for e in self.unoccupied_indices:
             out = 0
-            for m in self.occupied:
+            for m in self.occupied_indices:
                 out += t[m, b] * inter[m, e]
             if a != e:
                 t_ijab += t[i, j, a, e] * (inter[b, e] - 0.5 * out)
             out = 0
-            for m in self.occupied:
+            for m in self.occupied_indices:
                 out += t[m, a] * inter[m, e]
             if b != e:
                 t_ijab -= t[i, j, b, e] * (inter[a, e] - 0.5 * out)
 
-        for m in self.occupied:
+        for m in self.occupied_indices:
             out = 0
-            for e in self.unoccupied:
+            for e in self.unoccupied_indices:
                 out += t[j, e] * inter[m, e]
             if i != m:
                 t_ijab -= t[i, m, a, b] * (inter[m, j] + 0.5 * out)
             out = 0
-            for e in self.unoccupied:
+            for e in self.unoccupied_indices:
                 out += t[i, e] * inter[m, e]
             if j != m:
                 t_ijab += t[j, m, a, b] * (inter[m, i] + 0.5 * out)
 
-        for m, n in itertools.permutations(self.occupied, 2):
+        for m, n in itertools.permutations(self.occupied_indices, 2):
             t_ijab += 0.5 * tau[m, n, a, b] * inter[m, n, i, j]
 
-        for e, f in itertools.permutations(self.unoccupied, 2):
+        for e, f in itertools.permutations(self.unoccupied_indices, 2):
             t_ijab += 0.5 * tau[i, j, e, f] * inter[a, b, e, f]
 
         for m, e in self.singles():
@@ -124,10 +124,10 @@ class SinglesDoubles(Amplitudes):
                 t_ijab += t[j, m, b, e] * inter[m, a, e, i]
             t_ijab -= t[j, e] * t[m, b] * self.integrals.item(m, a, e, i)
 
-        for e in self.unoccupied:
+        for e in self.unoccupied_indices:
             t_ijab += t[i, e] * self.integrals.item(a, b, e, j) - t[j, e] * self.integrals.item(a, b, e, i)
 
-        for m in self.occupied:
+        for m in self.occupied_indices:
             t_ijab -= t[m, a] * self.integrals.item(m, b, i, j) - t[m, b] * self.integrals.item(m, a, i, j)
 
         return t_ijab / self.denominator[i, j, a, b]
@@ -135,55 +135,56 @@ class SinglesDoubles(Amplitudes):
     def intermediates(self, t, tau_1, tau_2):
         intermediates = {}
 
-        for a, e in itertools.product(self.unoccupied, repeat=2):
+        for a, e in itertools.product(self.unoccupied_indices, repeat=2):
             f_ae = 0
             for m, f in self.singles():
                 f_ae += t[m, f] * self.integrals.item(m, a, f, e)
-                for n in self.occupied:
+                for n in self.occupied_indices:
                     if m != n and a != f:
                         f_ae -= 0.5 * tau_2[m, n, a, f] * self.integrals.item(m, n, e, f)
             intermediates[a, e] = f_ae
 
-        for m, i in itertools.product(self.occupied, repeat=2):
+        for m, i in itertools.product(self.occupied_indices, repeat=2):
             f_mi = 0
             for n, e in self.singles():
                 f_mi += t[n, e] * self.integrals.item(m, n, i, e)
-                for f in self.unoccupied:
+                for f in self.unoccupied_indices:
                     if i != n and e != f:
                         f_mi += 0.5 * tau_2[i, n, e, f] * self.integrals.item(m, n, e, f)
             intermediates[m, i] = f_mi
 
-        for m, e in itertools.product(self.occupied, self.unoccupied):
+        for m, e in itertools.product(self.occupied_indices, self.unoccupied_indices):
             f_me = 0
             for n, f in self.singles():
                 f_me += t[n, f] * self.integrals.item(m, n, e, f)
             intermediates[m, e] = f_me
 
-        for m, n, i, j in itertools.product(self.occupied, repeat=4):
+        for m, n, i, j in itertools.product(self.occupied_indices, repeat=4):
             w_mnij = self.integrals.item(m, n, i, j)
-            for e in self.unoccupied:
+            for e in self.unoccupied_indices:
                 w_mnij += t[j, e] * self.integrals.item(m, n, i, e) - t[i, e] * self.integrals.item(m, n, j, e)
-                for f in self.unoccupied:
+                for f in self.unoccupied_indices:
                     if i != j and e != f:
                         w_mnij += 0.25 * tau_1[i, j, e, f] * self.integrals.item(m, n, e, f)
             intermediates[m, n, i, j] = w_mnij
 
-        for a, b, e, f in itertools.product(self.unoccupied, repeat=4):
+        for a, b, e, f in itertools.product(self.unoccupied_indices, repeat=4):
             w_abef = self.integrals.item(a, b, e, f)
-            for m in self.occupied:
+            for m in self.occupied_indices:
                 w_abef -= t[m, b] * self.integrals.item(a, m, e, f) - t[m, a] * self.integrals.item(b, m, e, f)
-                for n in self.occupied:
+                for n in self.occupied_indices:
                     if m != n and a != b:
                         w_abef += 0.25 * tau_1[m, n, a, b] * self.integrals.item(m, n, e, f)
             intermediates[a, b, e, f] = w_abef
 
-        for m, b, e, j in itertools.product(self.occupied, self.unoccupied, self.unoccupied, self.occupied):
+        for m, b, e, j in itertools.product(self.occupied_indices, self.unoccupied_indices, self.unoccupied_indices,
+        self.occupied_indices):
             w_mbej = self.integrals.item(m, b, e, j)
-            for f in self.unoccupied:
+            for f in self.unoccupied_indices:
                 w_mbej += t[j, f] * self.integrals.item(m, b, e, f)
-            for n in self.occupied:
+            for n in self.occupied_indices:
                 w_mbej -= t[n, b] * self.integrals.item(m, n, e, j)
-                for f in self.unoccupied:
+                for f in self.unoccupied_indices:
                     if j != n and f != b:
                         w_mbej -= 0.5 * t[j, n, f, b] * self.integrals.item(m, n, e, f)
                     w_mbej -= t[j, f] * t[n, b] * self.integrals.item(m, n, e, f)

@@ -67,8 +67,10 @@ def start(mol, basis, method, processes, symmetry=False):
         electron_energy = BlockedHartreeFock(molecule.nuclei_array, basis_set_array, electrons, multiplicity,
         symmetry_object, processes).begin_scf()[0]
     if method == 'MP2':
-        electron_energy, correlation = MoellerPlesset(
-        RestrictedHF(molecule.nuclei_array, basis_set_array, electrons, symmetry_object, processes)).second_order()
+        mp2 = MoellerPlesset(
+        RestrictedHF(molecule.nuclei_array, basis_set_array, electrons, symmetry_object, processes))
+        electron_energy = mp2.hartree_fock_energy
+        correlation = mp2.second_order()
     if method == 'TDHF':
         electron_energy = TimeDependentHartreeFock(
         RestrictedHF(molecule.nuclei_array, basis_set_array, electrons, symmetry_object, processes)
@@ -81,9 +83,10 @@ def start(mol, basis, method, processes, symmetry=False):
         electron_energy = RestrictedKohnSham(molecule.nuclei_array, basis_set_array, electrons,
         symmetry_object, processes, method[1], method[2]).begin_scf()[0]
     if method == 'CCSD':
-        electron_energy, correlation = CoupledClusterSinglesDoubles(
-        RestrictedHF(molecule.nuclei_array, basis_set_array, electrons, symmetry_object, processes)
-        ).calculate_singles_doubles()[:2]
+        ccsd = CoupledClusterSinglesDoubles(
+        RestrictedHF(molecule.nuclei_array, basis_set_array, electrons, symmetry_object, processes))
+        electron_energy = ccsd.hartree_fock_energy
+        correlation = ccsd.calculate_singles_doubles()[0]
 
     total_energy = electron_energy + nuclear_repulsion + correlation
     print('NUCLEAR REPULSION ENERGY:    ' + str(nuclear_repulsion) + ' a.u.')
