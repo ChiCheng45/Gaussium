@@ -32,15 +32,12 @@ class SymmetryFactory:
         rotation_symmetry = self.brute_force_rotation_symmetry(nuclei_array, vertices, edge_center,
         cross_vertices_vertices, cross_edge_vertices, cross_edge_edge)
 
-        reflection_symmetry = self.brute_force_reflection_symmetry(nuclei_array, rotation_symmetry,
-        vertices, cross_vertices_vertices, cross_edge_vertices)
+        reflection_symmetry = self.brute_force_reflection_symmetry(nuclei_array, rotation_symmetry, vertices,
+        cross_vertices_vertices, cross_edge_vertices)
 
         improper_rotation = self.brute_force_improper_rotation(nuclei_array, rotation_symmetry)
 
-        inversion_symmetry = []
-        inversion = InversionSymmetry()
-        if self.check_symmetry_operation(nuclei_array, inversion):
-            inversion_symmetry.append(inversion)
+        inversion_symmetry = self.brute_force_inversion_symmetry(nuclei_array)
 
         return rotation_symmetry, reflection_symmetry, improper_rotation, inversion_symmetry
 
@@ -49,6 +46,7 @@ class SymmetryFactory:
 
         axis_of_rotations_i = self.remove_duplicate(corner + edge_center + cross_vertices_vertices
         + cross_edge_vertices + cross_edge_edge)
+
         axis_of_rotations_j = []
         if len(axis_of_rotations_i) > 0:
 
@@ -78,6 +76,7 @@ class SymmetryFactory:
 
         # rotate all orthogonal vectors by principal axis by half it's n-fold angle
         vector_cross = self.remove_duplicate(vertices + cross_vertices_vertices + cross_edge_vertices)
+
         vectors_cross_rotated = []
         if len(rotation_symmetry) > 0:
 
@@ -134,6 +133,15 @@ class SymmetryFactory:
                 improper_rotation_list_j.append(improper_rotation)
 
         return improper_rotation_list_j
+
+    def brute_force_inversion_symmetry(self, nuclei_array):
+        inversion = InversionSymmetry()
+
+        inversion_symmetry = []
+        if self.check_symmetry_operation(nuclei_array, inversion):
+            inversion_symmetry.append(inversion)
+
+        return inversion_symmetry
 
     def check_symmetry_operation(self, nuclei_array, symmetry):
         nuclei_array_copy = []

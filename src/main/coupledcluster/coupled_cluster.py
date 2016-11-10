@@ -68,7 +68,7 @@ class CoupledClusterPerturbativeTriples(CoupledClusterSinglesDoubles):
         super().__init__(hartree_fock, threshold)
         self.singles_doubles_correlation, self.amplitudes = self.calculate_singles_doubles()
         self.amplitudes_factory = PeturbativeTriples(self.repulsion, self.orbital_energies, self.occupied_indices,
-                                                     self.unoccupied_indices)
+        self.unoccupied_indices)
 
     def calculate_perturbative_triples(self):
         pass

@@ -104,12 +104,10 @@ class MoleculeFactory:
 
         if len(rotation_symmetry) > 1:
             highest_n_folds = heapq.nlargest(2, [rotation.fold for rotation in rotation_symmetry])
-
             for rotation in rotation_symmetry:
                 if rotation.fold == highest_n_folds[0]:
                     vector_i = rotation.vector
                     break
-
             for rotation in rotation_symmetry:
                 if rotation.fold == highest_n_folds[1] and rotation.vector != vector_i:
                     vector_j = rotation.vector
@@ -117,7 +115,6 @@ class MoleculeFactory:
 
         if len(rotation_symmetry) == 1:
             vector_i = rotation_symmetry[0].vector
-
             for reflection in reflection_symmetry:
                 if phi(reflection.vector) > self.error:
                     vector_j = reflection.vector
