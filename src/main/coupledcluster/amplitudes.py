@@ -21,7 +21,7 @@ class Amplitudes(Indices):
 
     def denominator_triples(self):
         for i, j, k, a, b, c in self.triples():
-            self.denominator[i, j, a, b] = self.orbital_energies[i] + self.orbital_energies[j] \
+            self.denominator[i, j, k, a, b, c] = self.orbital_energies[i] + self.orbital_energies[j] \
             + self.orbital_energies[k] - self.orbital_energies[a] - self.orbital_energies[b] - self.orbital_energies[c]
 
 
@@ -206,3 +206,8 @@ class PeturbativeTriples(Amplitudes):
     def __init__(self, spin_molecular_integral, orbital_energies, occupied_orbitals, unoccupied_orbitals):
         super().__init__(spin_molecular_integral, orbital_energies, occupied_orbitals, unoccupied_orbitals)
         self.denominator_triples()
+
+    def calculate_triples_amplitudes(self, t):
+        t_connected = {}
+        t_disconnected = {}
+        return t_connected, t_disconnected

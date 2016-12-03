@@ -71,4 +71,25 @@ class CoupledClusterPerturbativeTriples(CoupledClusterSinglesDoubles):
         self.unoccupied_indices)
 
     def calculate_perturbative_triples(self):
-        pass
+        correlation_singles_doubles, t_singles_doubles = self.calculate_singles_doubles()
+
+        print('\n*************************************************************************************************')
+        print('\nBEGIN CCSD(T) CALCULATION')
+        start = time.clock()
+        t_connected, t_disconnected = self.amplitudes_factory.calculate_triples_amplitudes(t_singles_doubles)
+        correlation_triples = self.perturbative_triples_correlation(t_connected, t_disconnected)
+        correlation = correlation_singles_doubles + correlation_triples
+        print('CCSD(T) SINGLES AND DOUBLES CORRELATION ENERGY: ' + str(correlation_singles_doubles) + ' a.u.')
+        print('CCSD(T) TRIPLES CORRELATION ENERGY: ' + str(correlation_triples) + ' a.u.')
+        print('CCSD(T) CORRELATION ENERGY: ' + str(correlation) + ' a.u.')
+        print('TIME TAKEN: ' + str(time.clock() - start) + 's\n\n')
+
+        return correlation
+
+    def perturbative_triples_correlation(self, t_connected, t_disconnected):
+        correlation_triples = 0
+        d = self.amplitudes_factory.denominator
+        for i, j, k, a, b, c in self.triples():
+            correlation_triples += (1 / 36) * t_connected[i, j, k, a, b, c] * d[i, j, k, a, b, c] \
+            * (t_connected[i, j, k, a, b, c] + t_disconnected[i, j, k, a, b, c])
+        return correlation_triples
