@@ -210,4 +210,29 @@ class PeturbativeTriples(Amplitudes):
     def calculate_triples_amplitudes(self, t):
         t_connected = {}
         t_disconnected = {}
+        for i, j, k, a, b, c in self.triples():
+            t_connected[i, j, k, a, b, c] = self.connected_triples_amplitude(i, j, k, a, b, c, t)
+            t_disconnected[i, j, k, a, b, c] = self.disconnected_triples_amplitude(i, j, k, a, b, c, t)
         return t_connected, t_disconnected
+
+    def connected_triples_amplitude(self, i, j, k, a, b, c, t):
+        numerator = self.connected_triples_inter(i, j, k, a, b, c, t) - self.connected_triples_inter(j, i, k, a, b, c, t) - self.connected_triples_inter(k, j, i, a, b, c, t) \
+        - self.connected_triples_inter(i, j, k, b, a, c, t) + self.connected_triples_inter(j, i, k, b, a, c, t) + self.connected_triples_inter(k, j, i, b, a, c, t) \
+        - self.connected_triples_inter(i, j, k, c, b, a, t) + self.connected_triples_inter(j, i, k, c, b, a, t) + self.connected_triples_inter(k, j, i, c, b, a, t)
+        return numerator / self.denominator[i, j, k, a, b, c]
+
+    def connected_triples_inter(self, i, j, k, a, b, c, t):
+        ans = 0
+        for e in self.unoccupied_indices:
+            if a != e:
+                ans += t[j, k, a, e] * self.integrals[e, i, b, c]
+        for m in self.occupied_indices:
+            if i != m:
+                ans -= t[i, m, b, c] * self.integrals[m, a, j, k]
+        return ans
+
+    def disconnected_triples_amplitude(self, i, j, k, a, b, c, t):
+        numerator = t[i, a] * self.integrals[j, k, b, c] - t[j, a] * self.integrals[i, k, b, c] - t[k, a] * self.integrals[j, i, b, c] \
+        - t[i, b] * self.integrals[j, k, a, c] + t[j, b] * self.integrals[i, k, a, c] + t[k, b] * self.integrals[j, i, a, c] \
+        - t[i, c] * self.integrals[j, k, b, a] + t[j, c] * self.integrals[i, k, b, a] + t[k, c] * self.integrals[j, i, b, a]
+        return numerator / self.denominator[i, j, k, a, b, c]

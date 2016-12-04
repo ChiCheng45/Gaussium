@@ -66,24 +66,21 @@ class CoupledClusterPerturbativeTriples(CoupledClusterSinglesDoubles):
 
     def __init__(self, hartree_fock, threshold=1e-12):
         super().__init__(hartree_fock, threshold)
-        self.singles_doubles_correlation, self.amplitudes = self.calculate_singles_doubles()
-        self.amplitudes_factory = PeturbativeTriples(self.repulsion, self.orbital_energies, self.occupied_indices,
-        self.unoccupied_indices)
+        self.singles_doubles_correlation, self.t_singles_doubles = self.calculate_singles_doubles()
+        self.amplitudes_factory = PeturbativeTriples(self.repulsion, self.orbital_energies, self.occupied_orbitals,
+        self.unoccupied_orbitals)
 
     def calculate_perturbative_triples(self):
-        correlation_singles_doubles, t_singles_doubles = self.calculate_singles_doubles()
-
         print('\n*************************************************************************************************')
         print('\nBEGIN CCSD(T) CALCULATION')
         start = time.clock()
-        t_connected, t_disconnected = self.amplitudes_factory.calculate_triples_amplitudes(t_singles_doubles)
+        t_connected, t_disconnected = self.amplitudes_factory.calculate_triples_amplitudes(self.t_singles_doubles)
         correlation_triples = self.perturbative_triples_correlation(t_connected, t_disconnected)
-        correlation = correlation_singles_doubles + correlation_triples
-        print('CCSD(T) SINGLES AND DOUBLES CORRELATION ENERGY: ' + str(correlation_singles_doubles) + ' a.u.')
+        correlation = self.singles_doubles_correlation + correlation_triples
+        print('CCSD(T) SINGLES AND DOUBLES CORRELATION ENERGY: ' + str(self.singles_doubles_correlation) + ' a.u.')
         print('CCSD(T) TRIPLES CORRELATION ENERGY: ' + str(correlation_triples) + ' a.u.')
         print('CCSD(T) CORRELATION ENERGY: ' + str(correlation) + ' a.u.')
         print('TIME TAKEN: ' + str(time.clock() - start) + 's\n\n')
-
         return correlation
 
     def perturbative_triples_correlation(self, t_connected, t_disconnected):

@@ -12,6 +12,7 @@ from src.main.kohnsham import RestrictedKohnSham
 from src.main.moellerplesset import MoellerPlesset
 from src.main.tdhartreefock import TimeDependentHartreeFock
 from src.main.coupledcluster import CoupledClusterSinglesDoubles
+from src.main.coupledcluster import CoupledClusterPerturbativeTriples
 import numpy as np
 import time
 
@@ -24,15 +25,16 @@ def menu():
     # start('O2.mol', 'STO-3G.gbs', 'GUHF', 4)  # -147.634028141 a.u.
     # start('CO.mol', 'STO-3G.gbs', 'MP2', 4)  # -111.354512528 a.u.
     # start('H2O.mol', 'STO-3G.gbs', 'RHF', 4, True)
-    start('C2H4.mol', '3-21G.gbs', 'RHF', 4, True)  # -77.600460844 a.u. 19.0269839632222s
+    # start('C2H4.mol', '3-21G.gbs', 'RHF', 4, True)  # -77.600460844 a.u. 19.0269839632222s
     # start('H2O.mol', 'STO-3G.gbs', 'CIS', 4)  # 0.2872554996 a.u. 0.3564617587 a.u.
     # start('He.mol', 'STO-3G.gbs', ('DFT', 'S', ''), 4)  # -2.657311972 a.u.
     # start('H2.mol', 'STO-3G.gbs', ('DFT', 'S', ''), 4)  # -1.023435817 a.u.
     # start('He.mol', 'STO-3G.gbs', ('DFT', 'S', 'VWN3'), 4)  # -2.809598595 a.u.
     # start('H2.mol', 'STO-3G.gbs', ('DFT', 'S', 'VWN3'), 4)  # -1.155821075 a.u.
     # start('Li-.mol', 'STO-3G.gbs', ('DFT', 'S', 'VWN3'), 4)  # -7.2228569820684534 a.u.
-    start('H2O.mol', 'STO-3G.gbs', 'CCSD', 4)  # -0.0706800939192 a.u.
+    # start('H2O.mol', 'STO-3G.gbs', 'CCSD', 4)  # -0.0706800939192 a.u.
     # start('CH4.mol', 'STO-3G.gbs', 'CCSD', 4)  # -0.078469894846414 a.u.
+    start('H2O.mol', 'STO-3G.gbs', 'CCSD(T)', 4)  # -9.98772699528e-05 a.u.
 
 
 def start(mol, basis, method, processes, symmetry=False):
@@ -87,6 +89,11 @@ def start(mol, basis, method, processes, symmetry=False):
         RestrictedHF(molecule.nuclei_array, basis_set_array, electrons, symmetry_object, processes))
         electron_energy = ccsd.hartree_fock_energy
         correlation = ccsd.calculate_singles_doubles()[0]
+    if method == 'CCSD(T)':
+        ccsd = CoupledClusterPerturbativeTriples(
+        RestrictedHF(molecule.nuclei_array, basis_set_array, electrons, symmetry_object, processes))
+        electron_energy = ccsd.hartree_fock_energy
+        correlation = ccsd.calculate_perturbative_triples()
 
     total_energy = electron_energy + nuclear_repulsion + correlation
     print('NUCLEAR REPULSION ENERGY:    ' + str(nuclear_repulsion) + ' a.u.')
