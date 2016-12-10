@@ -20,7 +20,7 @@ import time
 def menu():
     # start('HeH+.mol', 'STO-3G.gbs', 'RHF', 4)  # -2.84183608212 a.u.
     # start('HeH+.mol', '6-311+GPP.gbs', 'RHF', 4)  # -2.92922773384 a.u.
-    # start('C2H4.mol', '3-21G.gbs', 'RHF', 4)   # -77.600460844 a.u. 30.747198048700866s
+    # start('C2H4.mol', '3-21G.gbs', 'RHF', 4)  # -77.600460844 a.u. 30.747198048700866s
     # start('O2.mol', 'STO-3G.gbs', 'UHF', 4, True)  # -147.634028141 a.u.
     # start('O2.mol', 'STO-3G.gbs', 'GUHF', 4)  # -147.634028141 a.u.
     # start('CO.mol', 'STO-3G.gbs', 'MP2', 4)  # -111.354512528 a.u.
@@ -32,9 +32,9 @@ def menu():
     # start('He.mol', 'STO-3G.gbs', ('DFT', 'S', 'VWN3'), 4)  # -2.809598595 a.u.
     # start('H2.mol', 'STO-3G.gbs', ('DFT', 'S', 'VWN3'), 4)  # -1.155821075 a.u.
     # start('Li-.mol', 'STO-3G.gbs', ('DFT', 'S', 'VWN3'), 4)  # -7.2228569820684534 a.u.
-    # start('H2O.mol', 'STO-3G.gbs', 'CCSD', 4)  # -0.0706800939192 a.u.
+    start('H2O.mol', 'STO-3G.gbs', 'CCSD', 4)  # -0.0706800939192 a.u.
     # start('CH4.mol', 'STO-3G.gbs', 'CCSD', 4)  # -0.078469894846414 a.u.
-    start('H2O.mol', 'STO-3G.gbs', 'CCSD(T)', 4)  # -9.98772699528e-05 a.u.
+    # start('H2O.mol', 'STO-3G.gbs', 'CCSD(T)', 4)  # -9.98772699528e-05 a.u.
 
 
 def start(mol, basis, method, processes, symmetry=False):
