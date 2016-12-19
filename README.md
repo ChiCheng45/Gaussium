@@ -22,7 +22,7 @@ the start function contains more options such as the number of processes used du
 def start(mol, basis, method, processes, symmetry=False)
 ```
 * Now run the main.py, for example on a Windows machine,
-```python
+```
 C:\Anaconda3\python.exe C:\Users\username\PycharmProjects\Quantum_Chemistry\src\main\main.py
 ```
 
