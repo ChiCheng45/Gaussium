@@ -7,7 +7,7 @@ I've based this work on Attlia Szabo and Neil S. Ostlunds "Modern Quantum Chemis
 
 ##Instructions
 * To run this program add the desired .mol and .gbs files to the `molfiles` and `basisset` directories.
-* Next edit the `src/main/main.py` `menu()` function so that the desired calculation is made for example,
+* Next edit the `src/main/main.py` `menu()` function so that the desired calculations are made for example,
 ```python
 def menu():
     start('H2O.mol', 'STO-3G.gbs', 'CCSD', 4)
@@ -17,11 +17,14 @@ for DFT calculation the functional are given inputted using a tuple for SVWN3,
 def menu():
     start('He.mol', 'STO-3G.gbs', ('DFT', 'S', 'VWN3'), 4)
 ```
-the start function contain more options such as the number of processes used during the multiprocessing sections of the code and whether symmetry is turned on. See `start()` for more details,
+the start function contains more options such as the number of processes used during the multiprocessing sections of the code and whether symmetry is turned on for faster integral calculations. See `start()` for more details,
 ```python
 def start(mol, basis, method, processes, symmetry=False)
 ```
-* Now run the main.py.
+* Now run the main.py, for example on a Windows machine,
+```python
+C:\Anaconda3\python.exe C:\Users\username\PycharmProjects\Quantum_Chemistry\src\main\main.py
+```
 
 ##Supported Features and Methods
 * Restricted Hartree-Fock
@@ -29,6 +32,7 @@ def start(mol, basis, method, processes, symmetry=False)
 * Density Functional Theory - SVWN and S_X
 * Møller–Plesset Second Order
 * Coupled Cluster Singles and Doubles
+* Coupled Cluster Singles and Doubles with Perturbation Triples
 * Configuration Interaction Singles
 * Time-Dependent Hartree-Fock
 * DIIS for SCF Calculations
