@@ -1,3 +1,5 @@
+import sys
+sys.path.insert(0, "../../")
 from src.main.common import read_basis_set_file
 from src.main.common import read_mol_file
 from src.main.common import coulomb_matrix
