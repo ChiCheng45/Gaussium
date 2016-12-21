@@ -1,5 +1,5 @@
 import sys, os
-sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)) + '/../../')
+sys.path.insert(1, os.path.dirname(os.path.realpath(__file__)) + '/../../')
 
 from src.main.common import read_basis_set_file
 from src.main.common import read_mol_file
