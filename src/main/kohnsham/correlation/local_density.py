@@ -55,17 +55,21 @@ class VoskoWilkNusair(CorrelationPotential):
 
         """
         if density not in self.potential_memo:
-            a = self.a
-            x_0 = self.x_0
-            b = self.b
-            c = self.c
-            x = self.wigner_seitz_radius(density)**(1/2)
-            x_x = x**2 + b * x + c
-            x_x_0 = x_0**2 + b * x_0 + c
-            q = (4 * c - b**2)**(1/2)
 
-            self.potential_memo[density] = a * (log(x**2 / x_x) + (2 * b / q) * atan(q / (2 * x + b))
-            - (b * x_0 / x_x_0) * (log((x - x_0)**2 / x_x) + (2 * (b + 2 * x_0) / q) * atan(q / (2 * x + b)))) \
-            - (a / 3) * ((1 + x_0 * x) / (1 + x_0 * x + b * x**2 + c * x**3))
+            if density == 0:
+                self.potential_memo[density] = 0
+            else:
+                a = self.a
+                x_0 = self.x_0
+                b = self.b
+                c = self.c
+                x = self.wigner_seitz_radius(density)**(1/2)
+                x_x = x**2 + b * x + c
+                x_x_0 = x_0**2 + b * x_0 + c
+                q = (4 * c - b**2)**(1/2)
+
+                self.potential_memo[density] = a * (log(x**2 / x_x) + (2 * b / q) * atan(q / (2 * x + b))
+                - (b * x_0 / x_x_0) * (log((x - x_0)**2 / x_x) + (2 * (b + 2 * x_0) / q) * atan(q / (2 * x + b)))) \
+                - (a / 3) * ((1 + x_0 * x) / (1 + x_0 * x + b * x**2 + c * x**3))
 
         return self.potential_memo[density]

@@ -1,10 +1,11 @@
 from scipy import integrate
+from math import sin, cos
 import numpy as np
 
 
 class ExchangeCorrelation:
 
-    def __init__(self, basis_set, exchange_potential, correlation_potential, int_space=5, epsabs=1e-3, epsrel=0.0):
+    def __init__(self, basis_set, exchange_potential, correlation_potential, int_space=25, epsabs=1e-9, epsrel=0.0):
         self.basis_set = basis_set
         self.exchange_potential = exchange_potential
         self.correlation_potential = correlation_potential
@@ -16,12 +17,12 @@ class ExchangeCorrelation:
 
     def integrate(self, density_matrix, i, j):
 
+        g_i = self.basis_set[i]
+        g_j = self.basis_set[j]
+
         if density_matrix is not self.density_matrix:
             self.density_matrix = density_matrix
             self.electron_density = {}
-
-        g_i = self.basis_set[i]
-        g_j = self.basis_set[j]
 
         def electron_density(x, y, z):
             if (x, y, z) not in self.electron_density:
@@ -35,14 +36,18 @@ class ExchangeCorrelation:
                 self.electron_density[(x, y, z)] = density
             return self.electron_density[(x, y, z)]
 
-        def integrand(x, y, z):
+        def integrand(rho, theta, phi):
+            x = rho * sin(theta) * cos(phi)
+            y = rho * sin(theta) * sin(phi)
+            z = rho * cos(theta)
             return g_i.value(x, y, z) * (self.exchange_potential.calculate(electron_density(x, y, z))
-            + self.correlation_potential.calculate(electron_density(x, y, z))) * g_j.value(x, y, z)
+            + self.correlation_potential.calculate(electron_density(x, y, z))) * g_j.value(x, y, z) * rho**2 \
+            * sin(theta)
 
         integral, error = integrate.nquad(integrand, [
-                [-self.int_space, self.int_space],
-                [-self.int_space, self.int_space],
-                [-self.int_space, self.int_space]],
+                [0.0, self.int_space],
+                [0.0, np.pi],
+                [0.0, 2 * np.pi]],
         opts=[
                 {'epsabs': self.epsabs, 'epsrel': self.epsrel},
                 {'epsabs': self.epsabs, 'epsrel': self.epsrel},
