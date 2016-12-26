@@ -28,7 +28,8 @@ class RestrictedKohnSham(Restricted):
             correlation = CorrelationPotential()  # returns a potential of 0.0
 
         self.scf_method = RestrictedSCF(
-            self.linear_algebra, self.electrons, self.orbital_overlap, RestrictedKohnShamHamiltonian(
+            self.linear_algebra, self.electrons, self.orbital_overlap,
+            RestrictedKohnShamHamiltonian(
                 self.core_hamiltonian, self.repulsion, ExchangeCorrelation(basis_set_array, exchange, correlation)
             )
         )

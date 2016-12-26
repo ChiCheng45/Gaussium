@@ -68,9 +68,8 @@ class RestrictedHF(Restricted):
     def __init__(self, nuclei_array, basis_set_array, electrons, symmetry, processes):
         super().__init__(nuclei_array, basis_set_array, electrons, symmetry, processes)
         self.scf_method = RestrictedSCF(
-            self.linear_algebra, self.electrons, self.orbital_overlap, FockMatrixRestricted(
-                self.core_hamiltonian, self.repulsion
-            )
+            self.linear_algebra, self.electrons, self.orbital_overlap,
+            FockMatrixRestricted(self.core_hamiltonian, self.repulsion)
         )
         print('\nBEGIN RESTRICTED HARTREE FOCK\n')
 
@@ -101,9 +100,8 @@ class UnrestrictedHF(Unrestricted):
     def __init__(self, nuclei_array, basis_set_array, electrons, multiplicity, symmetry, processes):
         super().__init__(nuclei_array, basis_set_array, electrons, symmetry, processes)
         self.scf_method = PopleNesbetBerthier(
-            self.linear_algebra, self.electrons, multiplicity, FockMatrixUnrestricted(
-                self.core_hamiltonian, self.repulsion
-            )
+            self.linear_algebra, self.electrons, multiplicity,
+            FockMatrixUnrestricted(self.core_hamiltonian, self.repulsion)
         )
         print('\nBEGIN UNRESTRICTED HARTREE FOCK\n')
 
