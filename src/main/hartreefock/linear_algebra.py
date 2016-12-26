@@ -51,7 +51,6 @@ class BlockedLinearAlgebra(LinearAlgebra):
         orbital_energies_beta = np.array(orbital_energies_beta)[sort]
         orbital_coefficients_beta = orbital_coefficients_beta[:, sort]
 
-
         orbital_coefficients = np.bmat([
                 [orbital_coefficients_alph, zeros],
                 [zeros, orbital_coefficients_beta]

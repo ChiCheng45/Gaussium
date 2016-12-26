@@ -75,7 +75,7 @@ class DIIS:
     def create_b_matrix(self):
         """Creates the B Matrix for DIIS optimization.
 
-        Occasionally there can be an issues with the b_matrix becoming singularThis methods corrects itself by
+        Occasionally there can be an issues with the b_matrix becoming singular. This methods corrects itself by
         removing a fock matrix and error vector and trying again.
 
         Returns

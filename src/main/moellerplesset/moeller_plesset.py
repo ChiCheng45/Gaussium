@@ -15,8 +15,8 @@ class MoellerPlesset(Indices):
         print('BEGIN MP2 CALCULATION\n')
         correlation = 0
         for i, j, a, b in self.restricted_doubles():
-            out = (self.orbital_energies.item(i) + self.orbital_energies.item(j) - self.orbital_energies.item(a)
-            - self.orbital_energies.item(b))
+            out = self.orbital_energies.item(i) + self.orbital_energies.item(j) - self.orbital_energies.item(a) \
+            - self.orbital_energies.item(b)
             correlation += 2 * (self.integrals.item(i, a, j, b))**2 / out
             correlation -= (self.integrals.item(i, a, j, b) * self.integrals.item(i, b, j, a)) / out
         return correlation

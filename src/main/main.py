@@ -64,38 +64,53 @@ def start(mol, basis, method, processes, symmetry=False):
     print('\nNUCLEAR REPULSION ARRAY\n{}'.format(coulomb_law_matrix))
 
     if method == 'RHF':
-        electron_energy = RestrictedHF(molecule.nuclei_array, basis_set_array, electrons, symmetry_object,
-        processes).begin_scf()[0]
+        electron_energy = RestrictedHF(
+            molecule.nuclei_array, basis_set_array, electrons, symmetry_object, processes
+        ).begin_scf()[0]
+
     if method == 'UHF':
-        electron_energy = UnrestrictedHF(molecule.nuclei_array, basis_set_array, electrons, multiplicity,
-        symmetry_object, processes).begin_scf()[0]
+        electron_energy = UnrestrictedHF(
+            molecule.nuclei_array, basis_set_array, electrons, multiplicity, symmetry_object, processes
+        ).begin_scf()[0]
+
     if method == 'GUHF':
-        electron_energy = BlockedHartreeFock(molecule.nuclei_array, basis_set_array, electrons, multiplicity,
-        symmetry_object, processes).begin_scf()[0]
+        electron_energy = BlockedHartreeFock(
+            molecule.nuclei_array, basis_set_array, electrons, multiplicity, symmetry_object, processes
+        ).begin_scf()[0]
+
     if method == 'MP2':
         mp2 = MoellerPlesset(
-        RestrictedHF(molecule.nuclei_array, basis_set_array, electrons, symmetry_object, processes))
+            RestrictedHF(molecule.nuclei_array, basis_set_array, electrons, symmetry_object, processes)
+        )
         electron_energy = mp2.hartree_fock_energy
         correlation = mp2.second_order()
+
     if method == 'TDHF':
         electron_energy = TimeDependentHartreeFock(
-        RestrictedHF(molecule.nuclei_array, basis_set_array, electrons, symmetry_object, processes)
+            RestrictedHF(molecule.nuclei_array, basis_set_array, electrons, symmetry_object, processes)
         ).calculate(tda=False)
+
     if method == 'CIS':
         electron_energy = TimeDependentHartreeFock(
-        RestrictedHF(molecule.nuclei_array, basis_set_array, electrons, symmetry_object, processes)
+            RestrictedHF(molecule.nuclei_array, basis_set_array, electrons, symmetry_object, processes)
         ).calculate(tda=True)
+
     if method[0] == 'DFT':
-        electron_energy = RestrictedKohnSham(molecule.nuclei_array, basis_set_array, electrons,
-        symmetry_object, processes, method[1], method[2]).begin_scf()[0]
+        electron_energy = RestrictedKohnSham(
+            molecule.nuclei_array, basis_set_array, electrons, symmetry_object, processes, method[1], method[2]
+        ).begin_scf()[0]
+
     if method == 'CCSD':
         ccsd = CoupledClusterSinglesDoubles(
-        RestrictedHF(molecule.nuclei_array, basis_set_array, electrons, symmetry_object, processes))
+            RestrictedHF(molecule.nuclei_array, basis_set_array, electrons, symmetry_object, processes)
+        )
         electron_energy = ccsd.hartree_fock_energy
         correlation = ccsd.calculate_singles_doubles()[0]
+
     if method == 'CCSD(T)':
         ccsd = CoupledClusterPerturbativeTriples(
-        RestrictedHF(molecule.nuclei_array, basis_set_array, electrons, symmetry_object, processes))
+            RestrictedHF(molecule.nuclei_array, basis_set_array, electrons, symmetry_object, processes)
+        )
         electron_energy = ccsd.hartree_fock_energy
         correlation = ccsd.calculate_perturbative_triples()
 

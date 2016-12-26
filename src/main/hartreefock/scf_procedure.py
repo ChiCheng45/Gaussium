@@ -66,11 +66,13 @@ class PopleNesbetBerthier(SelfConsistentField):
                 density_matrix_alph = density_matrix_unrestricted(coefficients_alph, self.electrons_alph)
                 density_matrix_beta = density_matrix_unrestricted(coefficients_beta, self.electrons_beta)
 
-            fock_matrix_alph, fock_matrix_beta = self.hamiltonian_matrix_factory.create(density_matrix_alph,
-            density_matrix_beta)
+            fock_matrix_alph, fock_matrix_beta = self.hamiltonian_matrix_factory.create(
+                density_matrix_alph, density_matrix_beta
+            )
 
-            total_energy = self.calculate.unrestricted(density_matrix_alph, density_matrix_beta, fock_matrix_alph,
-            fock_matrix_beta)
+            total_energy = self.calculate.unrestricted(
+                density_matrix_alph, density_matrix_beta, fock_matrix_alph, fock_matrix_beta
+            )
             delta_energy = previous_total_energy - total_energy
             previous_total_energy = total_energy
             print('SCF ENERGY: ' + str(total_energy) + ' a.u.')
