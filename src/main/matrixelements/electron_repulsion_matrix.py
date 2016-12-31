@@ -15,7 +15,7 @@ class TwoElectronRepulsion:
         self.symmetry = symmetry
         self.processes = processes
 
-    def calculate(self, i, j, k, l):
+    def calculate_integral(self, i, j, k, l):
         if self.symmetry.none_zero_integral((i, j, k, l)):
             f_mn = 0.0
             primitives_i = self.basis_set_array[i].primitive_gaussian_array
@@ -47,11 +47,11 @@ class TwoElectronRepulsion:
 
         if self.processes > 1:
             pool = Pool(self.processes)
-            values = pool.starmap(self.calculate, keys)
+            values = pool.starmap(self.calculate_integral, keys)
             pool.close()
             repulsion_dictionary = dict(zip(keys, values))
         else:
-            repulsion_dictionary = {index: self.calculate(*index) for index in keys}
+            repulsion_dictionary = {index: self.calculate_integral(*index) for index in keys}
 
         repulsion_matrix = np.zeros((self.matrix_size, self.matrix_size, self.matrix_size, self.matrix_size))
         for a, b, c, d in itertools.product(range(self.matrix_size), repeat=4):
