@@ -88,7 +88,7 @@ class ObaraSaika:
             return self.end_dict[m]
 
     def os_recursive(self, r, m, g1, g2, g3, g4, g5, g6, g7, g8):
-        out3 = out4 = out5 = out6 = out7 = out8 = 0
+        out1 = out2 = out3 = out4 = out5 = out6 = out7 = out8 = 0
 
         a_1 = g1.exponent
         a_2 = g2.exponent
@@ -101,8 +101,10 @@ class ObaraSaika:
         r_2 = g2.coordinates
         r_5 = gaussian_product_coordinate(a_1, r_1, a_2, r_2)
 
-        out1 = (r_5[r] - r_1[r]) * self.os_begin(m, g1, g2, g3, g4)
-        out2 = (self.r_7[r] - r_5[r]) * self.os_begin((m+1), g1, g2, g3, g4)
+        if r_5[r] != r_1[r]:
+            out1 = (r_5[r] - r_1[r]) * self.os_begin(m, g1, g2, g3, g4)
+        if self.r_7[r] != r_5[r]:
+            out2 = (self.r_7[r] - r_5[r]) * self.os_begin((m+1), g1, g2, g3, g4)
         if g5.integral_exponents[r] >= 0:
             out3 = self.os_count(g1.integral_exponents[r]) * (1 / (2 * a_5)) * self.os_begin(m, g5, g2, g3, g4)
             out4 = self.os_count(g1.integral_exponents[r]) * (self.a_7 / (2 * a_5**2)) * self.os_begin((m+1), g5, g2, g3, g4)
