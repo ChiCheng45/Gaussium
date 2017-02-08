@@ -4,6 +4,7 @@ from src.main.integrals import boys_function
 from src.main.integrals import boys_function_recursion
 from src.main.objects import PrimitiveBasis
 from math import sqrt, pi, exp
+import itertools
 
 
 class ObaraSaika:
@@ -13,46 +14,66 @@ class ObaraSaika:
         self.r_7 = ()
         self.end_dict = {}
 
-    def integrate(self, g1, g2, g3, g4):
-        l_1 = g1.integral_exponents
-        l_2 = g2.integral_exponents
-        l_3 = g3.integral_exponents
-        l_4 = g4.integral_exponents
+    def integrate(self, basis_i, basis_j, basis_k, basis_l):
+        l_1 = basis_i.integral_exponents
+        l_2 = basis_j.integral_exponents
+        l_3 = basis_k.integral_exponents
+        l_4 = basis_l.integral_exponents
         l_total = sum(l_1) + sum(l_2) + sum(l_3) + sum(l_4)
 
-        a_1 = g1.exponent
-        a_2 = g2.exponent
-        a_3 = g3.exponent
-        a_4 = g4.exponent
-        a_5 = a_1 + a_2
-        a_6 = a_3 + a_4
-        self.a_7 = (a_5 * a_6) / (a_5 + a_6)
+        r_1 = basis_i.coordinates
+        r_2 = basis_j.coordinates
+        r_3 = basis_k.coordinates
+        r_4 = basis_l.coordinates
 
-        r_1 = g1.coordinates
-        r_2 = g2.coordinates
-        r_3 = g3.coordinates
-        r_4 = g4.coordinates
-        r_5 = gaussian_product_coordinate(a_1, r_1, a_2, r_2)
-        r_6 = gaussian_product_coordinate(a_3, r_3, a_4, r_4)
-        self.r_7 = gaussian_product_coordinate(a_5, r_5, a_6, r_6)
+        primitives_i = basis_i.primitive_gaussian_array
+        primitives_j = basis_j.primitive_gaussian_array
+        primitives_k = basis_k.primitive_gaussian_array
+        primitives_l = basis_l.primitive_gaussian_array
 
-        r_12 = coordinate_distance(r_1, r_2)
-        r_34 = coordinate_distance(r_3, r_4)
-        r_56 = coordinate_distance(r_5, r_6)
+        ans = 0.0
+        for g1, g2, g3, g4 in itertools.product(primitives_i, primitives_j, primitives_k, primitives_l):
+            c_1 = g1.contraction
+            c_2 = g2.contraction
+            c_3 = g3.contraction
+            c_4 = g4.contraction
+            n_1 = g1.normalisation
+            n_2 = g2.normalisation
+            n_3 = g3.normalisation
+            n_4 = g4.normalisation
+            contraction = c_1 * c_2 * c_3 * c_4 * n_1 * n_2 * n_3 * n_4
 
-        boys_x = (a_5 * a_6 * r_56**2) / (a_5 + a_6)
-        boys_out1 = (2 * pi**(5/2)) / (a_5 * a_6 * sqrt(a_5 + a_6))
-        boys_out2 = exp(((- a_1 * a_2 * r_12**2) / a_5) - ((a_3 * a_4 * r_34**2) / a_6))
-        boys_out3 = boys_function(l_total, boys_x)
+            a_1 = g1.exponent
+            a_2 = g2.exponent
+            a_3 = g3.exponent
+            a_4 = g4.exponent
+            a_5 = a_1 + a_2
+            a_6 = a_3 + a_4
+            self.a_7 = (a_5 * a_6) / (a_5 + a_6)
 
-        self.end_dict = {l_total: boys_out1 * boys_out2 * boys_out3}
+            r_5 = gaussian_product_coordinate(a_1, r_1, a_2, r_2)
+            r_6 = gaussian_product_coordinate(a_3, r_3, a_4, r_4)
+            self.r_7 = gaussian_product_coordinate(a_5, r_5, a_6, r_6)
 
-        while l_total >= 1:
-            boys_out3 = boys_function_recursion(l_total, boys_x, boys_out3)
-            l_total -= 1
-            self.end_dict[l_total] = boys_out1 * boys_out2 * boys_out3
+            r_12 = coordinate_distance(r_1, r_2)
+            r_34 = coordinate_distance(r_3, r_4)
+            r_56 = coordinate_distance(r_5, r_6)
 
-        return self.os_begin(0, g1, g2, g3, g4)
+            boys_x = (a_5 * a_6 * r_56**2) / (a_5 + a_6)
+            boys_out1 = (2 * pi**(5/2)) / (a_5 * a_6 * sqrt(a_5 + a_6))
+            boys_out2 = exp(((- a_1 * a_2 * r_12**2) / a_5) - ((a_3 * a_4 * r_34**2) / a_6))
+            boys_out3 = boys_function(l_total, boys_x)
+            self.end_dict = {l_total: boys_out1 * boys_out2 * boys_out3}
+
+            m = l_total
+            while m >= 1:
+                boys_out3 = boys_function_recursion(m, boys_x, boys_out3)
+                m -= 1
+                self.end_dict[m] = boys_out1 * boys_out2 * boys_out3
+
+            ans += contraction * self.os_begin(0, g1, g2, g3, g4)
+
+        return ans
 
     def os_begin(self, m, g1, g2, g3, g4):
         l_1 = g1.integral_exponents
@@ -104,21 +125,21 @@ class ObaraSaika:
         if r_5[r] != r_1[r]:
             out1 = (r_5[r] - r_1[r]) * self.os_begin(m, g1, g2, g3, g4)
         if self.r_7[r] != r_5[r]:
-            out2 = (self.r_7[r] - r_5[r]) * self.os_begin((m+1), g1, g2, g3, g4)
+            out2 = (self.r_7[r] - r_5[r]) * self.os_begin(m+1, g1, g2, g3, g4)
         if g5.integral_exponents[r] >= 0:
-            out3 = self.os_count(g1.integral_exponents[r]) * (1 / (2 * a_5)) * self.os_begin(m, g5, g2, g3, g4)
-            out4 = self.os_count(g1.integral_exponents[r]) * (self.a_7 / (2 * a_5**2)) * self.os_begin((m+1), g5, g2, g3, g4)
+            out3 = self.os_int(g1.integral_exponents[r]) * (1 / (2 * a_5)) * self.os_begin(m, g5, g2, g3, g4)
+            out4 = self.os_int(g1.integral_exponents[r]) * (self.a_7 / (2 * a_5 ** 2)) * self.os_begin(m+1, g5, g2, g3, g4)
         if g6.integral_exponents[r] >= 0:
-            out5 = self.os_count(g2.integral_exponents[r]) * (1 / (2 * a_5)) * self.os_begin(m, g1, g6, g3, g4)
-            out6 = self.os_count(g2.integral_exponents[r]) * (self.a_7 / (2 * a_5**2)) * self.os_begin((m+1), g1, g6, g3, g4)
+            out5 = self.os_int(g2.integral_exponents[r]) * (1 / (2 * a_5)) * self.os_begin(m, g1, g6, g3, g4)
+            out6 = self.os_int(g2.integral_exponents[r]) * (self.a_7 / (2 * a_5 ** 2)) * self.os_begin(m+1, g1, g6, g3, g4)
         if g7.integral_exponents[r] >= 0:
-            out7 = self.os_count(g3.integral_exponents[r]) * (1 / (2*(a_5 + a_6))) * self.os_begin((m+1), g1, g2, g7, g4)
+            out7 = self.os_int(g3.integral_exponents[r]) * (1 / (2 * (a_5 + a_6))) * self.os_begin(m+1, g1, g2, g7, g4)
         if g8.integral_exponents[r] >= 0:
-            out8 = self.os_count(g4.integral_exponents[r]) * (1 / (2*(a_5 + a_6))) * self.os_begin((m+1), g1, g2, g3, g8)
+            out8 = self.os_int(g4.integral_exponents[r]) * (1 / (2 * (a_5 + a_6))) * self.os_begin(m+1, g1, g2, g3, g8)
 
         return out1 + out2 + out3 - out4 + out5 - out6 + out7 + out8
 
-    def os_count(self, i):
+    def os_int(self, i):
         if i == 0:
             return 1
         else:

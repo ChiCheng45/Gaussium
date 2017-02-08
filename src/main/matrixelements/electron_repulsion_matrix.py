@@ -17,28 +17,15 @@ class TwoElectronRepulsion:
 
     def calculate_integral(self, i, j, k, l):
         if self.symmetry.none_zero_integral((i, j, k, l)):
-            f_mn = 0.0
-            primitives_i = self.basis_set_array[i].primitive_gaussian_array
-            primitives_j = self.basis_set_array[j].primitive_gaussian_array
-            primitives_k = self.basis_set_array[k].primitive_gaussian_array
-            primitives_l = self.basis_set_array[l].primitive_gaussian_array
-            for primitive_a, primitive_b, primitive_c, primitive_d in itertools.product(primitives_i, primitives_j,
-            primitives_k, primitives_l):
-                c_1 = primitive_a.contraction
-                c_2 = primitive_b.contraction
-                c_3 = primitive_c.contraction
-                c_4 = primitive_d.contraction
-                n_1 = primitive_a.normalisation
-                n_2 = primitive_b.normalisation
-                n_3 = primitive_c.normalisation
-                n_4 = primitive_d.normalisation
-                integral = self.integral.integrate(primitive_a, primitive_b, primitive_c, primitive_d)
-                f_mn += c_1 * c_2 * c_3 * c_4 * n_1 * n_2 * n_3 * n_4 * integral
-            return f_mn
+            basis_i = self.basis_set_array[i]
+            basis_j = self.basis_set_array[j]
+            basis_k = self.basis_set_array[k]
+            basis_l = self.basis_set_array[l]
+            return self.integral.integrate(basis_i, basis_j, basis_k, basis_l)
         else:
             return 0.0
 
-    def create(self):
+    def create_repulsion_matrix(self):
 
         keys = []
         for a, b, c, d in itertools.product(range(self.matrix_size), repeat=4):

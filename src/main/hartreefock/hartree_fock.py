@@ -36,7 +36,9 @@ class HartreeFock:
         print('\nCORE HAMILTONIAN MATRIX\n{}'.format(self.core_hamiltonian))
         print('\nBEGIN TWO ELECTRON REPULSION CALCULATION')
         start_repulsion = time.clock()
-        self.repulsion = TwoElectronRepulsionMatrixOS(self.basis_set_array, self.symmetry, processes).create()
+        self.repulsion = TwoElectronRepulsionMatrixOS(
+            self.basis_set_array, self.symmetry, processes
+        ).create_repulsion_matrix()
         print('TIME TAKEN: ' + str(time.clock() - start_repulsion) + 's\n')
         print('\n*************************************************************************************************')
 
