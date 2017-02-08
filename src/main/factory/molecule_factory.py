@@ -52,21 +52,21 @@ class MoleculeFactory:
 
         if self.check_n_two_fold_perpendicular_to_n_fold(rotation):     # Dihedral
             if self.check_sigma_h(reflection):
-                return Molecule(nuclei_array, PointGroup(rotation, reflection, improper, inversion, 'D_{' + str(n) + 'h}'))
+                return Molecule(nuclei_array, PointGroup(rotation, reflection, improper, inversion, 'D_{'+str(n)+'h}'))
             elif self.check_n_sigma_v(n, reflection):
-                return Molecule(nuclei_array, PointGroup(rotation, reflection, improper, inversion, 'D_{' + str(n) + 'd}'))
+                return Molecule(nuclei_array, PointGroup(rotation, reflection, improper, inversion, 'D_{'+str(n)+'d}'))
             else:
-                return Molecule(nuclei_array, PointGroup(rotation, reflection, improper, inversion, 'D_{' + str(n) + '}'))
+                return Molecule(nuclei_array, PointGroup(rotation, reflection, improper, inversion, 'D_{'+str(n)+'}'))
 
         else:                                                           # Cyclic
             if self.check_sigma_h(reflection):
-                return Molecule(nuclei_array, PointGroup(rotation, reflection, improper, inversion, 'C_{' + str(n) + 'h}'))
+                return Molecule(nuclei_array, PointGroup(rotation, reflection, improper, inversion, 'C_{'+str(n)+'h}'))
             elif self.check_n_sigma_v(n, reflection):
-                return Molecule(nuclei_array, PointGroup(rotation, reflection, improper, inversion, 'C_{' + str(n) + 'v}'))
+                return Molecule(nuclei_array, PointGroup(rotation, reflection, improper, inversion, 'C_{'+str(n)+'v}'))
             elif self.check_improper_rotation(n, improper):
-                return Molecule(nuclei_array, PointGroup(rotation, reflection, improper, inversion, 'S_{2' + str(n) + '}'))
+                return Molecule(nuclei_array, PointGroup(rotation, reflection, improper, inversion, 'S_{2'+str(n)+'}'))
             else:
-                return Molecule(nuclei_array, PointGroup(rotation, reflection, improper, inversion, 'C_{' + str(n) + '}'))
+                return Molecule(nuclei_array, PointGroup(rotation, reflection, improper, inversion, 'C_{'+str(n)+'}'))
 
     def center_molecule(self, nuclei_array):
         number_of_nuclei = len(nuclei_array)

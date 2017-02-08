@@ -29,14 +29,13 @@ class SymmetryFactory:
         cross_edge_vertices = self.cross_products(vertices, edge_center)
         cross_edge_edge = self.cross_products(edge_center, edge_center)
 
-        rotation_symmetry = self.brute_force_rotation_symmetry(nuclei_array, vertices, edge_center,
-        cross_vertices_vertices, cross_edge_vertices, cross_edge_edge)
-
-        reflection_symmetry = self.brute_force_reflection_symmetry(nuclei_array, rotation_symmetry, vertices,
-        cross_vertices_vertices, cross_edge_vertices)
-
+        rotation_symmetry = self.brute_force_rotation_symmetry(
+            nuclei_array, vertices, edge_center, cross_vertices_vertices, cross_edge_vertices, cross_edge_edge
+        )
+        reflection_symmetry = self.brute_force_reflection_symmetry(
+            nuclei_array, rotation_symmetry, vertices, cross_vertices_vertices, cross_edge_vertices
+        )
         improper_rotation = self.brute_force_improper_rotation(nuclei_array, rotation_symmetry)
-
         inversion_symmetry = self.brute_force_inversion_symmetry(nuclei_array)
 
         return rotation_symmetry, reflection_symmetry, improper_rotation, inversion_symmetry
@@ -44,8 +43,9 @@ class SymmetryFactory:
     def brute_force_rotation_symmetry(self, nuclei_array, corner, edge_center, cross_vertices_vertices,
         cross_edge_vertices, cross_edge_edge):
 
-        axis_of_rotations_i = self.remove_duplicate(corner + edge_center + cross_vertices_vertices
-        + cross_edge_vertices + cross_edge_edge)
+        axis_of_rotations_i = self.remove_duplicate(
+            corner + edge_center + cross_vertices_vertices + cross_edge_vertices + cross_edge_edge
+        )
 
         axis_of_rotations_j = []
         if len(axis_of_rotations_i) > 0:
