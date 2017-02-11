@@ -46,5 +46,5 @@ class TestSymmetryC8H8(TestCase):
         self.assertEqual(boolean, True)
 
     def test_point_group_returns_o_h_symmetry_for_cubane(self):
-        symmetry = self.molecule_factory.create(self.nuclei_array_c8h8).point_group.label
+        symmetry = self.molecule_factory.create(self.nuclei_array_c8h8)[1].label
         testing.assert_equal(symmetry, 'O_{h}')

@@ -57,5 +57,5 @@ class TestSymmetryC2H6(TestCase):
         self.assertEqual(boolean, True)
 
     def test_point_group_returns_d_3d_symmetry_for_cubane(self):
-        symmetry = self.molecule_factory.create(self.nuclei_array_c2h6).point_group.label
+        symmetry = self.molecule_factory.create(self.nuclei_array_c2h6)[1].label
         testing.assert_equal(symmetry, 'D_{3d}')

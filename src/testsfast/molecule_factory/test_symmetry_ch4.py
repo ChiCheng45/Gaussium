@@ -72,5 +72,5 @@ class TestSymmetryCH4(TestCase):
         self.assertEqual(boolean, True)
 
     def test_point_group_returns_t_d_symmetry_for_methane(self):
-        symmetry = self.molecule_factory.create(self.nuclei_array_ch4).point_group.label
+        symmetry = self.molecule_factory.create(self.nuclei_array_ch4)[1].label
         testing.assert_equal(symmetry, 'T_{d}')

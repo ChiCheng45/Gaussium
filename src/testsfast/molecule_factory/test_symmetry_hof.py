@@ -47,5 +47,5 @@ class TestSymmetryHOF(TestCase):
         self.assertEqual(boolean, True)
 
     def test_point_group_returns_c_s_symmetry_for_hypofluorous_acid(self):
-        symmetry = self.molecule_factory.create(self.nuclei_array_hof).point_group.label
+        symmetry = self.molecule_factory.create(self.nuclei_array_hof)[1].label
         testing.assert_equal(symmetry, 'C_{s}')

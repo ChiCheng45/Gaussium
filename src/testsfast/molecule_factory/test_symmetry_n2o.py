@@ -23,5 +23,5 @@ class TestSymmetryN2O(TestCase):
         self.assertEqual(boolean, True)
 
     def test_point_group_returns_c_inf_v_symmetry_for_nitrous_oxide(self):
-        symmetry = self.molecule_factory.create(self.nuclei_array_n2o).point_group.label
+        symmetry = self.molecule_factory.create(self.nuclei_array_n2o)[1].label
         testing.assert_equal(symmetry, 'C_{4v}')

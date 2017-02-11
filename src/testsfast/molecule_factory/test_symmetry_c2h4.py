@@ -57,5 +57,5 @@ class TestSymmetryC2H4(TestCase):
         self.assertEqual(boolean, True)
 
     def test_point_group_returns_d_2h_symmetry_for_ethene(self):
-        symmetry = self.molecule_factory.create(self.nuclei_array_c2h4).point_group.label
+        symmetry = self.molecule_factory.create(self.nuclei_array_c2h4)[1].label
         testing.assert_equal(symmetry, 'D_{2h}')

@@ -23,5 +23,5 @@ class TestSymmetryN2(TestCase):
 
     # D_{4h} because D_{inf h} is not useful for reducing integrals
     def test_point_group_returns_d_4_h_symmetry_for_nitrogen(self):
-        symmetry = self.molecule_factory.create(self.nuclei_array_n2).point_group.label
+        symmetry = self.molecule_factory.create(self.nuclei_array_n2)[1].label
         testing.assert_equal(symmetry, 'D_{4h}')

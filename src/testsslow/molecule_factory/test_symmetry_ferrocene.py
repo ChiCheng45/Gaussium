@@ -34,5 +34,5 @@ class TestSymmetryFerrocene(TestCase):
         self.molecule_factory = MoleculeFactory(symmetry=True)
 
     def test_point_group_returns_d_5d_symmetry_for_cubane(self):
-        symmetry = self.molecule_factory.create(self.nuclei_array_ferrocene).point_group.label
+        symmetry = self.molecule_factory.create(self.nuclei_array_ferrocene)[1].label
         testing.assert_equal(symmetry, 'D_{5d}')

@@ -73,5 +73,5 @@ class TestSymmetryH2O(TestCase):
         self.assertEqual(boolean, True)
 
     def test_point_group_returns_c_2v_symmetry_for_water(self):
-        symmetry = self.molecule_factory.create(self.nuclei_array_h2o).point_group.label
+        symmetry = self.molecule_factory.create(self.nuclei_array_h2o)[1].label
         testing.assert_equal(symmetry, 'C_{2v}')

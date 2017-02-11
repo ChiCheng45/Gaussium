@@ -12,10 +12,10 @@ class TestSymmetryHe(TestCase):
         self.molecule_factory = MoleculeFactory(symmetry=True)
 
     def test_move_nuclei_to_the_origin(self):
-        helium = self.molecule_factory.create(self.nuclei_array_he).nuclei_array[0]
+        helium = self.molecule_factory.create(self.nuclei_array_he)[0][0]
         testing.assert_array_equal(helium.coordinates, (0.0, 0.0, 0.0))
 
     # O_{h} to speed up integral evaluation
     def test_point_group_returns_D_4h_symmetry_for_helium(self):
-        symmetry = self.molecule_factory.create(self.nuclei_array_he).point_group.label
+        symmetry = self.molecule_factory.create(self.nuclei_array_he)[1].label
         testing.assert_equal(symmetry, 'O_{h}')
