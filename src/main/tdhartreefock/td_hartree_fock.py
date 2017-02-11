@@ -41,4 +41,4 @@ class TimeDependentHartreeFock:
         print('SINGLET EXCITATION ENERGIES\n{}\n'.format(singlet_excitation_energies))
         print('TRIPLET EXCITATION ENERGIES\n{}\n\n'.format(triplet_excitation_energies))
 
-        return electron_energy
+        return electron_energy, 0.0

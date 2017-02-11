@@ -20,3 +20,7 @@ class MoellerPlesset(Indices):
             correlation += 2 * (self.integrals.item(i, a, j, b))**2 / out
             correlation -= (self.integrals.item(i, a, j, b) * self.integrals.item(i, b, j, a)) / out
         return correlation
+
+    def energies(self):
+        correlation = self.second_order()
+        return self.hartree_fock_energy, correlation

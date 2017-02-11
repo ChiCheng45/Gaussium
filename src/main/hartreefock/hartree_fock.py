@@ -1,7 +1,3 @@
-from src.main.matrixelements import KineticEnergyMatrix
-from src.main.matrixelements import NuclearAttractionMatrix
-from src.main.matrixelements import OrbitalOverlapMatrix
-from src.main.matrixelements import TwoElectronRepulsionMatrixOS
 from src.main.hartreefock import LinearAlgebra
 from src.main.hartreefock import BlockedLinearAlgebra
 from src.main.hartreefock import RestrictedSCF
@@ -10,6 +6,10 @@ from src.main.hartreefock import BlockedUnrestrictedSCF
 from src.main.hartreefock import FockMatrixRestricted
 from src.main.hartreefock import FockMatrixUnrestricted
 from src.main.hartreefock import BlockedFockMatrixUnrestricted
+from src.main.matrixelements import KineticEnergyMatrix
+from src.main.matrixelements import NuclearAttractionMatrix
+from src.main.matrixelements import OrbitalOverlapMatrix
+from src.main.matrixelements import TwoElectronRepulsionMatrixOS
 from src.main.matrixelements import blocked_spin_basis_set
 import numpy as np
 import time
@@ -45,6 +45,13 @@ class HartreeFock:
     def initial_guess(self):
         initial_orbital_energies, initial_orbital_coefficients = self.linear_algebra.diagonalize(self.core_hamiltonian)
         return initial_orbital_coefficients
+
+    def begin_scf(self):
+        pass
+
+    def energies(self):
+        energy = self.begin_scf()[0]
+        return energy, 0.0
 
 
 class Restricted(HartreeFock):

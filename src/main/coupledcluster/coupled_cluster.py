@@ -61,6 +61,10 @@ class CoupledClusterSinglesDoubles(CoupledCluster):
             correlation += self.repulsion.item(i, j, a, b) * (0.25 * t[i, j, a, b] + 0.5 * t[i, a] * t[j, b])
         return correlation
 
+    def energies(self):
+        correlation = self.calculate_singles_doubles()[0]
+        return self.hartree_fock_energy, correlation
+
 
 class CoupledClusterPerturbativeTriples(CoupledClusterSinglesDoubles):
 
@@ -90,3 +94,7 @@ class CoupledClusterPerturbativeTriples(CoupledClusterSinglesDoubles):
             correlation_triples += (1 / 36) * t_connected[i, j, k, a, b, c] * d[i, j, k, a, b, c] \
             * (t_connected[i, j, k, a, b, c] + t_disconnected[i, j, k, a, b, c])
         return correlation_triples
+
+    def energies(self):
+        correlation = self.calculate_perturbative_triples()
+        return self.hartree_fock_energy, correlation
