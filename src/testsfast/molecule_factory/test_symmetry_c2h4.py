@@ -15,7 +15,7 @@ class TestSymmetryC2H4(TestCase):
         hydrogen_3 = MagicMock(element='HYDROGEN', charge=1, mass=1, coordinates=(1.7400646600, -2.3216269636, 0.0000000000))
         hydrogen_4 = MagicMock(element='HYDROGEN', charge=1, mass=1, coordinates=(-1.7400646600, -2.3216269636, 0.0000000000))
         self.nuclei_array_c2h4 = [carbon_1, carbon_2, hydrogen_1, hydrogen_2, hydrogen_3, hydrogen_4]
-        self.molecule_factory = MoleculeFactory()
+        self.molecule_factory = MoleculeFactory(symmetry=True)
         self.symmetry_factory = SymmetryFactory()
 
     def test_brute_force_rotation_symmetry_returns_list_of_three_axis_of_rotations(self):
@@ -57,5 +57,5 @@ class TestSymmetryC2H4(TestCase):
         self.assertEqual(boolean, True)
 
     def test_point_group_returns_d_2h_symmetry_for_ethene(self):
-        symmetry = self.molecule_factory.point_group(self.nuclei_array_c2h4).point_group.label
+        symmetry = self.molecule_factory.create(self.nuclei_array_c2h4).point_group.label
         testing.assert_equal(symmetry, 'D_{2h}')

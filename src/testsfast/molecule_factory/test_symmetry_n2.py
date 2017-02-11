@@ -11,7 +11,7 @@ class TestSymmetryN2(TestCase):
         nitrogen_1 = MagicMock(element='NITROGEN', charge=7, mass=14, coordinates=(0.0000000000, 0.0000000000, 1.0399092291))
         nitrogen_2 = MagicMock(element='NITROGEN', charge=7, mass=14, coordinates=(0.0000000000, 0.0000000000, -1.0399092291))
         self.nuclei_array_n2 = [nitrogen_1, nitrogen_2]
-        self.molecule_factory = MoleculeFactory()
+        self.molecule_factory = MoleculeFactory(symmetry=True)
         self.symmetry_factory = SymmetryFactory()
 
     def test_check_linear_returns_true(self):
@@ -23,5 +23,5 @@ class TestSymmetryN2(TestCase):
 
     # D_{4h} because D_{inf h} is not useful for reducing integrals
     def test_point_group_returns_d_4_h_symmetry_for_nitrogen(self):
-        symmetry = self.molecule_factory.point_group(self.nuclei_array_n2).point_group.label
+        symmetry = self.molecule_factory.create(self.nuclei_array_n2).point_group.label
         testing.assert_equal(symmetry, 'D_{4h}')

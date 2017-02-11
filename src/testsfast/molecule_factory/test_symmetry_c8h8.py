@@ -27,7 +27,7 @@ class TestSymmetryC8H8(TestCase):
         hydrogen_8 = MagicMock(element='HYDROGEN', charge=1, mass=1, coordinates=(-0.3583, -1.4906, -1.9058))
         self.nuclei_array_c8h8 = [carbon_1, carbon_2, carbon_3, carbon_4, carbon_5, carbon_6, carbon_7, carbon_8,
         hydrogen_1, hydrogen_2, hydrogen_3, hydrogen_4, hydrogen_5, hydrogen_6, hydrogen_7, hydrogen_8]
-        self.molecule_factory = MoleculeFactory()
+        self.molecule_factory = MoleculeFactory(symmetry=True)
         self.symmetry_factory = SymmetryFactory()
         self.inversion_symmetry = InversionSymmetry()
 
@@ -46,5 +46,5 @@ class TestSymmetryC8H8(TestCase):
         self.assertEqual(boolean, True)
 
     def test_point_group_returns_o_h_symmetry_for_cubane(self):
-        symmetry = self.molecule_factory.point_group(self.nuclei_array_c8h8).point_group.label
+        symmetry = self.molecule_factory.create(self.nuclei_array_c8h8).point_group.label
         testing.assert_equal(symmetry, 'O_{h}')

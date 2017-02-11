@@ -14,7 +14,7 @@ class TestSymmetryCH4(TestCase):
         hydrogen_3 = MagicMock(element='HYDROGEN', charge=1, mass=1, coordinates=(-1.34448, 1.10904, 0.73260))
         hydrogen_4 = MagicMock(element='HYDROGEN', charge=1, mass=1, coordinates=(-1.34448, -0.56571, 0.23432))
         self.nuclei_array_ch4 = [carbon_1, hydrogen_1, hydrogen_2, hydrogen_3, hydrogen_4]
-        self.molecule_factory = MoleculeFactory()
+        self.molecule_factory = MoleculeFactory(symmetry=True)
         self.symmetry_factory = SymmetryFactory()
 
     def test_center_molecule_changes_to_carbon_1_at_origin(self):
@@ -72,5 +72,5 @@ class TestSymmetryCH4(TestCase):
         self.assertEqual(boolean, True)
 
     def test_point_group_returns_t_d_symmetry_for_methane(self):
-        symmetry = self.molecule_factory.point_group(self.nuclei_array_ch4).point_group.label
+        symmetry = self.molecule_factory.create(self.nuclei_array_ch4).point_group.label
         testing.assert_equal(symmetry, 'T_{d}')

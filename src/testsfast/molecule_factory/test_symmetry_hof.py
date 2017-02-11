@@ -12,7 +12,7 @@ class TestSymmetryHOF(TestCase):
         hydrogen_1 = MagicMock(element='HYDROGEN', charge=1, mass=1, coordinates=(-1.7313653816, -1.6895740638, 0.0000000000))
         fluorine_1 = MagicMock(element='FLUORINE', charge=9, mass=19, coordinates=(1.2899273141, 0.0031592817, 0.0000000000))
         self.nuclei_array_hof = [oxygen_1, hydrogen_1, fluorine_1]
-        self.molecule_factory = MoleculeFactory()
+        self.molecule_factory = MoleculeFactory(symmetry=True)
         self.symmetry_factory = SymmetryFactory()
 
     def test_brute_force_rotation_symmetry_returns_list_of_zero_axis_of_rotations(self):
@@ -47,5 +47,5 @@ class TestSymmetryHOF(TestCase):
         self.assertEqual(boolean, True)
 
     def test_point_group_returns_c_s_symmetry_for_hypofluorous_acid(self):
-        symmetry = self.molecule_factory.point_group(self.nuclei_array_hof).point_group.label
+        symmetry = self.molecule_factory.create(self.nuclei_array_hof).point_group.label
         testing.assert_equal(symmetry, 'C_{s}')

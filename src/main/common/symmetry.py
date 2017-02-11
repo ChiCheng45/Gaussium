@@ -16,6 +16,10 @@ class Symmetry:
         self.symmetry_matrix = self.basis_set_symmetry_matrix()
 
     def none_zero_integral(self, index):
+
+        if self.point_group.label == 'C_{1}':
+            return True
+
         i, j, k, l = index
         basis_i = self.basis_set[i]
         basis_j = self.basis_set[j]

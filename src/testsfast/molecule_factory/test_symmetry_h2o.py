@@ -12,7 +12,7 @@ class TestSymmetryH2O(TestCase):
         hydrogen_1 = MagicMock(element='HYDROGEN', charge=1, mass=1, coordinates=(0.0000000000, 1.4236595095, 0.9813433754))
         hydrogen_2 = MagicMock(element='HYDROGEN', charge=1, mass=1, coordinates=(0.0000000000, -1.4236595095, 0.9813433754))
         self.nuclei_array_h2o = [oxygen_1, hydrogen_1, hydrogen_2]
-        self.molecule_factory = MoleculeFactory()
+        self.molecule_factory = MoleculeFactory(symmetry=True)
         self.symmetry_factory = SymmetryFactory()
 
     def test_brute_force_rotation_symmetry_returns_list_of_one_axis_of_rotations(self):
@@ -73,5 +73,5 @@ class TestSymmetryH2O(TestCase):
         self.assertEqual(boolean, True)
 
     def test_point_group_returns_c_2v_symmetry_for_water(self):
-        symmetry = self.molecule_factory.point_group(self.nuclei_array_h2o).point_group.label
+        symmetry = self.molecule_factory.create(self.nuclei_array_h2o).point_group.label
         testing.assert_equal(symmetry, 'C_{2v}')

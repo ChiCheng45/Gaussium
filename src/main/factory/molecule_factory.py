@@ -13,18 +13,23 @@ import heapq
 
 class MoleculeFactory:
 
-    def __init__(self, error=1e-2):
+    def __init__(self, symmetry=False, error=1e-2):
+        self.symmetry = symmetry
         self.error = error
         self.symmetry_factory = SymmetryFactory(error)
 
-    def point_group(self, nuclei_array):
+    def create(self, nuclei_array):
+
+        if not self.symmetry:
+            return Molecule(nuclei_array, PointGroup([], [], [], [], 'C_{1}'))
+
         nuclei_array = self.center_molecule(nuclei_array)
 
         if len(nuclei_array) == 1:                                      # Point
             return Molecule(nuclei_array, Oh())
 
         rotation, reflection, improper, inversion = self.symmetry_factory.brute_force_symmetry(nuclei_array)
-        self.standard_orientation(nuclei_array, rotation, reflection)
+        nuclei_array, rotation, reflection = self.standard_orientation(nuclei_array, rotation, reflection)
 
         if self.check_linear(nuclei_array):                             # Linear
             if len(inversion) == 1:
@@ -150,6 +155,8 @@ class MoleculeFactory:
             reflection.vector = quaternion_rotation(quaternion, reflection.vector)
         for nuclei in nuclei_array:
             nuclei.coordinates = quaternion_rotation(quaternion, nuclei.coordinates)
+
+        return nuclei_array, rotation_symmetry, reflection_symmetry
 
     def check_improper_rotation(self, n, improper_rotations):
         for improper_rotation in improper_rotations:

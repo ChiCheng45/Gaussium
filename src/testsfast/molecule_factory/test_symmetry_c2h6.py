@@ -18,7 +18,7 @@ class TestSymmetryC2H6(TestCase):
         hydrogen_6 = MagicMock(element='HYDROGEN', charge=1, mass=1, coordinates=(-1.1850, 0.0044, -0.9875))
         self.nuclei_array_c2h6 = [carbon_1, carbon_2, hydrogen_1, hydrogen_2, hydrogen_3, hydrogen_4, hydrogen_5,
         hydrogen_6]
-        self.molecule_factory = MoleculeFactory()
+        self.molecule_factory = MoleculeFactory(symmetry=True)
         self.symmetry_factory = SymmetryFactory()
 
     def test_check_linear_returns_false(self):
@@ -57,5 +57,5 @@ class TestSymmetryC2H6(TestCase):
         self.assertEqual(boolean, True)
 
     def test_point_group_returns_d_3d_symmetry_for_cubane(self):
-        symmetry = self.molecule_factory.point_group(self.nuclei_array_c2h6).point_group.label
+        symmetry = self.molecule_factory.create(self.nuclei_array_c2h6).point_group.label
         testing.assert_equal(symmetry, 'D_{3d}')
