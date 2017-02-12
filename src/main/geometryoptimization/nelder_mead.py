@@ -6,7 +6,7 @@ import itertools, heapq, os
 
 class NelderMead:
 
-    def __init__(self, basis_file, energy_object, nuclei_list, tau=0.25, threshold=1e-3):
+    def __init__(self, basis_file, energy_object, nuclei_list, tau=0.25, threshold=1e-6):
         self.basis_file = basis_file
         self.energy_object = energy_object
         self.nuclei_list = nuclei_list
