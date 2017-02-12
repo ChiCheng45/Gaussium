@@ -81,7 +81,7 @@ class SymmetryFactory:
         if len(rotation_symmetry) > 0:
 
             highest_symmetries = []
-            highest_n_fold = heapq.nlargest(1, [rotation.fold for rotation in rotation_symmetry])[0]
+            highest_n_fold = max([rotation.fold for rotation in rotation_symmetry])
             for rotation in rotation_symmetry:
                 if rotation.fold == highest_n_fold:
                     highest_symmetries.append(rotation)
