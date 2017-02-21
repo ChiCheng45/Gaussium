@@ -6,7 +6,7 @@ import itertools, heapq, os
 
 class NelderMead:
 
-    def __init__(self, basis_file, energy_object, nuclei_list, tau=0.25, threshold=1e-6):
+    def __init__(self, basis_file, energy_object, nuclei_list, tau=0.25, threshold=1e-1):
         self.basis_file = basis_file
         self.energy_object = energy_object
         self.nuclei_list = nuclei_list
@@ -19,6 +19,10 @@ class NelderMead:
         self.threshold = threshold
 
     def optimize(self):
+        print('\n*************************************************************************************************')
+        print('\nELECTRONIC STRUCTURE METHOD: {}'.format(self.energy_object.method))
+        print('\nBEGIN NELDER-MEAD OPTIMIZATION')
+
         simplex_matrix, energy_list = self.build_initial_simplex()
 
         while True:
@@ -72,7 +76,7 @@ class NelderMead:
                     simplex_matrix = self.shrink_simplex(simplex_matrix, energy_list)
                     energy_list = self.calculate_simplex_energies(simplex_matrix)
 
-            print(min(energy_list), np.std(energy_list))
+            print("ENERGY: {}, DEV: {}".format(min(energy_list), np.std(energy_list)))
 
             if np.std(energy_list) <= self.threshold:
                 break
