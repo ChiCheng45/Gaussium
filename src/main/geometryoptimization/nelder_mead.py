@@ -9,7 +9,7 @@ class NelderMead:
     def __init__(self, basis_file, energy_object, nuclei_list, tau=0.25, threshold=1e-6):
         self.basis_file = basis_file
         self.energy_object = energy_object
-        self.nuclei_list = nuclei_list
+        self.first_nuclei, self.nuclei_list = self.center_first_nuclei(nuclei_list)
         self.m = len(nuclei_list) * 3
         self.alpha = 1
         self.beta = 2 + (2 / self.m)
@@ -109,9 +109,9 @@ class NelderMead:
     def calculate_energy(self, coordinate_list):
         for i, nuclei in enumerate(self.nuclei_list):
             nuclei.coordinates = coordinate_list.item(i), coordinate_list.item(i+1), coordinate_list.item(i+2)
-        basis_set = read_basis_set_file(self.basis_file, self.nuclei_list)
         with redirect_stdout(open(os.devnull, "w")):
-            energy = self.energy_object.calculate_energy(self.nuclei_list, basis_set)
+            basis_set = read_basis_set_file(self.basis_file, self.first_nuclei + self.nuclei_list)
+            energy = self.energy_object.calculate_energy(self.first_nuclei + self.nuclei_list, basis_set)
         return energy
 
     def replace_max_energy(self, simplex_matrix, energy_list, max_energy_index, new_points, new_energy):
@@ -127,3 +127,16 @@ class NelderMead:
         min_points_matrix = np.tile(min_points, (self.m + 1, ))
         simplex_matrix = min_points_matrix + self.delta * (simplex_matrix - min_points_matrix)
         return simplex_matrix
+
+    def center_first_nuclei(self, nuclei_list):
+        first_nuclei = nuclei_list.pop(0)
+        translation = first_nuclei.coordinates
+        first_nuclei.coordinates = (0, 0, 0)
+
+        for nuclei in nuclei_list:
+            x = nuclei.coordinates[0] - translation[0]
+            y = nuclei.coordinates[1] - translation[1]
+            z = nuclei.coordinates[2] - translation[2]
+            nuclei.coordinates = (x, y, z)
+
+        return [first_nuclei], nuclei_list
