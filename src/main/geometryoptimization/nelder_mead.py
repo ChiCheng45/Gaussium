@@ -1,7 +1,11 @@
 from src.main.common import read_basis_set_file
+from src.main.common import create_quaternion
+from src.main.common import quaternion_rotation
+from src.main.common import theta, phi
+from src.main.common import normalize
 from contextlib import redirect_stdout
 import numpy as np
-import itertools, heapq, os
+import heapq, os
 
 
 class NelderMead:
@@ -9,8 +13,11 @@ class NelderMead:
     def __init__(self, basis_file, energy_object, nuclei_list, tau=0.25, threshold=1e-6):
         self.basis_file = basis_file
         self.energy_object = energy_object
-        self.first_nuclei, self.nuclei_list = self.center_first_nuclei(nuclei_list)
-        self.m = len(nuclei_list) * 3
+        self.first_nuclei, self.nuclei_list = self.reorient_molecule(nuclei_list)
+        if len(self.nuclei_list) == 1:
+            self.m = 1
+        else:
+            self.m = len(self.nuclei_list) * 3 - 3
         self.alpha = 1
         self.beta = 2 + (2 / self.m)
         self.gamma = 0.75 + (1 / (2 * self.m))
@@ -84,9 +91,19 @@ class NelderMead:
         return min(energy_list)
 
     def build_initial_simplex(self):
-        initial_points = np.matrix(
-            list(itertools.chain.from_iterable([nuclei.coordinates for nuclei in self.nuclei_list]))
-        ).T
+
+        initial_points = []
+        for i, nuclei in enumerate(self.nuclei_list):
+            if i == 0:
+                initial_points.append(nuclei.coordinates[2])
+            elif i == 1:
+                initial_points.append(nuclei.coordinates[1])
+                initial_points.append(nuclei.coordinates[2])
+            else:
+                initial_points.append(nuclei.coordinates[0])
+                initial_points.append(nuclei.coordinates[1])
+                initial_points.append(nuclei.coordinates[2])
+        initial_points = np.matrix(initial_points).T
 
         simplex_matrix = np.copy(initial_points)
         for i in range(self.m):
@@ -107,13 +124,23 @@ class NelderMead:
         return energy_list
 
     def calculate_energy(self, coordinate_list):
+
         j = 0
-        for nuclei in self.nuclei_list:
-            nuclei.coordinates = (coordinate_list.item(j), coordinate_list.item(j+1), coordinate_list.item(j+2))
-            j += 3
+        for i, nuclei in enumerate(self.nuclei_list):
+            if i == 0:
+                nuclei.coordinates = (0.0, 0.0, coordinate_list.item(j))
+                j += 1
+            elif i == 1:
+                nuclei.coordinates = (0.0, coordinate_list.item(j), coordinate_list.item(j+1))
+                j += 2
+            else:
+                nuclei.coordinates = (coordinate_list.item(j), coordinate_list.item(j+1), coordinate_list.item(j+2))
+                j += 3
+
         with redirect_stdout(open(os.devnull, "w")):
             basis_set = read_basis_set_file(self.basis_file, self.first_nuclei + self.nuclei_list)
             energy = self.energy_object.calculate_energy(self.first_nuclei + self.nuclei_list, basis_set)
+
         return energy
 
     def replace_max_energy(self, simplex_matrix, energy_list, max_energy_index, new_points, new_energy):
@@ -130,15 +157,31 @@ class NelderMead:
         simplex_matrix = min_points_matrix + self.delta * (simplex_matrix - min_points_matrix)
         return simplex_matrix
 
-    def center_first_nuclei(self, nuclei_list):
+    def reorient_molecule(self, nuclei_list):
         first_nuclei = nuclei_list.pop(0)
-        translation = first_nuclei.coordinates
+        coordinates = first_nuclei.coordinates
         first_nuclei.coordinates = (0, 0, 0)
 
         for nuclei in nuclei_list:
-            x = nuclei.coordinates[0] - translation[0]
-            y = nuclei.coordinates[1] - translation[1]
-            z = nuclei.coordinates[2] - translation[2]
+            x = nuclei.coordinates[0] - coordinates[0]
+            y = nuclei.coordinates[1] - coordinates[1]
+            z = nuclei.coordinates[2] - coordinates[2]
             nuclei.coordinates = (x, y, z)
+
+        if len(nuclei_list) >= 1:
+            second_nuclei = nuclei_list[0]
+            coordinates = normalize(second_nuclei.coordinates)
+
+            quaternion = create_quaternion((-coordinates[1], coordinates[0], 0.0), -theta(coordinates))
+            for nuclei in nuclei_list:
+                nuclei.coordinates = quaternion_rotation(quaternion, nuclei.coordinates)
+
+        if len(nuclei_list) >= 2:
+            third_nuclei = nuclei_list[1]
+            coordinates = normalize(third_nuclei.coordinates)
+
+            quaternion = create_quaternion((0.0, 0.0, 1.0), -phi(coordinates) + np.pi/2)
+            for nuclei in nuclei_list:
+                nuclei.coordinates = quaternion_rotation(quaternion, nuclei.coordinates)
 
         return [first_nuclei], nuclei_list

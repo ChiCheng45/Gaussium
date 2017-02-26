@@ -32,7 +32,7 @@ def menu():
     # start('H2O.mol', 'STO-3G.gbs', 'CCSD(T)', 4)  # -9.98772699528e-05 a.u.
 
     # geometry optimization
-    start('H2O.mol', 'STO-3G.gbs', 'RHF', 4, geometry_optimization='NelderMead')
+    start('H2O.mol', 'STO-3G.gbs', 'RHF', 4, geometry_optimization='NelderMead')  # -74.96588377357489 a.u.
 
 
 def start(mol_file, basis_file, method, processors, symmetry=False, geometry_optimization=None):
