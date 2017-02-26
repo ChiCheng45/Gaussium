@@ -94,8 +94,8 @@ class NelderMead:
             value = points.item(i, 0)
             points.itemset((i, 0), value + self.tau)
             simplex_matrix = np.concatenate((simplex_matrix, points), axis=1)
-
         simplex_matrix = np.matrix(simplex_matrix)
+
         energy_list = self.calculate_simplex_energies(simplex_matrix)
         return simplex_matrix, energy_list
 
@@ -107,8 +107,10 @@ class NelderMead:
         return energy_list
 
     def calculate_energy(self, coordinate_list):
-        for i, nuclei in enumerate(self.nuclei_list):
-            nuclei.coordinates = coordinate_list.item(i), coordinate_list.item(i+1), coordinate_list.item(i+2)
+        j = 0
+        for nuclei in self.nuclei_list:
+            nuclei.coordinates = (coordinate_list.item(j), coordinate_list.item(j+1), coordinate_list.item(j+2))
+            j += 3
         with redirect_stdout(open(os.devnull, "w")):
             basis_set = read_basis_set_file(self.basis_file, self.first_nuclei + self.nuclei_list)
             energy = self.energy_object.calculate_energy(self.first_nuclei + self.nuclei_list, basis_set)
