@@ -4,7 +4,7 @@ sys.path.insert(1, os.path.dirname(os.path.realpath(__file__)) + '/../../')
 from src.main.common import read_basis_set_file
 from src.main.common import read_mol_file
 from src.main.common import Symmetry
-from src.main.common import Energy
+from src.main.energy import Energy
 from src.main.factory import MoleculeFactory
 from src.main.geometryoptimization import NelderMead
 import numpy as np
@@ -27,12 +27,12 @@ def menu():
     # start('He.mol', 'STO-3G.gbs', ('DFT', 'S', 'VWN3'), 4)  # -2.80983127318 a.u.
     # start('Li-.mol', 'STO-3G.gbs', ('DFT', 'S', 'VWN3'), 4)  # -7.223380048745456 a.u.
 
-    # start('H2O.mol', 'STO-3G.gbs', 'CCSD', 4)  # -0.0706800939192 a.u.
+    start('H2O.mol', 'STO-3G.gbs', 'CCSD', 4)  # -0.0706800939192 a.u.
     # start('CH4.mol', 'STO-3G.gbs', 'CCSD', 4)  # -0.078469894846414 a.u.
     # start('H2O.mol', 'STO-3G.gbs', 'CCSD(T)', 4)  # -9.98772699528e-05 a.u.
 
     # geometry optimization
-    start('H2O.mol', 'STO-3G.gbs', 'RHF', 4, geometry_optimization='NelderMead')  # -74.96588377357489 a.u.
+    # start('H2O.mol', 'STO-3G.gbs', 'RHF', 4, geometry_optimization='NelderMead')  # -74.96588377357489 a.u.
 
 
 def start(mol_file, basis_file, method, processors, symmetry=False, geometry_optimization=None):
