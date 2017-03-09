@@ -80,7 +80,7 @@ class HeadGordonPople:
                 m -= 1
                 self.end_dict[m] = boys_out1 * boys_out2 * boys_out3
 
-            ans += contraction * self.hgp_begin_horizontal(g2, g1, g4, g3)
+            ans += contraction * self.hgp_begin_horizontal(g1, g2, g4, g3)
 
         return ans
 
