@@ -23,7 +23,7 @@ def start(mol, basis, method, processes, symmetry=False)
 ```
 * Now run the main.py, for example on a Windows machine,
 ```
-C:\Anaconda3\python.exe C:\Users\username\PycharmProjects\Quantum_Chemistry\src\main\main.py
+C:\Anaconda3\python.exe C:\Users\username\PycharmProjects\Quantum_Chemistry\src\main.py
 ```
 
 ##Supported Features and Methods
