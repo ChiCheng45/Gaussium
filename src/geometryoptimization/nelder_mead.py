@@ -1,8 +1,6 @@
 import heapq, os
 from contextlib import redirect_stdout
-
 import numpy as np
-
 from src.common import create_quaternion
 from src.common import normalize
 from src.common import quaternion_rotation
