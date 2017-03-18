@@ -1,11 +1,11 @@
-##Introduction
+## Introduction
 A basic quantum chemical program written in Python 3 using the numpy and scipy libraries.
 
 Currently this program fully supports RHF, UHF, CIS, TDHF, DFT, CCSD and CCSD(T), next plans are to reduce ERI time by taking advantage of molecule symmetry, implementing more CI based methods and to speed up CCSD iterations. 
 
 I've based this work on Attlia Szabo and Neil S. Ostlunds "Modern Quantum Chemistry: Introduction to Advanced Electronic Structure Theory" and David B. Cooks "Handbook of Computational Chemistry". The developers resources at http://www.psicode.org/developers.php were also invaluable and had a number of excellent tutorials and programming examples.
 
-##Instructions
+## Instructions
 * To run this program add the desired .mol and .gbs files to the `molfiles` and `basisset` directories.
 * Next edit the `src/main/main.py` `menu()` function so that the desired calculations are made for example,
 ```python
@@ -26,7 +26,7 @@ def start(mol, basis, method, processes, symmetry=False)
 C:\Anaconda3\python.exe C:\Users\username\PycharmProjects\Quantum_Chemistry\src\main.py
 ```
 
-##Supported Features and Methods
+## Supported Features and Methods
 * Restricted Hartree-Fock
 * Unrestricted Hartree-Fock
 * Density Functional Theory - SVWN and S_X
@@ -40,10 +40,10 @@ C:\Anaconda3\python.exe C:\Users\username\PycharmProjects\Quantum_Chemistry\src\
 * Reduced ERI evaluations with Symmetry
 * Obara-Saika recursion relation for ERI
 
-##Comparisons
+## Comparisons
 
-###Restricted Hartree-Fock
-#####HeH<sup>+</sup> STO-3G 
+### Restricted Hartree-Fock
+##### HeH<sup>+</sup> STO-3G 
 Completed my first calculation of HeH+ with a bond-length of 1.4632 a<sub>0</sub> using the STO-3G basis set. Comparison with Spartan Student Edition v5,
 ```
 SCF model:
@@ -67,7 +67,7 @@ TOTAL ENERGY: -2.841836483 a.u.
 Time Taken: 0.10287352007652968s
 ```
 
-#####HeH<sup>+</sup> 6-311+G**
+##### HeH<sup>+</sup> 6-311+G**
 ```
     SPARTAN STUDENT Quantum Mechanics Program:  (PC/x86)   Release  5.0.0v4
 
@@ -94,7 +94,7 @@ TOTAL ENERGY: -2.92922773418 a.u.
 Time Taken: 10.986138812057659s
 ```
 
-#####C<sub>2</sub>H<sub>4</sub> 3-21G
+##### C<sub>2</sub>H<sub>4</sub> 3-21G
 ```
 Job type: Single point.
 Method: RHF
@@ -118,8 +118,8 @@ TOTAL ENERGY: -77.6004608443 a.u.
 Time Taken: 72.70841306778921s
 ```
 
-###Unrestricted Hartree-Fock
-#####O<sub>2</sub> STO-3G
+### Unrestricted Hartree-Fock
+##### O<sub>2</sub> STO-3G
 Completed UHF calculation of O<sub>2</sub> with a bond-length of 2.28541 a<sub>0</sub> using the STO-3G basis set. Comparison with Psi4,
 ```
     Alpha Virtual:                                                        
@@ -181,8 +181,8 @@ TOTAL ENERGY: -147.634028138 a.u.
 TIME TAKEN: 7.575840318746571
 ```
 
-###Density Functional Theory
-#####SVWN He STO-3G
+### Density Functional Theory
+##### SVWN He STO-3G
 Completed DFT/SVWN calculation of He using the STO-3G basis set. Fairly close agreement to Psi4, differences are probably due to the different numerical integration techniques used.
 ```
   @RKS Final Energy:    -2.80959859524104
@@ -209,7 +209,7 @@ TOTAL ENERGY:                -2.80983128189 a.u.
 TIME TAKEN: 48.94459470800236s
 ```
 
-#####SVWN H<sub>2</sub> STO-3G
+##### SVWN H<sub>2</sub> STO-3G
 ```
   @RKS Final Energy:    -1.15582107524090
 
@@ -235,8 +235,8 @@ TOTAL ENERGY:                -1.15592733406 a.u.
 TIME TAKEN: 46.66810950479239s
 ```
 
-###Møller–Plesset Second Order
-#####CO STO-3G
+### Møller–Plesset Second Order
+##### CO STO-3G
 MP2 calculation of CO with a bond-length of 2.14005 a<sub>0</sub> using the STO-3G basis set. Comparison with Psi4,
 ```
         Computing MP2 energy using SCF MOs (Canonical MP2)... 
@@ -270,7 +270,7 @@ TIME TAKEN: 36.23057195376635s
 ```
 
 ### Coupled Cluster Singles and Doubles
-#####CH<sub>4</sub> STO-3G
+##### CH<sub>4</sub> STO-3G
 CCSD calculation of CH<sub>4</sub> in the STO-3G basis set. comparison with Psi4,
 ```
         SCF energy       (wfn)                =  -39.726835850063679
