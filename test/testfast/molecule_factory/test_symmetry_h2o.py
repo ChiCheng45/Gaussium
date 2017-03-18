@@ -1,8 +1,6 @@
 from unittest import TestCase
 from unittest.mock import MagicMock
-
 from numpy import testing
-
 from src.factory import MoleculeFactory
 from src.factory import SymmetryFactory
 
@@ -10,9 +8,16 @@ from src.factory import SymmetryFactory
 class TestSymmetryH2O(TestCase):
 
     def setUp(self):
-        oxygen_1 = MagicMock(element='OXYGEN', charge=8, mass=16, coordinates=(0.0000000000, 0.0000000000, -0.1363928482))
-        hydrogen_1 = MagicMock(element='HYDROGEN', charge=1, mass=1, coordinates=(0.0000000000, 1.4236595095, 0.9813433754))
-        hydrogen_2 = MagicMock(element='HYDROGEN', charge=1, mass=1, coordinates=(0.0000000000, -1.4236595095, 0.9813433754))
+        oxygen_1 = MagicMock(
+            element='OXYGEN', charge=8, mass=16, coordinates=(0.0000000000, 0.0000000000, -0.1363928482)
+        )
+        hydrogen_1 = MagicMock(
+            element='HYDROGEN', charge=1, mass=1, coordinates=(0.0000000000, 1.4236595095, 0.9813433754)
+        )
+        hydrogen_2 = MagicMock(
+            element='HYDROGEN', charge=1, mass=1, coordinates=(0.0000000000, -1.4236595095, 0.9813433754)
+        )
+
         self.nuclei_array_h2o = [oxygen_1, hydrogen_1, hydrogen_2]
         self.molecule_factory = MoleculeFactory(symmetry=True)
         self.symmetry_factory = SymmetryFactory()

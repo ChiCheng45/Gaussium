@@ -1,8 +1,6 @@
 from unittest import TestCase
-
 import numpy as np
 from numpy import testing
-
 from src.matrixelements import density_matrix_restricted
 
 

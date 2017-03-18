@@ -1,7 +1,5 @@
 from unittest import TestCase
-
 from numpy import testing
-
 from src.common import coulomb_matrix
 from src.objects import Nuclei
 

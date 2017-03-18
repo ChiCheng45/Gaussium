@@ -1,8 +1,6 @@
 from unittest import TestCase
 from unittest.mock import MagicMock
-
 from numpy import testing
-
 from src.common import Symmetry
 
 

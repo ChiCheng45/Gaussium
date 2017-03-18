@@ -1,8 +1,6 @@
 from unittest import TestCase
 from unittest.mock import MagicMock
-
 from numpy import testing
-
 from src.factory import MoleculeFactory
 from src.factory import SymmetryFactory
 
@@ -10,8 +8,13 @@ from src.factory import SymmetryFactory
 class TestSymmetryN2(TestCase):
 
     def setUp(self):
-        nitrogen_1 = MagicMock(element='NITROGEN', charge=7, mass=14, coordinates=(0.0000000000, 0.0000000000, 1.0399092291))
-        nitrogen_2 = MagicMock(element='NITROGEN', charge=7, mass=14, coordinates=(0.0000000000, 0.0000000000, -1.0399092291))
+        nitrogen_1 = MagicMock(
+            element='NITROGEN', charge=7, mass=14, coordinates=(0.0000000000, 0.0000000000, 1.0399092291)
+        )
+        nitrogen_2 = MagicMock(
+            element='NITROGEN', charge=7, mass=14, coordinates=(0.0000000000, 0.0000000000, -1.0399092291)
+        )
+
         self.nuclei_array_n2 = [nitrogen_1, nitrogen_2]
         self.molecule_factory = MoleculeFactory(symmetry=True)
         self.symmetry_factory = SymmetryFactory()

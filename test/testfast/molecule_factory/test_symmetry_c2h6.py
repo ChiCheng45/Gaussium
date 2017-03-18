@@ -1,8 +1,6 @@
 from unittest import TestCase
 from unittest.mock import MagicMock
-
 from numpy import testing
-
 from src.factory import MoleculeFactory
 from src.factory import SymmetryFactory
 
@@ -18,8 +16,10 @@ class TestSymmetryC2H6(TestCase):
         hydrogen_4 = MagicMock(element='HYDROGEN', charge=1, mass=1, coordinates=(-1.1669, -0.8334, 0.5687))
         hydrogen_5 = MagicMock(element='HYDROGEN', charge=1, mass=1, coordinates=(-1.1157, 0.9326, 0.5151))
         hydrogen_6 = MagicMock(element='HYDROGEN', charge=1, mass=1, coordinates=(-1.1850, 0.0044, -0.9875))
-        self.nuclei_array_c2h6 = [carbon_1, carbon_2, hydrogen_1, hydrogen_2, hydrogen_3, hydrogen_4, hydrogen_5,
-        hydrogen_6]
+
+        self.nuclei_array_c2h6 = [
+            carbon_1, carbon_2, hydrogen_1, hydrogen_2, hydrogen_3, hydrogen_4, hydrogen_5, hydrogen_6
+        ]
         self.molecule_factory = MoleculeFactory(symmetry=True)
         self.symmetry_factory = SymmetryFactory()
 

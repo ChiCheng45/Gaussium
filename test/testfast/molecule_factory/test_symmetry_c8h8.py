@@ -1,8 +1,6 @@
 from unittest import TestCase
 from unittest.mock import MagicMock
-
 from numpy import testing
-
 from src.factory import MoleculeFactory
 from src.factory import SymmetryFactory
 from src.objects import InversionSymmetry
@@ -27,8 +25,11 @@ class TestSymmetryC8H8(TestCase):
         hydrogen_6 = MagicMock(element='HYDROGEN', charge=1, mass=1, coordinates=(-1.6640, 1.7922, -0.0427))
         hydrogen_7 = MagicMock(element='HYDROGEN', charge=1, mass=1, coordinates=(-2.2430, -0.9665, 0.1313))
         hydrogen_8 = MagicMock(element='HYDROGEN', charge=1, mass=1, coordinates=(-0.3583, -1.4906, -1.9058))
-        self.nuclei_array_c8h8 = [carbon_1, carbon_2, carbon_3, carbon_4, carbon_5, carbon_6, carbon_7, carbon_8,
-        hydrogen_1, hydrogen_2, hydrogen_3, hydrogen_4, hydrogen_5, hydrogen_6, hydrogen_7, hydrogen_8]
+
+        self.nuclei_array_c8h8 = [
+            carbon_1, carbon_2, carbon_3, carbon_4, carbon_5, carbon_6, carbon_7, carbon_8, hydrogen_1, hydrogen_2,
+            hydrogen_3, hydrogen_4, hydrogen_5, hydrogen_6, hydrogen_7, hydrogen_8
+        ]
         self.molecule_factory = MoleculeFactory(symmetry=True)
         self.symmetry_factory = SymmetryFactory()
         self.inversion_symmetry = InversionSymmetry()

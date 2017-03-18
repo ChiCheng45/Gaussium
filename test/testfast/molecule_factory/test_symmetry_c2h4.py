@@ -1,8 +1,6 @@
 from unittest import TestCase
 from unittest.mock import MagicMock
-
 from numpy import testing
-
 from src.factory import MoleculeFactory
 from src.factory import SymmetryFactory
 
@@ -10,12 +8,25 @@ from src.factory import SymmetryFactory
 class TestSymmetryC2H4(TestCase):
 
     def setUp(self):
-        carbon_1 = MagicMock(element='CARBON', charge=6, mass=12, coordinates=(0.0000000000, 1.2594652672, 0.0000000000))
-        carbon_2 = MagicMock(element='CARBON', charge=6, mass=12, coordinates=(0.0000000000, -1.2594652672, 0.0000000000))
-        hydrogen_1 = MagicMock(element='HYDROGEN', charge=1, mass=1, coordinates=(1.7400646600, 2.3216269636, 0.0000000000))
-        hydrogen_2 = MagicMock(element='HYDROGEN', charge=1, mass=1, coordinates=(-1.7400646600, 2.3216269636, 0.0000000000))
-        hydrogen_3 = MagicMock(element='HYDROGEN', charge=1, mass=1, coordinates=(1.7400646600, -2.3216269636, 0.0000000000))
-        hydrogen_4 = MagicMock(element='HYDROGEN', charge=1, mass=1, coordinates=(-1.7400646600, -2.3216269636, 0.0000000000))
+        carbon_1 = MagicMock(
+            element='CARBON', charge=6, mass=12, coordinates=(0.0000000000, 1.2594652672, 0.0000000000)
+        )
+        carbon_2 = MagicMock(
+            element='CARBON', charge=6, mass=12, coordinates=(0.0000000000, -1.2594652672, 0.0000000000)
+        )
+        hydrogen_1 = MagicMock(
+            element='HYDROGEN', charge=1, mass=1, coordinates=(1.7400646600, 2.3216269636, 0.0000000000)
+        )
+        hydrogen_2 = MagicMock(
+            element='HYDROGEN', charge=1, mass=1, coordinates=(-1.7400646600, 2.3216269636, 0.0000000000)
+        )
+        hydrogen_3 = MagicMock(
+            element='HYDROGEN', charge=1, mass=1, coordinates=(1.7400646600, -2.3216269636, 0.0000000000)
+        )
+        hydrogen_4 = MagicMock(
+            element='HYDROGEN', charge=1, mass=1, coordinates=(-1.7400646600, -2.3216269636, 0.0000000000)
+        )
+
         self.nuclei_array_c2h4 = [carbon_1, carbon_2, hydrogen_1, hydrogen_2, hydrogen_3, hydrogen_4]
         self.molecule_factory = MoleculeFactory(symmetry=True)
         self.symmetry_factory = SymmetryFactory()

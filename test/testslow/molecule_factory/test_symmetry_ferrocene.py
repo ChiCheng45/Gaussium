@@ -1,8 +1,6 @@
 from unittest import TestCase
 from unittest.mock import MagicMock
-
 from numpy import testing
-
 from src.factory import MoleculeFactory
 
 
@@ -30,9 +28,12 @@ class TestSymmetryFerrocene(TestCase):
         hydrogen_8 = MagicMock(element='HYDROGEN', charge=1, mass=1, coordinates=(0.71304, 2.19452, 1.73016))
         hydrogen_9 = MagicMock(element='HYDROGEN', charge=1, mass=1, coordinates=(2.30745, -0.00000, 1.73016))
         hydrogen_10 = MagicMock(element='HYDROGEN', charge=1, mass=1, coordinates=(0.71304, -2.19452, 1.73016))
-        self.nuclei_array_ferrocene = [carbon_1, carbon_2, carbon_3, carbon_4, carbon_5, carbon_6, carbon_7, carbon_8,
-        carbon_9, carbon_10, hydrogen_1, hydrogen_2, hydrogen_3, hydrogen_4, hydrogen_5, hydrogen_6, hydrogen_7,
-        hydrogen_8, hydrogen_9, hydrogen_10, iron_1]
+
+        self.nuclei_array_ferrocene = [
+            carbon_1, carbon_2, carbon_3, carbon_4, carbon_5, carbon_6, carbon_7, carbon_8, carbon_9, carbon_10,
+            hydrogen_1, hydrogen_2, hydrogen_3, hydrogen_4, hydrogen_5, hydrogen_6, hydrogen_7, hydrogen_8, hydrogen_9,
+            hydrogen_10, iron_1
+        ]
         self.molecule_factory = MoleculeFactory(symmetry=True)
 
     def test_point_group_returns_d_5d_symmetry_for_cubane(self):

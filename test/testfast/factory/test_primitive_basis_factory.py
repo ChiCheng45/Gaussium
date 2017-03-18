@@ -1,7 +1,5 @@
 from unittest import TestCase
-
 from numpy import testing
-
 from src.factory import del_operator
 from src.factory import expand_basis_set
 from src.objects import PrimitiveBasis

@@ -1,8 +1,6 @@
 from math import pi
 from unittest import TestCase
-
 from numpy import testing
-
 from src.common import create_quaternion
 from src.common import quaternion_rotation
 

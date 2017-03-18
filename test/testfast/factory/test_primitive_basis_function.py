@@ -1,7 +1,5 @@
 from unittest import TestCase
-
 from numpy import testing
-
 from src.objects import PrimitiveBasis
 
 
