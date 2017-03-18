@@ -1,5 +1,4 @@
-import heapq
-import os
+import heapq, os
 from contextlib import redirect_stdout
 
 import numpy as np

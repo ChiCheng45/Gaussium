@@ -1,7 +1,5 @@
 from math import sqrt
-
 import numpy as np
-
 from src.matrixelements import molecular_orbitals
 from src.matrixelements import spin_basis_set
 from src.matrixelements import spin_orbital_energies

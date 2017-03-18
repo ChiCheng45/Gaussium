@@ -1,6 +1,4 @@
-import os
-import re
-
+import os, re
 from src.factory import expand_basis_set
 from src.objects import Nuclei
 

@@ -1,5 +1,4 @@
 import time
-
 from src.common import Indices
 from src.coupledcluster import PeturbativeTriples
 from src.coupledcluster import SinglesDoubles

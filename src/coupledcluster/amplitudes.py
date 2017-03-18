@@ -1,5 +1,4 @@
 import itertools
-
 from src.common import Indices
 
 

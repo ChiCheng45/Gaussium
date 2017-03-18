@@ -1,8 +1,6 @@
 import itertools
 from multiprocessing import Pool
-
 import numpy as np
-
 from src.integrals import ElectronRepulsion
 from src.integrals import HeadGordonPople
 from src.integrals import ObaraSaika

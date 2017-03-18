@@ -1,7 +1,6 @@
 import itertools
 from math import factorial as fac
 from math import sqrt, pi, exp
-
 from src.common import coordinate_distance
 from src.factory import gaussian_product
 from src.integrals import binomial_coefficient

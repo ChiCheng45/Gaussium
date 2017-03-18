@@ -1,6 +1,5 @@
 import itertools
 from math import sqrt, pi, exp
-
 from src.common import coordinate_distance
 from src.common import gaussian_product_coordinate
 from src.integrals import boys_function

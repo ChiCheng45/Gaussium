@@ -1,5 +1,4 @@
 import itertools
-
 from src.factory import del_operator
 from src.integrals import orbital_overlap
 from src.matrixelements import Matrix

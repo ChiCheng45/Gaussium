@@ -1,5 +1,4 @@
 from math import log, atan
-
 from src.kohnsham.correlation import CorrelationPotential
 
 

@@ -1,6 +1,5 @@
 import heapq
 from math import pi
-
 from src.common import cartesian_to_spherical
 from src.common import create_quaternion
 from src.common import quaternion_multi

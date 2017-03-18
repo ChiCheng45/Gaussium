@@ -1,5 +1,4 @@
 import itertools
-
 from src.integrals import nuclear_attraction
 from src.matrixelements import Matrix
 

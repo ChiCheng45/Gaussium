@@ -1,7 +1,5 @@
 import time
-
 import numpy as np
-
 from src.hartreefock import BlockedFockMatrixUnrestricted
 from src.hartreefock import BlockedLinearAlgebra
 from src.hartreefock import BlockedUnrestrictedSCF

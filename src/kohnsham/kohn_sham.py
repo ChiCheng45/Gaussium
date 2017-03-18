@@ -2,7 +2,6 @@ from src.kohnsham import ExchangeCorrelation
 from src.kohnsham import RestrictedKohnShamHamiltonian
 from src.kohnsham.exchange import ExchangePotential
 from src.kohnsham.exchange import SlaterExchange
-
 from src.hartreefock import Restricted
 from src.hartreefock import RestrictedSCF
 from src.kohnsham.correlation import CorrelationPotential

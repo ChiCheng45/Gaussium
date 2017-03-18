@@ -1,7 +1,5 @@
 import copy
-
 import numpy as np
-
 from src.common import coordinate_distance
 from src.common import vector_add
 from src.objects import ImproperRotationSymmetry

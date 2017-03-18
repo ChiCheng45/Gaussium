@@ -1,5 +1,4 @@
 from math import pi
-
 from src.common import create_householder_matrix
 from src.common import create_quaternion
 from src.common import householder_matrix_reflection

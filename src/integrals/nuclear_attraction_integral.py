@@ -1,6 +1,5 @@
 from math import exp, pi
 from math import factorial as fac
-
 from src.common import coordinate_distance
 from src.common import gaussian_product_coordinate
 from src.common import vector_minus

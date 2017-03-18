@@ -1,9 +1,6 @@
-import copy
-import itertools
+import copy, itertools
 from math import pi
-
 import numpy as np
-
 from src.common import coordinate_distance
 from src.common import create_quaternion
 from src.common import cross_product
@@ -44,7 +41,7 @@ class SymmetryFactory:
         return rotation_symmetry, reflection_symmetry, improper_rotation, inversion_symmetry
 
     def brute_force_rotation_symmetry(self, nuclei_array, corner, edge_center, cross_vertices_vertices,
-        cross_edge_vertices, cross_edge_edge):
+    cross_edge_vertices, cross_edge_edge):
 
         axis_of_rotations_i = self.remove_duplicate(
             corner + edge_center + cross_vertices_vertices + cross_edge_vertices + cross_edge_edge
@@ -75,7 +72,7 @@ class SymmetryFactory:
         return axis_of_rotations_j
 
     def brute_force_reflection_symmetry(self, nuclei_array, rotation_symmetry, vertices, cross_vertices_vertices,
-        cross_edge_vertices):
+    cross_edge_vertices):
 
         # rotate all orthogonal vectors by principal axis by half it's n-fold angle
         vector_cross = self.remove_duplicate(vertices + cross_vertices_vertices + cross_edge_vertices)
