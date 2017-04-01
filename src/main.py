@@ -20,7 +20,7 @@ def menu():
     # start('CO.mol', 'STO-3G.gbs', 'MP2', 4)  # -111.354512528 a.u.
     # start('H2O.mol', 'STO-3G.gbs', 'RHF', 4, symmetry=True)
     # start('C2H4.mol', '3-21G.gbs', 'RHF', 4, symmetry=True)  # -77.600460844 a.u. 19.0269839632222s
-    start('H2O.mol', 'STO-3G.gbs', 'TDHF', 4)  # 0.2872554996 a.u. 0.3564617587 a.u.
+    start('H2O.mol', 'STO-3G.gbs', 'CIS', 4)  # 0.2872554996 a.u. 0.3564617587 a.u.
 
     # only worth doing DFT calculations on atoms at the moment
     # start('He.mol', 'STO-3G.gbs', ('DFT', 'S', ''), 4)  # -2.657311972 a.u.

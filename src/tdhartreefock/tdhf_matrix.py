@@ -9,9 +9,6 @@ class TDHFMatrix(Matrix, Indices):
         Indices.__init__(self, occupied_orbitals, unoccupied_orbitals)
         self.spin_molecular_integral = spin_molecular_integral
         self.orbital_energies = orbital_energies
-        self.occupied_orbitals = occupied_orbitals
-        self.unoccupied_orbitals = unoccupied_orbitals
-        self.total_orbitals = occupied_orbitals + unoccupied_orbitals
         self.indices = self.pair_index()
 
     def pair_index(self):
@@ -47,9 +44,6 @@ class TDHFMatrixSymmetryRestricted(Matrix, Indices):
         Indices.__init__(self, occupied_orbitals, unoccupied_orbitals)
         self.spin_molecular_integral = spin_molecular_integral
         self.orbital_energies = orbital_energies
-        self.occupied_orbitals = occupied_orbitals
-        self.unoccupied_orbitals = unoccupied_orbitals
-        self.total_orbitals = occupied_orbitals + unoccupied_orbitals
         self.indices = self.pair_index()
 
     def pair_index(self):
