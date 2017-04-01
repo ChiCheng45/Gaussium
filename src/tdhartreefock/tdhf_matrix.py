@@ -59,9 +59,9 @@ class TDHFMatrixSymmetryRestricted(Matrix, Indices):
                 index.append((i, a))
         return index
 
-    def create_matrices_singlet(self):
+    def create_a_matrices(self):
 
-        def calculate_a_elements(k, l):
+        def calculate_singlet(k, l):
             i, a = self.indices[k]
             j, b = self.indices[l]
 
@@ -69,18 +69,7 @@ class TDHFMatrixSymmetryRestricted(Matrix, Indices):
             element += 2 * self.spin_molecular_integral[i, a, j, b] - self.spin_molecular_integral[i, j, a, b]
             return element
 
-        def calculate_b_elements(k, l):
-            i, a = self.indices[k]
-            j, b = self.indices[l]
-
-            element = 2 * self.spin_molecular_integral[i, a, j, b] - self.spin_molecular_integral[i, b, j, a]
-            return element
-
-        return self.create_matrix(calculate_a_elements), self.create_matrix(calculate_b_elements)
-
-    def create_matrices_triplet(self):
-
-        def calculate_a_elements(k, l):
+        def calculate_triplet(k, l):
             i, a = self.indices[k]
             j, b = self.indices[l]
 
@@ -88,11 +77,22 @@ class TDHFMatrixSymmetryRestricted(Matrix, Indices):
             element -= self.spin_molecular_integral[i, j, a, b]
             return element
 
-        def calculate_b_elements(k, l):
+        return self.create_matrix(calculate_singlet), self.create_matrix(calculate_triplet)
+
+    def create_b_matrices(self):
+
+        def calculate_singlet(k, l):
+            i, a = self.indices[k]
+            j, b = self.indices[l]
+
+            element = 2 * self.spin_molecular_integral[i, a, j, b] - self.spin_molecular_integral[i, b, j, a]
+            return element
+
+        def calculate_triplet(k, l):
             i, a = self.indices[k]
             j, b = self.indices[l]
 
             element = - self.spin_molecular_integral[i, b, j, a]
             return element
 
-        return self.create_matrix(calculate_a_elements), self.create_matrix(calculate_b_elements)
+        return self.create_matrix(calculate_singlet), self.create_matrix(calculate_triplet)

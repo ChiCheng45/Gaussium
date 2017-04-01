@@ -9,6 +9,7 @@ from src.kohnsham import RestrictedKohnSham
 from src.moellerplesset import MoellerPlesset
 from src.objects import PointGroup
 from src.tdhartreefock import TimeDependentHartreeFock
+from src.tdhartreefock import TammDancoffApproximation
 
 
 class Energy:
@@ -65,12 +66,12 @@ class Energy:
         if self.method == 'TDHF':
             electron_energy, correlation = TimeDependentHartreeFock(
                 RestrictedHF(nuclei_array, basis_set, self.electrons, self.symmetry_object, self.processors)
-            ).calculate(tda=False)
+            ).calculate()
 
         if self.method == 'CIS':
-            electron_energy, correlation = TimeDependentHartreeFock(
+            electron_energy, correlation = TammDancoffApproximation(
                 RestrictedHF(nuclei_array, basis_set, self.electrons, self.symmetry_object, self.processors)
-            ).calculate(tda=True)
+            ).calculate()
 
         total_energy = electron_energy + nuclear_repulsion + correlation
         print('NUCLEAR REPULSION ENERGY:    ' + str(nuclear_repulsion) + ' a.u.')
