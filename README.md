@@ -3,7 +3,7 @@ A basic quantum chemical program written in Python 3 using the numpy and scipy l
 
 Currently this program fully supports RHF, UHF, CIS, TDHF, DFT, CCSD and CCSD(T). My next plans are to implementing more CI based methods and work on speeding up the CCSD iterations. 
 
-I used Attlia Szabo and Neil S. Ostlunds "Modern Quantum Chemistry: Introduction to Advanced Electronic Structure Theory" and David B. Cooks "Handbook of Computational Chemistry" as my main references for the theories and methods behind the electronic structure calculations. The developers resources at http://www.psicode.org/developers.php were also invaluable to the success of project and had a number of excellent tutorials and programming examples.
+I used Attlia Szabo and Neil S. Ostlunds _Modern Quantum Chemistry: Introduction to Advanced Electronic Structure Theory_ and David B. Cooks _Handbook of Computational Quantum Chemistry_ as my main references for the theories and methods behind the electronic structure calculations. The developers resources at http://www.psicode.org/developers.php were also invaluable to the success of project and had a number of excellent tutorials and programming examples.
 
 ## Instructions
 * To run this program add the desired .mol and .gbs files to the `molfiles` and `basisset` directories.
