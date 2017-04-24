@@ -1,9 +1,9 @@
 ## Introduction
 A basic quantum chemical program written in Python 3 using the numpy and scipy libraries.
 
-Currently this program fully supports RHF, UHF, CIS, TDHF, DFT, CCSD and CCSD(T), next plans are to reduce ERI time by taking advantage of molecule symmetry, implementing more CI based methods and to speed up CCSD iterations. 
+Currently this program fully supports RHF, UHF, CIS, TDHF, DFT, CCSD and CCSD(T). My next plans are to implementing more CI based methods and work on speeding up the CCSD iterations. 
 
-I've based this work on Attlia Szabo and Neil S. Ostlunds "Modern Quantum Chemistry: Introduction to Advanced Electronic Structure Theory" and David B. Cooks "Handbook of Computational Chemistry". The developers resources at http://www.psicode.org/developers.php were also invaluable and had a number of excellent tutorials and programming examples.
+I used Attlia Szabo and Neil S. Ostlunds "Modern Quantum Chemistry: Introduction to Advanced Electronic Structure Theory" and David B. Cooks "Handbook of Computational Chemistry" as my main references for the theories and methods behind the electronic structure calculations. The developers resources at http://www.psicode.org/developers.php were also invaluable to the success of project and had a number of excellent tutorials and programming examples.
 
 ## Instructions
 * To run this program add the desired .mol and .gbs files to the `molfiles` and `basisset` directories.
@@ -39,8 +39,9 @@ C:\Anaconda3\python.exe C:\Users\username\PycharmProjects\Quantum_Chemistry\src\
 * Multiprocessing during ERI evaluations
 * Reduced ERI evaluations with Symmetry
 * Obara-Saika recursion relation for ERI
+* Nelder-Mead method for geometry optimization
 
-## Comparisons
+## Example Calculations and Energy Comparisons
 
 ### Restricted Hartree-Fock
 ##### HeH<sup>+</sup> STO-3G 
