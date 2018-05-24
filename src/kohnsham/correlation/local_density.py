@@ -1,5 +1,6 @@
-from math import log, atan
 from src.kohnsham.correlation import CorrelationPotential
+import numpy as np
+from numpy import vectorize
 
 
 class VoskoWilkNusair(CorrelationPotential):
@@ -43,6 +44,10 @@ class VoskoWilkNusair(CorrelationPotential):
         self.c = c
 
     def calculate(self, density):
+        vfunc = vectorize(self.potential)
+        return vfunc(density)
+
+    def potential(self, density):
         """Returns the value of the Vosko-Wilk-Nusair correlation potential for a given density and fit parameters.
 
         Parameters
@@ -54,22 +59,18 @@ class VoskoWilkNusair(CorrelationPotential):
         : float
 
         """
-        if density not in self.potential_memo:
+        if density == 0:
+            return 0
+        else:
+            a = self.a
+            x_0 = self.x_0
+            b = self.b
+            c = self.c
+            x = self.wigner_seitz_radius(density)**(1/2)
+            x_x = x**2 + b * x + c
+            x_x_0 = x_0**2 + b * x_0 + c
+            q = (4 * c - b**2)**(1/2)
 
-            if density == 0:
-                self.potential_memo[density] = 0
-            else:
-                a = self.a
-                x_0 = self.x_0
-                b = self.b
-                c = self.c
-                x = self.wigner_seitz_radius(density)**(1/2)
-                x_x = x**2 + b * x + c
-                x_x_0 = x_0**2 + b * x_0 + c
-                q = (4 * c - b**2)**(1/2)
-
-                self.potential_memo[density] = a * (log(x**2 / x_x) + (2 * b / q) * atan(q / (2 * x + b))
-                - (b * x_0 / x_x_0) * (log((x - x_0)**2 / x_x) + (2 * (b + 2 * x_0) / q) * atan(q / (2 * x + b)))) \
-                - (a / 3) * ((1 + x_0 * x) / (1 + x_0 * x + b * x**2 + c * x**3))
-
-        return self.potential_memo[density]
+            return a * (np.log(x**2 / x_x) + (2 * b / q) * np.arctan(q / (2 * x + b))
+            - (b * x_0 / x_x_0) * (np.log((x - x_0)**2 / x_x) + (2 * (b + 2 * x_0) / q) * np.arctan(q / (2 * x + b)))) \
+            - (a / 3) * ((1 + x_0 * x) / (1 + x_0 * x + b * x**2 + c * x**3))

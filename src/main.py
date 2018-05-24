@@ -20,12 +20,9 @@ def menu():
     # start('CO.mol', 'STO-3G.gbs', 'MP2', 4)  # -111.354512528 a.u.
     # start('H2O.mol', 'STO-3G.gbs', 'RHF', 4, symmetry=True)
     # start('C2H4.mol', '3-21G.gbs', 'RHF', 4, symmetry=True)  # -77.600460844 a.u. 19.0269839632222s
-    start('H2O.mol', 'STO-3G.gbs', 'CIS', 4)  # 0.2872554996 a.u. 0.3564617587 a.u.
-
-    # only worth doing DFT calculations on atoms at the moment
-    # start('He.mol', 'STO-3G.gbs', ('DFT', 'S', ''), 4)  # -2.657311972 a.u.
-    # start('He.mol', 'STO-3G.gbs', ('DFT', 'S', 'VWN3'), 4)  # -2.80983127318 a.u.
-    # start('Li-.mol', 'STO-3G.gbs', ('DFT', 'S', 'VWN3'), 4)  # -7.223380048745456 a.u.
+    # start('H2O.mol', 'STO-3G.gbs', 'CIS', 4)  # 0.2872554996 a.u. 0.3564617587 a.u.
+    # start('He.mol', '3-21G.gbs', 'RHF', 4) # -2.83567987364 a.u.
+    # start('He.mol', '6-311G.gbs', 'RHF', 4) # -2.85989542457 a.u.
 
     # start('H2O.mol', 'STO-3G.gbs', 'CCSD', 4)  # -0.0706800939192 a.u.
     # start('CH4.mol', 'STO-3G.gbs', 'CCSD', 4)  # -0.078469894846414 a.u.
@@ -33,6 +30,19 @@ def menu():
 
     # geometry optimization
     # start('H2O.mol', 'STO-3G.gbs', 'RHF', 4, geometry_optimization='NelderMead')  # -74.96588377357489 a.u.
+
+    # only worth doing DFT calculations on atoms at the moment
+    # start('He.mol', 'STO-3G.gbs', ('DFT', 'S', ''), 4)  # -2.65731197167 a.u.
+    # start('He.mol', 'STO-6G.gbs', ('DFT', 'S', ''), 4)  # -2.69600757420 a.u.
+    start('Li-.mol', 'STO-3G.gbs', ('DFT', 'S', ''), 4) # -6.94823326080 a.u.
+
+    # wrong answers convergence issues?
+    # start('He.mol', 'STO-3G.gbs', ('DFT', 'S', 'VWN3'), 4) # -2.80959859438 a.u.
+    # start('He.mol', '3-21G.gbs', ('DFT', 'S', ''), 4) # -2.69341499512 a.u.
+    # start('He.mol', '3-21G.gbs', ('DFT', 'S', 'VWN3'), 4) # -2.84354346745  a.u.
+    # start('He.mol', '6-311G.gbs', ('DFT', 'S', ''), 4) # -2.69341499512 a.u.
+
+
 
 
 def start(mol_file, basis_file, method, processors, symmetry=False, geometry_optimization=None):

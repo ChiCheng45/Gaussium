@@ -16,7 +16,7 @@ class RestrictedKohnSham(Restricted):
         if exchange == 'S':
             exchange = SlaterExchange(alpha=1.0)
         elif exchange == 'XA':
-            exchange = SlaterExchange(alpha=0.7)
+            exchange = SlaterExchange(alpha=(0.7 * (3/2)))
         else:
             exchange = ExchangePotential()  # returns a potential of 0.0
 

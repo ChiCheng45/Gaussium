@@ -17,7 +17,7 @@ class SlaterExchange(ExchangePotential):
     def calculate(self, density):
         """Returns the value of the slater exchange potential for a given density.
 
-        This exchange potential can be used by calling the SLATER keyword.
+        This exchange potential can be used by calling the 'S' or 'XA' keyword.
 
         Parameters
         ----------
@@ -28,6 +28,4 @@ class SlaterExchange(ExchangePotential):
         : float
 
         """
-        if density not in self.potential_memo:
-            self.potential_memo[density] = -(3/2) * self.alpha * (3/np.pi)**(1/3) * density**(1/3)
-        return self.potential_memo[density]
+        return -(3/2) * self.alpha * (3/np.pi)**(1/3) * density**(1/3)

@@ -12,7 +12,6 @@ class Basis:
         self.primitive_gaussian_array = primitive_gaussian_array
         self.coordinates = coordinates
         self.integral_exponents = integral_exponents
-        self.value_memo = {}
 
     def value(self, x, y, z):
         """Returns the value at point x, y, z.
@@ -27,9 +26,7 @@ class Basis:
         -------
         ans : float
         """
-        if (x, y, z) not in self.value_memo:
-            ans = 0
-            for primitive in self.primitive_gaussian_array:
-                ans += primitive.value(x, y, z)
-            self.value_memo[(x, y, z)] = ans
-        return self.value_memo[(x, y, z)]
+        ans = 0
+        for primitive in self.primitive_gaussian_array:
+            ans += primitive.value(x, y, z)
+        return ans
