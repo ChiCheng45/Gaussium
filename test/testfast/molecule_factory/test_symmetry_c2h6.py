@@ -8,14 +8,14 @@ from src.factory import SymmetryFactory
 class TestSymmetryC2H6(TestCase):
 
     def setUp(self):
-        carbon_1 = MagicMock(element='CARBON', charge=6, mass=12, coordinates=(0.7516, -0.0225, -0.0209))
-        carbon_2 = MagicMock(element='CARBON', charge=6, mass=12, coordinates=(-0.7516, 0.0225, 0.0209))
-        hydrogen_1 = MagicMock(element='HYDROGEN', charge=1, mass=1, coordinates=(1.1851, -0.0039, 0.9875))
-        hydrogen_2 = MagicMock(element='HYDROGEN', charge=1, mass=1, coordinates=(1.1669, 0.8330, -0.5693))
-        hydrogen_3 = MagicMock(element='HYDROGEN', charge=1, mass=1, coordinates=(1.1155, -0.9329, -0.5145))
-        hydrogen_4 = MagicMock(element='HYDROGEN', charge=1, mass=1, coordinates=(-1.1669, -0.8334, 0.5687))
-        hydrogen_5 = MagicMock(element='HYDROGEN', charge=1, mass=1, coordinates=(-1.1157, 0.9326, 0.5151))
-        hydrogen_6 = MagicMock(element='HYDROGEN', charge=1, mass=1, coordinates=(-1.1850, 0.0044, -0.9875))
+        carbon_1 = MagicMock(element='CARBON', charge=6, mass=12, coordinates=(-0.5297, 0.0100, -0.5606))
+        carbon_2 = MagicMock(element='CARBON', charge=6, mass=12, coordinates=(0.5297, -0.0100, 0.5606))
+        hydrogen_1 = MagicMock(element='HYDROGEN', charge=1, mass=1, coordinates=(-0.1452, 0.5058, -1.4448))
+        hydrogen_2 = MagicMock(element='HYDROGEN', charge=1, mass=1, coordinates=(-1.4207, 0.5374, -0.2390))
+        hydrogen_3 = MagicMock(element='HYDROGEN', charge=1, mass=1, coordinates=(-0.8163, -0.9984, -0.8374))
+        hydrogen_4 = MagicMock(element='HYDROGEN', charge=1, mass=1, coordinates=(0.1452, -0.5058, 1.4448))
+        hydrogen_5 = MagicMock(element='HYDROGEN', charge=1, mass=1, coordinates=(0.8163, 0.9984, 0.8374))
+        hydrogen_6 = MagicMock(element='HYDROGEN', charge=1, mass=1, coordinates=(1.4207, -0.5374, 0.2390))
 
         self.nuclei_array_c2h6 = [
             carbon_1, carbon_2, hydrogen_1, hydrogen_2, hydrogen_3, hydrogen_4, hydrogen_5, hydrogen_6

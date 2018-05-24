@@ -12,7 +12,7 @@ from src.objects import PointGroup
 
 class MoleculeFactory:
 
-    def __init__(self, symmetry=False, error=1e-2):
+    def __init__(self, symmetry=False, error=1e-3):
         self.symmetry = symmetry
         self.error = error
         self.symmetry_factory = SymmetryFactory(error)

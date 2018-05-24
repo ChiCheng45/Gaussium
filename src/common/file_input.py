@@ -1,5 +1,5 @@
 import os, re
-from src.factory import expand_basis_set
+from src.factory.primitive_basis_factory import expand_basis_set
 from src.objects import Nuclei
 
 

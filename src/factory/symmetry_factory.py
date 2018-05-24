@@ -17,7 +17,7 @@ from src.objects import RotationSymmetry
 
 class SymmetryFactory:
 
-    def __init__(self, error=1e-2):
+    def __init__(self, error=1e-3):
         self.error = error
 
     def brute_force_symmetry(self, nuclei_array):
