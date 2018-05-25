@@ -36,7 +36,8 @@ class ExchangeCorrelation:
         def integrand_spherical(rho):
             return quadpy.sphere.integrate_spherical(
                 lambda azimuthal, polar: integrand(rho, polar, azimuthal),
-                rule=quadpy.sphere.Lebedev(3)
+                rule=quadpy.sphere.Lebedev(19)
             )
 
-        return integrate.quad(integrand_spherical, 0.0, self.int_space, epsabs=self.epsabs, epsrel=self.epsrel)[0]
+        return integrate.quad(integrand_spherical, 0.0, self.int_space, epsabs=self.epsabs, epsrel=self.epsrel,
+                              points=[0.0])[0]

@@ -72,5 +72,4 @@ class VoskoWilkNusair(CorrelationPotential):
             q = (4 * c - b**2)**(1/2)
 
             return a * (np.log(x**2 / x_x) + (2 * b / q) * np.arctan(q / (2 * x + b))
-            - (b * x_0 / x_x_0) * (np.log((x - x_0)**2 / x_x) + (2 * (b + 2 * x_0) / q) * np.arctan(q / (2 * x + b)))) \
-            - (a / 3) * ((1 + x_0 * x) / (1 + x_0 * x + b * x**2 + c * x**3))
+            - (b * x_0 / x_x_0) * (np.log((x - x_0)**2 / x_x) + (2 * (b + 2 * x_0) / q) * np.arctan(q / (2 * x + b))))

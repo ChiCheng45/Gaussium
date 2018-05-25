@@ -34,15 +34,14 @@ def menu():
     # only worth doing DFT calculations on atoms at the moment
     # start('He.mol', 'STO-3G.gbs', ('DFT', 'S', ''), 4)  # -2.65731197167 a.u.
     # start('He.mol', 'STO-6G.gbs', ('DFT', 'S', ''), 4)  # -2.69600757420 a.u.
-    start('Li-.mol', 'STO-3G.gbs', ('DFT', 'S', ''), 4) # -6.94823326080 a.u.
+    # start('Li-.mol', 'STO-3G.gbs', ('DFT', 'S', ''), 4) # -6.94823326080 a.u.
+    # start('He.mol', 'STO-3G.gbs', ('DFT', 'S', 'VWN3'), 4) # -2.80959859438 a.u.
+    start('Li-.mol', 'STO-3G.gbs', ('DFT', 'S', 'VWN3'), 4)  # -7.22285707872 a.u.
 
     # wrong answers convergence issues?
-    # start('He.mol', 'STO-3G.gbs', ('DFT', 'S', 'VWN3'), 4) # -2.80959859438 a.u.
     # start('He.mol', '3-21G.gbs', ('DFT', 'S', ''), 4) # -2.69341499512 a.u.
     # start('He.mol', '3-21G.gbs', ('DFT', 'S', 'VWN3'), 4) # -2.84354346745  a.u.
     # start('He.mol', '6-311G.gbs', ('DFT', 'S', ''), 4) # -2.69341499512 a.u.
-
-
 
 
 def start(mol_file, basis_file, method, processors, symmetry=False, geometry_optimization=None):
@@ -69,6 +68,7 @@ def start(mol_file, basis_file, method, processors, symmetry=False, geometry_opt
     print("\nWhat I cannot create I cannot understand - Richard Feynman\n")
 
     return energy
+
 
 if __name__ == "__main__":
     menu()
