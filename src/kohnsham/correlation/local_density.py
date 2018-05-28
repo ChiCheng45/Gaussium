@@ -37,7 +37,6 @@ class VoskoWilkNusair(CorrelationPotential):
 
     """
     def __init__(self, a, x_0, b, c):
-        super().__init__()
         self.a = a
         self.x_0 = x_0
         self.b = b

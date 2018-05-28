@@ -11,7 +11,6 @@ class SlaterExchange(ExchangePotential):
 
     """
     def __init__(self, alpha):
-        super().__init__()
         self.alpha = alpha
 
     def calculate(self, density):

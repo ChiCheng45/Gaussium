@@ -23,7 +23,7 @@ class RestrictedSCF(SelfConsistentField):
 
     def begin_iterations(self, orbital_coefficients):
         orbital_energies = []
-        total_energy = previous_total_energy = 0
+        previous_total_energy = 0
 
         while True:
 
