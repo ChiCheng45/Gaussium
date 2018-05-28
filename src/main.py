@@ -23,7 +23,7 @@ def menu():
     # start('H2O.mol', 'STO-3G.gbs', 'CIS', 4)  # 0.2872554996 a.u. 0.3564617587 a.u.
     # start('He.mol', '3-21G.gbs', 'RHF', 4) # -2.83567987364 a.u.
     # start('He.mol', '6-311G.gbs', 'RHF', 4) # -2.85989542457 a.u.
-    start('He.mol', 'cc-pVDZ.gbs', 'RHF', 4) # -2.85516047724192 a.u.
+    # start('He.mol', 'cc-pVDZ.gbs', 'RHF', 4) # -2.85516047724192 a.u.
 
     # start('H2O.mol', 'STO-3G.gbs', 'CCSD', 4)  # -0.0706800939192 a.u.
     # start('CH4.mol', 'STO-3G.gbs', 'CCSD', 4)  # -0.078469894846414 a.u.
@@ -40,8 +40,9 @@ def menu():
     # start('Li-.mol', 'STO-3G.gbs', ('DFT', 'S', 'VWN3'), 4)  # -7.22285707872 a.u.
 
     # need to fix
+    start('He.mol', '3-21G.gbs', ('DFT', 'S', ''), 4) # -2.6934149951213966 a.u.
     # start('He.mol', '3-21G.gbs', ('DFT', 'S', 'VWN3'), 4) # -2.84354346745  a.u.
-    start('He.mol', 'cc-pVDZ.gbs', ('DFT', 'S', 'VWN3'), 4) # -2.85516047724192 a.u.
+    # start('He.mol', 'cc-pVDZ.gbs', ('DFT', 'S', 'VWN3'), 4) # -2.85516047724192 a.u.
 
 
 def start(mol_file, basis_file, method, processors, symmetry=False, geometry_optimization=None):

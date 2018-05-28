@@ -5,7 +5,7 @@ import quadpy
 
 class ExchangeCorrelation:
 
-    def __init__(self, basis_set, exchange_potential, correlation_potential, int_space=25, epsabs=1e-9, epsrel=0.0):
+    def __init__(self, basis_set, exchange_potential, correlation_potential, int_space=35, epsabs=1e-9, epsrel=0.0):
         self.basis_set = basis_set
         self.exchange_potential = exchange_potential
         self.correlation_potential = correlation_potential
