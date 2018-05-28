@@ -15,8 +15,11 @@ class ExchangeCorrelation:
 
     def integrate(self, density_matrix, i, j):
 
+        g_1 = self.basis_set[i]
+        g_2 = self.basis_set[j]
+
         def electron_density(x, y, z):
-            density = 0
+            density = 0.0
             for a, basis_a in enumerate(self.basis_set):
                 for b, basis_b in enumerate(self.basis_set):
                     if a == b:
@@ -29,14 +32,14 @@ class ExchangeCorrelation:
             x = rho * np.sin(theta) * np.cos(phi)
             y = rho * np.sin(theta) * np.sin(phi)
             z = rho * np.cos(theta)
-            return self.basis_set[i].value(x, y, z) * (self.exchange_potential.calculate(electron_density(x, y, z))
-            + self.correlation_potential.calculate(electron_density(x, y, z))) * self.basis_set[j].value(x, y, z) \
+            return g_1.value(x, y, z) * (self.exchange_potential.calculate(electron_density(x, y, z))
+            + self.correlation_potential.calculate(electron_density(x, y, z))) * g_2.value(x, y, z) \
             * rho**2
 
         def integrand_spherical(rho):
             return quadpy.sphere.integrate_spherical(
                 lambda azimuthal, polar: integrand(rho, polar, azimuthal),
-                rule=quadpy.sphere.Lebedev(19)
+                rule=quadpy.sphere.Lebedev(21)
             )
 
         return integrate.quad(integrand_spherical, 0.0, self.int_space, epsabs=self.epsabs, epsrel=self.epsrel,

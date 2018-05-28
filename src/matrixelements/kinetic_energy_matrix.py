@@ -15,6 +15,8 @@ class KineticEnergyMatrix(Matrix):
 
     def calculate(self, i, j):
         t_ij = 0
+        n_i = self.basis_set_array[i].normalisation
+        n_j = self.basis_set_array[j].normalisation
         primitives_i = self.basis_set_array[i].primitive_gaussian_array
         primitives_j = self.basis_set_array[j].primitive_gaussian_array
         for primitive_a, primitive_b in itertools.product(primitives_i, primitives_j):
@@ -28,4 +30,4 @@ class KineticEnergyMatrix(Matrix):
                 c_3 = primitive_c.contraction
                 s_ij += n_1 * n_2 * c_1 * c_2 * c_3 * orbital_overlap(primitive_a, primitive_c)
             t_ij += s_ij
-        return t_ij
+        return n_i * n_j * t_ij

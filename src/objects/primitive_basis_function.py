@@ -1,5 +1,5 @@
 from math import pi, sqrt
-from math import factorial as fac
+from scipy.misc import factorial2
 import numpy as np
 
 
@@ -25,7 +25,7 @@ class PrimitiveBasis:
 
     @property
     def normalisation(self):
-        """Calculates normalisation constant and stores in self.normalisation once called.
+        """Calculates normalisation constant for the primitive gaussian and stores in self.normalisation once called.
 
         Returns
         -------
@@ -33,11 +33,11 @@ class PrimitiveBasis:
 
         """
         if self.normalisation_memo is None:
-            x, y, z = self.integral_exponents
-            out1 = ((2 * self.exponent) / pi) ** (3 / 4)
-            out2 = (8 * self.exponent) ** (x + y + z) * fac(x) * fac(y) * fac(z)
-            out3 = fac(2 * x) * fac(2 * y) * fac(2 * z)
-            self.normalisation_memo = out1 * sqrt(out2 / out3)
+            l, m, n = self.integral_exponents
+            out1 = factorial2(2 * l - 1) * factorial2(2 * m - 1) * factorial2(2 * n - 1)
+            out2 = (pi / (2 * self.exponent))**(3/2)
+            out3 = (4 * self.exponent)**(l + m + n)
+            self.normalisation_memo = 1 / sqrt((out1 * out2) / out3)
         return self.normalisation_memo
 
     def value(self, x, y, z):

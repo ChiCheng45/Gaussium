@@ -201,13 +201,13 @@ Completed DFT/SVWN calculation of He using the STO-3G basis set. Fairly close ag
 ```
 ```
 NUCLEAR REPULSION ENERGY:    0.0 a.u.
-SCF ENERGY:                  -2.809831281891216 a.u.
+SCF ENERGY:                  -2.8095985893364857 a.u.
 CORRELATION ENERGY:          0.0 a.u.
-TOTAL ENERGY:                -2.80983128189 a.u.
+TOTAL ENERGY:                -2.80959858934 a.u.
 
 *************************************************************************************************
 
-TIME TAKEN: 48.94459470800236s
+TIME TAKEN: 0.8140399999999999s
 ```
 
 ##### SVWN H<sub>2</sub> STO-3G
