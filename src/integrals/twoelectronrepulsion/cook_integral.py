@@ -32,7 +32,7 @@ class ElectronRepulsion:
         n_j = basis_j.normalisation
         n_k = basis_k.normalisation
         n_l = basis_l.normalisation
-        n = n_i * n_j * n_k * n_l
+        norm = n_i * n_j * n_k * n_l
 
         ans = 0.0
         for g1, g2, g3, g4 in itertools.product(primitives_i, primitives_j, primitives_k, primitives_l):
@@ -45,7 +45,7 @@ class ElectronRepulsion:
             n_2 = g2.normalisation
             n_3 = g3.normalisation
             n_4 = g4.normalisation
-            contraction = c_1 * c_2 * c_3 * c_4 * n_1 * n_2 * n_3 * n_4 * n
+            contraction = c_1 * c_2 * c_3 * c_4 * n_1 * n_2 * n_3 * n_4 * norm
 
             g5 = gaussian_product(g1, g2)
             g6 = gaussian_product(g3, g4)

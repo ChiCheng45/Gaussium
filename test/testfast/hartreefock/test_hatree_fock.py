@@ -39,11 +39,11 @@ class TestHartreeFock(TestCase):
 
         hydrogen_basis = MagicMock(
             primitive_gaussian_array=[hydrogen_s_1, hydrogen_s_2, hydrogen_s_3], coordinates=(0.0000, 0.0000, 1.4632),
-            integral_exponents=(0, 0, 0)
+            integral_exponents=(0, 0, 0), normalisation=1
         )
         helium_basis = MagicMock(
             primitive_gaussian_array=[helium_s_1, helium_s_2, helium_s_3], coordinates=(0.0000, 0.0000, 0.0000),
-            integral_exponents=(0, 0, 0)
+            integral_exponents=(0, 0, 0), normalisation=1
         )
 
         point_group = MagicMock(

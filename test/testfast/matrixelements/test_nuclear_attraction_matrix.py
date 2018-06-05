@@ -35,11 +35,11 @@ class TestNuclearAttractionMatrixHeHCation(TestCase):
 
         helium_basis = MagicMock(
             primitive_gaussian_array=[helium_basis_1, helium_basis_2, helium_basis_3], coordinates=(0, 0, -0.7316),
-            integral_exponents=(0, 0, 0)
+            integral_exponents=(0, 0, 0), normalisation=1
         )
         hydrogen_basis = MagicMock(
             primitive_gaussian_array=[hydrogen_basis_1, hydrogen_basis_2, hydrogen_basis_3], coordinates=(0, 0, 0.7316),
-            integral_exponents=(0, 0, 0)
+            integral_exponents=(0, 0, 0), normalisation=1
         )
 
         basis_set_array = [helium_basis, hydrogen_basis]
@@ -93,11 +93,11 @@ class TestNuclearAttractionMatrixHydrogen(TestCase):
 
         hydrogen_1_basis = MagicMock(
             primitive_gaussian_array=[hydrogen_basis_1, hydrogen_basis_2, hydrogen_basis_3],
-            coordinates=(0, 0, -0.7000), integral_exponents=(0, 0, 0)
+            coordinates=(0, 0, -0.7000), integral_exponents=(0, 0, 0), normalisation=1
         )
         hydrogen_2_basis = MagicMock(
             primitive_gaussian_array=[hydrogen_basis_4, hydrogen_basis_5, hydrogen_basis_6], coordinates=(0, 0, 0.7000),
-            integral_exponents=(0, 0, 0)
+            integral_exponents=(0, 0, 0), normalisation=1
         )
 
         basis_set_array = [hydrogen_1_basis, hydrogen_2_basis]

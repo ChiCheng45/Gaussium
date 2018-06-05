@@ -37,11 +37,11 @@ class TestTwoElectronRepulsionElementCook(TestCase):
 
         helium = MagicMock(
             primitive_gaussian_array=[helium_basis_1, helium_basis_2, helium_basis_3], coordinates=(0, 0, 0.7316),
-            integral_exponents=(0, 0, 0)
+            integral_exponents=(0, 0, 0), normalisation=1
         )
         hydrogen = MagicMock(
             primitive_gaussian_array=[hydrogen_basis_1, hydrogen_basis_2, hydrogen_basis_3],
-            coordinates=(0, 0, -0.7316), integral_exponents=(0, 0, 0)
+            coordinates=(0, 0, -0.7316), integral_exponents=(0, 0, 0), normalisation=1
         )
 
         basis_set_array = [helium, hydrogen]
@@ -107,11 +107,11 @@ class TestTwoElectronRepulsionElementOS(TestCase):
 
         helium = MagicMock(
             primitive_gaussian_array=[helium_basis_1, helium_basis_2, helium_basis_3], coordinates=(0, 0, 0.7316),
-            integral_exponents=(0, 0, 0)
+            integral_exponents=(0, 0, 0), normalisation=1
         )
         hydrogen = MagicMock(
             primitive_gaussian_array=[hydrogen_basis_1, hydrogen_basis_2, hydrogen_basis_3],
-            coordinates=(0, 0, -0.7316), integral_exponents=(0, 0, 0)
+            coordinates=(0, 0, -0.7316), integral_exponents=(0, 0, 0), normalisation=1
         )
 
         basis_set_array = [helium, hydrogen]
@@ -177,11 +177,11 @@ class TestTwoElectronRepulsionElementHGP(TestCase):
 
         helium = MagicMock(
             primitive_gaussian_array=[helium_basis_1, helium_basis_2, helium_basis_3], coordinates=(0, 0, 0.7316),
-            integral_exponents=(0, 0, 0)
+            integral_exponents=(0, 0, 0), normalisation=1
         )
         hydrogen = MagicMock(
             primitive_gaussian_array=[hydrogen_basis_1, hydrogen_basis_2, hydrogen_basis_3],
-            coordinates=(0, 0, -0.7316), integral_exponents=(0, 0, 0)
+            coordinates=(0, 0, -0.7316), integral_exponents=(0, 0, 0), normalisation=1
         )
 
         basis_set_array = [helium, hydrogen]
