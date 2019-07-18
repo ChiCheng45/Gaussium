@@ -1,4 +1,3 @@
-from numpy import matlib
 import numpy as np
 import itertools
 
@@ -24,10 +23,10 @@ class Matrix:
 
         Returns
         -------
-        : np.matrix
+        : np.array
 
         """
-        matrix = matlib.zeros((self.matrix_size, self.matrix_size))
+        matrix = np.zeros((self.matrix_size, self.matrix_size))
         for i, j in itertools.product(range(self.matrix_size), repeat=2):
             if i <= j:
                 matrix.itemset((i, j), function(i, j))

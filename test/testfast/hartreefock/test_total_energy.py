@@ -7,17 +7,17 @@ from src.hartreefock import TotalEnergy
 class TestTotalEnergyHeH(TestCase):
 
     def setUp(self):
-        self.density_matrix = np.matrix([
+        self.density_matrix = np.array([
                 [1.7266, 0.2599],
                 [0.2599, 0.0391]
         ])
 
-        self.h_core_matrix = np.matrix([
+        self.h_core_matrix = np.array([
                 [-2.6527, -1.3472],
                 [-1.3472, -1.7318]
         ])
 
-        self.fock_matrix = np.matrix([
+        self.fock_matrix = np.array([
                 [-1.3904, -0.9732],
                 [-0.9732, -0.7429]
         ])

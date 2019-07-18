@@ -121,12 +121,12 @@ class BlockedHartreeFock(Restricted):
         super().__init__(nuclei_array, basis_set_array, electrons, symmetry, processes)
         self.zeros = np.zeros((self.orbital_overlap.shape[0], self.orbital_overlap.shape[0]))
 
-        self.orbital_overlap = np.bmat([
+        self.orbital_overlap = np.block([
                 [self.orbital_overlap, self.zeros],
                 [self.zeros, self.orbital_overlap]
         ])
 
-        self.core_hamiltonian = np.bmat([
+        self.core_hamiltonian = np.block([
                 [self.core_hamiltonian, self.zeros],
                 [self.zeros, self.core_hamiltonian]
         ])

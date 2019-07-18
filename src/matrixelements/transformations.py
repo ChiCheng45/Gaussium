@@ -18,9 +18,9 @@ def molecular_orbitals(repulsion, coefficients):
     """
     matrix_size = coefficients.shape[0]
     for r, s in itertools.product(range(matrix_size), repeat=2):
-        repulsion[r, s, :, :] = np.transpose(coefficients) * repulsion[r, s, :, :] * coefficients
+        repulsion[r, s, :, :] = np.transpose(coefficients) @ repulsion[r, s, :, :] @ coefficients
     for t, u in itertools.product(range(matrix_size), repeat=2):
-        repulsion[:, :, t, u] = np.transpose(coefficients) * repulsion[:, :, t, u] * coefficients
+        repulsion[:, :, t, u] = np.transpose(coefficients) @ repulsion[:, :, t, u] @ coefficients
     return repulsion
 
 
@@ -45,21 +45,21 @@ def blocked_spin_basis_set(repulsion):
 
         # r == alph spin and s == alph spin
         if r < half_matrix_size and s < half_matrix_size:
-            spin_orbital_repulsion[r, s, :, :] = np.bmat([
+            spin_orbital_repulsion[r, s, :, :] = np.block([
                     [repulsion[r, s, :, :], zero_matrix],
                     [zero_matrix, repulsion[r, s, :, :]]
             ])
 
         # r == beta spin and s == beta spin
         elif r >= half_matrix_size and s >= half_matrix_size:
-            spin_orbital_repulsion[r, s, :, :] = np.bmat([
+            spin_orbital_repulsion[r, s, :, :] = np.block([
                     [repulsion[r - half_matrix_size, s - half_matrix_size, :, :], zero_matrix],
                     [zero_matrix, repulsion[r - half_matrix_size, s - half_matrix_size, :, :]]
             ])
 
         # r == alph and s == beta or r == beta and s == alph
         else:
-            spin_orbital_repulsion[r, s, :, :] = np.bmat([
+            spin_orbital_repulsion[r, s, :, :] = np.block([
                     [zero_matrix, zero_matrix],
                     [zero_matrix, zero_matrix]
             ])

@@ -67,13 +67,13 @@ def quaternion_multi(q_1, q_2):
 
 
 def create_householder_matrix(vector):
-    planes = np.matrix(vector)
-    return np.identity(3) - 2 * planes.T * planes
+    planes = np.array([vector])
+    return np.identity(3) - 2 * (planes.T @ planes)
 
 
 def householder_matrix_reflection(coordinates, householder_matrix):
-    coordinates = householder_matrix * np.matrix(coordinates).T
-    coordinates = tuple(coordinates.T.tolist()[0])
+    coordinates = householder_matrix @ np.array(coordinates).T
+    coordinates = tuple(coordinates.T.tolist())
     return coordinates
 
 

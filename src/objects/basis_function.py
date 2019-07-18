@@ -1,6 +1,7 @@
-from scipy.misc import factorial2
+from scipy.special import factorial2
 from math import sqrt, pi
 import itertools
+
 
 class Basis:
     """Contracted Gaussian basis function.

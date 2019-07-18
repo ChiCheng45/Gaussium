@@ -7,7 +7,7 @@ from src.matrixelements import density_matrix_restricted
 class TestDensityMatrixRestricted(TestCase):
 
     def setUp(self):
-        self.orbital_coefficients = np.matrix([
+        self.orbital_coefficients = np.array([
                 [0.9291, -0.6259],
                 [0.1398,  1.1115]
         ])

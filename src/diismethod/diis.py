@@ -7,7 +7,7 @@ class DIIS:
     Attributes
     ----------
     matrix_size : int
-    overlap : np.matrix
+    overlap : np.array
     linear_algebra : LinearAlgebra
         Object containing the transformation matrix and linear algebra related methods
     fock_array : List
@@ -38,15 +38,15 @@ class DIIS:
 
         Parameters
         ----------
-        fock : np.matrix
-        density : np.matrix
+        fock : np.array
+        density : np.array
 
         Returns
         -------
-        fock : np.matrix
+        fock : np.array
 
         """
-        error = self.overlap * density * fock - fock * density * self.overlap
+        error = self.overlap @ density @ fock - fock @ density @ self.overlap
         error = self.linear_algebra.orthonormalize(error)
 
         if np.any(error < 0.1 * np.ones((self.matrix_size, self.matrix_size))):
@@ -64,7 +64,7 @@ class DIIS:
                 return fock
 
             if len(self.fock_array) > 1:
-                fock = np.matrix(np.zeros((self.matrix_size, self.matrix_size)))
+                fock = np.zeros((self.matrix_size, self.matrix_size))
                 diis_coefficients = self.create_b_matrix()
 
                 for l in range(len(self.fock_array)):
@@ -80,13 +80,13 @@ class DIIS:
 
         Returns
         -------
-        diis_coefficients : np.matrix
+        diis_coefficients : np.array
 
         """
         array_length = len(self.fock_array)
 
-        b_matrix = np.matrix(np.zeros((array_length + 1, array_length + 1)))
-        vector_k = np.matrix(np.zeros(array_length + 1))
+        b_matrix = np.zeros((array_length + 1, array_length + 1))
+        vector_k = np.zeros(array_length + 1)
         vector_k.itemset(array_length, 1)
 
         for i in range(array_length):
@@ -95,11 +95,11 @@ class DIIS:
             for j in range(array_length):
                 error_i = self.error_array[i]
                 error_j = self.error_array[j]
-                b_matrix.itemset((i, j), np.trace(error_i * np.transpose(error_j)))
+                b_matrix.itemset((i, j), np.trace(error_i @ np.transpose(error_j)))
 
         try:
             diis_coefficients = np.linalg.solve(b_matrix, np.transpose(vector_k))
-            return diis_coefficients
+            return np.array([diis_coefficients]).T
         except np.linalg.linalg.LinAlgError:
             self.fock_array.pop(0)
             self.error_array.pop(0)

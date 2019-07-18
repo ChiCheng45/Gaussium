@@ -11,11 +11,11 @@ def coulomb_matrix(nuclei_array):
 
     Returns
     -------
-    matrix : np.matrix
+    matrix : np.array
 
     """
     matrix_length = len(nuclei_array)
-    matrix = np.matrix(np.zeros((matrix_length, matrix_length)))
+    matrix = np.zeros((matrix_length, matrix_length))
     for i in range(matrix_length):
         for j in range(matrix_length):
             if i != j:
