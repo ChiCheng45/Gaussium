@@ -1,5 +1,5 @@
 from math import exp, pi
-from scipy.misc import factorial2
+from scipy.special import factorial2
 from src.common import coordinate_distance
 from src.common import gaussian_product_coordinate
 from src.common import vector_minus

@@ -1,5 +1,5 @@
 from math import pi, sqrt
-from scipy.misc import factorial2
+from scipy.special import factorial2
 import numpy as np
 
 
