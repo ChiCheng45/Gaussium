@@ -11,7 +11,6 @@ class SelfConsistentField:
         self.linear_algebra = linear_algebra
         self.electrons = electrons
         self.hamiltonian_matrix_factory = hamiltonian_matrix_factory
-        self.calculate = TotalEnergy(hamiltonian_matrix_factory.core_hamiltonian)
         self.threshold = threshold
 
 
@@ -19,10 +18,10 @@ class RestrictedSCF(SelfConsistentField):
 
     def __init__(self, linear_algebra, electrons, overlap, hamiltonian_matrix_factory):
         super().__init__(linear_algebra, electrons, hamiltonian_matrix_factory)
+        self.calculate = TotalEnergy(hamiltonian_matrix_factory.core_hamiltonian)
         self.diis = DIIS(overlap, linear_algebra)
 
-    def begin_iterations(self, orbital_coefficients):
-        orbital_energies = []
+    def begin_iterations(self, orbital_energies, orbital_coefficients):
         previous_total_energy = 0
 
         while True:
@@ -47,14 +46,15 @@ class PopleNesbetBerthier(SelfConsistentField):
 
     def __init__(self, linear_algebra, electrons, multiplicity, hamiltonian_matrix_factory):
         super().__init__(linear_algebra, electrons, hamiltonian_matrix_factory)
+        self.calculate = TotalEnergy(hamiltonian_matrix_factory.core_hamiltonian)
         self.electrons_alph = (electrons + multiplicity - 1) // 2
         self.electrons_beta = (electrons - multiplicity + 1) // 2
 
-    def begin_iterations(self, orbital_coefficients):
+    def begin_iterations(self, orbital_energies, orbital_coefficients):
         coefficients_alph = orbital_coefficients
         coefficients_beta = orbital_coefficients
-        energies_alph = []
-        energies_beta = []
+        energies_alph = orbital_energies
+        energies_beta = orbital_energies
         total_energy = previous_total_energy = 0
 
         while True:
@@ -90,12 +90,12 @@ class BlockedUnrestrictedSCF(SelfConsistentField):
 
     def __init__(self, linear_algebra, electrons, multiplicity, overlap, hamiltonian_matrix_factory):
         super().__init__(linear_algebra, electrons, hamiltonian_matrix_factory)
+        self.calculate = TotalEnergy(hamiltonian_matrix_factory.core_hamiltonian)
         self.electrons_alph = (electrons + multiplicity - 1) // 2
         self.electrons_beta = (electrons - multiplicity + 1) // 2
         self.diis = DIIS(overlap, linear_algebra)
 
-    def begin_iterations(self, orbital_coefficients):
-        orbital_energies = []
+    def begin_iterations(self, orbital_energies, orbital_coefficients):
         total_energy = previous_total_energy = 0
 
         while True:

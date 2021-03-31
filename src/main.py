@@ -12,7 +12,7 @@ import time
 
 
 def menu():
-    # start('HeH+.mol', 'STO-3G.gbs', 'RHF', 4)  # -2.84183608212 a.u.
+    # start('HeH+.mol', 'STO-3G.gbs', 'RHF', 4)  # -2.84183608212 a.u. (energy from reference calculation)
     # start('HeH+.mol', '6-311+GPP.gbs', 'RHF', 4)  # -2.92922773384 a.u.
     # start('C2H4.mol', '3-21G.gbs', 'RHF', 4)  # -77.600460844 a.u. 30.747198048700866s
     # start('O2.mol', 'STO-3G.gbs', 'UHF', 4, symmetry=True)  # -147.634028141 a.u.
@@ -34,13 +34,14 @@ def menu():
 
     # only worth doing DFT calculations on atoms at the moment
     # start('He.mol', 'STO-3G.gbs', ('DFT', 'S', ''), 4)  # -2.65731197167 a.u.
+    start('He.mol', '3-21G.gbs', ('DFT', 'S', ''), 4)  # -2.69341499501 a.u.
     # start('He.mol', 'STO-6G.gbs', ('DFT', 'S', ''), 4)  # -2.69600757420 a.u.
     # start('Li-.mol', 'STO-3G.gbs', ('DFT', 'S', ''), 4) # -6.94823326080 a.u.
-    # start('He.mol', 'STO-3G.gbs', ('DFT', 'S', 'VWN3'), 4) # -2.80959859438 a.u.
-    # start('Li-.mol', 'STO-3G.gbs', ('DFT', 'S', 'VWN3'), 4)  # -7.22285707872 a.u.
+    # start('He.mol', 'STO-3G.gbs', ('DFT', 'XA', ''), 4)  # -2.70257401931 a.u.
 
     # need to fix
-    start('He.mol', '3-21G.gbs', ('DFT', 'S', ''), 4) # -2.6934149951213966 a.u.
+    # start('He.mol', 'STO-3G.gbs', ('DFT', 'S', 'VWN3'), 4) # -2.80959859438 a.u.
+    # start('Li-.mol', 'STO-3G.gbs', ('DFT', 'S', 'VWN3'), 4)  # -7.22285707872 a.u.
     # start('He.mol', '3-21G.gbs', ('DFT', 'S', 'VWN3'), 4) # -2.84354346745  a.u.
     # start('He.mol', 'cc-pVDZ.gbs', ('DFT', 'S', 'VWN3'), 4) # -2.85516047724192 a.u.
 

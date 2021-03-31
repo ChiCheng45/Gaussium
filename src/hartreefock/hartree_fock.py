@@ -44,7 +44,7 @@ class HartreeFock:
 
     def initial_guess(self):
         initial_orbital_energies, initial_orbital_coefficients = self.linear_algebra.diagonalize(self.core_hamiltonian)
-        return initial_orbital_coefficients
+        return initial_orbital_energies, initial_orbital_coefficients
 
     def begin_scf(self):
         pass
@@ -60,11 +60,12 @@ class Restricted(HartreeFock):
         super().__init__(nuclei_array, basis_set_array, electrons, symmetry, processes)
 
     def begin_scf(self):
-        initial_coefficients = self.initial_guess()
+        initial_energies, initial_coefficients = self.initial_guess()
         print('COEFFICIENTS INITIAL GUESS\n{}'.format(initial_coefficients))
         print('\n\nBEGIN SCF PROCEDURE')
         start = time.clock()
-        electron_energy, orbital_energies, orbital_coefficients = self.scf_method.begin_iterations(initial_coefficients)
+        electron_energy, orbital_energies, orbital_coefficients \
+            = self.scf_method.begin_iterations(initial_energies, initial_coefficients)
         print('TIME TAKEN: ' + str(time.clock() - start) + 's\n')
         print('\nORBITAL ENERGY EIGENVALUES\n{}'.format(orbital_energies))
         print('\nORBITAL COEFFICIENTS\n{}'.format(orbital_coefficients), end='\n\n\n')
@@ -89,12 +90,12 @@ class Unrestricted(HartreeFock):
         super().__init__(nuclei_array, basis_set_array, electrons, symmetry, processes)
 
     def begin_scf(self):
-        initial_coefficients = self.initial_guess()
+        initial_energies, initial_coefficients = self.initial_guess()
         print('COEFFICIENTS INITIAL GUESS\n{}'.format(initial_coefficients))
         print('\n\nBEGIN SCF PROCEDURE')
         start = time.clock()
         electron_energy, energies_alpha, energies_beta, coefficients_alpha, coefficients_beta \
-            = self.scf_method.begin_iterations(initial_coefficients)
+            = self.scf_method.begin_iterations(initial_energies, initial_coefficients)
         print('TIME TAKEN: ' + str(time.clock() - start) + 's\n')
         print('\nALPHA ORBITAL ENERGY EIGENVALUES\n{}'.format(energies_alpha))
         print('\nBETA ORBITAL ENERGY EIGENVALUES\n{}'.format(energies_beta))

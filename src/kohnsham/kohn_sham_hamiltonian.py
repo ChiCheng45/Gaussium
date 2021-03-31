@@ -12,11 +12,13 @@ class RestrictedKohnShamHamiltonian(Matrix):
 
     def create(self, density_matrix):
 
-        def calculate_restricted(i, j):
+        def calculate_elst(i, j):
             g_ij = 0
             for a, b in itertools.product(range(self.matrix_size), repeat=2):
                 g_ij += density_matrix.item(a, b) * self.repulsion_matrix.item(i, j, a, b)
-            g_ij += self.exchange_correlation.integrate(density_matrix, i, j)
             return g_ij
 
-        return self.core_hamiltonian + self.create_matrix(calculate_restricted)
+        def calculate_xc(i, j):
+            return self.exchange_correlation.integrate_potential(density_matrix, i, j)
+
+        return self.core_hamiltonian, self.create_matrix(calculate_elst), self.create_matrix(calculate_xc)

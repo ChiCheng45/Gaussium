@@ -42,11 +42,11 @@ class VoskoWilkNusair(CorrelationPotential):
         self.b = b
         self.c = c
 
-    def calculate(self, density):
-        vfunc = vectorize(self.potential)
+    def potential(self, density):
+        vfunc = vectorize(self._potential)
         return vfunc(density)
 
-    def potential(self, density):
+    def _potential(self, density):
         """Returns the value of the Vosko-Wilk-Nusair correlation potential for a given density and fit parameters.
 
         Parameters
