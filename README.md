@@ -12,14 +12,14 @@ I used Attlia Szabo and Neil S. Ostlunds _Modern Quantum Chemistry: Introduction
 def menu():
     start('H2O.mol', 'STO-3G.gbs', 'CCSD', 4)
 ```
-for DFT calculation the functional are given inputted using a tuple for SVWN3,
+for DFT calculations the functionals are inputted using a tuple, so for SVWN3,
 ```python
 def menu():
     start('He.mol', 'STO-3G.gbs', ('DFT', 'S', 'VWN3'), 4)
 ```
 the start function contains more options such as the number of processes used during the multiprocessing sections of the code and whether symmetry is turned on for faster integral calculations. See `start()` for more details,
 ```python
-def start(mol, basis, method, processes, symmetry=False)
+def start(mol, basis, method, processes, symmetry=False):
 ```
 * Now run the main.py, for example on a Windows machine,
 ```
