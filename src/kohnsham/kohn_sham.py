@@ -3,7 +3,7 @@ from src.kohnsham import RestrictedKohnShamHamiltonian
 from src.kohnsham.exchange import ExchangePotential
 from src.kohnsham.exchange import SlaterExchange
 from src.hartreefock import Restricted
-from src.kohnsham.scf_procedure import KSRestrictedSCF
+from src.kohnsham.kohn_sham_scf import KSRestrictedSCF
 from src.kohnsham.correlation import CorrelationPotential
 from src.kohnsham.correlation import VoskoWilkNusair
 
