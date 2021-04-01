@@ -53,7 +53,7 @@ class ExchangeCorrelation:
     def integrate(self, integrand):
 
         def integrand_spherical(rho):
-            scheme = quadpy.u3.schemes["lebedev_065"]()
+            scheme = quadpy.u3.schemes['lebedev_035']()
             return scheme.integrate_spherical(
                 lambda angles: integrand(rho, angles[0], angles[1])
             )
