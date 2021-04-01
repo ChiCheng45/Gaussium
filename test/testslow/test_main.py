@@ -28,3 +28,7 @@ class TestMain(TestCase):
     def test_total_dft_s_energy_of_he_for_the_sto_3g_basis_set(self):
         total_energy = start('He.mol', 'STO-3G.gbs', ('DFT', 'S', ''), 1)
         testing.assert_approx_equal(total_energy, -2.657311972, 6)
+
+    def test_total_dft_svwn3_energy_of_he_for_the_sto_3g_basis_set(self):
+        total_energy = start('He.mol', 'STO-3G.gbs', ('DFT', 'S', 'VWN3'), 1)
+        testing.assert_approx_equal(total_energy, -2.809598595, 6)

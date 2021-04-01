@@ -6,7 +6,8 @@ from numpy import vectorize
 class VoskoWilkNusair(CorrelationPotential):
     """Vosko-Wilk-Nusair correlation potential.
 
-    Correlation potential object can be initialized with any fitting parameters, VWN3 and VWN5 examples below.
+    Correlation potential object can be initialized with any fitting
+    parameters, VWN3 and VWN5 examples below.
 
     Attributes
     ----------
@@ -33,7 +34,8 @@ class VoskoWilkNusair(CorrelationPotential):
 
     References
     ----------
-    S. H. Vosko, L. Wilk, M. Nusair, Canadian Journal of Physics, 1980, 58(8): 1200-1211, 10.1139/p80-159
+    S. H. Vosko, L. Wilk, M. Nusair, Canadian Journal of Physics,
+    1980, 58(8): 1200-1211, 10.1139/p80-159
 
     """
     def __init__(self, a, x_0, b, c):
@@ -42,12 +44,13 @@ class VoskoWilkNusair(CorrelationPotential):
         self.b = b
         self.c = c
 
-    def potential(self, density):
-        vfunc = vectorize(self._potential)
+    def energy(self, density):
+        vfunc = vectorize(self._energy)
         return vfunc(density)
 
-    def _potential(self, density):
-        """Returns the value of the Vosko-Wilk-Nusair correlation potential for a given density and fit parameters.
+    def _energy(self, density):
+        """Returns the value of the Vosko-Wilk-Nusair correlation
+        energy per electron for a given density and fit parameters.
 
         Parameters
         ----------
@@ -61,7 +64,7 @@ class VoskoWilkNusair(CorrelationPotential):
         if density == 0:
             return 0
         else:
-            a = self.a
+            a = self.a / 2  # rydberg to a.u.
             x_0 = self.x_0
             b = self.b
             c = self.c
@@ -72,3 +75,36 @@ class VoskoWilkNusair(CorrelationPotential):
 
             return a * (np.log(x**2 / x_x) + (2 * b / q) * np.arctan(q / (2 * x + b))
             - (b * x_0 / x_x_0) * (np.log((x - x_0)**2 / x_x) + (2 * (b + 2 * x_0) / q) * np.arctan(q / (2 * x + b))))
+
+    def potential(self, density):
+        vfunc = vectorize(self._potential)
+        return vfunc(density)
+
+    def _potential(self, density):
+        """Returns the value of the Vosko-Wilk-Nusair correlation
+        potential for a given density and fit parameters.
+
+        Parameters
+        ----------
+        density : float
+
+        Returns
+        -------
+        : float
+
+        """
+        if density == 0:
+            return 0
+        else:
+            a = self.a / 2  # rydberg to a.u.
+            x_0 = self.x_0
+            b = self.b
+            c = self.c
+            x = self.wigner_seitz_radius(density)**(1/2)
+            x_x = x**2 + b * x + c
+            x_x_0 = x_0**2 + b * x_0 + c
+            q = (4 * c - b**2)**(1/2)
+
+            return a * (np.log(x**2 / x_x) + (2 * b / q) * np.arctan(q / (2 * x + b))
+            - (b * x_0 / x_x_0) * (np.log((x - x_0)**2 / x_x) + (2 * (b + 2 * x_0) / q) * np.arctan(q / (2 * x + b)))) \
+            - (a / 3) * ((c * (x - x_0) - b * x_0 * x) / ((x - x_0) * x_x))

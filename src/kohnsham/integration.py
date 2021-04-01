@@ -6,14 +6,10 @@ import quadpy
 
 class ExchangeCorrelation:
 
-    def __init__(self, basis_set, exchange, correlation, int_space=25,
-                 epsabs=1e-9, epsrel=0.0):
+    def __init__(self, basis_set, exchange, correlation):
         self.basis_set = basis_set
         self.exchange = exchange
         self.correlation = correlation
-        self.int_space = int_space
-        self.epsabs = epsabs
-        self.epsrel = epsrel
 
     def electron_density(self, density_matrix, x, y, z):
         density = 0.0
@@ -62,7 +58,4 @@ class ExchangeCorrelation:
                 lambda angles: integrand(rho, angles[0], angles[1])
             )
 
-        return integrate.quad(
-            integrand_spherical, 0.0, self.int_space, epsabs=self.epsabs,
-            epsrel=self.epsrel, points=[0.0]
-        )[0]
+        return integrate.quad(integrand_spherical, 0.0, np.inf)[0]

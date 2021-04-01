@@ -21,9 +21,9 @@ def menu():
     # start('H2O.mol', 'STO-3G.gbs', 'RHF', 4, symmetry=True)
     # start('C2H4.mol', '3-21G.gbs', 'RHF', 4, symmetry=True)  # -77.600460844 a.u. 19.0269839632222s
     # start('H2O.mol', 'STO-3G.gbs', 'CIS', 4)  # 0.2872554996 a.u. 0.3564617587 a.u.
-    # start('He.mol', '3-21G.gbs', 'RHF', 4) # -2.83567987364 a.u.
-    # start('He.mol', '6-311G.gbs', 'RHF', 4) # -2.85989542457 a.u.
-    # start('He.mol', 'cc-pVDZ.gbs', 'RHF', 4) # -2.85516047724192 a.u.
+    # start('He.mol', '3-21G.gbs', 'RHF', 4)  # -2.83567987364 a.u.
+    # start('He.mol', '6-311G.gbs', 'RHF', 4)  # -2.85989542457 a.u.
+    # start('He.mol', 'cc-pVDZ.gbs', 'RHF', 4)  # -2.85516047724192 a.u.
 
     # start('H2O.mol', 'STO-3G.gbs', 'CCSD', 4)  # -0.0706800939192 a.u.
     # start('CH4.mol', 'STO-3G.gbs', 'CCSD', 4)  # -0.078469894846414 a.u.
@@ -34,16 +34,15 @@ def menu():
 
     # only worth doing DFT calculations on atoms at the moment
     # start('He.mol', 'STO-3G.gbs', ('DFT', 'S', ''), 4)  # -2.65731197167 a.u.
-    start('He.mol', '3-21G.gbs', ('DFT', 'S', ''), 4)  # -2.69341499501 a.u.
+    # start('He.mol', '3-21G.gbs', ('DFT', 'S', ''), 4)  # -2.69341499501 a.u.
     # start('He.mol', 'STO-6G.gbs', ('DFT', 'S', ''), 4)  # -2.69600757420 a.u.
     # start('Li-.mol', 'STO-3G.gbs', ('DFT', 'S', ''), 4) # -6.94823326080 a.u.
     # start('He.mol', 'STO-3G.gbs', ('DFT', 'XA', ''), 4)  # -2.70257401931 a.u.
-
-    # need to fix
-    # start('He.mol', 'STO-3G.gbs', ('DFT', 'S', 'VWN3'), 4) # -2.80959859438 a.u.
+    # start('He.mol', 'STO-3G.gbs', ('DFT', 'S', 'VWN3'), 4)  # -2.80959859438 a.u.
     # start('Li-.mol', 'STO-3G.gbs', ('DFT', 'S', 'VWN3'), 4)  # -7.22285707872 a.u.
-    # start('He.mol', '3-21G.gbs', ('DFT', 'S', 'VWN3'), 4) # -2.84354346745  a.u.
-    # start('He.mol', 'cc-pVDZ.gbs', ('DFT', 'S', 'VWN3'), 4) # -2.85516047724192 a.u.
+    # start('He.mol', '3-21G.gbs', ('DFT', 'S', 'VWN3'), 4)  # -2.84354346745 a.u.
+    # start('He.mol', 'cc-pVDZ.gbs', ('DFT', 'S', 'VWN3'), 4)  # -2.86415519051 a.u.
+    start('He.mol', '3-21G.gbs', ('DFT', 'S', 'VWN5'), 4)  # -2.80601675458 a.u.
 
 
 def start(mol_file, basis_file, method, processors, symmetry=False, geometry_optimization=None):
