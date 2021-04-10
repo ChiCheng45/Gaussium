@@ -1,9 +1,9 @@
-from src.kohnsham.correlation import CorrelationPotential
+from src.kohnsham.correlation import Correlation
 import numpy as np
 from numpy import vectorize
 
 
-class VoskoWilkNusair(CorrelationPotential):
+class VoskoWilkNusair(Correlation):
     """Vosko-Wilk-Nusair correlation potential.
 
     Correlation potential object can be initialized with any fitting

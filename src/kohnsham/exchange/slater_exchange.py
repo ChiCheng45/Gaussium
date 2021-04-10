@@ -1,8 +1,8 @@
 import numpy as np
-from src.kohnsham.exchange import ExchangePotential
+from src.kohnsham.exchange import Exchange
 
 
-class SlaterExchange(ExchangePotential):
+class SlaterExchange(Exchange):
     """Slater exchange potential for a given value alpha.
 
     Attributes

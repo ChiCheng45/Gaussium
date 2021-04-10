@@ -1,10 +1,10 @@
 from src.kohnsham import ExchangeCorrelation
 from src.kohnsham import RestrictedKohnShamHamiltonian
-from src.kohnsham.exchange import ExchangePotential
+from src.kohnsham.exchange import Exchange
 from src.kohnsham.exchange import SlaterExchange
 from src.hartreefock import Restricted
 from src.kohnsham.kohn_sham_scf import KSRestrictedSCF
-from src.kohnsham.correlation import CorrelationPotential
+from src.kohnsham.correlation import Correlation
 from src.kohnsham.correlation import VoskoWilkNusair
 
 
@@ -18,14 +18,14 @@ class RestrictedKohnSham(Restricted):
         elif exchange == 'XA':
             exchange = SlaterExchange(alpha=0.7)
         else:
-            exchange = ExchangePotential()  # returns a potential of 0.0
+            exchange = Exchange()  # returns a potential of 0.0
 
         if correlation == 'VWN3':
             correlation = VoskoWilkNusair(a=0.0621814, x_0=-0.409286, b=13.0720, c=42.7198)
         elif correlation == 'VWN5':
             correlation = VoskoWilkNusair(a=0.0621814, x_0=-0.10498, b=3.72744, c=12.9352)
         else:
-            correlation = CorrelationPotential()  # returns a potential of 0.0
+            correlation = Correlation()  # returns a potential of 0.0
 
         xc = ExchangeCorrelation(basis_set_array, exchange, correlation)
         self.scf_method = KSRestrictedSCF(

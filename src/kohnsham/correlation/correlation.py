@@ -1,7 +1,7 @@
 import numpy as np
 
 
-class CorrelationPotential:
+class Correlation:
 
     def wigner_seitz_radius(self, density):
         """Returns the wigner sietz radius for a given density.

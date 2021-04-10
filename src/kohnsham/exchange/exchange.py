@@ -1,4 +1,4 @@
-class ExchangePotential:
+class Exchange:
 
     def energy(self, density):
         """Returns 0.0 for cases where no exchange energy per electron
