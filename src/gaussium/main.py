@@ -10,7 +10,7 @@ import time
 
 def start(mol_file, basis_file, method, processors, symmetry=False, geometry_optimization=None):
     np.set_printoptions(linewidth=100000, threshold=np.inf)
-    start_time = time.process_time()
+    start_time = time.perf_counter()
 
     nuclei_list, electrons, multiplicity = read_mol_file(mol_file)
     energy_object = Energy(electrons, multiplicity, processors, method)
@@ -28,7 +28,7 @@ def start(mol_file, basis_file, method, processors, symmetry=False, geometry_opt
         energy = energy_object.calculate_energy(nuclei_list, basis_set)
 
     print('\n*************************************************************************************************')
-    print('\nTIME TAKEN: ' + str(time.process_time() - start_time) + 's')
+    print('\nTIME TAKEN: ' + str(time.perf_counter() - start_time) + 's')
     print("\nWhat I cannot create I cannot understand - Richard Feynman\n")
 
     return energy

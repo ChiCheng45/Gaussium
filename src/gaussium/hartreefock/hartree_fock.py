@@ -35,11 +35,11 @@ class HartreeFock:
         print('\nNUCLEAR POTENTIAL ENERGY MATRIX\n{}'.format(self.nuclear_attraction))
         print('\nCORE HAMILTONIAN MATRIX\n{}'.format(self.core_hamiltonian))
         print('\nBEGIN TWO ELECTRON REPULSION CALCULATION')
-        start_repulsion = time.process_time()
+        start_repulsion = time.perf_counter()
         self.repulsion = TwoElectronRepulsionMatrixOS(
             self.basis_set_array, self.symmetry, processes
         ).create_repulsion_matrix()
-        print('TIME TAKEN: ' + str(time.process_time() - start_repulsion) + 's\n')
+        print('TIME TAKEN: ' + str(time.perf_counter() - start_repulsion) + 's\n')
         print('\n*************************************************************************************************')
 
     def initial_guess(self):
@@ -63,10 +63,10 @@ class Restricted(HartreeFock):
         initial_energies, initial_coefficients = self.initial_guess()
         print('COEFFICIENTS INITIAL GUESS\n{}'.format(initial_coefficients))
         print('\n\nBEGIN SCF PROCEDURE')
-        start = time.process_time()
+        start = time.perf_counter()
         electron_energy, orbital_energies, orbital_coefficients \
             = self.scf_method.begin_iterations(initial_energies, initial_coefficients)
-        print('TIME TAKEN: ' + str(time.process_time() - start) + 's\n')
+        print('TIME TAKEN: ' + str(time.perf_counter() - start) + 's\n')
         print('\nORBITAL ENERGY EIGENVALUES\n{}'.format(orbital_energies))
         print('\nORBITAL COEFFICIENTS\n{}'.format(orbital_coefficients), end='\n\n\n')
 
@@ -93,10 +93,10 @@ class Unrestricted(HartreeFock):
         initial_energies, initial_coefficients = self.initial_guess()
         print('COEFFICIENTS INITIAL GUESS\n{}'.format(initial_coefficients))
         print('\n\nBEGIN SCF PROCEDURE')
-        start = time.process_time()
+        start = time.perf_counter()
         electron_energy, energies_alpha, energies_beta, coefficients_alpha, coefficients_beta \
             = self.scf_method.begin_iterations(initial_energies, initial_coefficients)
-        print('TIME TAKEN: ' + str(time.process_time() - start) + 's\n')
+        print('TIME TAKEN: ' + str(time.perf_counter() - start) + 's\n')
         print('\nALPHA ORBITAL ENERGY EIGENVALUES\n{}'.format(energies_alpha))
         print('\nBETA ORBITAL ENERGY EIGENVALUES\n{}'.format(energies_beta))
         print('\nALPHA ORBITAL COEFFICIENTS\n{}'.format(coefficients_alpha), end='\n')
