@@ -1,7 +1,7 @@
 from unittest import TestCase
 from unittest.mock import MagicMock
 from numpy import testing
-from src.matrixelements import NuclearAttractionMatrix
+from gaussium.matrixelements import NuclearAttractionMatrix
 
 
 class TestNuclearAttractionMatrixHeHCation(TestCase):

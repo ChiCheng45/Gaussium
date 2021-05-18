@@ -2,7 +2,7 @@ from unittest import TestCase
 from unittest.mock import MagicMock, Mock
 import numpy as np
 from numpy import testing
-from src.hartreefock import LinearAlgebra
+from gaussium.hartreefock import LinearAlgebra
 
 
 

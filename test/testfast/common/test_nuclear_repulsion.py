@@ -1,7 +1,7 @@
 from unittest import TestCase
 from numpy import testing
-from src.common import coulomb_matrix
-from src.objects import Nuclei
+from gaussium.common import coulomb_matrix
+from gaussium.objects import Nuclei
 
 
 class TestCoulomb(TestCase):

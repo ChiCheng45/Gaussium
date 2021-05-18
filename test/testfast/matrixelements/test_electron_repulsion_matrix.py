@@ -1,9 +1,9 @@
 from unittest import TestCase
 from unittest.mock import MagicMock
 from numpy import testing
-from src.matrixelements import TwoElectronRepulsionMatrixCook
-from src.matrixelements import TwoElectronRepulsionMatrixHGP
-from src.matrixelements import TwoElectronRepulsionMatrixOS
+from gaussium.matrixelements import TwoElectronRepulsionMatrixCook
+from gaussium.matrixelements import TwoElectronRepulsionMatrixHGP
+from gaussium.matrixelements import TwoElectronRepulsionMatrixOS
 
 
 class TestTwoElectronRepulsionElementCook(TestCase):

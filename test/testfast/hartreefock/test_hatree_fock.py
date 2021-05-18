@@ -1,8 +1,8 @@
 from unittest import TestCase
 from unittest.mock import MagicMock
 from numpy import testing
-from src.common import Symmetry
-from src.hartreefock import RestrictedHF
+from gaussium.common import Symmetry
+from gaussium.hartreefock import RestrictedHF
 
 
 class TestHartreeFock(TestCase):

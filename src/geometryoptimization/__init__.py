@@ -1,1 +1,0 @@
-from src.geometryoptimization.nelder_mead import NelderMead

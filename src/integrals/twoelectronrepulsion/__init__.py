@@ -1,3 +1,0 @@
-from src.integrals.twoelectronrepulsion.cook_integral import ElectronRepulsion
-from src.integrals.twoelectronrepulsion.obara_saika_scheme import ObaraSaika
-from src.integrals.twoelectronrepulsion.head_gordon_pople import HeadGordonPople

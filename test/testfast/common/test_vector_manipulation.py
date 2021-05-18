@@ -1,8 +1,8 @@
 from math import pi
 from unittest import TestCase
 from numpy import testing
-from src.common import create_quaternion
-from src.common import quaternion_rotation
+from gaussium.common import create_quaternion
+from gaussium.common import quaternion_rotation
 
 
 class TestVectorQuaternions(TestCase):

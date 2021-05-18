@@ -1,7 +1,7 @@
 from unittest import TestCase
 import numpy as np
 from numpy import testing
-from src.matrixelements import density_matrix_restricted
+from gaussium.matrixelements import density_matrix_restricted
 
 
 class TestDensityMatrixRestricted(TestCase):

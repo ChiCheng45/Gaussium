@@ -1,0 +1,1 @@
+from gaussium.geometryoptimization.nelder_mead import NelderMead

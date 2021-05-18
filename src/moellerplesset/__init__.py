@@ -1,1 +1,0 @@
-from src.moellerplesset.moeller_plesset import MoellerPlesset

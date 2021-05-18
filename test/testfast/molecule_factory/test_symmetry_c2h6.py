@@ -1,8 +1,8 @@
 from unittest import TestCase
 from unittest.mock import MagicMock
 from numpy import testing
-from src.factory import MoleculeFactory
-from src.factory import SymmetryFactory
+from gaussium.factory import MoleculeFactory
+from gaussium.factory import SymmetryFactory
 
 
 class TestSymmetryC2H6(TestCase):

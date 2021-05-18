@@ -1,7 +1,7 @@
 from unittest import TestCase
 from numpy import testing
-from src.integrals import binomial_coefficient
-from src.integrals import combination
+from gaussium.integrals import binomial_coefficient
+from gaussium.integrals import combination
 
 
 class TestBinomialCoefficientsFunction(TestCase):

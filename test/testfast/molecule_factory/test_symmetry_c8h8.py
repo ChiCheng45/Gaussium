@@ -1,9 +1,9 @@
 from unittest import TestCase
 from unittest.mock import MagicMock
 from numpy import testing
-from src.factory import MoleculeFactory
-from src.factory import SymmetryFactory
-from src.objects import InversionSymmetry
+from gaussium.factory import MoleculeFactory
+from gaussium.factory import SymmetryFactory
+from gaussium.objects import InversionSymmetry
 
 
 class TestSymmetryC8H8(TestCase):

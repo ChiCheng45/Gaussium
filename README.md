@@ -1,30 +1,28 @@
 ## Introduction
-A basic quantum chemical program written in Python3 using the numpy and scipy libraries.
+A basic quantum chemistry program written in Python3 using the numpy and scipy libraries.
 
-Currently this program fully supports RHF, UHF, CIS, TDHF, DFT, CCSD and CCSD(T). My next plans are to implement DFT into the program.
+Currently this program fully supports RHF, UHF, CIS, TDHF, DFT, CCSD and CCSD(T). My next plans are to implement more DFT functionals.
 
 I used Attlia Szabo and Neil S. Ostlunds _Modern Quantum Chemistry: Introduction to Advanced Electronic Structure Theory_ and David B. Cooks _Handbook of Computational Quantum Chemistry_ as my main references for the theories and methods behind the electronic structure calculations. The developers resources at http://www.psicode.org/developers.php were also invaluable to the success of project and had a number of excellent tutorials and programming examples.
 
 ## Instructions
-* To run this program add the desired .mol and .gbs files to the `molfiles` and `basisset` directories.
-* Next edit the `src/main/main.py` `menu()` function so that the desired calculations are made for example,
+Install the Gaussium package using
+```text
+python setup.py install
+```
+you can then run Gaussium using the start function for example
 ```python
-def menu():
-    start('H2O.mol', 'STO-3G.gbs', 'CCSD', 4)
-```
-for DFT calculations the functionals are inputted using a tuple, so for SVWN3,
-```python
-def menu():
-    start('He.mol', 'STO-3G.gbs', ('DFT', 'S', 'VWN3'), 4)
-```
-the start function contains more options such as the number of processes used during the multiprocessing sections of the code and whether symmetry is turned on for faster integral calculations. See `start()` for more details,
-```python
-def start(mol, basis, method, processes, symmetry=False):
-```
-* Now run the main.py, for example on a Windows machine,
-```
-C:\Anaconda3\python.exe C:\Users\username\PycharmProjects\Quantum_Chemistry\src\main.py
-```
+from gaussium import start
+
+
+def run():
+    start('He.mol', '3-21G.gbs', ('DFT', 'S', 'VWN5'), 4)  # -2.80601675458 a.u.
+
+
+if __name__ == "__main__":
+    run()
+``` 
+assuming that the molecule and basis set files are in the working directory. This calculation will start a DFT calculation with the SVWN5 functional with the 3-21G basis set for a Helium atom and will use four processors, see the examples directory for more examples.
 
 ## Supported Features and Methods
 * Restricted Hartree-Fock
